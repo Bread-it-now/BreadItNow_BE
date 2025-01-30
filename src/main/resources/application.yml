@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: breaditnow
+
+  profiles:
+    default: local
