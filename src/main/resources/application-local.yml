@@ -7,3 +7,10 @@ spring:
     compose:
       enabled: true
       file: ./docker/docker-compose.yml
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+      jdbc:
+        time_zone: Asia/Seoul
