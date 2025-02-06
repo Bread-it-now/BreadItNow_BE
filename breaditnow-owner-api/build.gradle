@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+tasks.named('bootRun') {
+    mainClass = 'com.breaditnow.BreaditnowOwnerApplication'
+}
+
+group = 'com.breaditnow'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    implementation project(':breaditnow-mysql')
+
+    // 공통 모듈 사용
+}
+
+test {
+    useJUnitPlatform()
+}
