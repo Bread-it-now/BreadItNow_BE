@@ -3,9 +3,7 @@ server:
 
 spring:
   application:
-    name: breaditnow-mysql-api
+    name: breaditnow-mysql
 
   profiles:
     default: local
-
-

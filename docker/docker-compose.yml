@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  bin-mysql:
+    image: mysql:8.4.3
+    container_name: bin_mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=breaditnow
+    ports:
+      - "3306:3306"
+    networks:
+      - bin-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bin-redis:
+    image: redis:latest
+    container_name: bin_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - bin-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+networks:
+  bin-network:
+    driver: bridge

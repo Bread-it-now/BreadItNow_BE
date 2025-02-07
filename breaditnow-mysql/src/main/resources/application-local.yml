@@ -1,19 +1,19 @@
 spring:
+  config:
+    activate:
+      on-profile: local
+
+  docker:
+    compose:
+      enabled: true
+      file: ./docker/docker-compose.yml
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bread_it_now?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/breaditnow?serverTimezone=Asia/Seoul&useSSL=false
     username: root
     password:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: true
-        show_sql: true
-    defer-datasource-initialization: false
-    database-platform: org.hibernate.dialect.MySQLDialect
-  sql:
-    init:
-      mode: never
+
+  redis:
+    host: localhost
+    port: 6379
