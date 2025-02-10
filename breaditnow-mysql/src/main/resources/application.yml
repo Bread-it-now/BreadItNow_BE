@@ -1,9 +1,14 @@
-server:
-  port: 9003
-
 spring:
-  application:
-    name: breaditnow-mysql
-
   profiles:
-    default: local
+    active: local
+    group:
+      local:
+        - mysql-local
+        - customer-local
+        - owner-local
+
+--- # local 설정
+spring:
+  config:
+    activate:
+      on-profile: local

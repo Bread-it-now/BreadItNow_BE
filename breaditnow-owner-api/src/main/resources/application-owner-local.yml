@@ -1,0 +1,26 @@
+server:
+  port: 9001
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQL8Dialect
+#        format_sql: true
+#        show_sql: true
+#    open-in-view: false
+#
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/breaditnow?serverTimezone=Asia/Seoul&useSSL=false
+#    username: root
+#    password: root
+#
+#  redis:
+#    host: localhost
+#    port: 6379

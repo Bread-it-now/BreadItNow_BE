@@ -3,7 +3,10 @@ package com.breaditnow.customer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = {
+                "com.breaditnow.customer",
+                "com.breaditnow.mysql"})
 public class BreaditnowCustomerApplication {
     public static void main(String[] args) {
         SpringApplication.run(BreaditnowCustomerApplication.class, args);
