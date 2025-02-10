@@ -1,10 +1,11 @@
 rootProject.name = 'breaditnow'
 
-// 서비스 모듈
 include('breaditnow-customer-api')
 include('breaditnow-owner-api')
 include('breaditnow-auth')
 
+include 'common'
 
 include('breaditnow-mysql')
+
 
