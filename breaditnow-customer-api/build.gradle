@@ -18,6 +18,7 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j'
 
     implementation project(":breaditnow-mysql")
+    implementation project(":breaditnow-common")
 }
 
 test {

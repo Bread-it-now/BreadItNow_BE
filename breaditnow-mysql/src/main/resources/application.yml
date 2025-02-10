@@ -4,6 +4,7 @@ spring:
     group:
       local:
         - mysql-local
+        - redis-local
         - customer-local
         - owner-local
 

@@ -7,5 +7,5 @@ include 'breaditnow-auth'
 include 'breaditnow-common'
 
 include 'breaditnow-mysql'
-
+include 'breaditnow-redis'
 

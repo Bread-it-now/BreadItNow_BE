@@ -16,8 +16,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     implementation project(":breaditnow-common")
+    implementation project(":breaditnow-redis")
 }
 
 test {
     useJUnitPlatform()
+}
+
+bootJar{
+    enabled=false
+}
+
+jar{
+    enabled=true
 }
