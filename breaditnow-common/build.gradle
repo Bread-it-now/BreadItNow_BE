@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.breaditnow'
-version = '0.0.1-SNAPSHOT'
+version = 'unspecified'
 
 repositories {
     mavenCentral()
@@ -14,10 +14,16 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    implementation project(":breaditnow-common")
 }
 
 test {
     useJUnitPlatform()
+}
+
+bootJar{
+    enabled=false
+}
+
+jar{
+    enabled=true
 }
