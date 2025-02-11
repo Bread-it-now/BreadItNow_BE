@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BreaditnowCommonApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(BreaditnowCommonApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BreaditnowCommonApplication.class, args);
+	}
 }

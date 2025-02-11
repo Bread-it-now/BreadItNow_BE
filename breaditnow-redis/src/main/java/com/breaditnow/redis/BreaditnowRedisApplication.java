@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BreaditnowRedisApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(BreaditnowRedisApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BreaditnowRedisApplication.class, args);
+	}
 }
