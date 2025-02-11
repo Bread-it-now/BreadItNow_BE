@@ -12,6 +12,19 @@ allprojects {
     group = 'com.breaditnow'
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '17'
+
+    // check-style
+    apply plugin: 'checkstyle'
+
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+
+    checkstyle {
+        maxWarnings = 0
+        configFile = file("${rootDir}/config/naver-checkstyle-rules.xml")
+        configProperties = ["suppressionFile": "${rootDir}/config/naver-checkstyle-suppressions.xml"]
+        toolVersion = "8.24"
+    }
 }
 
 subprojects {
@@ -23,20 +36,7 @@ subprojects {
 
     // spring boot dependency를 사용하여 사용중인 부트 버전에서 자동으로 의존성을 가져온다.
     apply plugin: "org.springframework.boot"
-
-    // check-style
-    apply plugin: 'checkstyle'
     
-    compileJava.options.encoding = 'UTF-8'
-    compileTestJava.options.encoding = 'UTF-8'
-
-    checkstyle {
-        maxWarnings = 0
-        configFile = file("${rootDir}/config/naver-checkstyle-rules.xml")
-        configProperties = ["suppressionFile": "${rootDir}/config/naver-checkstyle-suppressions.xml"]
-        toolVersion = "8.24"
-    }
-
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-web'
