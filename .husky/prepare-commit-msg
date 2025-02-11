@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# 현재 브랜치 이름 가져오기
+BRANCH_NAME=$(git branch --show-current)
+COMMIT_MSG_FILE=$1
+
+# master 및 develop 브랜치에서는 작업을 스킵
+if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "dev" ]; then
+  exit 0
+fi
+
+
+echo "현재 브랜치: $BRANCH_NAME"
+
+# 브랜치명에서 ISSUE_NUMBER 추출 (형식: 커밋유형/이슈번호-이슈요약)
+if [[ $BRANCH_NAME =~ ^[a-z]+\/([0-9]+)-.+$ ]]; then
+  ISSUE_NUMBER="${BASH_REMATCH[1]}"
+else
+  echo "커밋유형/이슈번호-이슈요약 형식의 브랜치명을 사용해주세요."
+  exit 1
+fi
+
+echo "현재 브랜치: $BRANCH_NAME"
+echo "추출된 이슈 번호: $ISSUE_NUMBER"
+
+# 커밋 메시지에 이슈 번호가 없는 경우에만 추가
+if ! grep -q "(#$ISSUE_NUMBER)" "$COMMIT_MSG_FILE"; then
+    echo " (#$ISSUE_NUMBER)" >> "$COMMIT_MSG_FILE"
+fi
