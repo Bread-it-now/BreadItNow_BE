@@ -1,18 +1,6 @@
-plugins {
-    id 'java'
-}
-
-group = 'com.breaditnow'
-version = '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.mysql:mysql-connector-j'
 }
