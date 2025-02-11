@@ -20,7 +20,11 @@ fi
 echo "현재 브랜치: $BRANCH_NAME"
 echo "추출된 이슈 번호: $ISSUE_NUMBER"
 
-# 커밋 메시지에 이슈 번호가 없는 경우에만 추가
-if ! grep -q "(#$ISSUE_NUMBER)" "$COMMIT_MSG_FILE"; then
-    echo " (#$ISSUE_NUMBER)" >> "$COMMIT_MSG_FILE"
+# 커밋 메시지 제목에 이슈 번호를 추가
+TITLE=$(head -n 1 "$COMMIT_MSG_FILE")
+echo "현재 제목: $TITLE"
+
+# 제목에 이슈 번호가 포함되지 않으면 추가합니다.
+if ! echo "$TITLE" | grep -q "(#$ISSUE_NUMBER)"; then
+  sed -i "" "1s/$/ (#$ISSUE_NUMBER)/" "$COMMIT_MSG_FILE"  # 제목에 이슈 번호 추가
 fi
