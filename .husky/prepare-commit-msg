@@ -9,9 +9,6 @@ if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "dev" ]; then
   exit 0
 fi
 
-
-echo "현재 브랜치: $BRANCH_NAME"
-
 # 브랜치명에서 ISSUE_NUMBER 추출 (형식: 커밋유형/이슈번호-이슈요약)
 if [[ $BRANCH_NAME =~ ^[a-z]+\/([0-9]+)-.+$ ]]; then
   ISSUE_NUMBER="${BASH_REMATCH[1]}"
