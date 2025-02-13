@@ -1,3 +1,6 @@
+server:
+  port: 9003
+
 spring:
   docker:
     compose:

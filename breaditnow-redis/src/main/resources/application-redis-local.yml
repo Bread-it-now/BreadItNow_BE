@@ -1,3 +1,6 @@
+server:
+  port: 9004
+
 spring:
   data:
     redis:
