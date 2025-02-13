@@ -8,7 +8,7 @@ include 'breaditnow-owner-api'
 
 include 'breaditnow-common'
 
-include 'breaditnow-mysql'
+include 'breaditnow-domain'
 include 'breaditnow-redis'
 
 

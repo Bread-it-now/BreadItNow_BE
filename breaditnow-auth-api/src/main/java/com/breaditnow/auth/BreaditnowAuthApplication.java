@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
 	"com.breaditnow.auth",
-	"com.breaditnow.mysql",
+	"com.breaditnow.domain",
 	"com.breaditnow.redis"})
 public class BreaditnowAuthApplication {
 	public static void main(String[] args) {
