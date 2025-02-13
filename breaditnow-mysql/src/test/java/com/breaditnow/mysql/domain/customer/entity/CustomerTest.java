@@ -1,4 +1,4 @@
-package com.breaditnow.mysql.customer.entity;
+package com.breaditnow.mysql.domain.customer.entity;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ class CustomerTest {
 			.email("email@naver.com")
 			.password("password1!")
 			.build();
-		
+
 		System.out.println(customer);
 	}
 }

@@ -1,4 +1,4 @@
-package com.breaditnow.mysql.owner.entity;
+package com.breaditnow.mysql.domain.owner.entity;
 
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;

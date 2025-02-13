@@ -1,9 +1,9 @@
-package com.breaditnow.mysql.customer.repository;
+package com.breaditnow.mysql.domain.customer.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.breaditnow.mysql.customer.entity.Customer;
+import com.breaditnow.mysql.domain.customer.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {

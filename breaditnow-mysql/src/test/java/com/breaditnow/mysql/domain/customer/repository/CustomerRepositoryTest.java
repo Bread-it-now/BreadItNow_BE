@@ -1,4 +1,4 @@
-package com.breaditnow.mysql.customer.repository;
+package com.breaditnow.mysql.domain.customer.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.breaditnow.mysql.customer.entity.Customer;
-import com.breaditnow.mysql.customer.enumerate.Provider;
+import com.breaditnow.mysql.domain.customer.entity.Customer;
+import com.breaditnow.mysql.domain.customer.enumerate.Provider;
 
 @SpringBootTest
 class CustomerRepositoryTest {

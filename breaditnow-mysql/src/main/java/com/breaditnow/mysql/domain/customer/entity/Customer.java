@@ -1,9 +1,9 @@
-package com.breaditnow.mysql.customer.entity;
+package com.breaditnow.mysql.domain.customer.entity;
 
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-import com.breaditnow.mysql.customer.enumerate.Provider;
+import com.breaditnow.mysql.domain.customer.enumerate.Provider;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
