@@ -1,13 +1,12 @@
-package com.breaditnow.owner;
+package com.breaditnow.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
-	"com.breaditnow.owner",
-	"com.breaditnow.domain"})
-public class BreaditnowOwnerApplication {
+	"com.breaditnow.gateway"})
+public class BreaditnowGatewayApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(BreaditnowOwnerApplication.class, args);
+		SpringApplication.run(BreaditnowGatewayApplication.class, args);
 	}
 }

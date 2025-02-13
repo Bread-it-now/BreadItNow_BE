@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(":breaditnow-mysql")
+    implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
