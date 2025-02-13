@@ -1,0 +1,6 @@
+server:
+  port: 9001
+
+spring:
+  profiles:
+    active: local

@@ -1,0 +1,20 @@
+dependencies {
+    implementation project(":breaditnow-mysql")
+    implementation project(":breaditnow-redis")
+    implementation project(":breaditnow-common")
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar{
+    enabled=false
+}
+
+jar{
+    enabled=true
+}

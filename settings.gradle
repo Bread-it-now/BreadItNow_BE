@@ -1,11 +1,14 @@
 rootProject.name = 'breaditnow'
 
+include 'breaditnow-gateway'
+
+include 'breaditnow-auth-api'
 include 'breaditnow-customer-api'
 include 'breaditnow-owner-api'
-include 'breaditnow-auth'
 
 include 'breaditnow-common'
 
 include 'breaditnow-mysql'
 include 'breaditnow-redis'
+
 
