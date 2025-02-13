@@ -7,9 +7,4 @@ spring:
         - redis-local
         - customer-local
         - owner-local
-
---- # local 설정
-spring:
-  config:
-    activate:
-      on-profile: local
+        - auth-local
