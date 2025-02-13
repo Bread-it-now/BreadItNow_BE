@@ -2,7 +2,7 @@ rootProject.name = 'breaditnow'
 
 include 'breaditnow-gateway'
 
-include 'breaditnow-auth'
+include 'breaditnow-auth-api'
 include 'breaditnow-customer-api'
 include 'breaditnow-owner-api'
 
