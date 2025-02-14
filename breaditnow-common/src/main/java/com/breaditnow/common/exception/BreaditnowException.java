@@ -3,11 +3,11 @@ package com.breaditnow.common.exception;
 import lombok.Getter;
 
 @Getter
-public abstract class BreaditnowException extends RuntimeException{
+public class BreaditnowException extends RuntimeException{
 
 	private final ErrorCode errorCode;
 
-	protected BreaditnowException(ErrorCode errorCode) {
+	public BreaditnowException(ErrorCode errorCode) {
 		super(errorCode.getMessage());
 		this.errorCode = errorCode;
 	}
