@@ -2,9 +2,6 @@ dependencies {
     implementation project(":breaditnow-redis")
     implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
-
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 test {
