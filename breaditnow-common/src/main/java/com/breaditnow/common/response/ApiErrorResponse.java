@@ -4,6 +4,7 @@ import static com.breaditnow.common.response.ResponseStatus.ERROR;
 
 import org.springframework.lang.Nullable;
 
+import com.breaditnow.common.exception.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -17,6 +18,10 @@ public record ApiErrorResponse(
 
 	public ApiErrorResponse(String code, String message, ErrorDetail errors) {
 		this(ERROR, code, message, errors);
+	}
+
+	public static ApiErrorResponse of(ErrorCode errorCode) {
+		return new ApiErrorResponse(errorCode.defaultCode(), errorCode.defaultMessage(), null);
 	}
 
 	public static ApiErrorResponse of(String code, String message, ErrorDetail errors) {
