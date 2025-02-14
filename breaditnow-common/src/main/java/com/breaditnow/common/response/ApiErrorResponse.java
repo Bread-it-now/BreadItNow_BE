@@ -1,6 +1,8 @@
 package com.breaditnow.common.response;
 
-import static com.breaditnow.common.response.ResponseStatus.ERROR;
+import static com.breaditnow.common.response.ResponseStatus.*;
+
+import java.util.List;
 
 import org.springframework.lang.Nullable;
 
@@ -14,18 +16,22 @@ public record ApiErrorResponse(
 	ResponseStatus status,
 	String code,
 	String message,
-	@Nullable ErrorDetail errors)  {
+	@Nullable List<ErrorDetail> errors)  {
 
-	public ApiErrorResponse(String code, String message, ErrorDetail errors) {
+	public ApiErrorResponse(String code, String message, List<ErrorDetail> errors) {
 		this(ERROR, code, message, errors);
 	}
 
 	public static ApiErrorResponse of(ErrorCode errorCode) {
-		return new ApiErrorResponse(errorCode.defaultCode(), errorCode.defaultMessage(), null);
+		return new ApiErrorResponse(errorCode.getCode(), errorCode.getMessage(), null);
 	}
 
-	public static ApiErrorResponse of(String code, String message, ErrorDetail errors) {
-		return new ApiErrorResponse(code, message, errors);
+	public static ApiErrorResponse of(ErrorCode errorCode, List<ErrorDetail> errors) {
+		return new ApiErrorResponse(errorCode.getCode(), errorCode.getMessage(), errors);
+	}
+
+	public static ApiErrorResponse of(ErrorCode errorCode, String exMessage) {
+		return new ApiErrorResponse(errorCode.getCode(), errorCode.getMessage() + exMessage, null);
 	}
 }
 
