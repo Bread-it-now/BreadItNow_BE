@@ -1,17 +1,17 @@
-package com.breaditnow.auth.global.exception;
+package com.breaditnow.customer.global.exception;
 
 import org.springframework.http.HttpStatus;
 
 import com.breaditnow.common.exception.ErrorCode;
 
-public enum AuthenticationErrorCode implements ErrorCode {
-	INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "BA001", "잘못된 자격 증명입니다.");
+public enum CustomerErrorCode implements ErrorCode {
+	INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "CA001", "?");
 
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
 
-	AuthenticationErrorCode(HttpStatus httpStatus, String code, String message) {
+	CustomerErrorCode(HttpStatus httpStatus, String code, String message) {
 		this.httpStatus = httpStatus;
 		this.code = code;
 		this.message = message;
