@@ -49,7 +49,7 @@ public class Bakery {
 	@Enumerated(EnumType.STRING)
 	private OperatingStatus operatingStatus; // 운영 상태
 
-	@Builder(builderMethodName = "createBakeryBuilder")
+	@Builder
 	public Bakery(Owner owner, String name, String phone, String introduction, String profileImage, String openTime,
 		Address address, OperatingStatus operatingStatus) {
 		this.owner = owner;

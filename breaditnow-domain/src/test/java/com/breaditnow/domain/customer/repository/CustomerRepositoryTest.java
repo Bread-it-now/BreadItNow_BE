@@ -19,7 +19,7 @@ class CustomerRepositoryTest {
 
 	@BeforeEach
 	void init() {
-		customer = Customer.createCustomerBuilder()
+		customer = Customer.builder()
 			.email("john.doe@example.com")
 			.password("password123")
 			.nickname("John Doe")
@@ -35,7 +35,6 @@ class CustomerRepositoryTest {
 
 		assertThat(savedCustomer.getId()).isNotNull();
 
-		// 고객이 정상적으로 저장되었는지 확인한다.
 		assertThat(savedCustomer.getEmail()).isEqualTo(customer.getEmail());
 	}
 }

@@ -24,6 +24,9 @@ public class Customer {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
+	@Enumerated(EnumType.STRING)
+	Provider provider;
+
 	String email;
 
 	String password;
@@ -32,12 +35,9 @@ public class Customer {
 
 	String phone;
 
-	@Enumerated(EnumType.STRING)
-	Provider provider;
-
 	String profileImage;
 
-	@Builder(builderMethodName = "createCustomerBuilder")
+	@Builder
 	public Customer(String email, String password, String nickname, String phone, Provider provider,
 		String profileImage) {
 		this.email = email;

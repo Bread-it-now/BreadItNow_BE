@@ -24,7 +24,7 @@ public class Owner {
 
 	String password;
 
-	@Builder(builderMethodName = "createOwnerBuilder")
+	@Builder
 	public Owner(String email, String password) {
 		this.email = email;
 		this.password = password;

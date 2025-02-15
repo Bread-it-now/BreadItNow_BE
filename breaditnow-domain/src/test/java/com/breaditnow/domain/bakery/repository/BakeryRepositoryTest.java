@@ -24,7 +24,7 @@ class BakeryRepositoryTest {
 	@Test
 	public void testSaveAndFindBakery() {
 		// given
-		Address address = Address.createAddressBuilder()
+		Address address = Address.builder()
 			.city("서울특별시")
 			.region("강남구")
 			.zipcode("12345")
@@ -33,13 +33,13 @@ class BakeryRepositoryTest {
 			.description("강남대로 123")
 			.build();
 
-		Owner owner = Owner.createOwnerBuilder()
+		Owner owner = Owner.builder()
 			.email("owner@example.com")
 			.password("ownerPassword")
 			.build();
 		ownerRepository.save(owner); // Owner 객체 먼저 저장
 
-		Bakery bakery = Bakery.createBakeryBuilder()
+		Bakery bakery = Bakery.builder()
 			.name("빵집 이름")
 			.phone("010-1234-5678")
 			.introduction("맛있는 빵집입니다.")

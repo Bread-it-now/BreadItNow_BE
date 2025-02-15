@@ -29,21 +29,21 @@ public class Product {
 	@JoinColumn(name = "product_id")
 	Bakery bakery;
 
-	private String name; // 상품 이름
+	private String name;
 
-	private int price; // 가격
+	private int price;
 
-	private String image; // 빵 이미지 URL
+	private String image;
 
-	private String description; // 상품 설명
+	private String description;
 
-	private int stock; // 재고 수량
+	private int stock;
 
-	private String releaseTime; // 빵 나오는 예상 시간(예: 08:30;12:00;16:00)
+	private String releaseTime;
 
-	private boolean isActive; // 판매 활성화 여부
+	private boolean isActive;
 
-	@Builder(builderMethodName = "createProductBuilder")
+	@Builder
 	public Product(Bakery bakery, String name, int price, String image, String description, int stock,
 		String releaseTime,
 		boolean isActive) {

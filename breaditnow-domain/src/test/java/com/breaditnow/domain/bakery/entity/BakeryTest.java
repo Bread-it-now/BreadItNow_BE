@@ -9,7 +9,7 @@ import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
 class BakeryTest {
 	@Test
 	void create_bakery() {
-		Address address = Address.createAddressBuilder()
+		Address address = Address.builder()
 			.city("서울특별시")
 			.region("강남구")
 			.zipcode("12345")
@@ -18,7 +18,7 @@ class BakeryTest {
 			.description("강남대로 123")
 			.build();
 
-		Bakery bakery = Bakery.createBakeryBuilder()
+		Bakery bakery = Bakery.builder()
 			.name("빵집 이름")
 			.phone("010-1234-5678")
 			.introduction("맛있는 빵집입니다.")
