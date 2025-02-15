@@ -3,14 +3,17 @@ package com.breaditnow.domain.customer.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import com.breaditnow.domain.alert.entity.CustomerAlertSetting;
 import com.breaditnow.domain.customer.enumerate.Provider;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +43,9 @@ public class Customer {
 	String phone;
 
 	String profileImage;
+
+	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private CustomerAlertSetting alertSetting;
 
 	@Builder
 	public Customer(String email, String password, String nickname, String phone, Provider provider,

@@ -3,9 +3,14 @@ package com.breaditnow.domain.bakery.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.owner.entity.Owner;
+import com.breaditnow.domain.product.entity.Product;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -15,6 +20,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +56,12 @@ public class Bakery {
 
 	@Enumerated(EnumType.STRING)
 	private OperatingStatus operatingStatus;
+
+	@OneToMany(mappedBy = "bakery", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<BakeryImage> bakeryImages = new ArrayList<>();
+
+	@OneToMany(mappedBy = "bakery")
+	private List<Product> products = new ArrayList<>();
 
 	@Builder
 	public Bakery(Owner owner, String name, String phone, String introduction, String profileImage, String openTime,

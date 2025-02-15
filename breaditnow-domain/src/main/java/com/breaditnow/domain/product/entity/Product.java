@@ -3,9 +3,13 @@ package com.breaditnow.domain.product.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.breaditnow.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.product.enumerate.ProductType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +18,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,9 +34,9 @@ public class Product {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
-	Bakery bakery;
+	private Bakery bakery;
 
 	@Enumerated(EnumType.STRING)
 	private ProductType type;
@@ -50,6 +55,9 @@ public class Product {
 	private String releaseTime;
 
 	private boolean isActive;
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductBreadCategory> breadCategories = new ArrayList<>();
 
 	@Builder
 	public Product(Bakery bakery, String name, int price, String image, String description, int stock,
