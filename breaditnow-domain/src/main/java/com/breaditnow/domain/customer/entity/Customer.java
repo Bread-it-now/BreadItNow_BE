@@ -5,6 +5,7 @@ import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.customer.enumerate.Provider;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,10 +28,13 @@ public class Customer {
 	@Enumerated(EnumType.STRING)
 	Provider provider;
 
+	@Column(nullable = false, unique = true)
 	String email;
 
+	@Column(nullable = false)
 	String password;
 
+	@Column(nullable = false, unique = true)
 	String nickname;
 
 	String phone;

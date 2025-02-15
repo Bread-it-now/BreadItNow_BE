@@ -12,7 +12,7 @@ import lombok.ToString;
 @Embeddable
 @Getter
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 @ToString
 public class Address {

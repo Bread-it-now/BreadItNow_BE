@@ -6,6 +6,7 @@ import static lombok.AccessLevel.*;
 import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.owner.entity.Owner;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,24 +31,25 @@ public class Bakery {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id")
+	@JoinColumn(name = "owner_id", nullable = false)
 	Owner owner;
 
-	private String name; // 빵집 이름
+	@Column(nullable = false)
+	private String name;
 
-	private String phone; // 전화번호
+	private String phone;
 
-	private String introduction; // 빵집 소개글
+	private String introduction;
 
-	private String profileImage; // 빵집 프로필 이미지 URL
+	private String profileImage;
 
-	private String openTime; // 오픈 시간
+	private String openTime;
 
 	@Embedded
-	private Address address; // 주소
+	private Address address;
 
 	@Enumerated(EnumType.STRING)
-	private OperatingStatus operatingStatus; // 운영 상태
+	private OperatingStatus operatingStatus;
 
 	@Builder
 	public Bakery(Owner owner, String name, String phone, String introduction, String profileImage, String openTime,

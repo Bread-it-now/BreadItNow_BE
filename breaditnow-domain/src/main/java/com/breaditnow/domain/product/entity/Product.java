@@ -4,8 +4,12 @@ import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.bakery.entity.Bakery;
+import com.breaditnow.domain.product.enumerate.ProductType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,9 +30,13 @@ public class Product {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id")
+	@JoinColumn(name = "product_id", nullable = false)
 	Bakery bakery;
 
+	@Enumerated(EnumType.STRING)
+	private ProductType type;
+
+	@Column(nullable = false)
 	private String name;
 
 	private int price;
