@@ -34,5 +34,4 @@ public class CustomerAlertSetting {
 	private String friTime;
 	private String satTime;
 	private String sunTime;
-
 }
