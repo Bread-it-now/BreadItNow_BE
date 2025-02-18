@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(":breaditnow-redis")
+    implementation project(":breaditnow-domain")
+    implementation project(":breaditnow-common")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
 	"com.breaditnow.owner",
-	"com.breaditnow.mysql"})
+	"com.breaditnow.domain"})
 public class BreaditnowOwnerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BreaditnowOwnerApplication.class, args);
