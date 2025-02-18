@@ -22,5 +22,5 @@ public class Sido {
 	private String sidoName;
 
 	@OneToMany(mappedBy = "sido", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Gugun> guguns = new ArrayList<>();;
+	private List<Gugun> guguns = new ArrayList<>();
 }
