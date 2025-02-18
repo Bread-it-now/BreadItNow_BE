@@ -7,11 +7,16 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         default_batch_fetch_size: 100
-    #        show_sql: true
     open-in-view: false
+    defer-datasource-initialization: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/breaditnow?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: root
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data-local.sql
