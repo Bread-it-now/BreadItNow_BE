@@ -22,6 +22,7 @@ public class Region {
 
 	private String sidoName;
 	private String gugunName;
+	private String dongName;
 
 	@Data
 	@Embeddable
@@ -31,5 +32,7 @@ public class Region {
 		private int sidoCode;
 
 		private int gugunCode;
+
+		private int dongCode;
 	}
 }

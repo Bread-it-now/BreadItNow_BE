@@ -33,7 +33,8 @@ public class CustomerRegionPreference {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumns({
 		@JoinColumn(name = "sido_code", referencedColumnName = "sidoCode"),
-		@JoinColumn(name = "gugun_code", referencedColumnName = "gugunCode")
+		@JoinColumn(name = "gugun_code", referencedColumnName = "gugunCode"),
+		@JoinColumn(name = "dong_code", referencedColumnName = "dongCode")
 	})
 	private Region region;
 }
