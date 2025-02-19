@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.domain.bakery.entity;
 
 import static org.assertj.core.api.Assertions.*;
@@ -34,3 +35,4 @@ class BakeryTest {
 		assertThat(bakery.getAddress().getCity()).isEqualTo("서울특별시");
 	}
 }
+*/

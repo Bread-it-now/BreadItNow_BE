@@ -1,22 +1,26 @@
 package com.breaditnow.domain.customer.entity;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-import com.breaditnow.domain.region.entity.Gugun;
+import com.breaditnow.domain.region.entity.Region;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 public class CustomerRegionPreference {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -26,8 +30,10 @@ public class CustomerRegionPreference {
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "gugun_code", nullable = false)
-	private Gugun gugun;
-
+	@ManyToOne(fetch = LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "sido_code", referencedColumnName = "sidoCode"),
+		@JoinColumn(name = "gugun_code", referencedColumnName = "gugunCode")
+	})
+	private Region region;
 }
