@@ -52,10 +52,13 @@ public class Customer {
 
 	private LocalDateTime lastLoginAt;
 
-	@Builder(builderMethodName = "createOAuthBuilder")
-	public Customer(String oauth2Id, Provider provider) {
-		this.oauth2Id = oauth2Id;
+	@Builder
+	public Customer(Long id, Provider provider, String oauth2Id, String email, String password, LocalDateTime lastLoginAt) {
+		this.id = id;
 		this.provider = provider;
+		this.oauth2Id = oauth2Id;
+		this.email = email;
+		this.password = password;
 		this.lastLoginAt = LocalDateTime.now();
 	}
 

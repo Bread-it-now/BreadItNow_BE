@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.breaditnow.auth.global.exception.AuthException;
+import com.breaditnow.domain.customer.entity.Customer;
 import com.breaditnow.domain.customer.enumerate.Provider;
 
 import lombok.Builder;
@@ -49,6 +50,13 @@ public record OAuth2UserInfo (
 		return OAuth2UserInfo.builder()
 			.oauth2Id(oauth2Id)
 			.provider(GOOGLE)
+			.build();
+	}
+
+	public Customer toEntity() {
+		return Customer.builder()
+			.oauth2Id(oauth2Id)
+			.provider(provider)
 			.build();
 	}
 

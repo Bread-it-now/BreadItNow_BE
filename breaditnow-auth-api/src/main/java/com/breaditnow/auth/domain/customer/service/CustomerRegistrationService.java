@@ -31,10 +31,7 @@ public class CustomerRegistrationService {
 	}
 
 	private Customer createCustomer(OAuth2UserInfo oAuth2UserInfo) {
-		Customer newCustomer = Customer.createOAuthBuilder()
-			.oauth2Id(oAuth2UserInfo.oauth2Id())
-			.provider(oAuth2UserInfo.provider())
-			.build();
+		Customer newCustomer = oAuth2UserInfo.toEntity();
 		return customerRepository.save(newCustomer);
 	}
 
