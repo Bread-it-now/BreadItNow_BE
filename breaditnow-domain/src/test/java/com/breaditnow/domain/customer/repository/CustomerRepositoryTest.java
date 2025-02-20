@@ -30,7 +30,7 @@ class CustomerRepositoryTest {
 	}
 
 	@Test
-	void 고객을_저장한다() {
+	void save_customer() {
 		Customer savedCustomer = customerRepository.save(customer);
 
 		assertThat(savedCustomer.getId()).isNotNull();
