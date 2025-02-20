@@ -1,5 +1,7 @@
 package com.breaditnow.auth.global.security;
 
+import static com.breaditnow.auth.global.security.Role.*;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -11,8 +13,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
+@Builder
 @Getter
+@ToString
 public class AccountContext implements UserDetails, OAuth2User {
 
 	private Long userId;
@@ -24,20 +29,13 @@ public class AccountContext implements UserDetails, OAuth2User {
 	private String oauth2Id;
 	private Map<String, Object> attributes;
 
-	@Builder(builderMethodName = "emailLoginBuilder")
-	public AccountContext(Long userId, String email, String password, Role role) {
-		this.userId = userId;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-	}
-
-	@Builder(builderMethodName = "oauth2LoginBuilder")
-	public AccountContext(Long userId, String oauth2Id, Map<String, Object> attributes, Role role) {
-		this.userId = userId;
-		this.oauth2Id = oauth2Id;
-		this.attributes = attributes;
-		this.role = role;
+	public static AccountContext ofOAuth2(Long userId, String oauth2Id, Map<String, Object> attributes) {
+		return AccountContext.builder()
+			.userId(userId)
+			.oauth2Id(oauth2Id)
+			.attributes(attributes)
+			.role(CUSTOMER)
+			.build();
 	}
 
 	@Override
@@ -47,21 +45,21 @@ public class AccountContext implements UserDetails, OAuth2User {
 
 	@Override
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	@Override
 	public String getUsername() {
-		return email != null ? email : oauth2Id;
+		return this.email != null ? this.email : this.oauth2Id;
 	}
 
 	@Override
 	public Map<String, Object> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	@Override
 	public String getName() {
-		return getUsername();
+		return this.oauth2Id;
 	}
 }

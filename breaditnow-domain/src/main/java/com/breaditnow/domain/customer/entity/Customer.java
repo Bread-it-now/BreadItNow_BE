@@ -3,6 +3,8 @@ package com.breaditnow.domain.customer.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.time.LocalDateTime;
+
 import com.breaditnow.domain.alert.entity.CustomerAlertSetting;
 import com.breaditnow.domain.customer.enumerate.Provider;
 
@@ -29,32 +31,35 @@ public class Customer {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	Provider provider;
+	private Provider provider;
 
-	@Column(nullable = false, unique = true)
-	String email;
+	private String oauth2Id;
 
-	@Column(nullable = false)
-	String password;
+	@Column(unique = true)
+	private String email;
 
-	@Column(nullable = false, unique = true)
-	String nickname;
+	private String password;
 
-	String phone;
+	@Column(unique = true)
+	private String nickname;
 
-	String profileImage;
+	private String phone;
+
+	private String profileImage;
 
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private CustomerAlertSetting alertSetting;
 
-	@Builder
-	public Customer(String email, String password, String nickname, String phone, Provider provider,
-		String profileImage) {
-		this.email = email;
-		this.password = password;
-		this.nickname = nickname;
-		this.phone = phone;
+	private LocalDateTime lastLoginAt;
+
+	@Builder(builderMethodName = "createOAuthBuilder")
+	public Customer(String oauth2Id, Provider provider) {
+		this.oauth2Id = oauth2Id;
 		this.provider = provider;
-		this.profileImage = profileImage;
+		this.lastLoginAt = LocalDateTime.now();
+	}
+
+	public void updateLastLoginAt() {
+		this.lastLoginAt = LocalDateTime.now();
 	}
 }
