@@ -1,15 +1,11 @@
 package com.breaditnow.auth.domain.token.repository;
 
-import static com.breaditnow.auth.domain.token.domain.AuthTokenType.*;
-import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
-
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.breaditnow.auth.domain.token.domain.AuthToken;
 import com.breaditnow.auth.domain.token.domain.AuthTokenType;
-import com.breaditnow.auth.global.exception.AuthException;
 import com.breaditnow.redis.repository.RedisRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +20,7 @@ public class RedisTokenRepository {
 	}
 
 	public void saveToken(AuthToken authToken) {
-		String key = generateTokenKey(authToken.type(), authToken.customerId());
+		String key = generateTokenKey(authToken.type(), authToken.userId());
 		redisRepository.save(key, authToken.token(), authToken.expiresIn());
 	}
 
@@ -43,11 +39,5 @@ public class RedisTokenRepository {
 			String key = generateTokenKey(type, userId);
 			redisRepository.delete(key);
 		}
-	}
-
-	public String getOAuth2AccessToken(Long customerId) {
-		return findToken(OAUTH2_ACCESS, customerId)
-			.orElseThrow(() -> new AuthException(OAUTH2_ACCESS_TOKEN_EXPIRED,
-				"customer=" + customerId));
 	}
 }

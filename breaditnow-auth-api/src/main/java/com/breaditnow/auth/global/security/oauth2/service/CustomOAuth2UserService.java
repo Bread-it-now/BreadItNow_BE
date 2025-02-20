@@ -28,7 +28,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(registrationId, oAuth2User.getAttributes());
 
 		Customer customer = customerRegistrationService.registerCustomer(oAuth2UserInfo);
-		log.info("{}", customer);
 
 		return AccountContext.ofOAuth2(customer.getId(), customer.getOauth2Id(), oAuth2User.getAttributes());
 	}
