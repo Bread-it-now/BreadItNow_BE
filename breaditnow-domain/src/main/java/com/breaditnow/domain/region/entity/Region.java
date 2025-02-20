@@ -2,13 +2,10 @@ package com.breaditnow.domain.region.entity;
 
 import static lombok.AccessLevel.*;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
+@Builder
 public class Region {
 	@EmbeddedId
 	private RegionPK id;
@@ -23,16 +21,4 @@ public class Region {
 	private String sidoName;
 	private String gugunName;
 	private String dongName;
-
-	@Data
-	@Embeddable
-	@NoArgsConstructor(access = PROTECTED)
-	@AllArgsConstructor
-	static class RegionPK implements Serializable {
-		private int sidoCode;
-
-		private int gugunCode;
-
-		private int dongCode;
-	}
 }

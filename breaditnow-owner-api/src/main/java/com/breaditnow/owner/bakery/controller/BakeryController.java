@@ -24,4 +24,5 @@ public class BakeryController {
 		Long bakeryId = bakeryService.createBakery(ownerId, request);
 		return ApiSuccessResponse.of("bakeryId", bakeryId);
 	}
+
 }

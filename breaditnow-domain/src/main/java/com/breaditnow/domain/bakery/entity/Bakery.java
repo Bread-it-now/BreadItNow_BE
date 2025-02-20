@@ -50,7 +50,7 @@ public class Bakery {
 
 	private String openTime;
 
-	@OneToOne(fetch = LAZY)
+	@OneToOne(fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "address_id")
 	private Address address;
 
