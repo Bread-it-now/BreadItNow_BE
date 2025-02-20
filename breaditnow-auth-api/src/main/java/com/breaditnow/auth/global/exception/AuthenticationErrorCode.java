@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import com.breaditnow.common.exception.ErrorCode;
 
 public enum AuthenticationErrorCode implements ErrorCode {
-	INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "BA001", "잘못된 자격 증명입니다.");
+	INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "BA001", "잘못된 자격 증명입니다."),
+	UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "BA002", "지원하지 않는 소셜입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
