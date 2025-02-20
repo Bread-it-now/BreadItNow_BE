@@ -10,17 +10,15 @@ import com.breaditnow.auth.global.exception.AuthException;
 import com.breaditnow.domain.customer.enumerate.Provider;
 
 import lombok.Builder;
-import lombok.Getter;
 
 @Builder
-@Getter
 public record OAuth2UserInfo (
 	String oauth2Id,
 	Provider provider
 ){
 
 	public static OAuth2UserInfo of(String registrationId, Map<String, Object> attributes) {
-		Provider provider = Provider.valueOf(registrationId);
+		Provider provider = Provider.convert(registrationId);
 		return switch (provider) {
 			case KAKAO -> ofKakao(attributes);
 			case NAVER -> ofNaver(attributes);
