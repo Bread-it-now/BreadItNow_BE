@@ -16,4 +16,9 @@ public class BreaditnowException extends RuntimeException{
 		super(errorCode.getMessage(), cause);
 		this.errorCode = errorCode;
 	}
+
+	public BreaditnowException(ErrorCode errorCode, String message) {
+		super(errorCode.getMessage() + " : " + message);
+		this.errorCode = errorCode;
+	}
 }

@@ -4,12 +4,16 @@ import com.breaditnow.common.exception.BreaditnowException;
 
 public class AuthException extends BreaditnowException {
 
-	public AuthException(AuthenticationErrorCode errorCode) {
+	public AuthException(AuthErrorCode errorCode) {
 		super(errorCode);
 	}
 
-	public AuthException(AuthenticationErrorCode errorCode, Throwable cause) {
+	public AuthException(AuthErrorCode errorCode, Throwable cause) {
 		super(errorCode, cause);
+	}
+
+	public AuthException(AuthErrorCode errorCode, String message) {
+		super(errorCode,  message);
 	}
 }
 
