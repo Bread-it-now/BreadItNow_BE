@@ -1,6 +1,6 @@
 package com.breaditnow.auth.global.security.oauth2.model;
 
-import static com.breaditnow.auth.global.exception.AuthenticationErrorCode.*;
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 import static com.breaditnow.domain.customer.enumerate.Provider.*;
 
 import java.util.Map;
