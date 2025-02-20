@@ -35,17 +35,17 @@ public class SecurityConfig {
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.oauth2Login(oauth2 -> oauth2
-					.authorizationEndpoint(authorization -> authorization
-						.baseUri("/oauth2/authorization"))
-					.redirectionEndpoint(redirection -> redirection
-						.baseUri("/oauth/callback/*"))
-					.userInfoEndpoint(userInfo -> userInfo
-						.userService(oauth2UserService))
+				.authorizationEndpoint(authorization -> authorization
+					.baseUri("/oauth2/authorization"))
+				.redirectionEndpoint(redirection -> redirection
+					.baseUri("/oauth/callback/*"))
+				.userInfoEndpoint(userInfo -> userInfo
+					.userService(oauth2UserService))
 			);
 
 		http.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(AUTH).permitAll()
-				.anyRequest().authenticated()
+			.requestMatchers(AUTH).permitAll()
+			.anyRequest().authenticated()
 		);
 
 		return http.build();

@@ -13,7 +13,7 @@ public class AuthException extends BreaditnowException {
 	}
 
 	public AuthException(AuthErrorCode errorCode, String message) {
-		super(errorCode,  message);
+		super(errorCode, message);
 	}
 }
 

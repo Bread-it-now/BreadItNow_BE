@@ -16,7 +16,7 @@ public record ApiErrorResponse(
 	ResponseStatus status,
 	String code,
 	String message,
-	@Nullable List<ErrorDetail> errors)  {
+	@Nullable List<ErrorDetail> errors) {
 
 	public ApiErrorResponse(String code, String message, List<ErrorDetail> errors) {
 		this(ERROR, code, message, errors);

@@ -13,10 +13,10 @@ import com.breaditnow.domain.customer.enumerate.Provider;
 import lombok.Builder;
 
 @Builder
-public record OAuth2UserInfo (
+public record OAuth2UserInfo(
 	String oauth2Id,
 	Provider provider
-){
+) {
 
 	public static OAuth2UserInfo of(String registrationId, Map<String, Object> attributes) {
 		Provider provider = Provider.convert(registrationId);
@@ -37,7 +37,7 @@ public record OAuth2UserInfo (
 	}
 
 	private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
-		Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
 		String oauth2Id = Objects.toString(response.get("id"));
 		return OAuth2UserInfo.builder()
 			.oauth2Id(oauth2Id)
