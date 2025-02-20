@@ -1,5 +1,7 @@
 package com.breaditnow.owner.bakery.controller;
 
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,8 @@ public class BakeryController {
 	private final BakeryService bakeryService;
 
 	@PostMapping
-	public ApiSuccessResponse<Long> createBakery(Long ownerId, @RequestBody BakeryCreateRequest request) {
-		return ApiSuccessResponse.of(bakeryService.createBakery(ownerId, request));
+	public ApiSuccessResponse<Map<String, Long>> createBakery(Long ownerId, @RequestBody BakeryCreateRequest request) {
+		Long bakeryId = bakeryService.createBakery(ownerId, request);
+		return ApiSuccessResponse.of("bakeryId", bakeryId);
 	}
 }
