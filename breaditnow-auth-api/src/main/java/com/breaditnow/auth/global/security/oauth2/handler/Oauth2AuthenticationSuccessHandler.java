@@ -18,6 +18,7 @@ import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.jwt.JwtTokenCreator;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.common.util.CookieUtil;
+import com.breaditnow.domain.customer.entity.Customer;
 import com.breaditnow.domain.customer.repository.CustomerRepository;
 
 import jakarta.servlet.http.Cookie;
@@ -63,11 +64,11 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
-		boolean isNewUser = customerRepository.existsById(accountContext.getUserId());
+		Customer customer = customerRepository.getById(accountContext.getUserId());
 
 		return UriComponentsBuilder.
 			fromUriString(targetUrl)
-			.queryParam("isNewUser", isNewUser)
+			.queryParam("isNewUser", customer.isFirstLogin())
 			.build().toUriString();
 	}
 

@@ -66,4 +66,8 @@ public class Customer {
 	public void updateLastLoginAt() {
 		this.lastLoginAt = LocalDateTime.now();
 	}
+
+	public boolean isFirstLogin() {
+		return this.nickname == null;
+	}
 }
