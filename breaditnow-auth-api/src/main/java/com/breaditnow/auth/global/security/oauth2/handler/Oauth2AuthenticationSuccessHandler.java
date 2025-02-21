@@ -1,5 +1,6 @@
 package com.breaditnow.auth.global.security.oauth2.handler;
 
+import static com.breaditnow.auth.domain.token.domain.AuthTokenType.*;
 import static com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository.*;
 
 import java.io.IOException;
@@ -11,8 +12,10 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.breaditnow.auth.domain.token.domain.AuthToken;
 import com.breaditnow.auth.domain.token.repository.RedisTokenRepository;
 import com.breaditnow.auth.global.security.AccountContext;
+import com.breaditnow.auth.global.security.jwt.JwtTokenCreator;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.common.util.CookieUtil;
 import com.breaditnow.domain.customer.repository.CustomerRepository;
@@ -33,6 +36,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	private final CookieOAuth2AuthorizationRequestRepository
 		cookieAuthorizationRequestRepository;
 	private final CustomerRepository customerRepository;
+	private final JwtTokenCreator jwtTokenCreator;
 
 	@Value("${auth.token.refresh-cookie-key}")
 	private String refreshCookieKey;
@@ -65,6 +69,13 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			fromUriString(targetUrl)
 			.queryParam("isNewUser", isNewUser)
 			.build().toUriString();
+	}
+
+	private void setRefreshTokenCookie(Authentication authentication, HttpServletResponse response) {
+		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
+		redisTokenRepository.saveToken(refreshToken);
+		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
+		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 	}
 
 	protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {

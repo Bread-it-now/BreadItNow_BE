@@ -8,12 +8,12 @@ public enum AuthErrorCode implements ErrorCode {
 	/**
 	 * 소셜 로그인(BA000)
 	 */
-	UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "BA002", "지원하지 않는 소셜입니다."),
+	UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "BA001", "지원하지 않는 소셜입니다."),
 
 	/**
 	 * 토큰(BB000)
 	 */
-	OAUTH2_ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "BB001", "소셜 Access Token이 만료되었습니다. 재로그인해주세요");
+	OAUTH2_ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "BB002", "소셜 Access Token이 만료되었습니다. 재로그인해주세요");
 
 	private final HttpStatus httpStatus;
 	private final String code;
