@@ -2,4 +2,4 @@ spring:
   config:
     activate:
       on-profile: local
-    import: application-mysql-local.yml, application-redis-local.yml,
+    import: application-mysql-local.yml, application-redis-local.yml

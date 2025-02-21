@@ -21,12 +21,16 @@ public class RedisTokenRepository {
 
 	public void saveToken(AuthToken authToken) {
 		String key = generateTokenKey(authToken.type(), authToken.userId());
-		redisRepository.save(key, authToken.token(), authToken.expiresIn());
+		redisRepository.save(key, authToken, authToken.expiresIn());
 	}
 
-	public Optional<String> findToken(AuthTokenType type, Long userId) {
+	public Optional<AuthToken> findToken(AuthTokenType type, Long userId) {
 		String key = generateTokenKey(type, userId);
-		return redisRepository.find(key);
+		Optional<Object> result = redisRepository.find(key);
+		if (result.isPresent() && result.get() instanceof AuthToken) {
+			return Optional.of((AuthToken)result.get());
+		}
+		return Optional.empty();
 	}
 
 	public void deleteToken(AuthTokenType type, Long userId) {
