@@ -32,12 +32,11 @@ public class CookieUtil {
 		ResponseCookie cookie = ResponseCookie.from(cookieName, cookieValue)
 			.path("/")
 			.sameSite("None")
-			.httpOnly(true)
-			// .secure(true)
+			.httpOnly(false)
+			.secure(true)
 			.maxAge(maxAge)
 			.build();
 		response.addHeader("Set-Cookie", cookie.toString());
-		;
 	}
 
 	public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {

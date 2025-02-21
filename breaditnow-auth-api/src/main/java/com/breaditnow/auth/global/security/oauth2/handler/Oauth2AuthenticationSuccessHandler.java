@@ -50,7 +50,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			return;
 		}
 
-		// setRefreshTokenCookie(authentication, response);
+		setRefreshTokenCookie(authentication, response);
 
 		clearAuthenticationAttributes(request, response);
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
