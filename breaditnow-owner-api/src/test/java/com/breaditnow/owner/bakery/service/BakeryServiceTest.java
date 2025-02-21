@@ -1,16 +1,16 @@
 package com.breaditnow.owner.bakery.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.owner.entity.Owner;
 import com.breaditnow.domain.owner.repository.OwnerRepository;
-import com.breaditnow.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
+import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
 
 @SpringBootTest
 @Transactional
@@ -19,14 +19,10 @@ class BakeryServiceTest {
 	private BakeryService bakeryService;
 	@Autowired
 	private OwnerRepository ownerRepository;
-	@Autowired
-	private RegionRepository regionRepository;
-	@Autowired
-	private BakeryRepository bakeryRepository;
-
 	private BakeryCreateRequest bakeryCreateRequest;
 
 	@Test
+	@DisplayName("빵집을 생성하고 조회한다")
 	@Rollback(value = false)
 	void create_bakery() {
 		// given
@@ -43,6 +39,8 @@ class BakeryServiceTest {
 			"default.png"
 		);
 
-		Long bakeyId = bakeryService.createBakery(1L, bakeryCreateRequest);
+		Long bakeryId = bakeryService.createBakery(1L, bakeryCreateRequest);
+		BakeryResponse bakery = bakeryService.getBakery(bakeryId);
+		System.out.println(bakery);
 	}
 }

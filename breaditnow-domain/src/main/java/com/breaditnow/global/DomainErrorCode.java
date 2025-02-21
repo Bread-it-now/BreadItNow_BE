@@ -19,8 +19,13 @@ public enum DomainErrorCode implements ErrorCode {
 	/**
 	 * Region(BD000)
 	 */
-	Region_NOT_FOUND(NOT_FOUND, "BD001", "지역을 찾을 수 없습니다.");
+	Region_NOT_FOUND(NOT_FOUND, "BD001", "지역을 찾을 수 없습니다."),
 
+	/**
+	 * Bakery(BE000)
+	 */
+	BAKERY_NOT_FOUND(NOT_FOUND, "BE001", "빵집을 찾을 수 없습니다.");
+	
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;

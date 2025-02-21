@@ -2,6 +2,8 @@ package com.breaditnow.owner.bakery.controller;
 
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
+import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.bakery.service.BakeryService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,4 +28,8 @@ public class BakeryController {
 		return ApiSuccessResponse.of("bakeryId", bakeryId);
 	}
 
+	@GetMapping("/{bakeryId}")
+	public ApiSuccessResponse<BakeryResponse> getBakery(@PathVariable Long bakeryId) {
+		return ApiSuccessResponse.of(bakeryService.getBakery(bakeryId));
+	}
 }
