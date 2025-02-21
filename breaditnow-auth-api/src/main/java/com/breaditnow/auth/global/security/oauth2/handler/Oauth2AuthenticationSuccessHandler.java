@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.breaditnow.auth.domain.token.domain.AuthToken;
-import com.breaditnow.auth.domain.token.repository.RedisTokenRepository;
+import com.breaditnow.auth.domain.token.repository.AuthTokenRepository;
 import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.jwt.JwtTokenCreator;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-	private final RedisTokenRepository redisTokenRepository;
+	private final AuthTokenRepository authTokenRepository;
 	private final CookieUtil cookieUtil;
 	private final CookieOAuth2AuthorizationRequestRepository
 		cookieAuthorizationRequestRepository;
@@ -74,7 +74,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 	private void setRefreshTokenCookie(Authentication authentication, HttpServletResponse response) {
 		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
-		redisTokenRepository.saveToken(refreshToken);
+		authTokenRepository.saveToken(refreshToken);
 		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
 		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 	}

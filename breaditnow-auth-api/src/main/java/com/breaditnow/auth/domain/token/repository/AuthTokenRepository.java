@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class RedisTokenRepository {
+public class AuthTokenRepository {
 	private final RedisRepository redisRepository;
 
 	private String generateTokenKey(AuthTokenType type, Long userId) {
