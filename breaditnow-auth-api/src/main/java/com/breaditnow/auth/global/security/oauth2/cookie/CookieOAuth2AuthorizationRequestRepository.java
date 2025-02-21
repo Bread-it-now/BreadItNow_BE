@@ -13,18 +13,18 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class HttpCookieOAuth2AuthorizationRequestRepository
+public class CookieOAuth2AuthorizationRequestRepository
 	implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
 	public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
-	public static final String REDIRECT_URL_PARAM_COOKIE_NAME = "redirect_url";
+	public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_url";
 	private static final int cookieExpireSeconds = 180;
 
 	private final CookieUtil cookieUtil;
 
 	@Override
 	public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-		return cookieUtil.resolveCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
+		return cookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
 			.map(cookie -> cookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class))
 			.orElse(null);
 	}
@@ -36,17 +36,19 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
 		HttpServletResponse response) {
 		if (authorizationRequest == null) {
 			cookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-			cookieUtil.deleteCookie(request, response, REDIRECT_URL_PARAM_COOKIE_NAME);
+			cookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
 			return;
 		}
-		cookieUtil.setCookie(
+
+		cookieUtil.addCookie(
 			response,
 			OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
 			cookieUtil.serialize(authorizationRequest),
 			cookieExpireSeconds);
-		String redirectUrlAfterLogin = request.getParameter(REDIRECT_URL_PARAM_COOKIE_NAME);
+
+		String redirectUrlAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
 		if (StringUtils.isNotBlank(redirectUrlAfterLogin)) {
-			cookieUtil.setCookie(response, REDIRECT_URL_PARAM_COOKIE_NAME, redirectUrlAfterLogin, cookieExpireSeconds);
+			cookieUtil.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUrlAfterLogin, cookieExpireSeconds);
 		}
 	}
 
@@ -60,6 +62,6 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
 
 	public void clearCookies(HttpServletRequest request, HttpServletResponse response) {
 		cookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-		cookieUtil.deleteCookie(request, response, REDIRECT_URL_PARAM_COOKIE_NAME);
+		cookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
 	}
 }

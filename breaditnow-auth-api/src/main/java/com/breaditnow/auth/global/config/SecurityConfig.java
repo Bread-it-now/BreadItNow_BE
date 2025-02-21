@@ -13,6 +13,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
+import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.oauth2.service.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,9 @@ public class SecurityConfig {
 	private static final String[] AUTH = {"/oauth2/**", "/oauth/callback/**"};
 
 	private final CustomOAuth2UserService oauth2UserService;
+	private final CookieOAuth2AuthorizationRequestRepository
+		cookieOAuth2AuthorizationRequestRepository;
+	private final Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,11 +41,14 @@ public class SecurityConfig {
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.oauth2Login(oauth2 -> oauth2
 				.authorizationEndpoint(authorization -> authorization
-					.baseUri("/oauth2/authorization"))
+					.baseUri("/oauth2/authorization")
+					.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository)
+				)
 				.redirectionEndpoint(redirection -> redirection
 					.baseUri("/oauth/callback/*"))
 				.userInfoEndpoint(userInfo -> userInfo
 					.userService(oauth2UserService))
+				.failureHandler(oauth2AuthenticationFailureHandler)
 			);
 
 		http.authorizeHttpRequests(authorize -> authorize

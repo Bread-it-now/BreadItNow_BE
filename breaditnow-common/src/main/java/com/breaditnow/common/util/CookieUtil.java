@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CookieUtil {
-	public Optional<Cookie> resolveCookie(HttpServletRequest request, String cookieName) {
+	public Optional<Cookie> getCookie(HttpServletRequest request, String cookieName) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null && cookies.length > 0) {
 			for (Cookie cookie : cookies) {
@@ -27,8 +27,21 @@ public class CookieUtil {
 		return Optional.empty();
 	}
 
+	public void addCookie(HttpServletResponse response,
+		String cookieName, String cookieValue, int maxAge) {
+		ResponseCookie cookie = ResponseCookie.from(cookieName, cookieValue)
+			.path("/")
+			.sameSite("None")
+			.httpOnly(true)
+			// .secure(true)
+			.maxAge(maxAge)
+			.build();
+		response.addHeader("Set-Cookie", cookie.toString());
+		;
+	}
+
 	public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
-		Optional<Cookie> optionalCookie = resolveCookie(request, cookieName);
+		Optional<Cookie> optionalCookie = getCookie(request, cookieName);
 		if (optionalCookie.isPresent()) {
 			Cookie cookie = optionalCookie.get();
 			cookie.setValue("");
@@ -36,18 +49,6 @@ public class CookieUtil {
 			cookie.setMaxAge(0);
 			response.addCookie(cookie);
 		}
-	}
-
-	public void setCookie(HttpServletResponse response,
-		String cookieName, String cookieContents, int maxAge) {
-		ResponseCookie cookie = ResponseCookie.from(cookieName, cookieContents)
-			.path("/")
-			.sameSite("None")
-			.httpOnly(false)
-			.secure(true)
-			.maxAge(maxAge)
-			.build();
-		response.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	public <T> String serialize(T request) {
