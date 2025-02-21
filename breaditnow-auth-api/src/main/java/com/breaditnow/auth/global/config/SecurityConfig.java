@@ -15,6 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
+import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.oauth2.service.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class SecurityConfig {
 	private final CustomOAuth2UserService oauth2UserService;
 	private final CookieOAuth2AuthorizationRequestRepository
 		cookieOAuth2AuthorizationRequestRepository;
+	private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 	private final Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
 
 	@Bean
@@ -48,6 +50,7 @@ public class SecurityConfig {
 					.baseUri("/oauth/callback/*"))
 				.userInfoEndpoint(userInfo -> userInfo
 					.userService(oauth2UserService))
+				.successHandler(oauth2AuthenticationSuccessHandler)
 				.failureHandler(oauth2AuthenticationFailureHandler)
 			);
 

@@ -60,7 +60,7 @@ public class CookieOAuth2AuthorizationRequestRepository
 		return authorizationRequest;
 	}
 
-	public void clearCookies(HttpServletRequest request, HttpServletResponse response) {
+	public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
 		cookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
 		cookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
 	}
