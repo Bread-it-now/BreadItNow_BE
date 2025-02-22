@@ -1,14 +1,13 @@
 package com.breaditnow.owner.bakery.service;
 
 import static com.breaditnow.domain.bakery.enumerate.OperatingStatus.*;
-import static java.util.stream.Collectors.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.breaditnow.domain.bakery.entity.Address;
 import com.breaditnow.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.bakery.entity.BakeryImage;
 import com.breaditnow.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.owner.entity.Owner;
 import com.breaditnow.domain.owner.repository.OwnerRepository;
@@ -16,6 +15,7 @@ import com.breaditnow.domain.region.entity.Region;
 import com.breaditnow.domain.region.entity.RegionPK;
 import com.breaditnow.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
+import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -29,51 +29,66 @@ public class BakeryService {
 	private final BakeryRepository bakeryRepository;
 
 	@Transactional
-	public Long createBakery(Long ownerId, BakeryCreateRequest request) {
+	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile bakeryProfileImage) {
 		Owner owner = ownerRepository.getById(ownerId);
-		// RegionPK 조회
-		RegionPK regionPK = new RegionPK(request.addressCode());
+
+		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
 		Region region = regionRepository.getById(regionPK);
 
-		// Address 생성
 		Address address = Address.builder()
-			.description(request.addressDescription())
+			.description(bakeryCreateRequest.addressDescription())
 			.region(region) // latitude, longitude 가져오기
 			.build();
 
-		// Bakery 생성
+		String bakeryProfileImageUrl = "";
+		// String bakeryProfileImageUrl = "";
+		// if (bakeryProfileImage.isEmpty()) {
+		// 	bakeryProfileImageUrl = awsS3Ser
+		// }else{
+		//
+		// }
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
-			.name(request.name())
-			.phone(request.phone())
-			.introduction(request.introduction())
-			.profileImage(request.profileImage())
-			.openTime(request.openTime())
+			.name(bakeryCreateRequest.name())
+			.phone(bakeryCreateRequest.phone())
+			.introduction(bakeryCreateRequest.introduction())
+			.profileImage(bakeryProfileImageUrl)
+			.openTime(bakeryCreateRequest.openTime())
 			.address(address)
 			.operatingStatus(CLOSED)
 			.build();
 
-		// Bakery 저장
 		Bakery savedBakery = bakeryRepository.save(bakery);
 		return savedBakery.getId();
 	}
 
 	public BakeryResponse getBakery(Long bakeryId) {
 		Bakery bakery = bakeryRepository.getById(bakeryId);
+		return BakeryResponse.of(bakery);
+	}
 
-		return BakeryResponse.builder()
-			.bakeryId(bakery.getId())
-			.name(bakery.getName())
-			.addressDescription(bakery.getAddress().getDescription())
-			.phone(bakery.getPhone())
-			.openTime(bakery.getOpenTime())
-			.introduction(bakery.getIntroduction())
-			.profileImage(bakery.getProfileImage())
-			.additionalImage(bakery.getBakeryImages()
-				.stream()
-				.map(BakeryImage::getImageUrl)
-				.collect(toList())
-			)
+	@Transactional
+	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest) {
+		Owner owner = ownerRepository.getById(ownerId);
+
+		Bakery bakery = bakeryRepository.getByOwnerIdAndBakeryId(ownerId, bakeryId);
+
+		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
+		Region region = regionRepository.getById(regionPK);
+
+		Bakery newBakery = Bakery.builder()
+			.owner(owner)
+			.name(bakeryUpdateRequest.name())
+			.phone(bakeryUpdateRequest.phone())
+			.introduction(bakeryUpdateRequest.introduction())
+			.profileImage(bakeryUpdateRequest.profileImage())
+			.openTime(bakeryUpdateRequest.openTime())
+			.address(bakery.getAddress())
+			.bakeryImage(bakeryUpdateRequest.additionalImages())
+			.operatingStatus(CLOSED)
 			.build();
+
+		bakery.update(newBakery);
+		return BakeryResponse.of(bakery);
 	}
 }

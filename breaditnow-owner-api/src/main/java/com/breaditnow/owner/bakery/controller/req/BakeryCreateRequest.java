@@ -6,7 +6,6 @@ public record BakeryCreateRequest(
 	String addressDescription,
 	String phone,
 	String openTime,
-	String introduction,
-	String profileImage
+	String introduction
 ) {
 }

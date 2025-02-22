@@ -63,16 +63,31 @@ public class Bakery {
 	@OneToMany(mappedBy = "bakery")
 	private List<Product> products = new ArrayList<>();
 
+	private boolean isActive = true;
+
 	@Builder
 	public Bakery(Owner owner, String name, String phone, String introduction, String profileImage, String openTime,
-		Address address, OperatingStatus operatingStatus) {
+		Address address, List<BakeryImage> bakeryImage, OperatingStatus operatingStatus) {
 		this.owner = owner;
 		this.name = name;
 		this.phone = phone;
 		this.introduction = introduction;
 		this.profileImage = profileImage;
+		this.bakeryImages = bakeryImage;
 		this.openTime = openTime;
 		this.address = address;
 		this.operatingStatus = operatingStatus;
+	}
+
+	public void update(Bakery bakery) {
+		this.owner = bakery.getOwner();
+		this.name = bakery.getName();
+		this.phone = bakery.getPhone();
+		this.introduction = bakery.getIntroduction();
+		this.profileImage = bakery.getProfileImage();
+		this.openTime = bakery.getOpenTime();
+		this.address = bakery.getAddress();
+		this.operatingStatus = bakery.getOperatingStatus();
+		this.bakeryImages = bakery.getBakeryImages();
 	}
 }

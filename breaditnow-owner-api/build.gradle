@@ -1,6 +1,7 @@
 dependencies {
     implementation project(':breaditnow-domain')
     implementation project(":breaditnow-common")
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 }
 
 test {
