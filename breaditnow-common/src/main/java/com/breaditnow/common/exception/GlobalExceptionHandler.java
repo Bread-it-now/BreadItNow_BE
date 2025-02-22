@@ -26,12 +26,12 @@ public class GlobalExceptionHandler {
 	protected ApiErrorResponse handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException ex) {
 		List<ErrorDetail> errors = ex.getBindingResult().getFieldErrors().stream()
-				.map(fieldError -> new ErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))
-				.collect(toList());
+			.map(fieldError -> new ErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))
+			.collect(toList());
 		return ApiErrorResponse.of(INVALID_PARAMETER, errors);
 	}
 
-	@ExceptionHandler( value = BreaditnowException.class)
+	@ExceptionHandler(value = BreaditnowException.class)
 	public ResponseEntity<ApiErrorResponse> handleBusinessException(BreaditnowException ex) {
 		ErrorCode errorCode = ex.getErrorCode();
 		return ResponseEntity.status(errorCode.getHttpStatus())
