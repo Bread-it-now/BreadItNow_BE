@@ -1,6 +1,6 @@
 package com.breaditnow.common.response;
 
-import static com.breaditnow.common.response.ResponseStatus.SUCCESS;
+import static com.breaditnow.common.response.ResponseStatus.*;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"status", "data"})
 public record ApiSuccessResponse<T>(
 	ResponseStatus status,
-	@Nullable T data)  {
+	@Nullable T data) {
 
 	public ApiSuccessResponse(T data) {
 		this(SUCCESS, data);

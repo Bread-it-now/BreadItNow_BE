@@ -1,5 +1,4 @@
 spring:
-  data:
-    redis:
-      host:
-      port:
+  redis:
+    host:
+    port:
