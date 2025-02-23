@@ -43,7 +43,7 @@ public class S3Uploader {
 			URL url = new URL(fileUrl);
 			log.info("fileUrl : {}", fileUrl);
 			String key = url.getPath().startsWith("/") ? url.getPath().substring(1) : url.getPath();
-			// amazonS3Client.deleteObject(bucket, key);
+			amazonS3Client.deleteObject(bucket, key);
 			log.info("S3에서 객체 삭제 완료: {}", key);
 		} catch (MalformedURLException e) {
 			log.error("잘못된 URL입니다: {}", fileUrl, e);
