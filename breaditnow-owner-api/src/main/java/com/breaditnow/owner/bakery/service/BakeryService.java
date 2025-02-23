@@ -2,6 +2,8 @@ package com.breaditnow.owner.bakery.service;
 
 import static com.breaditnow.domain.bakery.enumerate.OperatingStatus.*;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import com.breaditnow.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
+import com.breaditnow.owner.global.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,9 +30,11 @@ public class BakeryService {
 	private final RegionRepository regionRepository;
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
+	private final S3Uploader uploader;
 
 	@Transactional
-	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile bakeryProfileImage) {
+	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile multipartFile) throws
+		IOException {
 		Owner owner = ownerRepository.getById(ownerId);
 
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
@@ -40,24 +45,19 @@ public class BakeryService {
 			.region(region) // latitude, longitude 가져오기
 			.build();
 
-		String bakeryProfileImageUrl = "";
-		// String bakeryProfileImageUrl = "";
-		// if (bakeryProfileImage.isEmpty()) {
-		// 	bakeryProfileImageUrl = awsS3Ser
-		// }else{
-		//
-		// }
+		String profileImageUrl = uploader.upload(multipartFile, "/image/profile");
+
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
 			.name(bakeryCreateRequest.name())
 			.phone(bakeryCreateRequest.phone())
 			.introduction(bakeryCreateRequest.introduction())
-			.profileImage(bakeryProfileImageUrl)
+			.profileImage(profileImageUrl)
 			.openTime(bakeryCreateRequest.openTime())
 			.address(address)
 			.operatingStatus(CLOSED)
 			.build();
-
+		
 		Bakery savedBakery = bakeryRepository.save(bakery);
 		return savedBakery.getId();
 	}

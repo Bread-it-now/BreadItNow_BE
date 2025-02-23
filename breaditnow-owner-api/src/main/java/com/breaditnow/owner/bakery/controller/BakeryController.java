@@ -1,8 +1,8 @@
 package com.breaditnow.owner.bakery.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,19 +20,27 @@ import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.bakery.service.BakeryService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bakery")
+@Slf4j
 public class BakeryController {
 	private final BakeryService bakeryService;
 
-	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ApiSuccessResponse<Map<String, Long>> createBakery(Long ownerId,
-		@RequestPart BakeryCreateRequest bakeryCreateRequest,
-		@RequestPart MultipartFile profileImage) {
-		Long bakeryId = bakeryService.createBakery(ownerId, bakeryCreateRequest, profileImage);
-		return ApiSuccessResponse.of("bakeryId", bakeryId);
+	@PostMapping("/{ownerId}")
+	public ApiSuccessResponse<Map<String, Long>> createBakery(@PathVariable("ownerId") Long ownerId,
+		@RequestPart("data") BakeryCreateRequest bakeryCreateRequest,
+		@RequestPart("file") MultipartFile profileImage) {
+		try {
+			log.info("data : {}", bakeryCreateRequest);
+			log.info("profileImage = {}", profileImage);
+			Long bakeryId = bakeryService.createBakery(ownerId, bakeryCreateRequest, profileImage);
+			return ApiSuccessResponse.of("bakeryId", bakeryId);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@GetMapping("/{bakeryId}")
