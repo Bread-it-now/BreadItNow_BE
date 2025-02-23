@@ -44,4 +44,9 @@ public class Address {
 
 	@Column(name = "address_description")
 	private String description;
+
+	public void update(Region region, String description) {
+		this.region = region;
+		this.description = description;
+	}
 }

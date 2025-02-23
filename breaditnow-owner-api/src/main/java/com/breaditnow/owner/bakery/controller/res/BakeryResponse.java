@@ -15,22 +15,27 @@ public record BakeryResponse(
 	String openTime,
 	String introduction,
 	String profileImage,
-	List<BakeryImage> additionalImage
+	List<String> bakeryImages
 ) {
 	@Builder
 	public BakeryResponse {
 	}
 
 	public static BakeryResponse of(Bakery bakery) {
+		List<String> imageUrls = bakery.getBakeryImages()
+			.stream()
+			.map(BakeryImage::getImageUrl)
+			.toList();
+
 		return BakeryResponse.builder()
 			.bakeryId(bakery.getId())
 			.name(bakery.getName())
-			.addressDescription(bakery.getAddress().getDescription())
 			.phone(bakery.getPhone())
-			.openTime(bakery.getOpenTime())
 			.introduction(bakery.getIntroduction())
+			.openTime(bakery.getOpenTime())
 			.profileImage(bakery.getProfileImage())
-			.additionalImage(bakery.getBakeryImages())
+			.addressDescription(bakery.getAddress().getDescription())
+			.bakeryImages(imageUrls)
 			.build();
 	}
 }

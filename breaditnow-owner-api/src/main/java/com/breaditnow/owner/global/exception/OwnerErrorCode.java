@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import com.breaditnow.common.exception.ErrorCode;
 
 public enum OwnerErrorCode implements ErrorCode {
-	INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "DA001", "?");
+	// DA001 File
+	FILE_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "DA001", "파일 생성에 실패했습니다."),
+	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "DA002", "S3 파일 업로드에 실패했습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

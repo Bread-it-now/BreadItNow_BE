@@ -16,7 +16,7 @@ public class S3UploaderTest {
 	private S3Uploader s3Uploader;
 
 	@Test
-	public void testUploadToRealS3() throws Exception {
+	void uploadToRealS3() {
 		String fileContent = "This is a test file for S3 integration upload.";
 		MockMultipartFile multipartFile = new MockMultipartFile(
 			"file",

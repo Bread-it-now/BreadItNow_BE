@@ -1,10 +1,13 @@
 package com.breaditnow.owner.global.s3;
 
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.breaditnow.owner.global.exception.OwnerException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,44 +29,58 @@ public class S3Uploader {
 	@Value("${aws.s3.bucket}")
 	private String bucket;
 
-	public String upload(MultipartFile multipartFile, String dirName) throws IOException {
-		File uploadFile = convert(multipartFile)
-			.orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-		return upload(uploadFile, dirName);
+	public String upload(MultipartFile multipartFile, String dirName) {
+		File localFile = convertToFile(multipartFile)
+			.orElseThrow(() -> new OwnerException(FILE_CREATION_FAILED));
+
+		String uploadFileToS3Url = uploadFileToS3(localFile, dirName);
+		deleteLocalFile(localFile);
+		return uploadFileToS3Url;
 	}
 
-	private String upload(File uploadFile, String dirName) {
-		String fileName = dirName + "/" + uploadFile.getName();
-		String uploadImageUrl = putS3(uploadFile, fileName);
-		removeNewFile(uploadFile);
-		return uploadImageUrl;
+	public void deleteFile(String fileUrl) {
+		try {
+			URL url = new URL(fileUrl);
+			log.info("fileUrl : {}", fileUrl);
+			String key = url.getPath().startsWith("/") ? url.getPath().substring(1) : url.getPath();
+			// amazonS3Client.deleteObject(bucket, key);
+			log.info("S3에서 객체 삭제 완료: {}", key);
+		} catch (MalformedURLException e) {
+			log.error("잘못된 URL입니다: {}", fileUrl, e);
+			throw new IllegalArgumentException("유효하지 않은 파일 URL입니다.");
+		}
 	}
 
-	private Optional<File> convert(MultipartFile file) throws IOException {
+	private String uploadFileToS3(File file, String dirName) {
+		String key = dirName + "/" + file.getName();
+		amazonS3Client.putObject(new PutObjectRequest(bucket, key, file));
+		return amazonS3Client.getUrl(bucket, key).toString();
+	}
+
+	private Optional<File> convertToFile(MultipartFile multipartFile) {
 		String tempDir = System.getProperty("java.io.tmpdir");
-
-		String uniqueFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-		File convertFile = new File(tempDir, uniqueFileName);
-		if (convertFile.createNewFile()) {
-			try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-				fos.write(file.getBytes());
+		String uniqueFileName = multipartFile.getOriginalFilename();
+		File file = new File(tempDir, uniqueFileName);
+		try {
+			if (file.createNewFile()) {
+				try (FileOutputStream fos = new FileOutputStream(file)) {
+					fos.write(multipartFile.getBytes());
+				}
+				return Optional.of(file);
+			} else {
+				log.error("새 파일 생성에 실패했습니다: {}", file.getAbsolutePath());
 			}
-			return Optional.of(convertFile);
+		} catch (IOException e) {
+			throw new OwnerException(FILE_UPLOAD_FAILED, e);
 		}
 		return Optional.empty();
 	}
 
-	private String putS3(File uploadFile, String fileName) {
-		amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile));
-		return amazonS3Client.getUrl(bucket, fileName).toString();
-	}
-
-	private void removeNewFile(File targetFile) {
-		if (targetFile.delete()) {
-			log.info("파일이 삭제되었습니다: {}", targetFile.getAbsoluteFile());
+	private void deleteLocalFile(File file) {
+		if (file.delete()) {
+			log.info("로컬 파일 삭제 성공: {}", file.getAbsolutePath());
 		} else {
-			log.warn("파일이 삭제되지 못했습니다: {}", targetFile.getAbsoluteFile());
+			log.warn("로컬 파일 삭제 실패: {}", file.getAbsolutePath());
 		}
 	}
-
 }

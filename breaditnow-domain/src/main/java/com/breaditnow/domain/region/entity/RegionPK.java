@@ -1,12 +1,16 @@
 package com.breaditnow.domain.region.entity;
 
+import static lombok.AccessLevel.*;
+
 import java.io.Serializable;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 public class RegionPK implements Serializable {
 	private int sidoCode;
 	private int gugunCode;

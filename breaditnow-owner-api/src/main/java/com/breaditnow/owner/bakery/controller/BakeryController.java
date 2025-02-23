@@ -1,13 +1,12 @@
 package com.breaditnow.owner.bakery.controller;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,26 +30,27 @@ public class BakeryController {
 
 	@PostMapping("/{ownerId}")
 	public ApiSuccessResponse<Map<String, Long>> createBakery(@PathVariable("ownerId") Long ownerId,
-		@RequestPart("data") BakeryCreateRequest bakeryCreateRequest,
-		@RequestPart("file") MultipartFile profileImage) {
-		try {
-			log.info("data : {}", bakeryCreateRequest);
-			log.info("profileImage = {}", profileImage);
-			Long bakeryId = bakeryService.createBakery(ownerId, bakeryCreateRequest, profileImage);
-			return ApiSuccessResponse.of("bakeryId", bakeryId);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		@RequestPart("data") BakeryCreateRequest request,
+		@RequestPart("profileImage") MultipartFile profileImage) {
+
+		Long bakeryId = bakeryService.createBakery(ownerId, request, profileImage);
+		return ApiSuccessResponse.of("bakeryId", bakeryId);
 	}
 
 	@GetMapping("/{bakeryId}")
-	public ApiSuccessResponse<BakeryResponse> getBakery(@PathVariable Long bakeryId) {
+	public ApiSuccessResponse<BakeryResponse> getBakery(@PathVariable("bakeryId") Long bakeryId) {
+
 		return ApiSuccessResponse.of(bakeryService.getBakery(bakeryId));
 	}
 
-	@PutMapping("/{bakeryId}")
-	public ApiSuccessResponse<BakeryResponse> updateBakery(Long ownerId, @PathVariable Long bakeryId,
-		@RequestBody BakeryUpdateRequest request) {
-		return ApiSuccessResponse.of(bakeryService.updateBakery(ownerId, bakeryId, request));
+	@PutMapping("/{bakeryId}/{ownerId}")
+	public ApiSuccessResponse<BakeryResponse> updateBakery(@PathVariable("bakeryId") Long bakeryId,
+		@PathVariable("ownerId") Long ownerId,
+		@RequestPart("data") BakeryUpdateRequest request,
+		@RequestPart("profileImage") MultipartFile profileImage,
+		@RequestPart("bakeryImages") List<MultipartFile> bakeryImages
+	) {
+		return ApiSuccessResponse.of(
+			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
 	}
 }

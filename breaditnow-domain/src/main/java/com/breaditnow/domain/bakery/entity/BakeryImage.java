@@ -3,6 +3,7 @@ package com.breaditnow.domain.bakery.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class BakeryImage {
 	@JoinColumn(name = "bakery_id", nullable = false)
 	private Bakery bakery;
 
+	@Column(length = 1000)
 	private String imageUrl;
 
 	@Builder

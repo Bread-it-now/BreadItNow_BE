@@ -2,7 +2,8 @@ package com.breaditnow.owner.bakery.service;
 
 import static com.breaditnow.domain.bakery.enumerate.OperatingStatus.*;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.breaditnow.domain.bakery.entity.Address;
 import com.breaditnow.domain.bakery.entity.Bakery;
+import com.breaditnow.domain.bakery.entity.BakeryImage;
 import com.breaditnow.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.owner.entity.Owner;
 import com.breaditnow.domain.owner.repository.OwnerRepository;
@@ -33,8 +35,7 @@ public class BakeryService {
 	private final S3Uploader uploader;
 
 	@Transactional
-	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile multipartFile) throws
-		IOException {
+	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile profileImage) {
 		Owner owner = ownerRepository.getById(ownerId);
 
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
@@ -45,7 +46,7 @@ public class BakeryService {
 			.region(region) // latitude, longitude 가져오기
 			.build();
 
-		String profileImageUrl = uploader.upload(multipartFile, "/image/profile");
+		String profileImageUrl = uploader.upload(profileImage, "image/owner/bakery/profile");
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
@@ -57,7 +58,7 @@ public class BakeryService {
 			.address(address)
 			.operatingStatus(CLOSED)
 			.build();
-		
+
 		Bakery savedBakery = bakeryRepository.save(bakery);
 		return savedBakery.getId();
 	}
@@ -68,27 +69,34 @@ public class BakeryService {
 	}
 
 	@Transactional
-	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest) {
+	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
+		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
+		Bakery bakery = bakeryRepository.getById(bakeryId);
 		Owner owner = ownerRepository.getById(ownerId);
+		Region region = regionRepository.getById(new RegionPK(bakeryUpdateRequest.addressCode()));
+		Address address = bakery.getAddress();
+		address.update(region, bakeryUpdateRequest.addressDescription());
 
-		Bakery bakery = bakeryRepository.getByOwnerIdAndBakeryId(ownerId, bakeryId);
+		uploader.deleteFile(bakery.getProfileImage());
+		String profileImageUrl = uploader.upload(profileImage, "image/owner/bakery/profile");
 
-		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
-		Region region = regionRepository.getById(regionPK);
+		List<BakeryImage> bakeryImages = bakeryImageFiles.stream()
+			.map(file -> uploader.upload(file, "image/owner/bakery/gallery"))
+			.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
+			.collect(Collectors.toList());
 
-		Bakery newBakery = Bakery.builder()
+		bakery.update(Bakery.builder()
 			.owner(owner)
 			.name(bakeryUpdateRequest.name())
 			.phone(bakeryUpdateRequest.phone())
 			.introduction(bakeryUpdateRequest.introduction())
-			.profileImage(bakeryUpdateRequest.profileImage())
+			.profileImage(profileImageUrl)
 			.openTime(bakeryUpdateRequest.openTime())
-			.address(bakery.getAddress())
-			.bakeryImage(bakeryUpdateRequest.additionalImages())
+			.address(address)
+			.bakeryImages(bakeryImages) // 고아 객체 만들어짐
 			.operatingStatus(CLOSED)
-			.build();
+			.build());
 
-		bakery.update(newBakery);
 		return BakeryResponse.of(bakery);
 	}
 }
