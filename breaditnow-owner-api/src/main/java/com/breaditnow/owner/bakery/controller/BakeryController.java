@@ -5,9 +5,11 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
+import com.breaditnow.owner.bakery.controller.req.OperatingStatusRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.bakery.service.BakeryService;
 
@@ -54,10 +57,16 @@ public class BakeryController {
 			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
 	}
 
+	@PatchMapping("/{bakeryId}/{ownerId}/operating-status")
+	public ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(@PathVariable("bakeryId") Long bakeryId,
+		@PathVariable("ownerId") Long ownerId, @RequestBody OperatingStatusRequest request) {
+		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, request.operatingStatus());
+		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
+	}
+
 	@DeleteMapping("/{bakeryId}/{ownerId}")
 	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@PathVariable("ownerId") Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId) {
-		log.info("owner_id = {}", ownerId);
 		Long deletedBakeryId = bakeryService.deleteBakery(ownerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", deletedBakeryId);
 	}

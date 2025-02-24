@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.breaditnow.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.bakery.entity.BakeryImage;
+import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
 
 import lombok.Builder;
 
@@ -16,6 +17,7 @@ public record BakeryResponse(
 	String introduction,
 	String profileImage,
 	List<String> bakeryImages,
+	OperatingStatus operatingStatus,
 	boolean isActive
 ) {
 	@Builder
@@ -37,6 +39,7 @@ public record BakeryResponse(
 			.profileImage(bakery.getProfileImage())
 			.addressDescription(bakery.getAddress().getDescription())
 			.bakeryImages(imageUrls)
+			.operatingStatus(bakery.getOperatingStatus())
 			.isActive(bakery.isActive())
 			.build();
 	}

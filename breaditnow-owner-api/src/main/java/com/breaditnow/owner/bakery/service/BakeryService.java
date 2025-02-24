@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.breaditnow.domain.bakery.entity.Address;
 import com.breaditnow.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.bakery.entity.BakeryImage;
+import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.owner.entity.Owner;
 import com.breaditnow.domain.owner.repository.OwnerRepository;
@@ -122,6 +123,16 @@ public class BakeryService {
 			throw new OwnerException(INVALID_OWNER);
 		}
 		bakery.updateActive(false);
-		return bakeryId;
+		return bakery.getId();
+	}
+
+	@Transactional
+	public Long updateOperatingStatus(Long ownerId, Long bakeryId, String type) {
+		Bakery bakery = bakeryRepository.getById(bakeryId);
+		if (!ownerId.equals(bakery.getOwner().getId())) {
+			throw new OwnerException(INVALID_OWNER);
+		}
+		bakery.updateOperatingStatus(OperatingStatus.from(type));
+		return bakery.getId();
 	}
 }

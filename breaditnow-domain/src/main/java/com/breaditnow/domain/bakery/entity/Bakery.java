@@ -97,4 +97,8 @@ public class Bakery {
 	public void updateActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	public void updateOperatingStatus(OperatingStatus operatingStatus) {
+		this.operatingStatus = operatingStatus;
+	}
 }
