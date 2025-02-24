@@ -1,7 +1,9 @@
 package com.breaditnow.owner.bakery.service;
 
 import static com.breaditnow.domain.bakery.enumerate.OperatingStatus.*;
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,7 @@ import com.breaditnow.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
+import com.breaditnow.owner.global.exception.OwnerException;
 import com.breaditnow.owner.global.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -46,7 +49,10 @@ public class BakeryService {
 			.region(region) // latitude, longitude 가져오기
 			.build();
 
-		String profileImageUrl = uploader.upload(profileImage, "image/owner/bakery/profile");
+		String profileImageUrl = "";
+		if (profileImage != null) {
+			profileImageUrl = uploader.upload(profileImage, "image/owner/bakery/profile");
+		}
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
@@ -77,13 +83,22 @@ public class BakeryService {
 		Address address = bakery.getAddress();
 		address.update(region, bakeryUpdateRequest.addressDescription());
 
-		uploader.deleteFile(bakery.getProfileImage());
-		String profileImageUrl = uploader.upload(profileImage, "image/owner/bakery/profile");
+		if (!bakery.getProfileImage().isEmpty()) {
+			uploader.deleteFile(bakery.getProfileImage());
+		}
 
-		List<BakeryImage> bakeryImages = bakeryImageFiles.stream()
-			.map(file -> uploader.upload(file, "image/owner/bakery/gallery"))
-			.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
-			.collect(Collectors.toList());
+		String profileImageUrl = "";
+		if (profileImage != null) {
+			uploader.upload(profileImage, "image/owner/bakery/profile");
+		}
+
+		List<BakeryImage> bakeryImages = new ArrayList<>();
+		if (!bakery.getBakeryImages().isEmpty()) {
+			bakeryImages = bakeryImageFiles.stream()
+				.map(file -> uploader.upload(file, "image/owner/bakery/gallery"))
+				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
+				.collect(Collectors.toList());
+		}
 
 		bakery.update(Bakery.builder()
 			.owner(owner)
@@ -93,10 +108,20 @@ public class BakeryService {
 			.profileImage(profileImageUrl)
 			.openTime(bakeryUpdateRequest.openTime())
 			.address(address)
-			.bakeryImages(bakeryImages) // 고아 객체 만들어짐
+			.bakeryImages(bakeryImages)
 			.operatingStatus(CLOSED)
 			.build());
 
 		return BakeryResponse.of(bakery);
+	}
+
+	public Long deleteBakery(Long ownerId, Long bakeryId) {
+		Bakery bakery = bakeryRepository.getById(bakeryId);
+		if (ownerId.equals(bakery.getOwner().getId())) {
+			throw new OwnerException(INVALID_OWNER);
+		}
+
+		bakery.updateActive(false);
+		return bakeryId;
 	}
 }

@@ -93,4 +93,8 @@ public class Bakery {
 		this.bakeryImages.clear();
 		this.bakeryImages.addAll(bakery.getBakeryImages());
 	}
+
+	public void updateActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }

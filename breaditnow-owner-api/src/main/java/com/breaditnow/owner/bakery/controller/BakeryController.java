@@ -3,6 +3,7 @@ package com.breaditnow.owner.bakery.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class BakeryController {
 	@PostMapping("/{ownerId}")
 	public ApiSuccessResponse<Map<String, Long>> createBakery(@PathVariable("ownerId") Long ownerId,
 		@RequestPart("data") BakeryCreateRequest request,
-		@RequestPart("profileImage") MultipartFile profileImage) {
+		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
 
 		Long bakeryId = bakeryService.createBakery(ownerId, request, profileImage);
 		return ApiSuccessResponse.of("bakeryId", bakeryId);
@@ -39,7 +40,6 @@ public class BakeryController {
 
 	@GetMapping("/{bakeryId}")
 	public ApiSuccessResponse<BakeryResponse> getBakery(@PathVariable("bakeryId") Long bakeryId) {
-
 		return ApiSuccessResponse.of(bakeryService.getBakery(bakeryId));
 	}
 
@@ -47,10 +47,17 @@ public class BakeryController {
 	public ApiSuccessResponse<BakeryResponse> updateBakery(@PathVariable("bakeryId") Long bakeryId,
 		@PathVariable("ownerId") Long ownerId,
 		@RequestPart("data") BakeryUpdateRequest request,
-		@RequestPart("profileImage") MultipartFile profileImage,
-		@RequestPart("bakeryImages") List<MultipartFile> bakeryImages
+		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+		@RequestPart(value = "bakeryImages", required = false) List<MultipartFile> bakeryImages
 	) {
 		return ApiSuccessResponse.of(
 			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
+	}
+
+	@DeleteMapping("/{bakeryId}")
+	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@PathVariable("ownerId") Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId) {
+		Long deletedBakeryId = bakeryService.deleteBakery(ownerId, bakeryId);
+		return ApiSuccessResponse.of("bakeryId", deletedBakeryId);
 	}
 }
