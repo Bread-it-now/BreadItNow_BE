@@ -115,12 +115,12 @@ public class BakeryService {
 		return BakeryResponse.of(bakery);
 	}
 
+	@Transactional
 	public Long deleteBakery(Long ownerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getById(bakeryId);
-		if (ownerId.equals(bakery.getOwner().getId())) {
+		if (!ownerId.equals(bakery.getOwner().getId())) {
 			throw new OwnerException(INVALID_OWNER);
 		}
-
 		bakery.updateActive(false);
 		return bakeryId;
 	}

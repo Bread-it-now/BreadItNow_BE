@@ -54,9 +54,10 @@ public class BakeryController {
 			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
 	}
 
-	@DeleteMapping("/{bakeryId}")
+	@DeleteMapping("/{bakeryId}/{ownerId}")
 	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@PathVariable("ownerId") Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId) {
+		log.info("owner_id = {}", ownerId);
 		Long deletedBakeryId = bakeryService.deleteBakery(ownerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", deletedBakeryId);
 	}

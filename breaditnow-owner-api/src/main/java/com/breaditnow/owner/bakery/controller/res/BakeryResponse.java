@@ -15,7 +15,8 @@ public record BakeryResponse(
 	String openTime,
 	String introduction,
 	String profileImage,
-	List<String> bakeryImages
+	List<String> bakeryImages,
+	boolean isActive
 ) {
 	@Builder
 	public BakeryResponse {
@@ -36,6 +37,7 @@ public record BakeryResponse(
 			.profileImage(bakery.getProfileImage())
 			.addressDescription(bakery.getAddress().getDescription())
 			.bakeryImages(imageUrls)
+			.isActive(bakery.isActive())
 			.build();
 	}
 }
