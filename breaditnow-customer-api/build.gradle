@@ -1,6 +1,8 @@
 dependencies {
     implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 test {
