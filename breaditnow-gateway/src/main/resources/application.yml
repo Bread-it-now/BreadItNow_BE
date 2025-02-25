@@ -8,12 +8,3 @@ spring:
   webflux:
     static-path-pattern: "/static/**"
 
-  cloud:
-    gateway:
-      routes:
-        - id: auth-api
-          uri: http://localhost:9000/
-          predicates:
-            - Path=/auth-api/**  # 소셜 로그인 콜백 요청 처리
-          filters:
-            - RewritePath=/auth-api/(?<segment>.*), /$\{segment}
