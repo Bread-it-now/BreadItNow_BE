@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private static final String[] AUTH = {"/oauth2/**", "/oauth/callback/**"};
+	private static final String[] AUTH = {"/oauth2/authorization/**", "/oauth/callback/**"};
 
 	private final CustomOAuth2UserService oauth2UserService;
 	private final CookieOAuth2AuthorizationRequestRepository
@@ -56,7 +56,7 @@ public class SecurityConfig {
 
 		http.authorizeHttpRequests(authorize -> authorize
 			.requestMatchers(AUTH).permitAll()
-			.anyRequest().authenticated()
+			.anyRequest().permitAll()
 		);
 
 		return http.build();
