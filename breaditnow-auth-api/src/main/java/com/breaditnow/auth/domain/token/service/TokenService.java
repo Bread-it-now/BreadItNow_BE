@@ -41,27 +41,24 @@ public class TokenService {
 			.map(Cookie::getValue).orElseThrow(() -> new AuthException(REFRESH_TOKEN_NOT_EXIST_IN_COOKIE));
 
 		Authentication authentication = jwtTokenValidator.getAuthentication(cookieRefreshToken);
+		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
 
-		validateToken(cookieRefreshToken, authentication);
+		validateRefreshToken(cookieRefreshToken, accountContext);
 
 		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
 		response.setHeader("Authorization", "Bearer " + accessToken.token());
 	}
 
-	private void validateToken(String oldToken, Authentication authentication) {
+	private void validateRefreshToken(String oldToken, AccountContext accountContext) {
 		if (!jwtTokenValidator.validateToken(oldToken)) {
 			throw new AuthException(REFRESH_TOKEN_EXPIRED);
 		}
 
-		AuthToken savedRefreshToken = getSavedRefreshToken(authentication);
+		AuthToken savedRefreshToken = authTokenRepository.findToken(AuthTokenType.REFRESH, accountContext.getUserId())
+			.orElseThrow(() -> new AuthException(REFRESH_TOKEN_EXPIRED));
+
 		if (!oldToken.equals(savedRefreshToken.token())) {
 			throw new AuthException(TOKEN_NOT_MATCHED);
 		}
-	}
-
-	private AuthToken getSavedRefreshToken(Authentication authentication) {
-		AccountContext user = (AccountContext)authentication.getPrincipal();
-		return authTokenRepository.findToken(AuthTokenType.REFRESH, user.getUserId())
-			.orElseThrow(() -> new AuthException(REFRESH_TOKEN_EXPIRED));
 	}
 }

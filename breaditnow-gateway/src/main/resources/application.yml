@@ -8,3 +8,30 @@ spring:
   webflux:
     static-path-pattern: "/static/**"
 
+  cloud:
+    gateway:
+      routes:
+        - id: oauth2
+          uri: http://localhost:9000/
+          predicates:
+            - Path=/oauth2/authorization/**, /oauth/callback/**  # 소셜 로그인 처리
+        - id: auth-api
+          uri: http://localhost:9000/
+          predicates:
+            - Path=/auth-api/**
+          filters:
+            - RewritePath=/auth-api/(?<segment>.*), /$\{segment}
+        - id: customer-api
+          uri: http://localhost:9001/
+          predicates:
+            - Path=/customer-api/**
+          filters:
+            - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
+        #            - JwtAuthentication=ROLE_CUSTOMER
+        - id: owner-api
+          uri: http://localhost:9002/
+          predicates:
+            - Path=/owner-api/**
+          filters:
+            - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
+#            - JwtAuthentication=ROLE_OWNER
