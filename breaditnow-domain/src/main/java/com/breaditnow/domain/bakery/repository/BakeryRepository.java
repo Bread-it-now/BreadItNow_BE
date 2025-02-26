@@ -11,25 +11,21 @@ public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 	default Bakery getById(Long id) {
 		Bakery bakery = findById(id)
 			.orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
-
-		if (!bakery.isActive()) {
-			throw new DomainException(BAKERY_INACTIVE);
-		}
-
+		validateActive(bakery);
 		return bakery;
 	}
 
 	default Bakery getByOwnerIdAndId(Long ownerId, Long id) {
-		Bakery bakery = findById(id)
-			.orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
-
-		if (!bakery.isActive()) {
-			throw new DomainException(BAKERY_INACTIVE);
-		}
-
+		Bakery bakery = getById(id);
 		if (!bakery.getOwner().getId().equals(ownerId)) {
 			throw new DomainException(OWNER_MISMATCH);
 		}
 		return bakery;
+	}
+
+	private void validateActive(Bakery bakery) {
+		if (!bakery.isActive()) {
+			throw new DomainException(BAKERY_INACTIVE);
+		}
 	}
 }
