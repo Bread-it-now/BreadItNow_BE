@@ -1,6 +1,6 @@
 package com.breaditnow.owner.bakery.service;
 
-import static com.breaditnow.domain.bakery.enumerate.OperatingStatus.*;
+import static com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.breaditnow.domain.bakery.entity.Address;
-import com.breaditnow.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.bakery.entity.BakeryImage;
-import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
-import com.breaditnow.domain.bakery.repository.BakeryRepository;
-import com.breaditnow.domain.owner.entity.Owner;
-import com.breaditnow.domain.owner.repository.OwnerRepository;
-import com.breaditnow.domain.region.entity.Region;
-import com.breaditnow.domain.region.entity.RegionPK;
-import com.breaditnow.domain.region.repository.RegionRepository;
+import com.breaditnow.domain.domain.bakery.entity.Address;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
+import com.breaditnow.domain.domain.bakery.entity.BakeryImage;
+import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
+import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
+import com.breaditnow.domain.domain.owner.entity.Owner;
+import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
+import com.breaditnow.domain.domain.region.entity.Region;
+import com.breaditnow.domain.domain.region.entity.RegionPK;
+import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;

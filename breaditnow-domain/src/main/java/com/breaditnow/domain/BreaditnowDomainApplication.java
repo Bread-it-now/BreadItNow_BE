@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
-	"com.breaditnow.domain"})
+	"com.breaditnow.domain", "com.breaditnow.common"})
 public class BreaditnowDomainApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BreaditnowDomainApplication.class, args);

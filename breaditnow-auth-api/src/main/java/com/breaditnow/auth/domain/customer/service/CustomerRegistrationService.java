@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.auth.global.security.oauth2.model.OAuth2UserInfo;
-import com.breaditnow.domain.customer.entity.Customer;
-import com.breaditnow.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
