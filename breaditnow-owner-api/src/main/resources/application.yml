@@ -2,5 +2,8 @@ server:
   port: 9002
 
 spring:
+  application:
+    name: owner-api
+
   profiles:
     active: local
