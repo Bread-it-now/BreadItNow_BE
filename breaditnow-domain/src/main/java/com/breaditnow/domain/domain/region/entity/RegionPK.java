@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 public class RegionPK implements Serializable {
-	private int sidoCode;
-	private int gugunCode;
-	private int dongCode;
+	private String sidoCode;
+	private String gugunCode;
+	private String dongCode;
 
 	public RegionPK(String addressCode) {
-		this.sidoCode = Integer.parseInt(addressCode.substring(0, 2));
-		this.gugunCode = Integer.parseInt(addressCode.substring(2, 5));
-		this.dongCode = Integer.parseInt(addressCode.substring(5, 8));
+		this.sidoCode = addressCode.substring(0, 2);
+		this.gugunCode = addressCode.substring(2, 5);
+		this.dongCode = addressCode.substring(5, 8);
 	}
 }

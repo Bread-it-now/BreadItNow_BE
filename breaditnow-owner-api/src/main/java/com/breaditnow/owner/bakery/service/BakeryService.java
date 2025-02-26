@@ -17,7 +17,6 @@ import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
-import com.breaditnow.domain.domain.region.entity.Region;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
@@ -43,11 +42,14 @@ public class BakeryService {
 		bakeryRepository.checkDuplicateOwner(ownerId);
 
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
-		Region region = regionRepository.getById(regionPK);
+		// Region region = regionRepository.getById(regionPK); // 법정 행정동 코드가 데이터베이스에 있는지 확인하는 로직
 
+		// latitude, longitude은 결정되면 가져오기
 		Address address = Address.builder()
+			.sidoCode(regionPK.getSidoCode())
+			.gugunCode(regionPK.getGugunCode())
+			.dongCode(regionPK.getDongCode())
 			.description(bakeryCreateRequest.addressDescription())
-			.region(region) // latitude, longitude 가져오기
 			.build();
 
 		String profileImageUrl = "";
@@ -80,9 +82,16 @@ public class BakeryService {
 		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
 		Bakery bakery = bakeryRepository.getById(bakeryId);
 		Owner owner = ownerRepository.getById(ownerId);
-		Region region = regionRepository.getById(new RegionPK(bakeryUpdateRequest.addressCode()));
-		Address address = bakery.getAddress();
-		address.update(region, bakeryUpdateRequest.addressDescription());
+
+		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
+		// Region region = regionRepository.getById(regionPK); // check로 변환
+
+		Address address = Address.builder()
+			.sidoCode(regionPK.getSidoCode())
+			.gugunCode(regionPK.getGugunCode())
+			.dongCode(regionPK.getDongCode())
+			.description(bakeryUpdateRequest.addressDescription())
+			.build();
 
 		if (!bakery.getProfileImage().isEmpty()) {
 			uploader.deleteFile(bakery.getProfileImage());

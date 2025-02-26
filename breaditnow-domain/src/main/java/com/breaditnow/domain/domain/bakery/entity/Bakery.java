@@ -13,6 +13,7 @@ import com.breaditnow.domain.domain.product.entity.Product;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,7 +22,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,8 +51,7 @@ public class Bakery {
 
 	private String openTime;
 
-	@OneToOne(fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "address_id")
+	@Embedded
 	private Address address;
 
 	@Enumerated(EnumType.STRING)
