@@ -8,11 +8,10 @@ import com.breaditnow.domain.domain.region.entity.Region;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 import com.breaditnow.domain.global.exception.DomainException;
 
-import lombok.NonNull;
-
 public interface RegionRepository extends JpaRepository<Region, RegionPK> {
-	default Region getById(@NonNull RegionPK regionPK) {
-		return findById(regionPK)
-			.orElseThrow(() -> new DomainException(Region_NOT_FOUND));
+	default void checkExists(RegionPK regionPK) {
+		if (!existsById(regionPK)) {
+			throw new DomainException(REGION_NOT_FOUND);
+		}
 	}
 }

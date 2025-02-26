@@ -22,40 +22,31 @@ import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
-import com.breaditnow.owner.global.s3.S3Uploader;
+import com.breaditnow.owner.global.s3.upload.FileUploader;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class BakeryService {
 	private final RegionRepository regionRepository;
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
-	private final S3Uploader uploader;
+	private final FileUploader uploader;
 
 	@Transactional
 	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile profileImage) {
 		Owner owner = ownerRepository.getById(ownerId);
-
 		bakeryRepository.checkDuplicateOwner(ownerId);
 
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
-		// Region region = regionRepository.getById(regionPK); // 법정 행정동 코드가 데이터베이스에 있는지 확인하는 로직
+		regionRepository.checkExists(regionPK);
 
-		// latitude, longitude은 결정되면 가져오기
-		Address address = Address.builder()
-			.sidoCode(regionPK.getSidoCode())
-			.gugunCode(regionPK.getGugunCode())
-			.dongCode(regionPK.getDongCode())
-			.description(bakeryCreateRequest.addressDescription())
-			.build();
-
-		String profileImageUrl = "";
-		if (profileImage != null) {
-			profileImageUrl = uploader.upload(profileImage, "image/owner/bakery/profile");
-		}
+		Address address = buildAddress(regionPK, bakeryCreateRequest.addressDescription());
+		String profileImageUrl = uploadFile(profileImage, "image/owner/bakery/profile");
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
@@ -80,11 +71,12 @@ public class BakeryService {
 	@Transactional
 	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
 		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
+		log.info("bakeryImageFiles = {}", bakeryImageFiles);
 		Bakery bakery = bakeryRepository.getById(bakeryId);
 		Owner owner = ownerRepository.getById(ownerId);
 
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
-		// Region region = regionRepository.getById(regionPK); // check로 변환
+		regionRepository.checkExists(regionPK);
 
 		Address address = Address.builder()
 			.sidoCode(regionPK.getSidoCode())
@@ -93,17 +85,10 @@ public class BakeryService {
 			.description(bakeryUpdateRequest.addressDescription())
 			.build();
 
-		if (!bakery.getProfileImage().isEmpty()) {
-			uploader.deleteFile(bakery.getProfileImage());
-		}
-
-		String profileImageUrl = "";
-		if (profileImage != null) {
-			uploader.upload(profileImage, "image/owner/bakery/profile");
-		}
+		String updatedProfileImage = uploadFile(profileImage, "image/owner/bakery/profile");
 
 		List<BakeryImage> bakeryImages = new ArrayList<>();
-		if (!bakery.getBakeryImages().isEmpty()) {
+		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
 			bakeryImages = bakeryImageFiles.stream()
 				.map(file -> uploader.upload(file, "image/owner/bakery/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
@@ -115,7 +100,7 @@ public class BakeryService {
 			.name(bakeryUpdateRequest.name())
 			.phone(bakeryUpdateRequest.phone())
 			.introduction(bakeryUpdateRequest.introduction())
-			.profileImage(profileImageUrl)
+			.profileImage(updatedProfileImage)
 			.openTime(bakeryUpdateRequest.openTime())
 			.address(address)
 			.bakeryImages(bakeryImages)
@@ -137,5 +122,21 @@ public class BakeryService {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		bakery.updateOperatingStatus(OperatingStatus.from(type));
 		return bakery.getId();
+	}
+
+	private Address buildAddress(RegionPK regionPK, String description) {
+		return Address.builder()
+			.sidoCode(regionPK.getSidoCode())
+			.gugunCode(regionPK.getGugunCode())
+			.dongCode(regionPK.getDongCode())
+			.description(description)
+			.build();
+	}
+
+	private String uploadFile(MultipartFile file, String path) {
+		if (file != null && !file.isEmpty()) {
+			return uploader.upload(file, path);
+		}
+		return "";
 	}
 }
