@@ -1,4 +1,4 @@
-package com.breaditnow.common.secutiry.jwt.provider;
+package com.breaditnow.common.security.jwt.provider;
 
 import static com.breaditnow.common.exception.CommonErrorCode.*;
 
@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.common.secutiry.AccountContext;
+import com.breaditnow.common.security.AccountContext;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

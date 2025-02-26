@@ -1,12 +1,12 @@
-package com.breaditnow.common.secutiry.jwt.handler;
+package com.breaditnow.common.security.jwt.handler;
 
 import static com.breaditnow.common.exception.CommonErrorCode.*;
 
 import java.io.IOException;
 
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.breaditnow.common.response.ApiErrorResponse;
@@ -18,27 +18,27 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	@Override
-	public void handle(
+	public void commence(
 		HttpServletRequest request,
 		HttpServletResponse response,
-		AccessDeniedException accessDeniedException)
+		AuthenticationException authException)
 		throws IOException {
-		// 필요한 권한 없이 접근하려 할때 403 리턴
-		setErrorResponse(request, response, accessDeniedException);
+		// 유효한 자격증명을 제공하지 않고 접근하려 할때 401 에러 리턴
+		setErrorResponse(request, response, authException);
 	}
 
 	private void setErrorResponse(
 		HttpServletRequest request, HttpServletResponse response, Throwable ex) {
-		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding("UTF-8");
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			response.getWriter().write(
-				objectMapper.writeValueAsString(ApiErrorResponse.of(FORBIDDEN, ex.getMessage()))
+				objectMapper.writeValueAsString(ApiErrorResponse.of(UNAUTHORIZED, ex.getMessage()))
 			);
 		} catch (IOException e) {
 			e.printStackTrace();

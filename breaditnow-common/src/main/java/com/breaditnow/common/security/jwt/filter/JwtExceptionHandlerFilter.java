@@ -1,4 +1,4 @@
-package com.breaditnow.common.secutiry.jwt.filter;
+package com.breaditnow.common.security.jwt.filter;
 
 import static com.breaditnow.common.exception.CommonErrorCode.*;
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.breaditnow.auth.domain.customer.service.CustomerRegistrationService;
 import com.breaditnow.auth.global.security.oauth2.model.OAuth2UserInfo;
-import com.breaditnow.common.secutiry.AccountContext;
+import com.breaditnow.common.security.AccountContext;
 import com.breaditnow.domain.customer.entity.Customer;
 
 import lombok.RequiredArgsConstructor;

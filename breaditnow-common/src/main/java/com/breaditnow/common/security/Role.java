@@ -1,4 +1,4 @@
-package com.breaditnow.common.secutiry;
+package com.breaditnow.common.security;
 
 public enum Role {
 	CUSTOMER,

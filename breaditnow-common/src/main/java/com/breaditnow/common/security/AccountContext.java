@@ -1,6 +1,6 @@
-package com.breaditnow.common.secutiry;
+package com.breaditnow.common.security;
 
-import static com.breaditnow.common.secutiry.Role.*;
+import static com.breaditnow.common.security.Role.*;
 
 import java.util.Collection;
 import java.util.Collections;

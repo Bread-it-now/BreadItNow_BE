@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,6 +18,10 @@ import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2Authorizati
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.oauth2.service.CustomOAuth2UserService;
+import com.breaditnow.common.security.jwt.filter.JwtAuthenticationFilter;
+import com.breaditnow.common.security.jwt.filter.JwtExceptionHandlerFilter;
+import com.breaditnow.common.security.jwt.handler.JwtAccessDeniedHandler;
+import com.breaditnow.common.security.jwt.handler.JwtAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +37,7 @@ public class SecurityConfig {
 		cookieOAuth2AuthorizationRequestRepository;
 	private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 	private final Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,10 +60,16 @@ public class SecurityConfig {
 				.failureHandler(oauth2AuthenticationFailureHandler)
 			);
 
-		http.authorizeHttpRequests(authorize -> authorize
-			.requestMatchers(AUTH).permitAll()
-			.anyRequest().permitAll()
-		);
+		http
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers(AUTH).permitAll()
+				.anyRequest().permitAll()
+			)
+			.exceptionHandling((exceptions) -> exceptions
+				.authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // 인증 실패 핸들링
+				.accessDeniedHandler(new JwtAccessDeniedHandler())) // 인가 실패 핸들링
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new JwtExceptionHandlerFilter(), JwtAuthenticationFilter.class);
 
 		return http.build();
 	}
