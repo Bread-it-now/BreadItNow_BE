@@ -1,14 +1,13 @@
 package com.breaditnow.auth.global.security.oauth2.model;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
-import static com.breaditnow.domain.customer.enumerate.Provider.*;
 
 import java.util.Map;
 import java.util.Objects;
 
 import com.breaditnow.auth.global.exception.AuthException;
-import com.breaditnow.domain.customer.entity.Customer;
-import com.breaditnow.domain.customer.enumerate.Provider;
+import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.domain.customer.enumerate.Provider;
 
 import lombok.Builder;
 

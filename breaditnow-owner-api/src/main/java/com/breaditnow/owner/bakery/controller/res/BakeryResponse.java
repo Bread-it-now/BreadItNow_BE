@@ -2,9 +2,9 @@ package com.breaditnow.owner.bakery.controller.res;
 
 import java.util.List;
 
-import com.breaditnow.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.bakery.entity.BakeryImage;
-import com.breaditnow.domain.bakery.enumerate.OperatingStatus;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
+import com.breaditnow.domain.domain.bakery.entity.BakeryImage;
+import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 
 import lombok.Builder;
 

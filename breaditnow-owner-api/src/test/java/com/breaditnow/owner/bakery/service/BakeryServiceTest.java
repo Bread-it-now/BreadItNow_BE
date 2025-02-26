@@ -15,8 +15,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.breaditnow.domain.owner.entity.Owner;
-import com.breaditnow.domain.owner.repository.OwnerRepository;
+import com.breaditnow.domain.domain.owner.entity.Owner;
+import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;

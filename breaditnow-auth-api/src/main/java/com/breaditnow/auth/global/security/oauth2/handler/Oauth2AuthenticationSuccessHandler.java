@@ -18,8 +18,8 @@ import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.jwt.JwtTokenCreator;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.common.util.CookieUtil;
-import com.breaditnow.domain.customer.entity.Customer;
-import com.breaditnow.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
