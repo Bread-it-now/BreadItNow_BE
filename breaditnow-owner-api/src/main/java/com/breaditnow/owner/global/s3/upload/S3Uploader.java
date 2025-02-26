@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,13 @@ public class S3Uploader implements FileUploader {
 
 	private Optional<File> convertToFile(MultipartFile multipartFile) {
 		String tempDir = System.getProperty("java.io.tmpdir");
-		String uniqueFileName = multipartFile.getOriginalFilename();
+		String originalFileName = multipartFile.getOriginalFilename();
+		String fileExtension = "";
+		if (originalFileName.contains(".")) {
+			fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+		}
+
+		String uniqueFileName = UUID.randomUUID() + fileExtension;
 		File file = new File(tempDir, uniqueFileName);
 		try {
 			if (file.createNewFile()) {
