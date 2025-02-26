@@ -1,12 +1,17 @@
 package com.breaditnow.auth.domain.token.repository;
 
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.breaditnow.auth.domain.token.domain.AuthToken;
 import com.breaditnow.auth.domain.token.domain.AuthTokenType;
+import com.breaditnow.auth.global.exception.AuthException;
 import com.breaditnow.redis.repository.RedisRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthTokenRepository {
 	private final RedisRepository redisRepository;
+	private final ObjectMapper objectMapper;
 
 	private String generateTokenKey(AuthTokenType type, Long userId) {
 		return String.format("TOKEN:%s:%d", type.name(), userId);
@@ -21,14 +27,24 @@ public class AuthTokenRepository {
 
 	public void saveToken(AuthToken authToken) {
 		String key = generateTokenKey(authToken.type(), authToken.userId());
-		redisRepository.save(key, authToken, authToken.expiresIn());
+		try {
+			String tokenJson = objectMapper.writeValueAsString(authToken);
+			redisRepository.save(key, tokenJson, authToken.expiresIn());
+		} catch (JsonProcessingException e) {
+			throw new AuthException(SERIALIZATION_ERROR);
+		}
 	}
 
 	public Optional<AuthToken> findToken(AuthTokenType type, Long userId) {
 		String key = generateTokenKey(type, userId);
 		Optional<Object> result = redisRepository.find(key);
-		if (result.isPresent() && result.get() instanceof AuthToken) {
-			return Optional.of((AuthToken)result.get());
+		if (result.isPresent() && result.get() instanceof String) {
+			try {
+				AuthToken token = objectMapper.readValue((String)result.get(), AuthToken.class);
+				return Optional.of(token);
+			} catch (JsonProcessingException e) {
+				throw new AuthException(DESERIALIZATION_ERROR);
+			}
 		}
 		return Optional.empty();
 	}
