@@ -1,7 +1,6 @@
 package com.breaditnow.owner.bakery.service;
 
 import static com.breaditnow.domain.bakery.enumerate.OperatingStatus.*;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ import com.breaditnow.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
-import com.breaditnow.owner.global.exception.OwnerException;
 import com.breaditnow.owner.global.s3.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -118,20 +116,14 @@ public class BakeryService {
 
 	@Transactional
 	public Long deleteBakery(Long ownerId, Long bakeryId) {
-		Bakery bakery = bakeryRepository.getById(bakeryId);
-		if (!ownerId.equals(bakery.getOwner().getId())) {
-			throw new OwnerException(INVALID_OWNER);
-		}
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		bakery.updateActive(false);
 		return bakery.getId();
 	}
 
 	@Transactional
 	public Long updateOperatingStatus(Long ownerId, Long bakeryId, String type) {
-		Bakery bakery = bakeryRepository.getById(bakeryId);
-		if (!ownerId.equals(bakery.getOwner().getId())) {
-			throw new OwnerException(INVALID_OWNER);
-		}
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		bakery.updateOperatingStatus(OperatingStatus.from(type));
 		return bakery.getId();
 	}

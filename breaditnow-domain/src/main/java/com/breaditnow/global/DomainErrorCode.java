@@ -24,8 +24,9 @@ public enum DomainErrorCode implements ErrorCode {
 	/**
 	 * Bakery(BE000)
 	 */
-	BAKERY_NOT_FOUND(NOT_FOUND, "BE001", "빵집을 찾을 수 없습니다.");
-	
+	BAKERY_NOT_FOUND(NOT_FOUND, "BE001", "빵집을 찾을 수 없습니다."),
+	BAKERY_INACTIVE(NOT_FOUND, "BE002", "삭제된 빵집입니다."),
+	OWNER_MISMATCH(NOT_FOUND, "BE003", "빵집 주인이 아닙니다.");
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;

@@ -11,14 +11,13 @@ import lombok.Builder;
 public record BakeryResponse(
 	Long bakeryId,
 	String name,
-	String phone,
 	String addressDescription,
+	String phone,
 	String openTime,
 	String introduction,
 	String profileImage,
 	List<String> bakeryImages,
-	OperatingStatus operatingStatus,
-	boolean isActive
+	OperatingStatus operatingStatus
 ) {
 	@Builder
 	public BakeryResponse {
@@ -40,7 +39,6 @@ public record BakeryResponse(
 			.addressDescription(bakery.getAddress().getDescription())
 			.bakeryImages(imageUrls)
 			.operatingStatus(bakery.getOperatingStatus())
-			.isActive(bakery.isActive())
 			.build();
 	}
 }
