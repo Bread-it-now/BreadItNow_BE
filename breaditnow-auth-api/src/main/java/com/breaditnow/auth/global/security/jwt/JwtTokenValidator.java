@@ -1,0 +1,74 @@
+package com.breaditnow.auth.global.security.jwt;
+
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import com.breaditnow.auth.global.security.AccountContext;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+
+@Component
+public class JwtTokenValidator {
+
+	private final String SECRET_KEY;
+
+	@Autowired
+	public JwtTokenValidator(@Value("${auth.token.secret-key}") String secretKey) {
+		this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
+	}
+
+	public Authentication getAuthentication(String token) throws JwtException {
+		Claims claims = parseClaims(token);
+
+		Long userId = claims.get("userId", Long.class);
+		List<SimpleGrantedAuthority> authorities = getAuthorities(claims);
+
+		AccountContext principal = AccountContext.of(userId, authorities);
+
+		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+	}
+
+	private Claims parseClaims(String token) throws JwtException {
+		return Jwts
+			.parserBuilder()
+			.setSigningKey(SECRET_KEY)
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
+	}
+
+	private List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
+		return Collections.singletonList(new SimpleGrantedAuthority(
+			claims.get("authorities").toString()));
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+			return true;
+		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+			throw new JwtException(TOKEN_INVALID.getMessage());
+		} catch (ExpiredJwtException e) {
+			throw new JwtException(TOKEN_EXPIRED.getMessage());
+		} catch (UnsupportedJwtException e) {
+			throw new JwtException(TOKEN_UNSUPPORTED.getMessage());
+		} catch (IllegalArgumentException e) {
+			throw new JwtException(TOKEN_WRONG.getMessage());
+		}
+	}
+}
