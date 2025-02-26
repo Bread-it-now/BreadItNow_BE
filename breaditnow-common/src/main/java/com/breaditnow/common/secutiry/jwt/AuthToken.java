@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.token.domain;
+package com.breaditnow.common.secutiry.jwt;
 
 import lombok.Builder;
 

@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.token.domain;
+package com.breaditnow.common.secutiry.jwt;
 
 public enum AuthTokenType {
 	ACCESS,

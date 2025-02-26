@@ -1,20 +1,20 @@
 package com.breaditnow.auth.domain.token.service;
 
-import static com.breaditnow.auth.domain.token.domain.AuthTokenType.*;
-import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+import static com.breaditnow.common.exception.CommonErrorCode.*;
+import static com.breaditnow.common.secutiry.jwt.AuthTokenType.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.auth.domain.token.domain.AuthToken;
-import com.breaditnow.auth.domain.token.domain.AuthTokenType;
 import com.breaditnow.auth.domain.token.repository.AuthTokenRepository;
 import com.breaditnow.auth.global.exception.AuthException;
-import com.breaditnow.auth.global.security.AccountContext;
-import com.breaditnow.auth.global.security.jwt.JwtTokenCreator;
-import com.breaditnow.auth.global.security.jwt.JwtTokenValidator;
+import com.breaditnow.common.secutiry.AccountContext;
+import com.breaditnow.common.secutiry.jwt.AuthToken;
+import com.breaditnow.common.secutiry.jwt.AuthTokenType;
+import com.breaditnow.common.secutiry.jwt.JwtTokenCreator;
+import com.breaditnow.common.secutiry.jwt.JwtTokenValidator;
 import com.breaditnow.common.util.CookieUtil;
 
 import jakarta.servlet.http.Cookie;

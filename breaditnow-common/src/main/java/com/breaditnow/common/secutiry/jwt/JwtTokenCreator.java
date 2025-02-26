@@ -1,6 +1,4 @@
-package com.breaditnow.auth.global.security.jwt;
-
-import static com.breaditnow.auth.domain.token.domain.AuthTokenType.*;
+package com.breaditnow.common.secutiry.jwt;
 
 import java.security.Key;
 import java.time.LocalDateTime;
@@ -17,9 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.auth.domain.token.domain.AuthToken;
-import com.breaditnow.auth.domain.token.domain.AuthTokenType;
-import com.breaditnow.auth.global.security.AccountContext;
+import com.breaditnow.common.secutiry.AccountContext;
 
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -52,7 +48,8 @@ public class JwtTokenCreator {
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
 
 		Date now = new Date();
-		Long expiration = tokenType == ACCESS ? ACCESS_TOKEN_VALID_MILLISECOND : REFRESH_TOKEN_VALID_MILLI_SECOND;
+		Long expiration =
+			tokenType == AuthTokenType.ACCESS ? ACCESS_TOKEN_VALID_MILLISECOND : REFRESH_TOKEN_VALID_MILLI_SECOND;
 		Date expiryDate = new Date(now.getTime() + expiration);
 		String jwtToken = generateJwt(accountContext, now, expiryDate);
 

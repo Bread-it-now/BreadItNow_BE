@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.breaditnow.auth.domain.token.domain.AuthToken;
-import com.breaditnow.auth.domain.token.domain.AuthTokenType;
 import com.breaditnow.auth.global.exception.AuthException;
+import com.breaditnow.common.secutiry.jwt.AuthToken;
+import com.breaditnow.common.secutiry.jwt.AuthTokenType;
 import com.breaditnow.redis.repository.RedisRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
