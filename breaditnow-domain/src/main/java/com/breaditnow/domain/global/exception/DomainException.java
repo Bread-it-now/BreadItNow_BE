@@ -1,4 +1,4 @@
-package com.breaditnow.domain.global;
+package com.breaditnow.domain.global.exception;
 
 import com.breaditnow.common.exception.BreaditnowException;
 import com.breaditnow.common.exception.ErrorCode;

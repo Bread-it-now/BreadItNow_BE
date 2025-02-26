@@ -12,7 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +30,7 @@ public class Address {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumns({
 		@JoinColumn(name = "sido_code", referencedColumnName = "sidoCode"),
 		@JoinColumn(name = "gugun_code", referencedColumnName = "gugunCode"),

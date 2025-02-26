@@ -19,6 +19,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
@@ -35,7 +36,7 @@ public class Bakery {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "owner_id", nullable = false)
 	Owner owner;
 

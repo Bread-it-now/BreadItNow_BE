@@ -1,4 +1,4 @@
-package com.breaditnow.domain.global;
+package com.breaditnow.domain.global.exception;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -11,7 +11,7 @@ public enum DomainErrorCode implements ErrorCode {
 	 * Owner(BB000)
 	 */
 	OWNER_NOT_FOUND(NOT_FOUND, "BB001", "사업자를 찾을 수 없습니다."),
-
+	DUPLICATE_OWNER_BAKERY(CONFLICT, "BB002", "해당 사업자에 이미 빵집이 존재합니다."),
 	/**
 	 * Address(BC000)
 	 */

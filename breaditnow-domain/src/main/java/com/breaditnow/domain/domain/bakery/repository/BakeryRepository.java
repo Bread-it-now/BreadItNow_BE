@@ -1,11 +1,11 @@
 package com.breaditnow.domain.domain.bakery.repository;
 
-import static com.breaditnow.domain.global.DomainErrorCode.*;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.global.DomainException;
+import com.breaditnow.domain.global.exception.DomainException;
 
 public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 	default Bakery getById(Long id) {
@@ -28,4 +28,12 @@ public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 			throw new DomainException(BAKERY_INACTIVE);
 		}
 	}
+
+	default void checkDuplicateOwner(Long ownerId) {
+		if (existsByOwnerIdAndIsActiveTrue(ownerId)) {
+			throw new DomainException(DUPLICATE_OWNER_BAKERY);
+		}
+	}
+
+	boolean existsByOwnerIdAndIsActiveTrue(Long ownerId);
 }

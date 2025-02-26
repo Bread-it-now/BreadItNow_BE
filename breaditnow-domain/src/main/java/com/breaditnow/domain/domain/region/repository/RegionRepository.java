@@ -1,12 +1,12 @@
 package com.breaditnow.domain.domain.region.repository;
 
-import static com.breaditnow.domain.global.DomainErrorCode.*;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.breaditnow.domain.domain.region.entity.Region;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
-import com.breaditnow.domain.global.DomainException;
+import com.breaditnow.domain.global.exception.DomainException;
 
 import lombok.NonNull;
 

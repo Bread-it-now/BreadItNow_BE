@@ -40,6 +40,8 @@ public class BakeryService {
 	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile profileImage) {
 		Owner owner = ownerRepository.getById(ownerId);
 
+		bakeryRepository.checkDuplicateOwner(ownerId);
+
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
 		Region region = regionRepository.getById(regionPK);
 
