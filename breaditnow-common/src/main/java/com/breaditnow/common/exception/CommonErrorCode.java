@@ -19,7 +19,13 @@ public enum CommonErrorCode implements ErrorCode {
 	TOKEN_WRONG(HttpStatus.UNAUTHORIZED, "AB005", "잘못된 토큰 서명입니다."),
 	REFRESH_TOKEN_NOT_EXIST_IN_COOKIE(HttpStatus.UNAUTHORIZED, "AB006", "쿠키에 Refresh 토큰이 없습니다. 재로그인해주세요."),
 	REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "AB007", "만료된 Refresh 토큰 입니다. 재로그인해주세요."),
-	TOKEN_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "AB008", "토큰이 일치하지 않습니다.");
+	TOKEN_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "AB008", "토큰이 일치하지 않습니다."),
+
+	/**
+	 * 인증(AC000)
+	 */
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "AC001", "유효한 자격증명이 제공되지 않았습니다."),
+	FORBIDDEN(HttpStatus.FORBIDDEN, "AC002", "접근 권한이 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

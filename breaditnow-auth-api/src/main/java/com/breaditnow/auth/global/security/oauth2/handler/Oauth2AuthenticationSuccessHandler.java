@@ -1,7 +1,7 @@
 package com.breaditnow.auth.global.security.oauth2.handler;
 
 import static com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository.*;
-import static com.breaditnow.common.secutiry.jwt.AuthTokenType.*;
+import static com.breaditnow.common.secutiry.jwt.token.AuthTokenType.*;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,8 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.breaditnow.auth.domain.token.repository.AuthTokenRepository;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.common.secutiry.AccountContext;
-import com.breaditnow.common.secutiry.jwt.AuthToken;
-import com.breaditnow.common.secutiry.jwt.JwtTokenCreator;
+import com.breaditnow.common.secutiry.jwt.provider.JwtTokenCreator;
+import com.breaditnow.common.secutiry.jwt.token.AuthToken;
 import com.breaditnow.common.util.CookieUtil;
 import com.breaditnow.domain.customer.entity.Customer;
 import com.breaditnow.domain.customer.repository.CustomerRepository;

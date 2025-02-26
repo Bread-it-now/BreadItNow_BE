@@ -1,4 +1,4 @@
-package com.breaditnow.common.secutiry.jwt;
+package com.breaditnow.common.secutiry.jwt.provider;
 
 import static com.breaditnow.common.exception.CommonErrorCode.*;
 

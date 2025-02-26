@@ -1,4 +1,4 @@
-package com.breaditnow.common.secutiry.jwt;
+package com.breaditnow.common.secutiry.jwt.provider;
 
 import java.security.Key;
 import java.time.LocalDateTime;
@@ -16,6 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.breaditnow.common.secutiry.AccountContext;
+import com.breaditnow.common.secutiry.jwt.token.AuthToken;
+import com.breaditnow.common.secutiry.jwt.token.AuthTokenType;
 
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
