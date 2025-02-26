@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private static final String[] AUTH = {"/oauth2/authorization/**", "/oauth/callback/**"};
+	private static final String[] AUTH = {"/oauth2/authorization/**", "/oauth/callback/**", "/api/v1/token/**"};
 
 	private final CustomOAuth2UserService oauth2UserService;
 	private final CookieOAuth2AuthorizationRequestRepository
@@ -63,11 +63,12 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(AUTH).permitAll()
-				.anyRequest().permitAll()
+				.anyRequest().authenticated()
 			)
 			.exceptionHandling((exceptions) -> exceptions
 				.authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // 인증 실패 핸들링
-				.accessDeniedHandler(new JwtAccessDeniedHandler())) // 인가 실패 핸들링
+				.accessDeniedHandler(new JwtAccessDeniedHandler()) // 인가 실패 핸들링
+			)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(new JwtExceptionHandlerFilter(), JwtAuthenticationFilter.class);
 
