@@ -1,6 +1,7 @@
 package com.breaditnow.auth.global.exception;
 
 import com.breaditnow.common.exception.BreaditnowException;
+import com.breaditnow.common.exception.CommonErrorCode;
 
 public class AuthException extends BreaditnowException {
 
@@ -15,5 +16,8 @@ public class AuthException extends BreaditnowException {
 	public AuthException(AuthErrorCode errorCode, String message) {
 		super(errorCode, message);
 	}
-}
 
+	public AuthException(CommonErrorCode commonErrorCode) {
+		super(commonErrorCode);
+	}
+}
