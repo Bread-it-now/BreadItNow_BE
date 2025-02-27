@@ -45,7 +45,7 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = buildAddress(regionPK, bakeryCreateRequest.addressDescription());
+		Address address = new Address(regionPK, bakeryCreateRequest.addressDescription());
 		String profileImageUrl = uploadFile(profileImage, "image/owner/bakery/profile");
 
 		Bakery bakery = Bakery.builder()
@@ -78,12 +78,7 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = Address.builder()
-			.sidoCode(regionPK.getSidoCode())
-			.gugunCode(regionPK.getGugunCode())
-			.dongCode(regionPK.getDongCode())
-			.description(bakeryUpdateRequest.addressDescription())
-			.build();
+		Address address = new Address(regionPK, bakeryUpdateRequest.addressDescription());
 
 		String updatedProfileImage = uploadFile(profileImage, "image/owner/bakery/profile");
 
@@ -122,15 +117,6 @@ public class BakeryService {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		bakery.updateOperatingStatus(OperatingStatus.from(type));
 		return bakery.getId();
-	}
-
-	private Address buildAddress(RegionPK regionPK, String description) {
-		return Address.builder()
-			.sidoCode(regionPK.getSidoCode())
-			.gugunCode(regionPK.getGugunCode())
-			.dongCode(regionPK.getDongCode())
-			.description(description)
-			.build();
 	}
 
 	private String uploadFile(MultipartFile file, String path) {

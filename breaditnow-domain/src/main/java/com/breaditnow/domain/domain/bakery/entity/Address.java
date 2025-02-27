@@ -2,6 +2,8 @@ package com.breaditnow.domain.domain.bakery.entity;
 
 import static lombok.AccessLevel.*;
 
+import com.breaditnow.domain.domain.region.entity.RegionPK;
+
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +27,11 @@ public class Address {
 
 	@Column(name = "address_description")
 	private String description;
+	
+	public Address(RegionPK regionPK, String description) {
+		this.sidoCode = regionPK.getSidoCode();
+		this.gugunCode = regionPK.getGugunCode();
+		this.dongCode = regionPK.getDongCode();
+		this.description = description;
+	}
 }
