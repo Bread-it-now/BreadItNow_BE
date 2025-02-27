@@ -1,4 +1,4 @@
-package com.breaditnow.owner.bakery.service;
+package com.breaditnow.owner.domain.bakery.service;
 
 import static com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus.*;
 
@@ -19,9 +19,9 @@ import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 import com.breaditnow.domain.domain.region.repository.RegionRepository;
-import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
-import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
-import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
+import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
+import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
+import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.global.s3.upload.FileUploader;
 
 import lombok.RequiredArgsConstructor;

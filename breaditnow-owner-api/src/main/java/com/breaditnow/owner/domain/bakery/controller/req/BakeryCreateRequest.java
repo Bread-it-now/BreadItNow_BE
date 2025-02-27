@@ -1,6 +1,6 @@
-package com.breaditnow.owner.bakery.controller.req;
+package com.breaditnow.owner.domain.bakery.controller.req;
 
-public record BakeryUpdateRequest(
+public record BakeryCreateRequest(
 	String name,
 	String addressCode,
 	String addressDescription,

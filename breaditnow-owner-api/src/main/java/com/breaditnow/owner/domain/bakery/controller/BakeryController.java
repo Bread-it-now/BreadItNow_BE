@@ -1,4 +1,4 @@
-package com.breaditnow.owner.bakery.controller;
+package com.breaditnow.owner.domain.bakery.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.owner.bakery.controller.req.BakeryCreateRequest;
-import com.breaditnow.owner.bakery.controller.req.BakeryUpdateRequest;
-import com.breaditnow.owner.bakery.controller.req.OperatingStatusRequest;
-import com.breaditnow.owner.bakery.controller.res.BakeryResponse;
-import com.breaditnow.owner.bakery.service.BakeryService;
+import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
+import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
+import com.breaditnow.owner.domain.bakery.controller.req.OperatingStatusRequest;
+import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
+import com.breaditnow.owner.domain.bakery.service.BakeryService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
