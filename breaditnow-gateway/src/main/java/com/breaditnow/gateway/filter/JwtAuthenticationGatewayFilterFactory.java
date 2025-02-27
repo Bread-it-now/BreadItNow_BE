@@ -18,7 +18,8 @@ import com.breaditnow.gateway.jwt.TokenUser;
 import lombok.Setter;
 
 @Component
-public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
+public class JwtAuthenticationGatewayFilterFactory
+	extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
 
 	private static final String BEARER_PREFIX = "Bearer ";
 
@@ -28,7 +29,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 	@Autowired
 	private JwtTokenValidator jwtTokenValidator;
 
-	public AuthenticationFilter() {
+	public JwtAuthenticationGatewayFilterFactory() {
 		super(Config.class);
 	}
 

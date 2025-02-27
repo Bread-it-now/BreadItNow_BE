@@ -15,12 +15,14 @@ spring:
           uri: http://localhost:9000/
           predicates:
             - Path=/oauth2/authorization/**, /oauth/callback/**  # 소셜 로그인 처리
+
         - id: auth-api
           uri: http://localhost:9000/
           predicates:
             - Path=/auth-api/**
           filters:
             - RewritePath=/auth-api/(?<segment>.*), /$\{segment}
+
         - id: customer-api
           uri: http://localhost:9001/
           predicates:
@@ -28,6 +30,7 @@ spring:
           filters:
             - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
             - JwtAuthentication=ROLE_CUSTOMER
+
         - id: owner-api
           uri: http://localhost:9002/
           predicates:
@@ -35,3 +38,11 @@ spring:
           filters:
             - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
             - JwtAuthentication=ROLE_OWNER
+
+auth:
+  token:
+    header: Authorization
+    secret-key: ${AUTH_TOKEN_SECRET_KEY}
+    access-token-valid-millisecond: 86400000  # 1 day in milliseconds
+    refresh-token-valid-millisecond: 604800000  # 7 days in milliseconds
+    refresh-cookie-key: ${REFRESH_COOKIE_KEY}
