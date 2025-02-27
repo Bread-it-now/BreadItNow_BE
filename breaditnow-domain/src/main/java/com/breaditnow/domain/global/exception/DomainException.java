@@ -4,7 +4,7 @@ import com.breaditnow.common.exception.BreaditnowException;
 import com.breaditnow.common.exception.ErrorCode;
 
 public class DomainException extends BreaditnowException {
-
+	
 	public DomainException(ErrorCode errorCode) {
 		super(errorCode);
 	}

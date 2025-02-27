@@ -38,12 +38,13 @@ public class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+		
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HEALTH_CHECK).permitAll()
 				.anyRequest().permitAll()
 			)
+
 			.exceptionHandling((exceptions) -> exceptions
 				.authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // 인증 실패 핸들링
 				.accessDeniedHandler(new JwtAccessDeniedHandler()) // 인가 실패 핸들링

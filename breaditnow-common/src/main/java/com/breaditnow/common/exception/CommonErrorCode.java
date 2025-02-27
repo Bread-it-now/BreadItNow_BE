@@ -25,7 +25,12 @@ public enum CommonErrorCode implements ErrorCode {
 	 * 인증(AC000)
 	 */
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "AC001", "유효한 자격증명이 제공되지 않았습니다."),
-	FORBIDDEN(HttpStatus.FORBIDDEN, "AC002", "접근 권한이 없습니다.");
+	FORBIDDEN(HttpStatus.FORBIDDEN, "AC002", "접근 권한이 없습니다."),
+
+	/**
+	 * Role 관련(AD000)
+	 */
+	ROLE_INVALID(HttpStatus.BAD_REQUEST, "AD001", "잘못된 역할 값입니다. 유효한 값은 CUSTOMER 또는 OWNER 입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

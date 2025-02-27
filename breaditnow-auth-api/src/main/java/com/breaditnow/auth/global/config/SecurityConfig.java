@@ -62,11 +62,7 @@ public class SecurityConfig {
 			);
 
 		http
-			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(HEALTH_CHECK).permitAll()
-				.requestMatchers(AUTH).permitAll()
-				.anyRequest().authenticated()
-			)
+			.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
 			.exceptionHandling((exceptions) -> exceptions
 				.authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // 인증 실패 핸들링
 				.accessDeniedHandler(new JwtAccessDeniedHandler()) // 인가 실패 핸들링
