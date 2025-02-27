@@ -2,9 +2,7 @@ package com.breaditnow.gateway.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.breaditnow.common.exception.ErrorCode;
-
-public enum GatewayErrorCode implements ErrorCode {
+public enum GatewayErrorCode {
 	/**
 	 * 토큰(ZA000)
 	 */
@@ -32,17 +30,14 @@ public enum GatewayErrorCode implements ErrorCode {
 		this.message = message;
 	}
 
-	@Override
 	public String getCode() {
 		return code;
 	}
 
-	@Override
 	public String getMessage() {
 		return message;
 	}
 
-	@Override
 	public HttpStatus getHttpStatus() {
 		return httpStatus;
 	}

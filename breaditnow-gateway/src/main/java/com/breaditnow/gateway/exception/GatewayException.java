@@ -1,23 +1,22 @@
 package com.breaditnow.gateway.exception;
 
-import com.breaditnow.common.exception.BreaditnowException;
-import com.breaditnow.common.exception.CommonErrorCode;
+public class GatewayException extends RuntimeException {
 
-public class GatewayException extends BreaditnowException {
+	private final GatewayErrorCode errorCode;
 
 	public GatewayException(GatewayErrorCode errorCode) {
-		super(errorCode);
+		super(errorCode.getMessage());
+		this.errorCode = errorCode;
 	}
 
 	public GatewayException(GatewayErrorCode errorCode, Throwable cause) {
-		super(errorCode, cause);
+		super(errorCode.getMessage(), cause);
+		this.errorCode = errorCode;
 	}
 
 	public GatewayException(GatewayErrorCode errorCode, String message) {
-		super(errorCode, message);
+		super(errorCode.getMessage() + " : " + message);
+		this.errorCode = errorCode;
 	}
 
-	public GatewayException(CommonErrorCode commonErrorCode) {
-		super(commonErrorCode);
-	}
 }

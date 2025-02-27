@@ -41,8 +41,4 @@ spring:
 
 auth:
   token:
-    header: Authorization
     secret-key: ${AUTH_TOKEN_SECRET_KEY}
-    access-token-valid-millisecond: 86400000  # 1 day in milliseconds
-    refresh-token-valid-millisecond: 604800000  # 7 days in milliseconds
-    refresh-cookie-key: ${REFRESH_COOKIE_KEY}
