@@ -5,7 +5,12 @@ import org.springframework.http.HttpStatus;
 import com.breaditnow.common.exception.ErrorCode;
 
 public enum CustomerErrorCode implements ErrorCode {
-	INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "CA001", "?");
+	INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "CA001", "?"),
+
+	/**
+	 * CY000 인증
+	 */
+	AUTHENTICATION_REQUIRED(HttpStatus.UNAUTHORIZED, "CY001", "Customer 인증 정보가 필수입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

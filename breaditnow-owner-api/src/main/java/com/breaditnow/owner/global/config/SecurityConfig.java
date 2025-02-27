@@ -1,4 +1,4 @@
-package com.breaditnow.auth.global.config;
+package com.breaditnow.owner.global.config;
 
 import java.util.List;
 
@@ -14,10 +14,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
-import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
-import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
-import com.breaditnow.auth.global.security.oauth2.service.CustomOAuth2UserService;
 import com.breaditnow.common.security.jwt.filter.JwtAuthenticationFilter;
 import com.breaditnow.common.security.jwt.filter.JwtExceptionHandlerFilter;
 import com.breaditnow.common.security.jwt.handler.JwtAccessDeniedHandler;
@@ -31,13 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private static final String[] HEALTH_CHECK = {"/api/check"};
-	private static final String[] AUTH = {"/oauth2/authorization/**", "/oauth/callback/**", "/api/v1/token/**"};
 
-	private final CustomOAuth2UserService oauth2UserService;
-	private final CookieOAuth2AuthorizationRequestRepository
-		cookieOAuth2AuthorizationRequestRepository;
-	private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
-	private final Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
@@ -47,25 +37,12 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.oauth2Login(oauth2 -> oauth2
-				.authorizationEndpoint(authorization -> authorization
-					.baseUri("/oauth2/authorization")
-					.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository)
-				)
-				.redirectionEndpoint(redirection -> redirection
-					.baseUri("/oauth/callback/*"))
-				.userInfoEndpoint(userInfo -> userInfo
-					.userService(oauth2UserService))
-				.successHandler(oauth2AuthenticationSuccessHandler)
-				.failureHandler(oauth2AuthenticationFailureHandler)
-			);
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HEALTH_CHECK).permitAll()
-				.requestMatchers(AUTH).permitAll()
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
 			)
 			.exceptionHandling((exceptions) -> exceptions
 				.authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // 인증 실패 핸들링

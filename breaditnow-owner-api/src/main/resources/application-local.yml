@@ -2,7 +2,7 @@ spring:
   config:
     activate:
       on-profile: local
-    import: application-mysql-local.yml
+    import: application-common-local.yml, application-mysql-local.yml
 
 aws:
   s3:
