@@ -11,9 +11,10 @@ public enum AuthErrorCode implements ErrorCode {
 	UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "BA001", "지원하지 않는 소셜입니다."),
 
 	/**
-	 * 토큰(BB000)
+	 * 기타(BC000)
 	 */
-	OAUTH2_ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "BB002", "소셜 Access Token이 만료되었습니다. 재로그인해주세요");
+	SERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "BC001", "AuthToken을 JSON으로 직렬화하는데 실패했습니다."),
+	DESERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "BC002", "JSON을 AuthToken으로 역직렬화하는데 실패했습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

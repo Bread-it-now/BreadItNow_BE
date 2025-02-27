@@ -31,7 +31,7 @@ public record ApiErrorResponse(
 	}
 
 	public static ApiErrorResponse of(ErrorCode errorCode, String exMessage) {
-		return new ApiErrorResponse(errorCode.getCode(), errorCode.getMessage() + exMessage, null);
+		return new ApiErrorResponse(errorCode.getCode(), errorCode.getMessage() + " " + exMessage, null);
 	}
 }
 

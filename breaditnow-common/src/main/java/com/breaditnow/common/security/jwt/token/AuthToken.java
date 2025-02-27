@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.token.domain;
+package com.breaditnow.common.security.jwt.token;
 
 import lombok.Builder;
 
@@ -7,6 +7,7 @@ public record AuthToken(
 	Long userId,
 	String token,
 	Long expiresIn,
+	String expiryDate,
 	AuthTokenType type
 ) {
 

@@ -1,9 +1,10 @@
-package com.breaditnow.auth.global.security;
+package com.breaditnow.common.security;
 
-import static com.breaditnow.auth.global.security.Role.*;
+import static com.breaditnow.common.security.Role.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +22,7 @@ import lombok.ToString;
 public class AccountContext implements UserDetails, OAuth2User {
 
 	private Long userId;
-	private Role role;
+	private List<SimpleGrantedAuthority> roles;
 
 	private String email;
 	private String password;
@@ -29,18 +30,25 @@ public class AccountContext implements UserDetails, OAuth2User {
 	private String oauth2Id;
 	private Map<String, Object> attributes;
 
+	public static AccountContext of(Long userId, List<SimpleGrantedAuthority> roles) {
+		return AccountContext.builder()
+			.userId(userId)
+			.roles(roles)
+			.build();
+	}
+
 	public static AccountContext ofOAuth2(Long userId, String oauth2Id, Map<String, Object> attributes) {
 		return AccountContext.builder()
 			.userId(userId)
 			.oauth2Id(oauth2Id)
 			.attributes(attributes)
-			.role(CUSTOMER)
+			.roles(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + CUSTOMER.name())))
 			.build();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+		return roles;
 	}
 
 	@Override
@@ -62,4 +70,5 @@ public class AccountContext implements UserDetails, OAuth2User {
 	public String getName() {
 		return this.oauth2Id;
 	}
+
 }

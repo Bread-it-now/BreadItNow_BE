@@ -1,8 +1,9 @@
-package com.breaditnow.auth.global.security.jwt;
-
-import static com.breaditnow.auth.domain.token.domain.AuthTokenType.*;
+package com.breaditnow.common.security.jwt.provider;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -14,9 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.auth.domain.token.domain.AuthToken;
-import com.breaditnow.auth.domain.token.domain.AuthTokenType;
-import com.breaditnow.auth.global.security.AccountContext;
+import com.breaditnow.common.security.AccountContext;
+import com.breaditnow.common.security.jwt.token.AuthToken;
+import com.breaditnow.common.security.jwt.token.AuthTokenType;
 
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -47,30 +48,37 @@ public class JwtTokenCreator {
 
 	public AuthToken createToken(Authentication authentication, AuthTokenType tokenType) {
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
-		Long expiration = tokenType == ACCESS ? ACCESS_TOKEN_VALID_MILLISECOND : REFRESH_TOKEN_VALID_MILLI_SECOND;
 
-		String jwtToken = generateJwt(accountContext, expiration);
+		Date now = new Date();
+		Long expiration =
+			tokenType == AuthTokenType.ACCESS ? ACCESS_TOKEN_VALID_MILLISECOND : REFRESH_TOKEN_VALID_MILLI_SECOND;
+		Date expiryDate = new Date(now.getTime() + expiration);
+		String jwtToken = generateJwt(accountContext, now, expiryDate);
 
 		return AuthToken.builder()
 			.userId(accountContext.getUserId())
 			.token(jwtToken)
 			.expiresIn(expiration)
+			.expiryDate(getLocalDateTime(expiryDate))
 			.type(tokenType)
 			.build();
 	}
 
-	private String generateJwt(AccountContext accountContext, Long expiration) {
+	private static String getLocalDateTime(Date expiryDate) {
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		return localDateTime.format(formatter);
+	}
+
+	private String generateJwt(AccountContext accountContext, Date now, Date expiryDate) {
 		List<String> authorities = accountContext.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.toList());
 
-		Date now = new Date();
-		Date expiryDate = new Date(now.getTime() + expiration);
-
 		return Jwts.builder()
 			.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
 			.setSubject("AuthToken")
-			.claim("id", accountContext.getUserId())
+			.claim("userId", accountContext.getUserId())
 			.claim("authorities", authorities)
 			.setIssuedAt(now)
 			.setExpiration(expiryDate)
