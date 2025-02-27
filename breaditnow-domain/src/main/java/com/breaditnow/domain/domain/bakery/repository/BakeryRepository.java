@@ -11,9 +11,8 @@ public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 	boolean existsByOwnerIdAndIsActiveTrue(Long ownerId);
 
 	default Bakery getById(Long id) {
-		Bakery bakery = findById(id)
+		return findById(id)
 			.orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
-		return bakery;
 	}
 
 	default Bakery getByIdAndIsActiveTrue(Long id) {
