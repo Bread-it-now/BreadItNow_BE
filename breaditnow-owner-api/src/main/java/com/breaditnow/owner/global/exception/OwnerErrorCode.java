@@ -23,7 +23,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	/**
 	 * DY000 인증
 	 */
-	AUTHENTICATION_REQUIRED(HttpStatus.UNAUTHORIZED, "DY001", "인증 정보가 필수입니다.");
+	AUTHENTICATION_REQUIRED(HttpStatus.UNAUTHORIZED, "DY001", "Owner 인증 정보가 필수입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
