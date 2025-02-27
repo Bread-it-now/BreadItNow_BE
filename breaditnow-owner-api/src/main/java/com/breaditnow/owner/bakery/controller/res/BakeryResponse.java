@@ -8,6 +8,7 @@ import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 
 import lombok.Builder;
 
+@Builder
 public record BakeryResponse(
 	Long bakeryId,
 	String name,
@@ -19,10 +20,6 @@ public record BakeryResponse(
 	List<String> bakeryImages,
 	OperatingStatus operatingStatus
 ) {
-	@Builder
-	public BakeryResponse {
-	}
-
 	public static BakeryResponse of(Bakery bakery) {
 		List<String> imageUrls = bakery.getBakeryImages()
 			.stream()

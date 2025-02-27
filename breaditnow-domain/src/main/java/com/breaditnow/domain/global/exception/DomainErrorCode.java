@@ -8,25 +8,25 @@ import com.breaditnow.common.exception.ErrorCode;
 
 public enum DomainErrorCode implements ErrorCode {
 	/**
-	 * Owner(BB000)
+	 * Owner(BA000)
 	 */
-	OWNER_NOT_FOUND(NOT_FOUND, "BB001", "사업자를 찾을 수 없습니다."),
-	DUPLICATE_OWNER_BAKERY(CONFLICT, "BB002", "해당 사업자에 이미 빵집이 존재합니다."),
+	OWNER_NOT_FOUND(NOT_FOUND, "BA001", "사업자를 찾을 수 없습니다."),
+	DUPLICATE_OWNER_BAKERY(CONFLICT, "BA002", "해당 사업자에 이미 빵집이 존재합니다."),
 	/**
-	 * Address(BC000)
+	 * Address(BB000)
 	 */
 
 	/**
-	 * Region(BD000)
+	 * Region(BC000)
 	 */
-	REGION_NOT_FOUND(NOT_FOUND, "BD001", "지역을 찾을 수 없습니다."),
+	REGION_NOT_FOUND(NOT_FOUND, "BC001", "지역을 찾을 수 없습니다."),
 
 	/**
-	 * Bakery(BE000)
+	 * Bakery(BD000)
 	 */
-	BAKERY_NOT_FOUND(NOT_FOUND, "BE001", "빵집을 찾을 수 없습니다."),
-	BAKERY_INACTIVE(NOT_FOUND, "BE002", "삭제된 빵집입니다."),
-	OWNER_MISMATCH(NOT_FOUND, "BE003", "빵집 주인이 아닙니다.");
+	BAKERY_NOT_FOUND(NOT_FOUND, "BD001", "빵집을 찾을 수 없습니다."),
+	BAKERY_INACTIVE(NOT_FOUND, "BD002", "삭제된 빵집입니다."),
+	OWNER_MISMATCH(NOT_FOUND, "BD003", "빵집 주인이 아닙니다.");
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
