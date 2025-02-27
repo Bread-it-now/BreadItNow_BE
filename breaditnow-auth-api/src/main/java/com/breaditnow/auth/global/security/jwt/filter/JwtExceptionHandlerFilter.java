@@ -1,4 +1,4 @@
-package com.breaditnow.common.security.jwt.filter;
+package com.breaditnow.auth.global.security.jwt.filter;
 
 import static com.breaditnow.common.exception.CommonErrorCode.*;
 

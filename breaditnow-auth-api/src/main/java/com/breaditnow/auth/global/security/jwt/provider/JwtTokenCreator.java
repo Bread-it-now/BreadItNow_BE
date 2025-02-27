@@ -1,4 +1,4 @@
-package com.breaditnow.common.security.jwt.provider;
+package com.breaditnow.auth.global.security.jwt.provider;
 
 import java.security.Key;
 import java.time.LocalDateTime;
@@ -15,9 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.common.security.AccountContext;
-import com.breaditnow.common.security.jwt.token.AuthToken;
-import com.breaditnow.common.security.jwt.token.AuthTokenType;
+import com.breaditnow.auth.global.security.AccountContext;
+import com.breaditnow.auth.global.security.jwt.token.AuthToken;
+import com.breaditnow.auth.global.security.jwt.token.AuthTokenType;
 
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

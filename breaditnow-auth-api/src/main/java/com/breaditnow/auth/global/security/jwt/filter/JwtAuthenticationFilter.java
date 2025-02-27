@@ -1,4 +1,4 @@
-package com.breaditnow.common.security.jwt.filter;
+package com.breaditnow.auth.global.security.jwt.filter;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.breaditnow.common.security.jwt.provider.JwtTokenValidator;
+import com.breaditnow.auth.global.security.jwt.provider.JwtTokenValidator;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

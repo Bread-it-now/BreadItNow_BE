@@ -14,14 +14,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.breaditnow.auth.global.security.jwt.filter.JwtAuthenticationFilter;
+import com.breaditnow.auth.global.security.jwt.filter.JwtExceptionHandlerFilter;
+import com.breaditnow.auth.global.security.jwt.handler.JwtAccessDeniedHandler;
+import com.breaditnow.auth.global.security.jwt.handler.JwtAuthenticationEntryPoint;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.oauth2.service.CustomOAuth2UserService;
-import com.breaditnow.common.security.jwt.filter.JwtAuthenticationFilter;
-import com.breaditnow.common.security.jwt.filter.JwtExceptionHandlerFilter;
-import com.breaditnow.common.security.jwt.handler.JwtAccessDeniedHandler;
-import com.breaditnow.common.security.jwt.handler.JwtAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 

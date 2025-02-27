@@ -1,4 +1,4 @@
-package com.breaditnow.common.security.jwt.token;
+package com.breaditnow.auth.global.security.jwt.token;
 
 import lombok.Builder;
 
