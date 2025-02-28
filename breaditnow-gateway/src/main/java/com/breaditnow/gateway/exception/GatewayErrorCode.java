@@ -22,7 +22,7 @@ public enum GatewayErrorCode {
 	UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "ZB003", "유효하지 않은 권한입니다."),
 
 	/**
-	 * 기타 에러
+	 * 기타 에러(ZC000)
 	 */
 	UNDEFINED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "ZC001", "정의되지 않은 에러입니다. "),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "ZC002", "");

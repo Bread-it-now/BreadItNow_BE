@@ -10,7 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.breaditnow.customer.global.exception.CustomerException;
-import com.breaditnow.customer.global.security.AuthCustomer;
+import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.owner.entity.Owner;

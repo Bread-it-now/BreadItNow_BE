@@ -12,7 +12,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.breaditnow.owner.global.exception.OwnerException;
-import com.breaditnow.owner.global.security.AuthOwner;
+import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
 import lombok.RequiredArgsConstructor;
 

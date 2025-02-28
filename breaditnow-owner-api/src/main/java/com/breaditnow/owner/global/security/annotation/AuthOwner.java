@@ -1,4 +1,4 @@
-package com.breaditnow.owner.global.security;
+package com.breaditnow.owner.global.security.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
