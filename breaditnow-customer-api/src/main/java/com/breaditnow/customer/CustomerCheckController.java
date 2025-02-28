@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.breaditnow.customer.global.security.AuthCustomer;
-
 @RestController
 @RequestMapping("/api/")
 public class CustomerCheckController {
@@ -15,7 +13,7 @@ public class CustomerCheckController {
 	private String port;
 
 	@GetMapping("/check")
-	public String check(@AuthCustomer Long customerId) {
-		return String.format("Customer API on PORT %s, customer=%d", port, customerId);
+	public String check() {
+		return String.format("Customer API on PORT %s", port);
 	}
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class RouteValidator {
 
 	public static final List<String> openApiEndpoints = List.of(
-		// "/customer-api/api/check", "/owner-api/api/check"
+		"/customer-api/api/check", "/owner-api/api/check"
 	);
 
 	public Predicate<ServerHttpRequest> isPassed =
