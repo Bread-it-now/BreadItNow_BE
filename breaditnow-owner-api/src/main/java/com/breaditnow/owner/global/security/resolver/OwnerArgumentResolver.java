@@ -3,19 +3,16 @@ package com.breaditnow.owner.global.security.resolver;
 import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.breaditnow.common.security.AccountContext;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.breaditnow.owner.global.exception.OwnerException;
-import com.breaditnow.owner.global.security.AuthOwner;
+import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,19 +34,17 @@ public class OwnerArgumentResolver implements HandlerMethodArgumentResolver {
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		AuthOwner authOwner = parameter.getParameterAnnotation(AuthOwner.class);
 
-		if (authentication == null || !(authentication.getPrincipal() instanceof AccountContext)) {
+		String userIdHeader = webRequest.getHeader("X-Authorization-Id");
+		if (userIdHeader == null) {
 			if (authOwner.required()) { // 필수인 경우, 예외 발생
 				throw new OwnerException(AUTHENTICATION_REQUIRED);
 			} else {
 				return null;
 			}
 		}
-
-		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
-		Owner owner = ownerRepository.getById(accountContext.getUserId());
+		Owner owner = ownerRepository.getById(Long.valueOf(userIdHeader));
 
 		if (Owner.class.isAssignableFrom(parameter.getParameterType())) {
 			return owner;

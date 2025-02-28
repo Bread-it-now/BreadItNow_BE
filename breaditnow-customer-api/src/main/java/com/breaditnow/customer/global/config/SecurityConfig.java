@@ -9,15 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import com.breaditnow.common.security.jwt.filter.JwtAuthenticationFilter;
-import com.breaditnow.common.security.jwt.filter.JwtExceptionHandlerFilter;
-import com.breaditnow.common.security.jwt.handler.JwtAccessDeniedHandler;
-import com.breaditnow.common.security.jwt.handler.JwtAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,31 +20,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private static final String[] HEALTH_CHECK = {"/api/check"};
-
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private static final String[] HEALTH_CHECK = { "/api/check" };
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-			.csrf(AbstractHttpConfigurer::disable)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		
-		http
-			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(HEALTH_CHECK).permitAll()
-				.anyRequest().permitAll()
-			)
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+				.csrf(AbstractHttpConfigurer::disable)
+				.formLogin(AbstractHttpConfigurer::disable)
+				.httpBasic(AbstractHttpConfigurer::disable)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-			.exceptionHandling((exceptions) -> exceptions
-				.authenticationEntryPoint(new JwtAuthenticationEntryPoint()) // 인증 실패 핸들링
-				.accessDeniedHandler(new JwtAccessDeniedHandler()) // 인가 실패 핸들링
-			)
-			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(new JwtExceptionHandlerFilter(), JwtAuthenticationFilter.class);
+		http
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HEALTH_CHECK).permitAll()
+						.anyRequest().permitAll());
 
 		return http.build();
 	}

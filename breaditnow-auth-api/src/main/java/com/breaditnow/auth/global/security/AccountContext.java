@@ -1,6 +1,6 @@
-package com.breaditnow.common.security;
+package com.breaditnow.auth.global.security;
 
-import static com.breaditnow.common.security.Role.*;
+import static com.breaditnow.auth.global.security.Role.*;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -2,4 +2,4 @@ spring:
   config:
     activate:
       on-profile: prod
-    import: application-common-prod.yml, application-mysql-prod.yml, application-redis-prod.yml
+    import: application-mysql-prod.yml, application-redis-prod.yml
