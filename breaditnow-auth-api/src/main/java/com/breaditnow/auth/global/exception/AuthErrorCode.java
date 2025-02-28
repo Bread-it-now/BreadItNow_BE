@@ -25,8 +25,13 @@ public enum AuthErrorCode implements ErrorCode {
 	 * 기타(BC000)
 	 */
 	SERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "BC001", "AuthToken을 JSON으로 직렬화하는데 실패했습니다."),
-	DESERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "BC002", "JSON을 AuthToken으로 역직렬화하는데 실패했습니다.");
+	DESERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "BC002", "JSON을 AuthToken으로 역직렬화하는데 실패했습니다."),
 
+	/**
+	 * Role 관련(BD000)
+	 */
+	ROLE_INVALID(HttpStatus.BAD_REQUEST, "AD001", "잘못된 역할 값입니다. 유효한 값은 CUSTOMER 또는 OWNER 입니다.");
+	
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;

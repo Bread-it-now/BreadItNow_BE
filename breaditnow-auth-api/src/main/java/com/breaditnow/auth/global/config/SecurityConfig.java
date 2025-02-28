@@ -25,8 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private static final String[] HEALTH_CHECK = { "/api/check" };
-	private static final String[] AUTH = { "/oauth2/authorization/**", "/oauth/callback/**", "/api/v1/token/**" };
+	private static final String[] HEALTH_CHECK = {"/api/check"};
+	private static final String[] AUTH = {"/oauth2/authorization/**", "/oauth/callback/**", "/api/v1/token/**"};
 
 	private final CustomOAuth2UserService oauth2UserService;
 	private final CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository;
@@ -36,28 +36,27 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-				.csrf(AbstractHttpConfigurer::disable)
-				.formLogin(AbstractHttpConfigurer::disable)
-				.httpBasic(AbstractHttpConfigurer::disable)
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.oauth2Login(oauth2 -> oauth2
-						.authorizationEndpoint(authorization -> authorization
-								.baseUri("/oauth2/authorization")
-								.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository))
-						.redirectionEndpoint(redirection -> redirection
-								.baseUri("/oauth/callback/*"))
-						.userInfoEndpoint(userInfo -> userInfo
-								.userService(oauth2UserService))
-						.successHandler(oauth2AuthenticationSuccessHandler)
-						.failureHandler(oauth2AuthenticationFailureHandler));
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+			.csrf(AbstractHttpConfigurer::disable)
+			.formLogin(AbstractHttpConfigurer::disable)
+			.httpBasic(AbstractHttpConfigurer::disable)
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.oauth2Login(oauth2 -> oauth2
+				.authorizationEndpoint(authorization -> authorization
+					.baseUri("/oauth2/authorization")
+					.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository))
+				.redirectionEndpoint(redirection -> redirection
+					.baseUri("/oauth/callback/*"))
+				.userInfoEndpoint(userInfo -> userInfo
+					.userService(oauth2UserService))
+				.successHandler(oauth2AuthenticationSuccessHandler)
+				.failureHandler(oauth2AuthenticationFailureHandler));
 
 		http
-
-				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers(HEALTH_CHECK).permitAll()
-						.requestMatchers(AUTH).permitAll()
-						.anyRequest().permitAll());
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers(HEALTH_CHECK).permitAll()
+				.requestMatchers(AUTH).permitAll()
+				.anyRequest().permitAll());
 
 		return http.build();
 	}

@@ -1,17 +1,17 @@
 package com.breaditnow.auth.domain.customer.service;
 
-import static com.breaditnow.domain.domain.customer.enumerate.Provider.*;
+import static java.util.stream.Collectors.*;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.auth.domain.customer.controller.req.SignupRequest;
-import com.breaditnow.common.security.Role;
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
-import com.breaditnow.domain.domain.owner.entity.Owner;
-import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
+import com.breaditnow.auth.domain.customer.service.strategy.SignupStrategy;
+import com.breaditnow.auth.global.security.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,29 +19,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthService {
-	private final CustomerRepository customerRepository;
-	private final OwnerRepository ownerRepository;
-	private final PasswordEncoder passwordEncoder;
+	private final Map<Role, SignupStrategy> signupStrategies;
+
+	@Autowired
+	public AuthService(List<SignupStrategy> strategies) {
+		this.signupStrategies = strategies.stream()
+			.collect(toMap(SignupStrategy::getRole, strategy -> strategy));
+	}
 
 	@Transactional
 	public Long signup(SignupRequest signupRequest) {
 		Role role = Role.from(signupRequest.role());
-
-		if (role == Role.CUSTOMER) {
-			Customer customer = Customer.builder()
-				.email(signupRequest.email())
-				.password(passwordEncoder.encode(signupRequest.password()))
-				.provider(EMAIL)
-				.build();
-			Customer savedCustomer = customerRepository.save(customer);
-			return savedCustomer.getId();
-		} else {
-			Owner owner = Owner.builder()
-				.email(signupRequest.email())
-				.password(passwordEncoder.encode(signupRequest.password()))
-				.build();
-			Owner savedOwner = ownerRepository.save(owner);
-			return savedOwner.getId();
-		}
+		SignupStrategy strategy = signupStrategies.get(role);
+		return strategy.signup(signupRequest);
 	}
 }
