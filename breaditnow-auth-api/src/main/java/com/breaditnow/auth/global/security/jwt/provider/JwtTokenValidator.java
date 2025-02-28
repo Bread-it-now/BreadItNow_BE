@@ -1,6 +1,6 @@
 package com.breaditnow.auth.global.security.jwt.provider;
 
-import static com.breaditnow.common.exception.CommonErrorCode.*;
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 
 import java.util.Base64;
 import java.util.Collections;

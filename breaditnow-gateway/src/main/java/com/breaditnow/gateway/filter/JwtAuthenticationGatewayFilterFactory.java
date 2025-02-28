@@ -10,6 +10,7 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 
 import com.breaditnow.gateway.exception.GatewayException;
 import com.breaditnow.gateway.jwt.JwtTokenValidator;
@@ -62,8 +63,7 @@ public class JwtAuthenticationGatewayFilterFactory
 				throw new GatewayException(UNAUTHORIZED_ACCESS);
 			}
 
-			addAuthorizationHeaders(request, tokenUser);
-
+			exchange = addAuthorizationHeadersToExchange(exchange, tokenUser);
 			return chain.filter(exchange);
 		};
 	}
@@ -80,11 +80,12 @@ public class JwtAuthenticationGatewayFilterFactory
 		return tokenUser.role().contains(role);
 	}
 
-	private void addAuthorizationHeaders(ServerHttpRequest request, TokenUser tokenUser) {
-		request.mutate()
+	private ServerWebExchange addAuthorizationHeadersToExchange(ServerWebExchange exchange, TokenUser tokenUser) {
+		ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
 			.header("X-Authorization-Id", tokenUser.userId())
 			.header("X-Authorization-Role", tokenUser.role())
 			.build();
+		return exchange.mutate().request(modifiedRequest).build();
 	}
 
 	@Setter

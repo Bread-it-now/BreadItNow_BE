@@ -1,7 +1,7 @@
 package com.breaditnow.auth.domain.token.service;
 
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 import static com.breaditnow.auth.global.security.jwt.token.AuthTokenType.*;
-import static com.breaditnow.common.exception.CommonErrorCode.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
