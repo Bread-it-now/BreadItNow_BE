@@ -3,17 +3,14 @@ package com.breaditnow.customer.global.security.resolver;
 import static com.breaditnow.customer.global.exception.CustomerErrorCode.*;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.breaditnow.common.security.AccountContext;
 import com.breaditnow.customer.global.exception.CustomerException;
-import com.breaditnow.customer.global.security.AuthCustomer;
+import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.owner.entity.Owner;
@@ -38,10 +35,10 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		AuthCustomer authCustomer = parameter.getParameterAnnotation(AuthCustomer.class);
 
-		if (authentication == null || !(authentication.getPrincipal() instanceof AccountContext)) {
+		String userIdHeader = webRequest.getHeader("X-Authorization-Id");
+		if (userIdHeader == null) {
 			if (authCustomer.required()) { // 필수인 경우, 예외 발생
 				throw new CustomerException(AUTHENTICATION_REQUIRED);
 			} else {
@@ -49,8 +46,7 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 			}
 		}
 
-		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
-		Customer customer = customerRepository.getById(accountContext.getUserId());
+		Customer customer = customerRepository.getById(Long.valueOf(userIdHeader));
 
 		if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
 			return customer;
