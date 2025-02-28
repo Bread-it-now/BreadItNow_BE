@@ -1,9 +1,9 @@
-package com.breaditnow.auth.domain.customer.service.strategy;
+package com.breaditnow.auth.domain.auth.service.strategy;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.breaditnow.auth.domain.customer.controller.req.SignupRequest;
+import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
 import com.breaditnow.auth.global.security.Role;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;

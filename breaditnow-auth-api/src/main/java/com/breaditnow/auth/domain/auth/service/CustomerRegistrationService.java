@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.customer.service;
+package com.breaditnow.auth.domain.auth.service;
 
 import java.util.Optional;
 

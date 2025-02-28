@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.customer.controller;
+package com.breaditnow.auth.domain.auth.controller;
 
 import java.util.Map;
 
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.breaditnow.auth.domain.customer.controller.req.SignupRequest;
-import com.breaditnow.auth.domain.customer.service.AuthService;
+import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
+import com.breaditnow.auth.domain.auth.service.AuthService;
 import com.breaditnow.common.response.ApiSuccessResponse;
 
 import lombok.RequiredArgsConstructor;

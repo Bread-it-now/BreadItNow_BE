@@ -1,11 +1,11 @@
-package com.breaditnow.auth.domain.customer.service.strategy;
+package com.breaditnow.auth.domain.auth.service.strategy;
 
 import static com.breaditnow.domain.domain.customer.enumerate.Provider.*;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.breaditnow.auth.domain.customer.controller.req.SignupRequest;
+import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
 import com.breaditnow.auth.global.security.Role;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;

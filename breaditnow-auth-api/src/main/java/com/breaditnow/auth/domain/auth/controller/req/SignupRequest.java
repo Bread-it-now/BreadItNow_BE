@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.customer.controller.req;
+package com.breaditnow.auth.domain.auth.controller.req;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.customer.service;
+package com.breaditnow.auth.domain.auth.service;
 
 import static java.util.stream.Collectors.*;
 
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.auth.domain.customer.controller.req.SignupRequest;
-import com.breaditnow.auth.domain.customer.service.strategy.SignupStrategy;
+import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
+import com.breaditnow.auth.domain.auth.service.strategy.SignupStrategy;
 import com.breaditnow.auth.global.security.Role;
 
 import lombok.RequiredArgsConstructor;

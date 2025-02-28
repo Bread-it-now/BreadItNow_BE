@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.breaditnow.auth.domain.customer.service.CustomerRegistrationService;
+import com.breaditnow.auth.domain.auth.service.CustomerRegistrationService;
 import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.oauth2.model.OAuth2UserInfo;
 import com.breaditnow.domain.domain.customer.entity.Customer;
