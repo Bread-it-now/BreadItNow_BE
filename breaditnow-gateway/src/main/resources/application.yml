@@ -28,16 +28,16 @@ spring:
           predicates:
             - Path=/customer-api/**
           filters:
-            - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
             - JwtAuthentication=ROLE_CUSTOMER
+            - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
 
         - id: owner-api
           uri: http://localhost:9002/
           predicates:
             - Path=/owner-api/**
           filters:
-            - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
             - JwtAuthentication=ROLE_OWNER
+            - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
 
 auth:
   token:

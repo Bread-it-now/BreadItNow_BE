@@ -1,24 +1,20 @@
 package com.breaditnow.gateway.exception;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import lombok.Getter;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({"status", "code", "message", "errors"})
+public record GWErrorResponse(
+	String status,
+	String code,
+	String message) {
 
-@Getter
-public class GWErrorResponse {
-	private String errorMessage;
-	private LocalDateTime localDateTime;
-	private Map<String, Object> addtionInfos = new HashMap<>();
-
-	public GWErrorResponse(String errorMessage, LocalDateTime localDateTime) {
-		this.errorMessage = errorMessage;
-		this.localDateTime = localDateTime;
+	public static GWErrorResponse of(GatewayErrorCode errorCode) {
+		return new GWErrorResponse("ERROR", errorCode.getCode(), errorCode.getMessage());
 	}
 
-	public static GWErrorResponse defaultBuild(String errorMessage) {
-		return new GWErrorResponse(errorMessage, LocalDateTime.now());
+	public static GWErrorResponse of(GatewayErrorCode errorCode, String exMessage) {
+		return new GWErrorResponse("ERROR", errorCode.getCode(), errorCode.getMessage() + " " + exMessage);
 	}
-
 }

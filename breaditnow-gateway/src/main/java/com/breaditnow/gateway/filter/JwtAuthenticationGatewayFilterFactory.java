@@ -16,7 +16,9 @@ import com.breaditnow.gateway.jwt.JwtTokenValidator;
 import com.breaditnow.gateway.jwt.TokenUser;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class JwtAuthenticationGatewayFilterFactory
 	extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
@@ -34,6 +36,11 @@ public class JwtAuthenticationGatewayFilterFactory
 	}
 
 	@Override
+	public List<String> shortcutFieldOrder() {
+		return List.of("role");
+	}
+
+	@Override
 	public GatewayFilter apply(Config config) {
 		return (exchange, chain) -> {
 			ServerHttpRequest request = exchange.getRequest();
@@ -48,15 +55,11 @@ public class JwtAuthenticationGatewayFilterFactory
 			}
 
 			String token = authHeader.substring(7);
-			try {
-				jwtTokenValidator.validateToken(token);
-			} catch (Exception e) {
-				throw new GatewayException(UNAUTHORIZED_ACCESS);
-			}
+			jwtTokenValidator.validateToken(token);
 
 			TokenUser tokenUser = jwtTokenValidator.getTokenUser(token);
 			if (!hasRole(tokenUser, config.role)) {
-				throw new GatewayException(INVALID_ROLE);
+				throw new GatewayException(UNAUTHORIZED_ACCESS);
 			}
 
 			addAuthorizationHeaders(request, tokenUser);
@@ -74,7 +77,7 @@ public class JwtAuthenticationGatewayFilterFactory
 	}
 
 	private boolean hasRole(TokenUser tokenUser, String role) {
-		return role.equals(tokenUser.role());
+		return tokenUser.role().contains(role);
 	}
 
 	private void addAuthorizationHeaders(ServerHttpRequest request, TokenUser tokenUser) {

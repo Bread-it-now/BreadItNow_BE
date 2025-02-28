@@ -1,5 +1,8 @@
 package com.breaditnow.gateway.exception;
 
+import lombok.Getter;
+
+@Getter
 public class GatewayException extends RuntimeException {
 
 	private final GatewayErrorCode errorCode;
@@ -18,5 +21,4 @@ public class GatewayException extends RuntimeException {
 		super(errorCode.getMessage() + " : " + message);
 		this.errorCode = errorCode;
 	}
-
 }
