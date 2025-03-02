@@ -22,7 +22,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/sign-up")
-	public ApiSuccessResponse<Map<String, Long>> createUser(@RequestBody SignupRequest signupRequest) {
+	public ApiSuccessResponse<Map<String, Long>> signup(@RequestBody SignupRequest signupRequest) {
 		log.info("signupRequest = {}", signupRequest);
 		Long userId = authService.signup(signupRequest);
 		return ApiSuccessResponse.of("userId", userId);

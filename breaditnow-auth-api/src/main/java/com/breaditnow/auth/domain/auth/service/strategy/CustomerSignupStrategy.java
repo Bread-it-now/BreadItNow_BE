@@ -25,6 +25,7 @@ public class CustomerSignupStrategy implements SignupStrategy {
 			.password(passwordEncoder.encode(signupRequest.password()))
 			.provider(EMAIL)
 			.build();
+
 		return customerRepository.save(customer).getId();
 	}
 

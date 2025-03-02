@@ -30,8 +30,13 @@ public enum AuthErrorCode implements ErrorCode {
 	/**
 	 * Role 관련(BD000)
 	 */
-	ROLE_INVALID(HttpStatus.BAD_REQUEST, "AD001", "잘못된 역할 값입니다. 유효한 값은 CUSTOMER 또는 OWNER 입니다.");
-	
+	ROLE_INVALID(HttpStatus.BAD_REQUEST, "AD001", "잘못된 역할 값입니다. 유효한 값은 CUSTOMER 또는 OWNER 입니다."),
+
+	/**
+	 * 직접 로그인 관련(BE000)
+	 */
+	MISSING_USERNAME_OR_PASSWORD(HttpStatus.BAD_REQUEST, "BE001", "아이디 또는 비밀번호가 입력되지 않았습니다.");
+
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
