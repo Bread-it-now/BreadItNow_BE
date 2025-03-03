@@ -6,10 +6,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.breaditnow.auth.global.security.AccountContext;
+import com.breaditnow.auth.global.security.direct.service.CustomCustomerDetailsService;
+import com.breaditnow.auth.global.security.direct.service.CustomOwnerDetailsService;
 import com.breaditnow.auth.global.security.direct.token.JwtAuthenticationToken;
 
 import lombok.RequiredArgsConstructor;
@@ -17,22 +18,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DirectAuthenticationProvider implements AuthenticationProvider {
 	private final PasswordEncoder passwordEncoder;
-	private final UserDetailsService userDetailsService;
+	private final CustomCustomerDetailsService customerDetailsService;
+	private final CustomOwnerDetailsService ownerDetailsService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String loginId = (String)authentication.getPrincipal();
 		String password = (String)authentication.getCredentials();
 
-		AccountContext accountContext = (AccountContext)userDetailsService.loadUserByUsername(loginId);
+		String role = null;
+		if (authentication instanceof JwtAuthenticationToken jwtToken) {
+			role = jwtToken.getRole();
+		}
+
+		AccountContext accountContext;
+		if ("OWNER".equalsIgnoreCase(role)) {
+			accountContext = (AccountContext)ownerDetailsService.loadUserByUsername(loginId);
+		} else {
+			accountContext = (AccountContext)customerDetailsService.loadUserByUsername(loginId);
+		}
 
 		if (!passwordEncoder.matches(password, accountContext.getPassword())) {
 			throw new BadCredentialsException(INVALID_PASSWORD.name());
 		}
 
-		JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(accountContext, null);
-		jwtAuthenticationToken.setAuthenticated(true);
-		return jwtAuthenticationToken;
+		JwtAuthenticationToken authenticatedToken = new JwtAuthenticationToken(accountContext, null,
+			accountContext.getAuthorities(), role);
+		authenticatedToken.setAuthenticated(true);
+
+		return authenticatedToken;
 	}
 
 	@Override

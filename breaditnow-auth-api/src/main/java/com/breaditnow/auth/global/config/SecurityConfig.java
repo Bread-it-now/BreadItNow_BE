@@ -21,6 +21,7 @@ import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationFa
 import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.direct.provider.DirectAuthenticationProvider;
 import com.breaditnow.auth.global.security.direct.service.CustomCustomerDetailsService;
+import com.breaditnow.auth.global.security.direct.service.CustomOwnerDetailsService;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
@@ -89,9 +90,10 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public DirectLoginFilter directLoginFilter(CustomCustomerDetailsService customCustomerDetailsService) {
+	public DirectLoginFilter directLoginFilter(CustomCustomerDetailsService customCustomerDetailsService,
+		CustomOwnerDetailsService customOwnerDetailsService) {
 		DirectAuthenticationProvider authenticationProvider = new DirectAuthenticationProvider(passwordEncoder,
-			customCustomerDetailsService);
+			customCustomerDetailsService, customOwnerDetailsService);
 		ProviderManager providerManager = new ProviderManager(authenticationProvider);
 
 		DirectLoginFilter directLoginFilter = new DirectLoginFilter();

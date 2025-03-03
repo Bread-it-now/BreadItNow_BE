@@ -33,13 +33,19 @@ public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
 			throw new AuthenticationServiceException("Missing username or password");
 		}
 
-		JwtAuthenticationToken token = new JwtAuthenticationToken(loginRequest.email(), loginRequest.password());
+		JwtAuthenticationToken token = new JwtAuthenticationToken(
+			loginRequest.email(),
+			loginRequest.password(),
+			loginRequest.role()
+		);
+		
 		return getAuthenticationManager().authenticate(token);
 	}
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authentication) throws IOException, ServletException {
+		log.info("authentication = {}", authentication);
 		super.successfulAuthentication(request, response, chain, authentication);
 	}
 }
