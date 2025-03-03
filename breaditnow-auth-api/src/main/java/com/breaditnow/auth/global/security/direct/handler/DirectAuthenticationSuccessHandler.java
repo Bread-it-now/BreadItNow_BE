@@ -50,7 +50,7 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		boolean isNewUser;
 		if (isOwner) {
-			isNewUser = false; // Owner는 항상 false로 관리
+			isNewUser = false; // Owner는 항상 false로 관리?
 		} else {
 			isNewUser = (customerRepository.getById(userId).getNickname() == null);
 		}

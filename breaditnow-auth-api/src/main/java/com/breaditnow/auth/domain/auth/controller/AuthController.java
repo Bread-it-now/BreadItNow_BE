@@ -11,6 +11,8 @@ import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
 import com.breaditnow.auth.domain.auth.service.AuthService;
 import com.breaditnow.common.response.ApiSuccessResponse;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/auth")
 @Slf4j
 public class AuthController {
+
 	private final AuthService authService;
 
 	@PostMapping("/sign-up")
@@ -26,5 +29,11 @@ public class AuthController {
 		log.info("signupRequest = {}", signupRequest);
 		Long userId = authService.signup(signupRequest);
 		return ApiSuccessResponse.of("userId", userId);
+	}
+
+	@PostMapping("/logout")
+	public ApiSuccessResponse<Map<String, Long>> logout(HttpServletRequest request, HttpServletResponse response) {
+		authService.logout(request, response);
+		return ApiSuccessResponse.of();
 	}
 }

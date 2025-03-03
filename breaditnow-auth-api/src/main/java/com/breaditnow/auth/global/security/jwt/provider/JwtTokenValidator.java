@@ -21,6 +21,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenValidator {
@@ -30,6 +31,14 @@ public class JwtTokenValidator {
 	@Autowired
 	public JwtTokenValidator(@Value("${auth.token.secret-key}") String secretKey) {
 		this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
+	}
+
+	public String resolveToken(HttpServletRequest request) {
+		String authHeader = request.getHeader("Authorization");
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			return authHeader.substring(7);
+		}
+		return null;
 	}
 
 	public Authentication getAuthentication(String token) throws JwtException {

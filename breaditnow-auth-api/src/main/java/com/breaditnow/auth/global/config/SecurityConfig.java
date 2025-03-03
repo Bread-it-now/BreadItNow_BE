@@ -44,7 +44,6 @@ public class SecurityConfig {
 	private final CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository;
 	private final Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 	private final Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
-	private final PasswordEncoder passwordEncoder;
 
 	private final DirectAuthenticationSuccessHandler directAuthenticationSuccessHandler;
 	private final DirectAuthenticationFailureHandler directAuthenticationFailureHandler;
