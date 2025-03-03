@@ -1,6 +1,9 @@
 package com.breaditnow.auth.global.security.direct.provider;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+import static com.breaditnow.auth.global.security.Role.*;
+
+import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,8 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.breaditnow.auth.global.security.AccountContext;
-import com.breaditnow.auth.global.security.direct.service.CustomCustomerDetailsService;
-import com.breaditnow.auth.global.security.direct.service.CustomOwnerDetailsService;
+import com.breaditnow.auth.global.security.direct.service.strategy.DirectUserDetailsService;
 import com.breaditnow.auth.global.security.direct.token.JwtAuthenticationToken;
 
 import lombok.RequiredArgsConstructor;
@@ -18,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DirectAuthenticationProvider implements AuthenticationProvider {
 	private final PasswordEncoder passwordEncoder;
-	private final CustomCustomerDetailsService customerDetailsService;
-	private final CustomOwnerDetailsService ownerDetailsService;
+	private final Map<String, DirectUserDetailsService> userDetailsServices;
+
+	// private final CustomCustomerDetailsService customerDetailsService;
+	// private final CustomOwnerDetailsService ownerDetailsService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -31,21 +35,30 @@ public class DirectAuthenticationProvider implements AuthenticationProvider {
 			role = jwtToken.getRole();
 		}
 
-		AccountContext accountContext;
-		if ("OWNER".equalsIgnoreCase(role)) {
-			accountContext = (AccountContext)ownerDetailsService.loadUserByUsername(loginId);
+		if (role == null) {
+			role = CUSTOMER.name();
 		} else {
-			accountContext = (AccountContext)customerDetailsService.loadUserByUsername(loginId);
+			role = role.toUpperCase();
 		}
+
+		DirectUserDetailsService service = userDetailsServices.get(role);
+		if (service == null) {
+			throw new BadCredentialsException(ROLE_INVALID.name());
+		}
+
+		AccountContext accountContext = (AccountContext)service.loadUserByUsername(loginId);
 
 		if (!passwordEncoder.matches(password, accountContext.getPassword())) {
 			throw new BadCredentialsException(INVALID_PASSWORD.name());
 		}
 
-		JwtAuthenticationToken authenticatedToken = new JwtAuthenticationToken(accountContext, null,
-			accountContext.getAuthorities(), role);
+		JwtAuthenticationToken authenticatedToken = new JwtAuthenticationToken(
+			accountContext,
+			null,
+			accountContext.getAuthorities(),
+			role
+		);
 		authenticatedToken.setAuthenticated(true);
-
 		return authenticatedToken;
 	}
 

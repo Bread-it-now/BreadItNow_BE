@@ -1,4 +1,4 @@
-package com.breaditnow.auth.global.security.direct.service;
+package com.breaditnow.auth.global.security.direct.service.strategy;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 import static com.breaditnow.auth.global.security.Role.*;
@@ -8,29 +8,33 @@ import java.util.List;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.breaditnow.auth.global.security.AccountContext;
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.owner.entity.Owner;
+import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CustomCustomerDetailsService implements UserDetailsService {
-	private final CustomerRepository customerRepository;
+public class CustomOwnerDetailsService implements DirectUserDetailsService {
+	private final OwnerRepository ownerRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Customer customer = customerRepository.findByEmail(email)
+		Owner owner = ownerRepository.findByEmail(email)
 			.orElseThrow(() -> new UsernameNotFoundException(EMAIL_NOT_FOUND.name()));
 
 		List<SimpleGrantedAuthority> authorities = Collections.singletonList(
-			new SimpleGrantedAuthority("ROLE_" + CUSTOMER.name()));
+			new SimpleGrantedAuthority("ROLE_" + OWNER.name()));
 
-		return AccountContext.ofDirect(customer.getId(), email, customer.getPassword(), authorities);
+		return AccountContext.ofDirect(owner.getId(), email, owner.getPassword(), authorities);
+	}
+
+	@Override
+	public String getRole() {
+		return OWNER.name();
 	}
 }

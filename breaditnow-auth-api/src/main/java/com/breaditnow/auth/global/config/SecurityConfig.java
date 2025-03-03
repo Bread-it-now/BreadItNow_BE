@@ -1,6 +1,7 @@
 package com.breaditnow.auth.global.config;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +21,9 @@ import com.breaditnow.auth.global.security.direct.filter.DirectLoginFilter;
 import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.direct.provider.DirectAuthenticationProvider;
-import com.breaditnow.auth.global.security.direct.service.CustomCustomerDetailsService;
-import com.breaditnow.auth.global.security.direct.service.CustomOwnerDetailsService;
+import com.breaditnow.auth.global.security.direct.service.strategy.CustomCustomerDetailsService;
+import com.breaditnow.auth.global.security.direct.service.strategy.CustomOwnerDetailsService;
+import com.breaditnow.auth.global.security.direct.service.strategy.DirectUserDetailsService;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
@@ -90,11 +92,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public DirectLoginFilter directLoginFilter(CustomCustomerDetailsService customCustomerDetailsService,
-		CustomOwnerDetailsService customOwnerDetailsService) {
-		DirectAuthenticationProvider authenticationProvider = new DirectAuthenticationProvider(passwordEncoder,
-			customCustomerDetailsService, customOwnerDetailsService);
-		ProviderManager providerManager = new ProviderManager(authenticationProvider);
+	public DirectLoginFilter directLoginFilter(DirectAuthenticationProvider directAuthenticationProvider) {
+		ProviderManager providerManager = new ProviderManager(List.of(directAuthenticationProvider));
 
 		DirectLoginFilter directLoginFilter = new DirectLoginFilter();
 		directLoginFilter.setAuthenticationManager(providerManager);
@@ -103,6 +102,20 @@ public class SecurityConfig {
 		directLoginFilter.setFilterProcessesUrl("/api/v1/auth/sign-in");
 		directLoginFilter.setPostOnly(true);
 		return directLoginFilter;
+	}
+
+	@Bean
+	public DirectAuthenticationProvider directAuthenticationProvider(
+		PasswordEncoder passwordEncoder,
+		CustomCustomerDetailsService customerDetailsService,
+		CustomOwnerDetailsService ownerDetailsService) {
+
+		Map<String, DirectUserDetailsService> serviceMap = Map.of(
+			customerDetailsService.getRole().toUpperCase(), customerDetailsService,
+			ownerDetailsService.getRole().toUpperCase(), ownerDetailsService
+		);
+
+		return new DirectAuthenticationProvider(passwordEncoder, serviceMap);
 	}
 
 	@Bean

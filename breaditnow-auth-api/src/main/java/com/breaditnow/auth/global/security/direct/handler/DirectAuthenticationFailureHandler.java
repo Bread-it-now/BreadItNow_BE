@@ -2,9 +2,7 @@ package com.breaditnow.auth.global.security.direct.handler;
 
 import java.io.IOException;
 
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -25,14 +23,9 @@ public class DirectAuthenticationFailureHandler implements AuthenticationFailure
 		AuthenticationException exception) throws IOException, ServletException {
 		log.info("exception = {}", exception);
 
-		AuthErrorCode authErrorCode;
-		if (exception instanceof UsernameNotFoundException) {
-			authErrorCode = AuthErrorCode.EMAIL_NOT_FOUND;
-		} else if (exception instanceof BadCredentialsException) {
-			authErrorCode = AuthErrorCode.INVALID_PASSWORD;
-		} else {
-			authErrorCode = AuthErrorCode.LOGIN_FAILED;
-		}
+		String errorMessage = exception.getMessage();
+
+		AuthErrorCode authErrorCode = AuthErrorCode.valueOf(errorMessage);
 
 		response.setContentType("application/json;charset=UTF-8");
 		String responseBody = new ObjectMapper().writeValueAsString(
