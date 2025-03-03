@@ -1,11 +1,15 @@
 package com.breaditnow.auth.domain.auth.service.strategy;
 
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 import static com.breaditnow.domain.domain.customer.enumerate.Provider.*;
+
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
+import com.breaditnow.auth.global.exception.AuthException;
 import com.breaditnow.auth.global.security.Role;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
@@ -20,6 +24,11 @@ public class CustomerSignupStrategy implements SignupStrategy {
 
 	@Override
 	public Long signup(SignupRequest signupRequest) {
+		Optional<Customer> existing = customerRepository.findByEmail(signupRequest.email());
+		if (existing.isPresent()) {
+			throw new AuthException(EMAIL_ALREADY_EXISTS);
+		}
+
 		Customer customer = Customer.builder()
 			.email(signupRequest.email())
 			.password(passwordEncoder.encode(signupRequest.password()))
