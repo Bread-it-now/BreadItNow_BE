@@ -66,8 +66,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
 		Customer customer = customerRepository.getById(accountContext.getUserId());
 
-		return UriComponentsBuilder.
-			fromUriString(targetUrl)
+		return UriComponentsBuilder.fromUriString(targetUrl)
 			.queryParam("isNewUser", customer.isFirstLogin())
 			.build().toUriString();
 	}

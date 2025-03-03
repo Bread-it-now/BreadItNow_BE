@@ -52,7 +52,7 @@ public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
 		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
 		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
 
-		response.addHeader("Authorization", "Bearer " + accessToken);
+		response.addHeader("Authorization", "Bearer " + accessToken.token());
 		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
 		cookieUtil.addCookie(response, "refresh-token", refreshToken.token(), maxAge);
 
