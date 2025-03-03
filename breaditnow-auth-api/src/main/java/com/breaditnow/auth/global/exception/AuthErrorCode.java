@@ -35,7 +35,8 @@ public enum AuthErrorCode implements ErrorCode {
 	/**
 	 * 직접 로그인 관련(BE000)
 	 */
-	MISSING_USERNAME_OR_PASSWORD(HttpStatus.BAD_REQUEST, "BE001", "아이디 또는 비밀번호가 입력되지 않았습니다.");
+	MISSING_USERNAME_OR_PASSWORD(HttpStatus.BAD_REQUEST, "BE001", "아이디 또는 비밀번호가 입력되지 않았습니다."),
+	INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "BE002", "비밀번호가 일치하지 않습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

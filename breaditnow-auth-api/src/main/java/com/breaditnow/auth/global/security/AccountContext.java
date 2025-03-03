@@ -30,6 +30,16 @@ public class AccountContext implements UserDetails, OAuth2User {
 	private String oauth2Id;
 	private Map<String, Object> attributes;
 
+	public static AccountContext ofDirect(Long userId, String email, String password,
+		List<SimpleGrantedAuthority> roles) {
+		return AccountContext.builder()
+			.userId(userId)
+			.email(email)
+			.password(password)
+			.roles(roles)
+			.build();
+	}
+
 	public static AccountContext of(Long userId, List<SimpleGrantedAuthority> roles) {
 		return AccountContext.builder()
 			.userId(userId)
