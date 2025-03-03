@@ -13,9 +13,11 @@ import com.breaditnow.auth.domain.token.repository.AuthTokenRepository;
 import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.jwt.provider.JwtTokenCreator;
 import com.breaditnow.auth.global.security.jwt.token.AuthToken;
+import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.util.CookieUtil;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,14 +56,7 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 
 		response.setContentType("application/json;charset=UTF-8");
-		String responseBody = String.format("""
-			{
-				"status": "SUCCESS",
-				"data": {
-					"isNewUser": %s
-				}
-			}
-			""", isNewUser);
+		String responseBody = new ObjectMapper().writeValueAsString(ApiSuccessResponse.of("isNewUser", isNewUser));
 		response.getWriter().write(responseBody);
 	}
 }

@@ -1,5 +1,6 @@
 package com.breaditnow.auth.global.security.direct.service;
 
+import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 import static com.breaditnow.auth.global.security.Role.*;
 
 import java.util.Collections;
@@ -24,7 +25,8 @@ public class CustomCustomerDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Customer customer = customerRepository.getByEmail(email);
+		Customer customer = customerRepository.findByEmail(email)
+			.orElseThrow(() -> new UsernameNotFoundException(EMAIL_NOT_FOUND.name()));
 
 		List<SimpleGrantedAuthority> authorities = Collections.singletonList(
 			new SimpleGrantedAuthority("ROLE_" + CUSTOMER.name()));

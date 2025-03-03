@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.breaditnow.auth.global.security.direct.filter.DirectLoginFilter;
+import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.direct.provider.DirectAuthenticationProvider;
 import com.breaditnow.auth.global.security.direct.service.CustomCustomerDetailsService;
@@ -43,6 +44,7 @@ public class SecurityConfig {
 	private final PasswordEncoder passwordEncoder;
 
 	private final DirectAuthenticationSuccessHandler directAuthenticationSuccessHandler;
+	private final DirectAuthenticationFailureHandler directAuthenticationFailureHandler;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -95,7 +97,7 @@ public class SecurityConfig {
 		DirectLoginFilter directLoginFilter = new DirectLoginFilter();
 		directLoginFilter.setAuthenticationManager(providerManager);
 		directLoginFilter.setAuthenticationSuccessHandler(directAuthenticationSuccessHandler);
-		// directLoginFilter.setAuthenticationFailureHandler(new RestAuthenticationFailureHandler());
+		directLoginFilter.setAuthenticationFailureHandler(directAuthenticationFailureHandler);
 		directLoginFilter.setFilterProcessesUrl("/api/v1/auth/sign-in");
 		directLoginFilter.setPostOnly(true);
 		return directLoginFilter;

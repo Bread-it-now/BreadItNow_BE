@@ -3,6 +3,7 @@ package com.breaditnow.auth.global.security.direct.provider;
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.direct.token.JwtAuthenticationToken;
-import com.breaditnow.domain.global.exception.DomainException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ public class DirectAuthenticationProvider implements AuthenticationProvider {
 		AccountContext accountContext = (AccountContext)userDetailsService.loadUserByUsername(loginId);
 
 		if (!passwordEncoder.matches(password, accountContext.getPassword())) {
-			throw new DomainException(INVALID_PASSWORD);
+			throw new BadCredentialsException(INVALID_PASSWORD.name());
 		}
 
 		JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(accountContext, null);
