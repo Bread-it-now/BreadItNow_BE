@@ -20,12 +20,10 @@ import com.breaditnow.auth.global.security.direct.filter.DirectLoginFilter;
 import com.breaditnow.auth.global.security.direct.handler.DirectAuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.direct.provider.DirectAuthenticationProvider;
 import com.breaditnow.auth.global.security.direct.service.CustomCustomerDetailsService;
-import com.breaditnow.auth.global.security.jwt.provider.JwtTokenCreator;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationFailureHandler;
 import com.breaditnow.auth.global.security.oauth2.handler.Oauth2AuthenticationSuccessHandler;
 import com.breaditnow.auth.global.security.oauth2.service.CustomOAuth2UserService;
-import com.breaditnow.common.util.CookieUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -89,14 +87,12 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public DirectLoginFilter directLoginFilter(CustomCustomerDetailsService customCustomerDetailsService,
-		JwtTokenCreator jwtTokenCreator,
-		CookieUtil cookieUtil) {
+	public DirectLoginFilter directLoginFilter(CustomCustomerDetailsService customCustomerDetailsService) {
 		DirectAuthenticationProvider authenticationProvider = new DirectAuthenticationProvider(passwordEncoder,
 			customCustomerDetailsService);
 		ProviderManager providerManager = new ProviderManager(authenticationProvider);
 
-		DirectLoginFilter directLoginFilter = new DirectLoginFilter(jwtTokenCreator, cookieUtil);
+		DirectLoginFilter directLoginFilter = new DirectLoginFilter();
 		directLoginFilter.setAuthenticationManager(providerManager);
 		directLoginFilter.setAuthenticationSuccessHandler(directAuthenticationSuccessHandler);
 		// directLoginFilter.setAuthenticationFailureHandler(new RestAuthenticationFailureHandler());
