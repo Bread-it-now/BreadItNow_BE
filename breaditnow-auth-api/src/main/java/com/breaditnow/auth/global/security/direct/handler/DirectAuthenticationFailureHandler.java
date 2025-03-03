@@ -10,7 +10,6 @@ import com.breaditnow.auth.global.exception.AuthErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DirectAuthenticationFailureHandler implements AuthenticationFailureHandler {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-		AuthenticationException exception) throws IOException, ServletException {
-		log.info("exception = {}", exception);
-
+		AuthenticationException exception) throws IOException {
+		
 		String errorMessage = exception.getMessage();
 
 		AuthErrorCode authErrorCode = AuthErrorCode.valueOf(errorMessage);

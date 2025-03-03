@@ -1,7 +1,6 @@
 package com.breaditnow.auth.global.security.direct.provider;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
-import static com.breaditnow.auth.global.security.Role.*;
 
 import java.util.Map;
 
@@ -10,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import com.breaditnow.auth.global.security.AccountContext;
 import com.breaditnow.auth.global.security.direct.service.strategy.DirectUserDetailsService;
@@ -22,24 +22,13 @@ public class DirectAuthenticationProvider implements AuthenticationProvider {
 	private final PasswordEncoder passwordEncoder;
 	private final Map<String, DirectUserDetailsService> userDetailsServices;
 
-	// private final CustomCustomerDetailsService customerDetailsService;
-	// private final CustomOwnerDetailsService ownerDetailsService;
-
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String loginId = (String)authentication.getPrincipal();
-		String password = (String)authentication.getCredentials();
+		JwtAuthenticationToken jwtToken = (JwtAuthenticationToken)authentication;
 
-		String role = null;
-		if (authentication instanceof JwtAuthenticationToken jwtToken) {
-			role = jwtToken.getRole();
-		}
-
-		if (role == null) {
-			role = CUSTOMER.name();
-		} else {
-			role = role.toUpperCase();
-		}
+		final String loginId = (String)jwtToken.getPrincipal();
+		final String password = (String)jwtToken.getCredentials();
+		final String role = determineRole(jwtToken);
 
 		DirectUserDetailsService service = userDetailsServices.get(role);
 		if (service == null) {
@@ -60,6 +49,19 @@ public class DirectAuthenticationProvider implements AuthenticationProvider {
 		);
 		authenticatedToken.setAuthenticated(true);
 		return authenticatedToken;
+	}
+
+	/**
+	 * 인증 객체에서 role 정보를 추출합니다.
+	 * 만약 role이 없거나 비어있으면 BadCredentialsException을 던집니다.
+	 */
+	private String determineRole(Authentication authentication) {
+		JwtAuthenticationToken jwtToken = (JwtAuthenticationToken)authentication;
+		String tokenRole = jwtToken.getRole();
+		if (!StringUtils.hasText(tokenRole)) {
+			throw new BadCredentialsException(ROLE_INVALID.name());
+		}
+		return tokenRole.toUpperCase();
 	}
 
 	@Override
