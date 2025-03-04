@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.auth.domain.auth.controller.req.SignupRequest;
-import com.breaditnow.auth.domain.auth.service.AuthService;
+import com.breaditnow.auth.domain.auth.service.AuthSignInService;
+import com.breaditnow.auth.domain.auth.service.AuthSignOutService;
 import com.breaditnow.common.response.ApiSuccessResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,18 +23,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthController {
 
-	private final AuthService authService;
+	private final AuthSignInService authSignInService;
+	private final AuthSignOutService authSignOutService;
 
 	@PostMapping("/sign-up")
 	public ApiSuccessResponse<Map<String, Long>> signup(@RequestBody SignupRequest signupRequest) {
 		log.info("signupRequest = {}", signupRequest);
-		Long userId = authService.signup(signupRequest);
+		Long userId = authSignInService.signup(signupRequest);
 		return ApiSuccessResponse.of("userId", userId);
 	}
 
 	@PostMapping("/logout")
 	public ApiSuccessResponse<Map<String, Long>> logout(HttpServletRequest request, HttpServletResponse response) {
-		authService.logout(request, response);
+		authSignOutService.logout(request, response);
 		return ApiSuccessResponse.of();
 	}
 }
