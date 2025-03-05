@@ -10,9 +10,7 @@ import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OAuth2CustomerRegistrationService {

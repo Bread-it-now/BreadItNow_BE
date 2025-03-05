@@ -15,12 +15,10 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
-@Slf4j
 public class AuthController {
 
 	private final AuthSignInService authSignInService;
@@ -28,7 +26,6 @@ public class AuthController {
 
 	@PostMapping("/sign-up")
 	public ApiSuccessResponse<Map<String, Long>> signup(@RequestBody SignupRequest signupRequest) {
-		log.info("signupRequest = {}", signupRequest);
 		Long userId = authSignInService.signup(signupRequest);
 		return ApiSuccessResponse.of("userId", userId);
 	}

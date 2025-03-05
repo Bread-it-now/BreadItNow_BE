@@ -22,10 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class DirectAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	private final JwtTokenCreator jwtTokenCreator;
@@ -40,7 +38,6 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException {
-		log.info("DirectAuthenticationSuccessHandler");
 
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
 		Long userId = accountContext.getUserId();

@@ -18,9 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -46,7 +44,6 @@ public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authentication) throws IOException, ServletException {
-		log.info("authentication = {}", authentication);
 		super.successfulAuthentication(request, response, chain, authentication);
 	}
 }

@@ -11,9 +11,7 @@ import com.breaditnow.auth.global.security.oauth2.model.OAuth2UserInfo;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
