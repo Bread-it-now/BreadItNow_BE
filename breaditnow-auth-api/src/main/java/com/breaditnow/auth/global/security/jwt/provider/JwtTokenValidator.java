@@ -1,6 +1,8 @@
 package com.breaditnow.auth.global.security.jwt.provider;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.*;
 
 import java.util.Base64;
 import java.util.List;
@@ -35,8 +37,10 @@ public class JwtTokenValidator {
 	}
 
 	public String resolveToken(HttpServletRequest request) {
-		String authHeader = request.getHeader("Authorization");
-		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+		String authHeader = request.getHeader(AUTHORIZATION);
+
+		final String bearerPrefix = BEARER.getValue() + " ";
+		if (authHeader != null && authHeader.startsWith(bearerPrefix)) {
 			return authHeader.substring(7);
 		}
 		return null;

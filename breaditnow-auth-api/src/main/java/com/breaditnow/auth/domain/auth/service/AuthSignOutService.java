@@ -1,5 +1,7 @@
 package com.breaditnow.auth.domain.auth.service;
 
+import static org.springframework.http.HttpHeaders.*;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +46,7 @@ public class AuthSignOutService {
 				accountContext.getUserId());
 		});
 
-		response.setHeader("Authorization", "");
+		response.setHeader(AUTHORIZATION, "");
 		cookieUtil.deleteCookie(request, response, refreshCookieKey);
 	}
 

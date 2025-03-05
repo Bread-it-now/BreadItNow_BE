@@ -1,5 +1,7 @@
 package com.breaditnow.auth.global.security.direct.handler;
 
+import static org.springframework.http.MediaType.*;
+
 import java.io.IOException;
 
 import org.springframework.security.core.AuthenticationException;
@@ -23,7 +25,7 @@ public class DirectAuthenticationFailureHandler implements AuthenticationFailure
 
 		AuthErrorCode authErrorCode = AuthErrorCode.valueOf(errorMessage);
 
-		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType(APPLICATION_JSON_VALUE);
 		String responseBody = new ObjectMapper().writeValueAsString(
 			ApiErrorResponse.of(authErrorCode));
 		response.getWriter().write(responseBody);

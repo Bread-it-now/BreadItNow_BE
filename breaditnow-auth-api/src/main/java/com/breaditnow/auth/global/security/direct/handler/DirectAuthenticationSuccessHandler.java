@@ -1,6 +1,9 @@
 package com.breaditnow.auth.global.security.direct.handler;
 
 import static com.breaditnow.auth.global.security.jwt.token.AuthTokenType.*;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.MediaType.*;
+import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.*;
 
 import java.io.IOException;
 
@@ -53,14 +56,16 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 
 		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
-		response.addHeader("Authorization", "Bearer " + accessToken.token());
+
+		final String bearerPrefix = BEARER.getValue() + " ";
+		response.addHeader(AUTHORIZATION, bearerPrefix + accessToken.token());
 
 		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
 		authTokenRepository.saveToken(refreshToken, accountContext.getRole());
 		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
 		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 
-		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType(APPLICATION_JSON_VALUE);
 		String responseBody = new ObjectMapper().writeValueAsString(ApiSuccessResponse.of("isNewUser", isNewUser));
 		response.getWriter().write(responseBody);
 	}

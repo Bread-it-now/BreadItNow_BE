@@ -71,7 +71,6 @@ public class BakeryService {
 	@Transactional
 	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
 		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
-		log.info("bakeryImageFiles = {}", bakeryImageFiles);
 		Bakery bakery = bakeryRepository.getByIdAndIsActiveTrue(bakeryId);
 		Owner owner = ownerRepository.getById(ownerId);
 
