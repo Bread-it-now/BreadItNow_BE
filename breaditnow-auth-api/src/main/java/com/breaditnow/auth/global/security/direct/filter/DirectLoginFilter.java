@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.util.StringUtils;
 
 import com.breaditnow.auth.domain.auth.controller.req.LoginRequest;
+import com.breaditnow.auth.global.exception.AuthErrorCode;
 import com.breaditnow.auth.global.security.direct.token.JwtAuthenticationToken;
 import com.breaditnow.common.util.JsonUtil;
 
@@ -30,7 +31,7 @@ public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
 		LoginRequest loginRequest = JsonUtil.readValue(request, LoginRequest.class);
 
 		if (!StringUtils.hasText(loginRequest.email()) || !StringUtils.hasText(loginRequest.password())) {
-			throw new AuthenticationServiceException("Missing username or password");
+			throw new AuthenticationServiceException(AuthErrorCode.LOGIN_FAILED.name());
 		}
 
 		JwtAuthenticationToken token = new JwtAuthenticationToken(
@@ -38,7 +39,7 @@ public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
 			loginRequest.password(),
 			loginRequest.role()
 		);
-		
+
 		return getAuthenticationManager().authenticate(token);
 	}
 

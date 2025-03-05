@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.breaditnow.auth.global.security.AccountContext;
 
+import ch.qos.logback.core.util.StringUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -42,6 +43,9 @@ public class JwtTokenValidator {
 	}
 
 	public Authentication getAuthentication(String token) throws JwtException {
+		if (StringUtil.isNullOrEmpty(token))
+			return null;
+
 		Claims claims = parseClaims(token);
 
 		Long userId = claims.get("userId", Long.class);

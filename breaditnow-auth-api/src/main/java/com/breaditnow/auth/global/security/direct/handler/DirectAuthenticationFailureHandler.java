@@ -20,7 +20,7 @@ public class DirectAuthenticationFailureHandler implements AuthenticationFailure
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException {
-		
+
 		String errorMessage = exception.getMessage();
 
 		AuthErrorCode authErrorCode = AuthErrorCode.valueOf(errorMessage);

@@ -1,9 +1,12 @@
 package com.breaditnow.auth.domain.auth.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.breaditnow.auth.domain.token.repository.AuthTokenRepository;
 import com.breaditnow.auth.global.security.AccountContext;
@@ -36,18 +39,23 @@ public class AuthSignOutService {
 			.map(Cookie::getValue)
 			.orElse(null);
 
-		Authentication authentication;
-		if (accessToken != null) {
-			authentication = jwtTokenValidator.getAuthentication(accessToken);
-		} else {
-			authentication = jwtTokenValidator.getAuthentication(refreshToken);
-		}
-		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
-		log.info("accountContext = {}", accountContext);
-		log.info("accountContext.getRole() = {}", accountContext.getRole());
-		authTokenRepository.deleteToken(AuthTokenType.REFRESH, accountContext.getRole(), accountContext.getUserId());
+		Optional<Authentication> authOpt = resolveAuthentication(accessToken, refreshToken);
+		authOpt.ifPresent(authentication -> {
+			AccountContext accountContext = (AccountContext)authentication.getPrincipal();
+			authTokenRepository.deleteToken(AuthTokenType.REFRESH, accountContext.getRole(),
+				accountContext.getUserId());
+		});
 
 		response.setHeader("Authorization", "");
 		cookieUtil.deleteCookie(request, response, refreshCookieKey);
+	}
+
+	private Optional<Authentication> resolveAuthentication(String accessToken, String refreshToken) {
+		if (StringUtils.hasText(accessToken)) {
+			return Optional.of(jwtTokenValidator.getAuthentication(accessToken));
+		} else if (StringUtils.hasText(refreshToken)) {
+			return Optional.of(jwtTokenValidator.getAuthentication(refreshToken));
+		}
+		return Optional.empty();
 	}
 }
