@@ -15,10 +15,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class AuthSignOutService {
 	private final CookieUtil cookieUtil;
 	private final JwtTokenValidator jwtTokenValidator;
@@ -41,6 +43,8 @@ public class AuthSignOutService {
 			authentication = jwtTokenValidator.getAuthentication(refreshToken);
 		}
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
+		log.info("accountContext = {}", accountContext);
+		log.info("accountContext.getRole() = {}", accountContext.getRole());
 		authTokenRepository.deleteToken(AuthTokenType.REFRESH, accountContext.getRole(), accountContext.getUserId());
 
 		response.setHeader("Authorization", "");

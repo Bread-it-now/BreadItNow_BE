@@ -16,8 +16,10 @@ import com.breaditnow.auth.global.security.direct.service.strategy.DirectUserDet
 import com.breaditnow.auth.global.security.direct.token.JwtAuthenticationToken;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public class DirectAuthenticationProvider implements AuthenticationProvider {
 	private final PasswordEncoder passwordEncoder;
 	private final Map<String, DirectUserDetailsService> userDetailsServices;
@@ -48,6 +50,7 @@ public class DirectAuthenticationProvider implements AuthenticationProvider {
 			role
 		);
 		authenticatedToken.setAuthenticated(true);
+		log.info("accountContext ={}", accountContext);
 		return authenticatedToken;
 	}
 

@@ -3,8 +3,8 @@ package com.breaditnow.auth.global.security.jwt.provider;
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,8 +62,10 @@ public class JwtTokenValidator {
 	}
 
 	private List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
-		return Collections.singletonList(new SimpleGrantedAuthority(
-			claims.get("authorities").toString()));
+		List<String> authoritiesClaim = (List<String>)claims.get("authorities");
+		return authoritiesClaim.stream()
+			.map(SimpleGrantedAuthority::new)
+			.collect(Collectors.toList());
 	}
 
 	public boolean validateToken(String token) {
