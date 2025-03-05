@@ -1,5 +1,6 @@
 package com.breaditnow.auth.global.security.direct.handler;
 
+import static com.breaditnow.auth.global.security.Role.*;
 import static com.breaditnow.auth.global.security.jwt.token.AuthTokenType.*;
 import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.MediaType.*;
@@ -46,7 +47,7 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 		Long userId = accountContext.getUserId();
 
 		boolean isOwner = accountContext.getAuthorities().stream()
-			.anyMatch(auth -> "ROLE_OWNER".equalsIgnoreCase(auth.getAuthority()));
+			.anyMatch(auth -> toAuthority(OWNER).equalsIgnoreCase(auth.getAuthority()));
 
 		boolean isNewUser;
 		if (isOwner) {

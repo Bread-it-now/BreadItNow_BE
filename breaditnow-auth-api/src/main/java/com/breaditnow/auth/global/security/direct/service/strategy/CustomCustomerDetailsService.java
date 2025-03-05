@@ -28,8 +28,7 @@ public class CustomCustomerDetailsService implements DirectUserDetailsService {
 			.orElseThrow(() -> new UsernameNotFoundException(EMAIL_NOT_FOUND.name()));
 
 		List<SimpleGrantedAuthority> authorities = Collections.singletonList(
-			new SimpleGrantedAuthority("ROLE_" + CUSTOMER.name()));
-
+			new SimpleGrantedAuthority(toAuthority(CUSTOMER)));
 		return AccountContext.ofDirect(customer.getId(), email, customer.getPassword(), authorities);
 	}
 

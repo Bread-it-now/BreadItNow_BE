@@ -55,7 +55,7 @@ public class AccountContext implements UserDetails, OAuth2User {
 			.userId(userId)
 			.oauth2Id(oauth2Id)
 			.attributes(attributes)
-			.roles(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + CUSTOMER.name())))
+			.roles(Collections.singletonList(new SimpleGrantedAuthority(toAuthority(CUSTOMER))))
 			.build();
 	}
 

@@ -1,5 +1,6 @@
 package com.breaditnow.auth.domain.auth.service;
 
+import static com.breaditnow.auth.global.security.Role.*;
 import static java.util.stream.Collectors.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class AuthSignInService {
 
 	@Transactional
 	public Long signup(SignupRequest signupRequest) {
-		Role role = Role.from(signupRequest.role());
+		Role role = from(signupRequest.role());
 		SignupStrategy strategy = signupStrategies.get(role);
 		return strategy.signup(signupRequest);
 	}

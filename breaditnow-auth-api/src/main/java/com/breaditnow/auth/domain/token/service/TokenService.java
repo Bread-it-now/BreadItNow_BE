@@ -48,6 +48,7 @@ public class TokenService {
 		validateRefreshToken(cookieRefreshToken, accountContext);
 
 		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
+		
 		final String bearerPrefix = BEARER.getValue() + " ";
 		response.setHeader(AUTHORIZATION, bearerPrefix + accessToken.token());
 	}

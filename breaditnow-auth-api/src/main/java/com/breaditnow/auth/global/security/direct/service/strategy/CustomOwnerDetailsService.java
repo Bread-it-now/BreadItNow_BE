@@ -28,8 +28,7 @@ public class CustomOwnerDetailsService implements DirectUserDetailsService {
 			.orElseThrow(() -> new UsernameNotFoundException(EMAIL_NOT_FOUND.name()));
 
 		List<SimpleGrantedAuthority> authorities = Collections.singletonList(
-			new SimpleGrantedAuthority("ROLE_" + OWNER.name()));
-
+			new SimpleGrantedAuthority(toAuthority(OWNER)));
 		return AccountContext.ofDirect(owner.getId(), email, owner.getPassword(), authorities);
 	}
 

@@ -1,6 +1,7 @@
 package com.breaditnow.auth.domain.auth.service.strategy;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+import static com.breaditnow.auth.global.security.Role.*;
 import static com.breaditnow.domain.domain.customer.enumerate.Provider.*;
 
 import java.util.Optional;
@@ -40,6 +41,6 @@ public class CustomerSignupStrategy implements SignupStrategy {
 
 	@Override
 	public Role getRole() {
-		return Role.CUSTOMER;
+		return CUSTOMER;
 	}
 }

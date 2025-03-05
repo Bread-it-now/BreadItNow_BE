@@ -25,7 +25,7 @@ public class DirectAuthenticationFailureHandler implements AuthenticationFailure
 
 		AuthErrorCode authErrorCode = AuthErrorCode.valueOf(errorMessage);
 
-		response.setContentType(APPLICATION_JSON_VALUE);
+		response.setContentType(APPLICATION_JSON_UTF8_VALUE);
 		String responseBody = new ObjectMapper().writeValueAsString(
 			ApiErrorResponse.of(authErrorCode));
 		response.getWriter().write(responseBody);

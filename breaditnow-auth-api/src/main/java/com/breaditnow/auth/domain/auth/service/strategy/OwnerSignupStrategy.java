@@ -1,6 +1,7 @@
 package com.breaditnow.auth.domain.auth.service.strategy;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+import static com.breaditnow.auth.global.security.Role.*;
 
 import java.util.Optional;
 
@@ -37,6 +38,6 @@ public class OwnerSignupStrategy implements SignupStrategy {
 
 	@Override
 	public Role getRole() {
-		return Role.OWNER;
+		return OWNER;
 	}
 }
