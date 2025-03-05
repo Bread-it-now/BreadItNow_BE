@@ -41,7 +41,7 @@ public class AuthSignOutService {
 			authentication = jwtTokenValidator.getAuthentication(refreshToken);
 		}
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
-		authTokenRepository.deleteToken(AuthTokenType.REFRESH, accountContext.getUserId());
+		authTokenRepository.deleteToken(AuthTokenType.REFRESH, accountContext.getRole(), accountContext.getUserId());
 
 		response.setHeader("Authorization", "");
 		cookieUtil.deleteCookie(request, response, refreshCookieKey);

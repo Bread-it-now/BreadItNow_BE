@@ -54,7 +54,8 @@ public class TokenService {
 			throw new AuthException(REFRESH_TOKEN_EXPIRED);
 		}
 
-		AuthToken savedRefreshToken = authTokenRepository.findToken(AuthTokenType.REFRESH, accountContext.getUserId())
+		AuthToken savedRefreshToken = authTokenRepository.findToken(AuthTokenType.REFRESH, accountContext.getRole(),
+				accountContext.getUserId())
 			.orElseThrow(() -> new AuthException(REFRESH_TOKEN_EXPIRED));
 
 		if (!oldToken.equals(savedRefreshToken.token())) {

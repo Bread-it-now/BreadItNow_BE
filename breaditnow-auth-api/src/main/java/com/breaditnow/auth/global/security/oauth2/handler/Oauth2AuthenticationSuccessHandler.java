@@ -72,8 +72,9 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	}
 
 	private void setRefreshTokenCookie(Authentication authentication, HttpServletResponse response) {
+		AccountContext accountContext = (AccountContext)authentication;
 		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
-		authTokenRepository.saveToken(refreshToken);
+		authTokenRepository.saveToken(refreshToken, accountContext.getRole());
 		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
 		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 	}

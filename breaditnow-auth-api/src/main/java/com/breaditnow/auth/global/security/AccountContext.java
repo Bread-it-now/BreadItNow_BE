@@ -7,10 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import com.breaditnow.auth.global.exception.AuthErrorCode;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -54,6 +57,13 @@ public class AccountContext implements UserDetails, OAuth2User {
 			.attributes(attributes)
 			.roles(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + CUSTOMER.name())))
 			.build();
+	}
+
+	public String getRole() {
+		return getAuthorities().stream()
+			.findFirst()
+			.map(auth -> auth.getAuthority().replace("ROLE_", ""))
+			.orElseThrow(() -> new BadCredentialsException(AuthErrorCode.ROLE_INVALID.name()));
 	}
 
 	@Override
