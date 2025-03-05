@@ -15,8 +15,8 @@ import com.breaditnow.auth.global.security.jwt.provider.JwtTokenCreator;
 import com.breaditnow.auth.global.security.jwt.token.AuthToken;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.util.CookieUtil;
+import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
-import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 	private final AuthTokenRepository authTokenRepository;
 	private final CookieUtil cookieUtil;
 	private final CustomerRepository customerRepository;
-	private final OwnerRepository ownerRepository;
+	private final BakeryRepository bakeryRepository;
 
 	@Value("${auth.token.refresh-cookie-key}")
 	private String refreshCookieKey;
@@ -50,7 +50,7 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		boolean isNewUser;
 		if (isOwner) {
-			isNewUser = false; // Owner는 항상 false로 관리?
+			isNewUser = !bakeryRepository.existsByOwnerIdAndIsActiveTrue(userId);
 		} else {
 			isNewUser = (customerRepository.getById(userId).getNickname() == null);
 		}
