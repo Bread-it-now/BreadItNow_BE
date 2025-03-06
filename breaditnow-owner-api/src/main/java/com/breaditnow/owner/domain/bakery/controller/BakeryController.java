@@ -23,12 +23,10 @@ import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.domain.bakery.service.BakeryService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bakery")
-@Slf4j
 public class BakeryController {
 	private final BakeryService bakeryService;
 

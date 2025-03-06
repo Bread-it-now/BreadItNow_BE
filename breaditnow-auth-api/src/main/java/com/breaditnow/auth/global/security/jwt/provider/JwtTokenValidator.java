@@ -1,10 +1,12 @@
 package com.breaditnow.auth.global.security.jwt.provider;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.*;
 
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +17,14 @@ import org.springframework.stereotype.Component;
 
 import com.breaditnow.auth.global.security.AccountContext;
 
+import ch.qos.logback.core.util.StringUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenValidator {
@@ -32,7 +36,20 @@ public class JwtTokenValidator {
 		this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
 	}
 
+	public String resolveToken(HttpServletRequest request) {
+		String authHeader = request.getHeader(AUTHORIZATION);
+
+		final String bearerPrefix = BEARER.getValue() + " ";
+		if (authHeader != null && authHeader.startsWith(bearerPrefix)) {
+			return authHeader.substring(7);
+		}
+		return null;
+	}
+
 	public Authentication getAuthentication(String token) throws JwtException {
+		if (StringUtil.isNullOrEmpty(token))
+			return null;
+
 		Claims claims = parseClaims(token);
 
 		Long userId = claims.get("userId", Long.class);
@@ -53,8 +70,10 @@ public class JwtTokenValidator {
 	}
 
 	private List<SimpleGrantedAuthority> getAuthorities(Claims claims) {
-		return Collections.singletonList(new SimpleGrantedAuthority(
-			claims.get("authorities").toString()));
+		List<String> authoritiesClaim = (List<String>)claims.get("authorities");
+		return authoritiesClaim.stream()
+			.map(SimpleGrantedAuthority::new)
+			.collect(Collectors.toList());
 	}
 
 	public boolean validateToken(String token) {

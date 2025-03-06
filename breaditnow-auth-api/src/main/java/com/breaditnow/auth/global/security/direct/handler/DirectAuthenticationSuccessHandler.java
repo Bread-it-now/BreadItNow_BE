@@ -1,0 +1,73 @@
+package com.breaditnow.auth.global.security.direct.handler;
+
+import static com.breaditnow.auth.global.security.Role.*;
+import static com.breaditnow.auth.global.security.jwt.token.AuthTokenType.*;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.MediaType.*;
+import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.*;
+
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import com.breaditnow.auth.domain.token.repository.AuthTokenRepository;
+import com.breaditnow.auth.global.security.AccountContext;
+import com.breaditnow.auth.global.security.jwt.provider.JwtTokenCreator;
+import com.breaditnow.auth.global.security.jwt.token.AuthToken;
+import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.common.util.CookieUtil;
+import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
+import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class DirectAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+	private final JwtTokenCreator jwtTokenCreator;
+	private final AuthTokenRepository authTokenRepository;
+	private final CookieUtil cookieUtil;
+	private final CustomerRepository customerRepository;
+	private final BakeryRepository bakeryRepository;
+
+	@Value("${auth.token.refresh-cookie-key}")
+	private String refreshCookieKey;
+
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+		Authentication authentication) throws IOException {
+
+		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
+		Long userId = accountContext.getUserId();
+
+		boolean isOwner = accountContext.getAuthorities().stream()
+			.anyMatch(auth -> toAuthority(OWNER).equalsIgnoreCase(auth.getAuthority()));
+
+		boolean isNewUser;
+		if (isOwner) {
+			isNewUser = !bakeryRepository.existsByOwnerIdAndIsActiveTrue(userId);
+		} else {
+			isNewUser = (customerRepository.getById(userId).getNickname() == null);
+		}
+
+		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
+
+		final String bearerPrefix = BEARER.getValue() + " ";
+		response.addHeader(AUTHORIZATION, bearerPrefix + accessToken.token());
+
+		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
+		authTokenRepository.saveToken(refreshToken, accountContext.getRole());
+		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
+		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
+
+		response.setContentType(APPLICATION_JSON_VALUE);
+		String responseBody = new ObjectMapper().writeValueAsString(ApiSuccessResponse.of("isNewUser", isNewUser));
+		response.getWriter().write(responseBody);
+	}
+}

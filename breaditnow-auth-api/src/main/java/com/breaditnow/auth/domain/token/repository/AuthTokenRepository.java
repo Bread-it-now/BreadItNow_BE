@@ -21,12 +21,12 @@ public class AuthTokenRepository {
 	private final RedisRepository redisRepository;
 	private final ObjectMapper objectMapper;
 
-	private String generateTokenKey(AuthTokenType type, Long userId) {
-		return String.format("TOKEN:%s:%d", type.name(), userId);
+	private String generateTokenKey(AuthTokenType type, String role, Long userId) {
+		return String.format("TOKEN:%s:%s:%d", type.name(), role, userId);
 	}
 
-	public void saveToken(AuthToken authToken) {
-		String key = generateTokenKey(authToken.type(), authToken.userId());
+	public void saveToken(AuthToken authToken, String role) {
+		String key = generateTokenKey(authToken.type(), role, authToken.userId());
 		try {
 			String tokenJson = objectMapper.writeValueAsString(authToken);
 			redisRepository.save(key, tokenJson, authToken.expiresIn());
@@ -35,8 +35,8 @@ public class AuthTokenRepository {
 		}
 	}
 
-	public Optional<AuthToken> findToken(AuthTokenType type, Long userId) {
-		String key = generateTokenKey(type, userId);
+	public Optional<AuthToken> findToken(AuthTokenType type, String role, Long userId) {
+		String key = generateTokenKey(type, role, userId);
 		Optional<Object> result = redisRepository.find(key);
 		if (result.isPresent() && result.get() instanceof String) {
 			try {
@@ -49,14 +49,14 @@ public class AuthTokenRepository {
 		return Optional.empty();
 	}
 
-	public void deleteToken(AuthTokenType type, Long userId) {
-		String key = generateTokenKey(type, userId);
+	public void deleteToken(AuthTokenType type, String role, Long userId) {
+		String key = generateTokenKey(type, role, userId);
 		redisRepository.delete(key);
 	}
 
-	public void deleteAllTokens(Long userId) {
+	public void deleteAllTokens(Long userId, String role) {
 		for (AuthTokenType type : AuthTokenType.values()) {
-			String key = generateTokenKey(type, userId);
+			String key = generateTokenKey(type, role, userId);
 			redisRepository.delete(key);
 		}
 	}

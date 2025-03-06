@@ -53,9 +53,7 @@ public class Customer {
 	private LocalDateTime lastLoginAt;
 
 	@Builder
-	public Customer(Long id, Provider provider, String oauth2Id, String email, String password,
-		LocalDateTime lastLoginAt) {
-		this.id = id;
+	public Customer(Provider provider, String oauth2Id, String email, String password) {
 		this.provider = provider;
 		this.oauth2Id = oauth2Id;
 		this.email = email;

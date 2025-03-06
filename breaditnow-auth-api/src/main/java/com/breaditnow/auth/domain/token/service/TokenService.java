@@ -2,6 +2,8 @@ package com.breaditnow.auth.domain.token.service;
 
 import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
 import static com.breaditnow.auth.global.security.jwt.token.AuthTokenType.*;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -46,7 +48,9 @@ public class TokenService {
 		validateRefreshToken(cookieRefreshToken, accountContext);
 
 		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
-		response.setHeader("Authorization", "Bearer " + accessToken.token());
+		
+		final String bearerPrefix = BEARER.getValue() + " ";
+		response.setHeader(AUTHORIZATION, bearerPrefix + accessToken.token());
 	}
 
 	private void validateRefreshToken(String oldToken, AccountContext accountContext) {
@@ -54,7 +58,8 @@ public class TokenService {
 			throw new AuthException(REFRESH_TOKEN_EXPIRED);
 		}
 
-		AuthToken savedRefreshToken = authTokenRepository.findToken(AuthTokenType.REFRESH, accountContext.getUserId())
+		AuthToken savedRefreshToken = authTokenRepository.findToken(AuthTokenType.REFRESH, accountContext.getRole(),
+				accountContext.getUserId())
 			.orElseThrow(() -> new AuthException(REFRESH_TOKEN_EXPIRED));
 
 		if (!oldToken.equals(savedRefreshToken.token())) {

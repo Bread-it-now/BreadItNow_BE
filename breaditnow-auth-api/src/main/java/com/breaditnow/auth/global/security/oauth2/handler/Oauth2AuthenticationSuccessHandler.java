@@ -25,9 +25,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -66,15 +64,15 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
 		Customer customer = customerRepository.getById(accountContext.getUserId());
 
-		return UriComponentsBuilder.
-			fromUriString(targetUrl)
+		return UriComponentsBuilder.fromUriString(targetUrl)
 			.queryParam("isNewUser", customer.isFirstLogin())
 			.build().toUriString();
 	}
 
 	private void setRefreshTokenCookie(Authentication authentication, HttpServletResponse response) {
+		AccountContext accountContext = (AccountContext)authentication.getPrincipal();
 		AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
-		authTokenRepository.saveToken(refreshToken);
+		authTokenRepository.saveToken(refreshToken, accountContext.getRole());
 		int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
 		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 	}

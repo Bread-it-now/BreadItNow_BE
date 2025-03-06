@@ -20,22 +20,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private static final String[] HEALTH_CHECK = {"/api/check"};
+	private static final String[] HEALTH_CHECK = { "/api/check" };
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-			.csrf(AbstractHttpConfigurer::disable)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+				.csrf(AbstractHttpConfigurer::disable)
+				.formLogin(AbstractHttpConfigurer::disable)
+				.httpBasic(AbstractHttpConfigurer::disable)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		http
-			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(HEALTH_CHECK).permitAll()
-				.anyRequest().permitAll()
-			);
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HEALTH_CHECK).permitAll()
+						.anyRequest().permitAll());
 
 		return http.build();
 	}

@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.customer.service;
+package com.breaditnow.auth.global.security.oauth2.service;
 
 import java.util.Optional;
 
@@ -10,18 +10,16 @@ import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomerRegistrationService {
+public class OAuth2CustomerRegistrationService {
 	private final CustomerRepository customerRepository;
 
 	@Transactional
 	public Customer registerCustomer(OAuth2UserInfo oAuth2UserInfo) {
 		Optional<Customer> existingCustomer = customerRepository.findByOauth2Id(oAuth2UserInfo.oauth2Id());
-		return existingCustomer.map(customer -> updateCustomer(customer))
+		return existingCustomer.map(this::updateCustomer)
 			.orElseGet(() -> createCustomer(oAuth2UserInfo));
 	}
 
