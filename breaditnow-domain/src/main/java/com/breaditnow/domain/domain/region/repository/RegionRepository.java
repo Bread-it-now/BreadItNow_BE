@@ -1,12 +1,14 @@
 package com.breaditnow.domain.domain.region.repository;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.breaditnow.domain.domain.region.entity.Region;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 import com.breaditnow.domain.global.exception.DomainException;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+import static com.breaditnow.domain.global.exception.DomainErrorCode.REGION_NOT_FOUND;
 
 public interface RegionRepository extends JpaRepository<Region, RegionPK> {
 	default void checkExists(RegionPK regionPK) {
@@ -14,4 +16,13 @@ public interface RegionRepository extends JpaRepository<Region, RegionPK> {
 			throw new DomainException(REGION_NOT_FOUND);
 		}
 	}
+
+	@Query("SELECT DISTINCT r.id.sidoCode, r.sidoName FROM Region r ORDER BY r.id.sidoCode")
+	List<Object[]> findSidoList();
+
+	List<Region> findDistinctById_SidoCodeOrderById_GugunCode(String sidoCode);
+
+	List<Region> findById_GugunCodeOrderById_DongCode(String gugunCode);
+
+
 }
