@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -19,4 +19,4 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: classpath:db/seoul-code.sql, classpath:db/owner.sql
+      data-locations: classpath:db/seoul-code.sql, classpath:db/bread-category.sql, classpath:db/test-data.sql
