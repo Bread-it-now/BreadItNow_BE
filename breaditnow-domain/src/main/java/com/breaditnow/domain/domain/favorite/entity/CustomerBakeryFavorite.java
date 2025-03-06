@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,10 @@ public class CustomerBakeryFavorite {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bakery_id", nullable = false)
 	private Bakery bakery;
+
+	@Builder
+	public CustomerBakeryFavorite(Customer customer, Bakery bakery) {
+		this.customer = customer;
+		this.bakery = bakery;
+	}
 }
