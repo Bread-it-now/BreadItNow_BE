@@ -60,10 +60,10 @@ public class Product {
 	private List<ProductBreadCategory> breadCategories = new ArrayList<>();
 
 	@Builder
-	public Product(Bakery bakery, String name, int price, String image, String description, int stock,
-		String releaseTime,
-		boolean isActive) {
+	public Product(Bakery bakery, ProductType type, String name, int price, String image, String description, int stock,
+		String releaseTime, boolean isActive) {
 		this.bakery = bakery;
+		this.type = type;
 		this.name = name;
 		this.price = price;
 		this.image = image;
