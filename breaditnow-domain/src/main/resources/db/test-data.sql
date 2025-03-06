@@ -1,10 +1,10 @@
 -- Customer
 INSERT INTO customer (email, password, nickname, phone, provider)
-VALUES ('user1@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK', '태영',
+VALUES ('user1@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK', '빵마니아',
         '01012345678', 'EMAIL'),
-       ('user2@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK', '의균',
+       ('user2@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK', '크림러버',
         '01087654321', 'EMAIL'),
-       ('user3@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK', '지민',
+       ('user3@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK', '모닝맨',
         '01098765432', 'EMAIL');
 
 -- Owner
@@ -17,15 +17,15 @@ values ('owner1@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.
 insert into bakery
 (owner_id, name, phone, introduction, profile_image, open_time, sido_code, gugun_code, dong_code, latitude, longitude,
  address_description, operating_status, is_active)
-values (1, '태영 Bakery', '010-1111-2222', '신선한 빵을 매일 제공합니다.', 'profile.jpg', '08:00-20:00', '11',
+values (1, '오븐 아틀리에', '010-1111-2222', '신선한 빵을 매일 제공합니다.', 'profile.jpg', '08:00-20:00', '11',
         '110', '101', 37.5665, 126.9780, '청운동', 'OPEN', 1),
-       (2, '의균 Bakery', '010-2222-3333', '매일 신선한 빵을 제공합니다.', 'profile2.jpg', '09:00-21:00', '11',
+       (2, '브레드 크래프트', '010-2222-3333', '매일 신선한 빵을 제공합니다.', 'profile2.jpg', '09:00-21:00', '11',
         '110', '102', 37.5665, 126.9780, '신교동', 'OPEN', 0),
-       (3, '지민 Bakery 1', '010-3333-4444', '매일 맛있는 빵을 제공합니다.', 'profile3.jpg', '07:00-19:00', '11',
+       (3, '오븐 라운지', '010-3333-4444', '매일 맛있는 빵을 제공합니다.', 'profile3.jpg', '07:00-19:00', '11',
         '110', '103', 37.5665, 126.9780, '궁정동', 'OPEN', 0),
-       (3, '지민 Bakery 2', '010-4444-5555', '신선한 재료로 만든 빵을 제공합니다.', 'profile4.jpg', '08:30-20:30',
+       (3, '빵 갤러리', '010-4444-5555', '신선한 재료로 만든 빵을 제공합니다.', 'profile4.jpg', '08:30-20:30',
         '11', '110', '104', 37.5665, 126.9780, '효자동', 'OPEN', 1),
-       (2, '의균 Bakery 2', '010-5555-6666', '건강한 빵을 만드는 전통의 맛.', 'profile5.jpg', '08:00-20:00', '11',
+       (2, '브레드 팩토리', '010-5555-6666', '건강한 빵을 만드는 전통의 맛.', 'profile5.jpg', '08:00-20:00', '11',
         '110', '105', 37.5665, 126.9780, '창성동', 'OPEN', 1);
 
 -- Product
