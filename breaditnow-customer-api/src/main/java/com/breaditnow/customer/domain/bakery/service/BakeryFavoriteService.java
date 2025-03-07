@@ -22,17 +22,31 @@ public class BakeryFavoriteService {
 
 	@Transactional
 	public Long likeBakery(Long customerId, Long bakeryId) {
-		Customer customer = customerRepository.getById(customerId);
-		Bakery bakery = bakeryRepository.getById(bakeryId);
+		return customerBakeryFavoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
+			.map(favorite -> {
+				favorite.changeActive(true);
+				return favorite.getId();
+			})
+			.orElseGet(() -> {
+				Customer customer = customerRepository.getById(customerId);
+				Bakery bakery = bakeryRepository.getById(bakeryId);
 
-		CustomerBakeryFavorite customerBakeryFavorite = CustomerBakeryFavorite.builder()
-			.customer(customer)
-			.bakery(bakery)
-			.build();
+				CustomerBakeryFavorite newFavorite = CustomerBakeryFavorite.builder()
+					.customer(customer)
+					.bakery(bakery)
+					.build();
 
-		CustomerBakeryFavorite savedCustomerBakeryFavorite = customerBakeryFavoriteRepository.save(
-			customerBakeryFavorite);
+				return customerBakeryFavoriteRepository.save(newFavorite).getId();
+			});
+	}
 
-		return savedCustomerBakeryFavorite.getId();
+	@Transactional
+	public Long deleteBakery(Long customerId, Long bakeryId) {
+		CustomerBakeryFavorite customerBakeryFavorite = customerBakeryFavoriteRepository.getByCustomerIdAndBakeryId(
+			customerId, bakeryId);
+
+		customerBakeryFavorite.changeActive(false);
+
+		return customerBakeryFavorite.getId();
 	}
 }

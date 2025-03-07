@@ -32,9 +32,15 @@ public class CustomerBakeryFavorite {
 	@JoinColumn(name = "bakery_id", nullable = false)
 	private Bakery bakery;
 
+	private boolean isActive = true;
+
 	@Builder
 	public CustomerBakeryFavorite(Customer customer, Bakery bakery) {
 		this.customer = customer;
 		this.bakery = bakery;
+	}
+
+	public void changeActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

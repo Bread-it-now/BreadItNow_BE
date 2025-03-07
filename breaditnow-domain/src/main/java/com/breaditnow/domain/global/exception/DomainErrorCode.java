@@ -31,7 +31,13 @@ public enum DomainErrorCode implements ErrorCode {
 	/**
 	 * Customer(BE000)
 	 */
-	CUSTOMER_NOT_FOUND(NOT_FOUND, "BE001", "고객을 찾을 수 없습니다");
+	CUSTOMER_NOT_FOUND(NOT_FOUND, "BE001", "고객을 찾을 수 없습니다"),
+
+	/**
+	 * Favorite(BF000)
+	 */
+	BAKERY_FAVORITE_NOT_FOUND(NOT_FOUND, "BF001", "좋아요한 빵집이 아닙니다."),
+	BAKERY_FAVORITE_IS_DUPLICATED(CONFLICT, "BF002", "이미 좋아요한 빵집입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
