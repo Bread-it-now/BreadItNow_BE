@@ -4,6 +4,7 @@ import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.product.entity.BreadCategory;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CustomerBreadCategoryPreference {
+public class CustomerBreadCategoryPreference extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;

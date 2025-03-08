@@ -4,6 +4,7 @@ import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CustomerAlertSetting {
+public class CustomerAlertSetting extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;

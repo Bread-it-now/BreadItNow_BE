@@ -5,6 +5,7 @@ import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CustomerBakeryFavorite {
+public class BakeryFavorite extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -35,7 +36,7 @@ public class CustomerBakeryFavorite {
 	private boolean isActive = true;
 
 	@Builder
-	public CustomerBakeryFavorite(Customer customer, Bakery bakery) {
+	public BakeryFavorite(Customer customer, Bakery bakery) {
 		this.customer = customer;
 		this.bakery = bakery;
 	}
