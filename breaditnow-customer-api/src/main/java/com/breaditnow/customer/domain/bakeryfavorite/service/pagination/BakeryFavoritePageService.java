@@ -15,7 +15,7 @@ import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavori
 import com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy.BakeryFavoriteSortFactory;
 import com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy.BakeryFavoriteSortStrategy;
 import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
-import com.breaditnow.domain.domain.favorite.repository.BakeryFavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.CustomerBakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BakeryFavoritePageService {
-	private final BakeryFavoriteRepository bakeryFavoriteRepository;
+	private final CustomerBakeryFavoriteRepository customerBakeryFavoriteRepository;
 	private final BakeryFavoriteSortFactory bakeryFavoriteSortFactory;
 
 	public BakeryFavoritesPageResponse getFavoriteBakery(Long customerId, PageInfoRequest pageInfoRequest) {

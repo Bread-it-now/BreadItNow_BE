@@ -8,7 +8,7 @@ import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
-import com.breaditnow.domain.domain.favorite.repository.BakeryFavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.CustomerBakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,13 +16,13 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BakeryFavoriteService {
-	private final BakeryFavoriteRepository bakeryFavoriteRepository;
+	private final CustomerBakeryFavoriteRepository customerBakeryFavoriteRepository;
 	private final CustomerRepository customerRepository;
 	private final BakeryRepository bakeryRepository;
 
 	@Transactional
 	public Long likeBakery(Long customerId, Long bakeryId) {
-		return bakeryFavoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
+		return customerBakeryFavoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
 			.map(favorite -> {
 				favorite.changeActive(true);
 				return favorite.getId();
@@ -36,13 +36,13 @@ public class BakeryFavoriteService {
 					.bakery(bakery)
 					.build();
 
-				return bakeryFavoriteRepository.save(newFavorite).getId();
+				return customerBakeryFavoriteRepository.save(newFavorite).getId();
 			});
 	}
 
 	@Transactional
 	public Long deleteBakery(Long customerId, Long bakeryId) {
-		BakeryFavorite bakeryFavorite = bakeryFavoriteRepository.getByCustomerIdAndBakeryId(
+		BakeryFavorite bakeryFavorite = customerBakeryFavoriteRepository.getByCustomerIdAndBakeryId(
 			customerId, bakeryId);
 
 		bakeryFavorite.changeActive(false);
