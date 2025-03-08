@@ -19,7 +19,7 @@ public enum BakeryFavoriteSortType {
 	POPULAR {
 		@Override
 		public Sort getSort() {
-			return Sort.by("likeCount").descending();
+			return Sort.unsorted();
 		}
 	};
 

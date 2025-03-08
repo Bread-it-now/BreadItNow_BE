@@ -15,7 +15,7 @@ import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
-import com.breaditnow.domain.domain.favorite.repository.FavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.BakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,13 +23,13 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BakeryFavoriteService {
-	private final FavoriteRepository favoriteRepository;
+	private final BakeryFavoriteRepository bakeryFavoriteRepository;
 	private final CustomerRepository customerRepository;
 	private final BakeryRepository bakeryRepository;
 
 	@Transactional
 	public Long likeBakery(Long customerId, Long bakeryId) {
-		return favoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
+		return bakeryFavoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
 			.map(favorite -> {
 				favorite.changeActive(true);
 				return favorite.getId();
@@ -43,13 +43,13 @@ public class BakeryFavoriteService {
 					.bakery(bakery)
 					.build();
 
-				return favoriteRepository.save(newFavorite).getId();
+				return bakeryFavoriteRepository.save(newFavorite).getId();
 			});
 	}
 
 	@Transactional
 	public Long deleteBakery(Long customerId, Long bakeryId) {
-		BakeryFavorite bakeryFavorite = favoriteRepository.getByCustomerIdAndBakeryId(
+		BakeryFavorite bakeryFavorite = bakeryFavoriteRepository.getByCustomerIdAndBakeryId(
 			customerId, bakeryId);
 
 		bakeryFavorite.changeActive(false);
@@ -58,8 +58,26 @@ public class BakeryFavoriteService {
 	}
 
 	public BakeryFavoritesPageResponse getFavorites(Long customerId, Pageable pageable) {
-		Page<BakeryFavorite> favoritesPage = favoriteRepository.findAllByCustomerIdAndIsActiveTrue(customerId,
+		Page<BakeryFavorite> favoritesPage = bakeryFavoriteRepository.findAllByCustomerIdAndIsActiveTrue(customerId,
 			pageable);
+
+		List<BakeryFavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
+			.map(favorite -> new BakeryFavoritesResponse(
+				favorite.getBakery().getId(),
+				favorite.getBakery().getName(),
+				favorite.getBakery().getProfileImage(),
+				0
+			))
+			.toList();
+
+		PageInfo pageInfo = PageInfo.of(favoritesPage.getTotalElements(), favoritesPage.getTotalPages(),
+			favoritesPage.isLast(), favoritesPage.getPageable().getPageNumber());
+		return BakeryFavoritesPageResponse.of(favoriteItems, pageInfo);
+	}
+
+	public BakeryFavoritesPageResponse getFavoriteBakeryPage(Long customerId, Pageable pageable) {
+		Page<BakeryFavorite> favoritesPage = bakeryFavoriteRepository.findFavoriteBakeryGroupedByOwnerOrderByCount(
+			customerId, pageable);
 
 		List<BakeryFavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
 			.map(favorite -> new BakeryFavoritesResponse(

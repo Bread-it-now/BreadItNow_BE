@@ -50,6 +50,7 @@ public class BakeryFavoriteController {
 		@RequestParam(name = "sort", defaultValue = "LATEST") BakeryFavoriteSortType sortType) {
 
 		Pageable pageable = PageRequest.of(page, size, sortType.getSort());
-		return of(bakeryFavoriteService.getFavorites(customerId, pageable));
+		return of(bakeryFavoriteService.getFavoriteBakeryPage(customerId, pageable));
 	}
+
 }
