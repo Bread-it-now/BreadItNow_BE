@@ -41,9 +41,13 @@ public class BakeryFavoritePageService {
 			))
 			.toList();
 
-		PageInfo pageInfo = PageInfo.of(favoritesPage.getTotalElements(), favoritesPage.getTotalPages(),
-			favoritesPage.isLast(), favoritesPage.getPageable().getPageNumber());
-		
+		PageInfo pageInfo = PageInfo.builder()
+			.totalElements(favoritesPage.getTotalElements())
+			.totalPages(favoritesPage.getTotalPages())
+			.isLast(favoritesPage.isLast())
+			.currPage(favoritesPage.getPageable().getPageNumber())
+			.build();
+
 		return BakeryFavoritesPageResponse.of(favoriteItems, pageInfo);
 	}
 }
