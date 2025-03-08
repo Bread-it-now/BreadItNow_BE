@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.breaditnow.common.page.PageInfoRequest;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesPageResponse;
 import com.breaditnow.customer.domain.bakeryfavorite.service.BakeryFavoriteService;
@@ -43,11 +43,7 @@ public class BakeryFavoriteController {
 
 	@GetMapping("/like")
 	public ApiSuccessResponse<BakeryFavoritesPageResponse> getFavorites(
-		@AuthCustomer Long customerId,
-		@RequestParam(name = "page", defaultValue = "0") int page,
-		@RequestParam(name = "size", defaultValue = "10") int size,
-		@RequestParam(name = "sort", defaultValue = "LATEST") String sort) {
-
-		return of(bakeryFavoritePageService.getFavoriteBakery(customerId, page, size, sort));
+		@AuthCustomer Long customerId, PageInfoRequest pageInfoRequest) {
+		return of(bakeryFavoritePageService.getFavoriteBakery(customerId, pageInfoRequest));
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.common.page.PageInfo;
+import com.breaditnow.common.page.PageInfoRequest;
 import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesPageResponse;
 import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesResponse;
 import com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy.BakeryFavoriteSortFactory;
@@ -25,9 +26,9 @@ public class BakeryFavoritePageService {
 	private final BakeryFavoriteRepository bakeryFavoriteRepository;
 	private final BakeryFavoriteSortFactory bakeryFavoriteSortFactory;
 
-	public BakeryFavoritesPageResponse getFavoriteBakery(Long customerId, int page, int size, String sort) {
-		BakeryFavoriteSortStrategy strategy = bakeryFavoriteSortFactory.getStrategy(sort);
-		Pageable pageable = PageRequest.of(page, size, strategy.getSort());
+	public BakeryFavoritesPageResponse getFavoriteBakery(Long customerId, PageInfoRequest pageInfoRequest) {
+		BakeryFavoriteSortStrategy strategy = bakeryFavoriteSortFactory.getStrategy(pageInfoRequest.sort());
+		Pageable pageable = PageRequest.of(pageInfoRequest.page(), pageInfoRequest.size(), strategy.getSort());
 
 		Page<BakeryFavorite> favoritesPage = strategy.getFavoritePage(customerId, pageable);
 
@@ -42,6 +43,7 @@ public class BakeryFavoritePageService {
 
 		PageInfo pageInfo = PageInfo.of(favoritesPage.getTotalElements(), favoritesPage.getTotalPages(),
 			favoritesPage.isLast(), favoritesPage.getPageable().getPageNumber());
+		
 		return BakeryFavoritesPageResponse.of(favoriteItems, pageInfo);
 	}
 }
