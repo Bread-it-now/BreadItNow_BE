@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,8 +50,7 @@ public class BakeryFavoriteController {
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "LATEST") FavoriteSortType sortType) {
 
-		Sort sort = sortType.getSort();
-		Pageable pageable = PageRequest.of(page, size, sort);
+		Pageable pageable = PageRequest.of(page, size, sortType.getSort());
 
 		List<FavoritesResponse> response = bakeryFavoriteService.getFavorites(customerId, pageable);
 		return of(response);
