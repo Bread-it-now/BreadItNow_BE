@@ -29,7 +29,7 @@ public class BakeryFavoritePageService {
 		BakeryFavoriteSortStrategy strategy = bakeryFavoriteSortFactory.getStrategy(sort);
 		Pageable pageable = PageRequest.of(page, size, strategy.getSort());
 
-		Page<BakeryFavorite> favoritesPage = strategy.getFavoritePage(bakeryFavoriteRepository, customerId, pageable);
+		Page<BakeryFavorite> favoritesPage = strategy.getFavoritePage(customerId, pageable);
 
 		List<BakeryFavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
 			.map(favorite -> new BakeryFavoritesResponse(

@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class PopularBakeryFavoriteSortStrategy implements BakeryFavoriteSortStrategy {
-	private final BakeryFavoriteRepository bakeryFavoriteRepository;
+	private final BakeryFavoriteRepository repository;
 
 	@Override
-	public Page<BakeryFavorite> getFavoritePage(BakeryFavoriteRepository repository, Long customerId,
+	public Page<BakeryFavorite> getFavoritePage(Long customerId,
 		Pageable pageable) {
-		return bakeryFavoriteRepository.findFavoriteBakeryGroupedByOwnerOrderByCount(customerId, pageable);
+		return repository.findFavoriteBakeryGroupedByOwnerOrderByCount(customerId, pageable);
 	}
 
 	@Override

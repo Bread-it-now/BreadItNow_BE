@@ -16,8 +16,10 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class LatestBakeryFavoriteSortStrategy implements BakeryFavoriteSortStrategy {
+	private final BakeryFavoriteRepository repository;
+
 	@Override
-	public Page<BakeryFavorite> getFavoritePage(BakeryFavoriteRepository repository, Long customerId,
+	public Page<BakeryFavorite> getFavoritePage(Long customerId,
 		Pageable pageable) {
 		Pageable pageableWithSort = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), getSort());
 		return repository.findAllByCustomerIdAndIsActiveTrue(customerId, pageableWithSort);
