@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakery.controller.req.enumerate;
+package com.breaditnow.customer.domain.bakeryfavorite.controller.req.enumerate;
 
 import static com.breaditnow.customer.global.exception.CustomerErrorCode.*;
 
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 
 import com.breaditnow.customer.global.exception.CustomerException;
 
-public enum FavoriteSortType {
+public enum BakeryFavoriteSortType {
 	// modifiedAt 내림차순
 	LATEST {
 		@Override
@@ -23,7 +23,7 @@ public enum FavoriteSortType {
 		}
 	};
 
-	public static FavoriteSortType of(String source) {
+	public static BakeryFavoriteSortType of(String source) {
 		switch (source.toLowerCase()) {
 			case "latest":
 				return LATEST;

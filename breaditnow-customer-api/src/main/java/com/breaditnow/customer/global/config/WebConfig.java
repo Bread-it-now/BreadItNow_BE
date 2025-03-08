@@ -7,7 +7,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.breaditnow.customer.domain.bakery.controller.req.converter.FavoriteSortTypeConverter;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.req.converter.BakeryFavoriteSortTypeConverter;
 import com.breaditnow.customer.global.security.resolver.CustomerArgumentResolver;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-	private final FavoriteSortTypeConverter favoriteSortTypeConverter;
+	private final BakeryFavoriteSortTypeConverter bakeryFavoriteSortTypeConverter;
 	private final CustomerArgumentResolver customerArgumentResolver;
 
 	@Override
@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
-		registry.addConverter(favoriteSortTypeConverter);
+		registry.addConverter(bakeryFavoriteSortTypeConverter);
 	}
 
 }

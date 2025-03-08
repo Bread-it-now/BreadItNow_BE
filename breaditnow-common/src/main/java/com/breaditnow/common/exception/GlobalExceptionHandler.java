@@ -43,19 +43,16 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(
 		MethodArgumentTypeMismatchException ex) {
-		// (A) 스프링 유틸 메서드 사용
 		Throwable root = NestedExceptionUtils.getRootCause(ex);
 
-		if (root instanceof BreaditnowException) {
-			// 여기서 내가 원하는 처리
-			BreaditnowException customerEx = (BreaditnowException)root;
+		if (root instanceof BreaditnowException customerEx) {
 			ErrorCode errorCode = customerEx.getErrorCode();
 			return ResponseEntity.status(errorCode.getHttpStatus())
 				.body(ApiErrorResponse.of(errorCode));
 		}
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-			.body(ApiErrorResponse.of(UNDEFINED_ERROR, ex.getMessage()));
+			.body(ApiErrorResponse.of(ARGUMENT_TYPE_MISMATCH, ex.getMessage()));
 	}
 
 	@ExceptionHandler(value = Exception.class)

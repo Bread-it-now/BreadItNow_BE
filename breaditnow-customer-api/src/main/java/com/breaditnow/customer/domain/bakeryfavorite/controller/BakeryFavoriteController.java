@@ -1,8 +1,7 @@
-package com.breaditnow.customer.domain.bakery.controller;
+package com.breaditnow.customer.domain.bakeryfavorite.controller;
 
 import static com.breaditnow.common.response.ApiSuccessResponse.*;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.bakery.controller.req.enumerate.FavoriteSortType;
-import com.breaditnow.customer.domain.bakery.controller.res.FavoritesResponse;
-import com.breaditnow.customer.domain.bakery.service.BakeryFavoriteService;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.req.enumerate.BakeryFavoriteSortType;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesPageResponse;
+import com.breaditnow.customer.domain.bakeryfavorite.service.BakeryFavoriteService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
 import lombok.RequiredArgsConstructor;
@@ -44,15 +43,13 @@ public class BakeryFavoriteController {
 	}
 
 	@GetMapping("/like")
-	public ApiSuccessResponse<List<FavoritesResponse>> getFavorites(
+	public ApiSuccessResponse<BakeryFavoritesPageResponse> getFavorites(
 		@AuthCustomer Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,
-		@RequestParam(name = "sort", defaultValue = "LATEST") FavoriteSortType sortType) {
+		@RequestParam(name = "sort", defaultValue = "LATEST") BakeryFavoriteSortType sortType) {
 
 		Pageable pageable = PageRequest.of(page, size, sortType.getSort());
-
-		List<FavoritesResponse> response = bakeryFavoriteService.getFavorites(customerId, pageable);
-		return of(response);
+		return of(bakeryFavoriteService.getFavorites(customerId, pageable));
 	}
 }

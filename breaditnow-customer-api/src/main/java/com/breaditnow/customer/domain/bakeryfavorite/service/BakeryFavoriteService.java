@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakery.service;
+package com.breaditnow.customer.domain.bakeryfavorite.service;
 
 import java.util.List;
 
@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.customer.domain.bakery.controller.res.FavoritesResponse;
+import com.breaditnow.common.page.PageInfo;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesPageResponse;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesResponse;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
@@ -55,12 +57,12 @@ public class BakeryFavoriteService {
 		return bakeryFavorite.getId();
 	}
 
-	public List<FavoritesResponse> getFavorites(Long customerId, Pageable pageable) {
+	public BakeryFavoritesPageResponse getFavorites(Long customerId, Pageable pageable) {
 		Page<BakeryFavorite> favoritesPage = favoriteRepository.findAllByCustomerIdAndIsActiveTrue(customerId,
 			pageable);
 
-		List<FavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
-			.map(favorite -> new FavoritesResponse(
+		List<BakeryFavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
+			.map(favorite -> new BakeryFavoritesResponse(
 				favorite.getBakery().getId(),
 				favorite.getBakery().getName(),
 				favorite.getBakery().getProfileImage(),
@@ -68,6 +70,8 @@ public class BakeryFavoriteService {
 			))
 			.toList();
 
-		return favoriteItems;
+		PageInfo pageInfo = PageInfo.of(favoritesPage.getTotalElements(), favoritesPage.getTotalPages(),
+			favoritesPage.isLast(), favoritesPage.getPageable().getPageNumber());
+		return BakeryFavoritesPageResponse.of(favoriteItems, pageInfo);
 	}
 }
