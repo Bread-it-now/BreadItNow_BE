@@ -1,15 +1,8 @@
 package com.breaditnow.customer.domain.bakeryfavorite.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesPageResponse;
-import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesResponse;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
@@ -55,41 +48,5 @@ public class BakeryFavoriteService {
 		bakeryFavorite.changeActive(false);
 
 		return bakeryFavorite.getId();
-	}
-
-	public BakeryFavoritesPageResponse getFavorites(Long customerId, Pageable pageable) {
-		Page<BakeryFavorite> favoritesPage = bakeryFavoriteRepository.findAllByCustomerIdAndIsActiveTrue(customerId,
-			pageable);
-
-		List<BakeryFavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
-			.map(favorite -> new BakeryFavoritesResponse(
-				favorite.getBakery().getId(),
-				favorite.getBakery().getName(),
-				favorite.getBakery().getProfileImage(),
-				0
-			))
-			.toList();
-
-		PageInfo pageInfo = PageInfo.of(favoritesPage.getTotalElements(), favoritesPage.getTotalPages(),
-			favoritesPage.isLast(), favoritesPage.getPageable().getPageNumber());
-		return BakeryFavoritesPageResponse.of(favoriteItems, pageInfo);
-	}
-
-	public BakeryFavoritesPageResponse getFavoriteBakeryPage(Long customerId, Pageable pageable) {
-		Page<BakeryFavorite> favoritesPage = bakeryFavoriteRepository.findFavoriteBakeryGroupedByOwnerOrderByCount(
-			customerId, pageable);
-
-		List<BakeryFavoritesResponse> favoriteItems = favoritesPage.getContent().stream()
-			.map(favorite -> new BakeryFavoritesResponse(
-				favorite.getBakery().getId(),
-				favorite.getBakery().getName(),
-				favorite.getBakery().getProfileImage(),
-				0
-			))
-			.toList();
-
-		PageInfo pageInfo = PageInfo.of(favoritesPage.getTotalElements(), favoritesPage.getTotalPages(),
-			favoritesPage.isLast(), favoritesPage.getPageable().getPageNumber());
-		return BakeryFavoritesPageResponse.of(favoriteItems, pageInfo);
 	}
 }
