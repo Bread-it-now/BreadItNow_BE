@@ -27,7 +27,7 @@ public class Address {
 
 	@Column(name = "address_description")
 	private String description;
-	
+
 	public Address(RegionPK regionPK, String description) {
 		this.sidoCode = regionPK.getSidoCode();
 		this.gugunCode = regionPK.getGugunCode();
