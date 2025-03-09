@@ -3,6 +3,7 @@ package com.breaditnow.owner.domain.product.controller;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductDeleteRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
+import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
 import com.breaditnow.owner.domain.product.service.ProductService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
@@ -40,15 +42,16 @@ public class ProductController {
 	}
 
 	@PutMapping("/{bakeryId}/product/{productId}")
-	public ApiSuccessResponse<Map<String, Long>> updateProduct(
+	public ApiSuccessResponse<ProductResponse> updateProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@PathVariable("productId") Long productId,
 		@RequestPart("data") ProductUpdateRequest request,
 		@RequestPart(value = "productImage", required = false) MultipartFile productImage
 	) {
-		productService.updateProduct(ownerId, bakeryId, productId, request, productImage);
-		return ApiSuccessResponse.of();
+		ProductResponse updatedProductResponse = productService.updateProduct(ownerId, bakeryId, productId, request,
+			productImage);
+		return ApiSuccessResponse.of(updatedProductResponse);
 	}
 
 	@DeleteMapping("/{bakeryId}/product/{productId}")
@@ -69,5 +72,14 @@ public class ProductController {
 	) {
 		int deletedCount = productService.deleteProducts(ownerId, bakeryId, productDeleteRequest.productIds());
 		return ApiSuccessResponse.of("deletedCount", deletedCount);
+	}
+
+	@GetMapping("/{bakeryId}/product/{productId}")
+	public ApiSuccessResponse<ProductResponse> getProduct(
+		@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId,
+		@PathVariable("productId") Long productId
+	) {
+		return ApiSuccessResponse.of(productService.getProduct(ownerId, bakeryId, productId));
 	}
 }

@@ -33,7 +33,7 @@ public class ProductBreadCategoryService {
 
 	@Transactional
 	public void updateProductBreadCategories(Long[] breadCategoryIds, Product product) {
-		productBreadCategoryRepository.deleteAllByProductId(product.getId());
+		product.getBreadCategories().clear();
 		addProductBreadCategories(breadCategoryIds, product);
 	}
 }

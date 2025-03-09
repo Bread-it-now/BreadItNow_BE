@@ -12,6 +12,7 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
+import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
 import com.breaditnow.owner.global.s3.upload.FileUploader;
 
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class ProductService {
 	}
 
 	@Transactional
-	public Long updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request,
+	public ProductResponse updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request,
 		MultipartFile productImage) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		Product product = productRepository.getByBakeryIdAndId(bakeryId, productId);
@@ -59,14 +60,7 @@ public class ProductService {
 			productBreadCategoryService.updateProductBreadCategories(breadCategoryIds, product);
 		}
 
-		return null;
-	}
-
-	private String uploadFile(MultipartFile file, String path) {
-		if (file != null && !file.isEmpty()) {
-			return uploader.upload(file, path);
-		}
-		return "";
+		return ProductResponse.of(product);
 	}
 
 	@Transactional
@@ -87,5 +81,18 @@ public class ProductService {
 			deletedCount++;
 		}
 		return deletedCount;
+	}
+
+	public ProductResponse getProduct(Long ownerId, Long bakeryId, Long productId) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+		Product product = productRepository.getByBakeryIdAndId(bakeryId, productId);
+		return ProductResponse.of(product);
+	}
+
+	private String uploadFile(MultipartFile file, String path) {
+		if (file != null && !file.isEmpty()) {
+			return uploader.upload(file, path);
+		}
+		return "";
 	}
 }
