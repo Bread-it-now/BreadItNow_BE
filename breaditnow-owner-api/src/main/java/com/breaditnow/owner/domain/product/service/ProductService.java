@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ProductService {
 
+	private final static String PRODUCT_IMAGE_PATH = "image/owner/product";
+
 	private final BakeryRepository bakeryRepository;
 	private final ProductRepository productRepository;
 	private final FileUploader uploader;
@@ -30,7 +32,7 @@ public class ProductService {
 	public Long createProduct(Long ownerId, Long bakeryId, ProductCreateRequest request, MultipartFile productImage) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
-		String productImageUrl = uploadFile(productImage, "image/owner/product");
+		String productImageUrl = uploadFile(productImage, PRODUCT_IMAGE_PATH);
 		Product product = request.toEntity(bakery, productImageUrl);
 		Product savedProduct = productRepository.save(product);
 
@@ -48,14 +50,14 @@ public class ProductService {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		Product product = productRepository.getByBakeryIdAndId(bakeryId, productId);
 
-		String updatedProductImageUrl = uploadFile(productImage, "image/owner/product");
+		String updatedProductImageUrl = uploadFile(productImage, PRODUCT_IMAGE_PATH);
 		Product updatedProduct = request.toEntity(bakery, updatedProductImageUrl);
 		product.update(updatedProduct);
 
-		// Long[] breadCategoryIds = request.breadCategoryIds();
-		// if (breadCategoryIds != null) {
-		// 	productBreadCategoryService.updateProductBreadCategories(breadCategoryIds, product);
-		// }
+		Long[] breadCategoryIds = request.breadCategoryIds();
+		if (breadCategoryIds != null) {
+			productBreadCategoryService.updateProductBreadCategories(breadCategoryIds, product);
+		}
 
 		return null;
 	}
