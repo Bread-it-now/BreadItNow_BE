@@ -7,6 +7,7 @@ import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.notification.enumerate.CustomerNotificationType;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CustomerNotification {
+public class CustomerNotification extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;

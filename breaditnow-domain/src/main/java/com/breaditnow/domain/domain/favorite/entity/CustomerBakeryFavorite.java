@@ -5,6 +5,7 @@ import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,13 +13,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CustomerBakeryFavorite {
+public class CustomerBakeryFavorite extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -30,4 +32,16 @@ public class CustomerBakeryFavorite {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bakery_id", nullable = false)
 	private Bakery bakery;
+
+	private boolean isActive = true;
+
+	@Builder
+	public CustomerBakeryFavorite(Customer customer, Bakery bakery) {
+		this.customer = customer;
+		this.bakery = bakery;
+	}
+
+	public void changeActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }

@@ -3,9 +3,17 @@ dependencies {
 
     implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.10.0"
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //db
     implementation 'com.mysql:mysql-connector-j'
     implementation 'com.h2database:h2'
+
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 test {
@@ -17,4 +25,23 @@ bootJar {
 }
 jar {
     enabled = true
+}
+
+// ------------------ Query DSL
+def generated = 'src/main/generated'
+
+sourceSets {
+    main {
+        java {
+            srcDirs += generated
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+clean {
+    delete file(generated)
 }

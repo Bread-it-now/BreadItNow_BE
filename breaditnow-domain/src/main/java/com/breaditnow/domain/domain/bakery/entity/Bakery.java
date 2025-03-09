@@ -10,6 +10,7 @@ import java.util.List;
 import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,7 +32,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString
-public class Bakery {
+public class Bakery extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;

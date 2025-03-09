@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
-
 	private final CustomerArgumentResolver customerArgumentResolver;
 
 	@Override
