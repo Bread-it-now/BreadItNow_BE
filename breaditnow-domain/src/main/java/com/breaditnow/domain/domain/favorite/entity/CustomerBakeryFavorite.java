@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class BakeryFavorite extends BaseEntity {
+public class CustomerBakeryFavorite extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -36,7 +36,7 @@ public class BakeryFavorite extends BaseEntity {
 	private boolean isActive = true;
 
 	@Builder
-	public BakeryFavorite(Customer customer, Bakery bakery) {
+	public CustomerBakeryFavorite(Customer customer, Bakery bakery) {
 		this.customer = customer;
 		this.bakery = bakery;
 	}

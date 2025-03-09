@@ -10,7 +10,7 @@ import com.breaditnow.common.page.PageInfoRequest;
 import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritesPageResponse;
 import com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy.BakeryFavoriteSortFactory;
 import com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy.BakeryFavoriteSortStrategy;
-import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
+import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ public class BakeryFavoritePageService {
 		BakeryFavoriteSortStrategy strategy = bakeryFavoriteSortFactory.getStrategy(pageInfoRequest.sort());
 		Pageable pageable = PageRequest.of(pageInfoRequest.page(), pageInfoRequest.size(), strategy.getSort());
 
-		Page<BakeryFavorite> favoritesPage = strategy.getFavoritePage(customerId, pageable);
+		Page<CustomerBakeryFavorite> favoritesPage = strategy.getFavoritePage(customerId, pageable);
 		return BakeryFavoritesPageResponse.of(favoritesPage);
 	}
 }

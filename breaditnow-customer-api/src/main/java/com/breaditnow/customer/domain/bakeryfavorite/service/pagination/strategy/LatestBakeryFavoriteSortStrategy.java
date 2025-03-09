@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
+import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
 import com.breaditnow.domain.domain.favorite.repository.CustomerBakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class LatestBakeryFavoriteSortStrategy implements BakeryFavoriteSortStrat
 	private final CustomerBakeryFavoriteRepository repository;
 
 	@Override
-	public Page<BakeryFavorite> getFavoritePage(Long customerId,
+	public Page<CustomerBakeryFavorite> getFavoritePage(Long customerId,
 		Pageable pageable) {
 		Pageable pageableWithSort = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), getSort());
 		return repository.findAllByCustomerIdAndIsActiveTrue(customerId, pageableWithSort);

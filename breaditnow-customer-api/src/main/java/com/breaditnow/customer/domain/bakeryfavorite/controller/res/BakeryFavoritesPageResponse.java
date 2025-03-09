@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
+import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
 
 import lombok.Builder;
 
@@ -14,7 +14,7 @@ public record BakeryFavoritesPageResponse(
 	List<BakeryFavoritesResponse> favorites,
 	PageInfo pageInfo
 ) {
-	public static BakeryFavoritesPageResponse of(Page<BakeryFavorite> favoritesPage) {
+	public static BakeryFavoritesPageResponse of(Page<CustomerBakeryFavorite> favoritesPage) {
 		List<BakeryFavoritesResponse> favorites = favoritesPage.getContent().stream()
 			.map(favorite -> new BakeryFavoritesResponse(
 				favorite.getBakery().getId(),

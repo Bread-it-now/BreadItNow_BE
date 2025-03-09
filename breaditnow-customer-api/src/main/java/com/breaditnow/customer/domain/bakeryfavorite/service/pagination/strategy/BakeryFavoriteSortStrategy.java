@@ -4,10 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
+import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
 
 public interface BakeryFavoriteSortStrategy {
-	Page<BakeryFavorite> getFavoritePage(Long customerId, Pageable pageable);
+	Page<CustomerBakeryFavorite> getFavoritePage(Long customerId, Pageable pageable);
 
 	Sort getSort();
 }

@@ -7,7 +7,7 @@ import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
-import com.breaditnow.domain.domain.favorite.entity.BakeryFavorite;
+import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
 import com.breaditnow.domain.domain.favorite.repository.CustomerBakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class BakeryFavoriteService {
 				Customer customer = customerRepository.getById(customerId);
 				Bakery bakery = bakeryRepository.getById(bakeryId);
 
-				BakeryFavorite newFavorite = BakeryFavorite.builder()
+				CustomerBakeryFavorite newFavorite = CustomerBakeryFavorite.builder()
 					.customer(customer)
 					.bakery(bakery)
 					.build();
@@ -42,11 +42,11 @@ public class BakeryFavoriteService {
 
 	@Transactional
 	public Long deleteBakery(Long customerId, Long bakeryId) {
-		BakeryFavorite bakeryFavorite = customerBakeryFavoriteRepository.getByCustomerIdAndBakeryId(
+		CustomerBakeryFavorite customerBakeryFavorite = customerBakeryFavoriteRepository.getByCustomerIdAndBakeryId(
 			customerId, bakeryId);
 
-		bakeryFavorite.changeActive(false);
+		customerBakeryFavorite.changeActive(false);
 
-		return bakeryFavorite.getId();
+		return customerBakeryFavorite.getId();
 	}
 }
