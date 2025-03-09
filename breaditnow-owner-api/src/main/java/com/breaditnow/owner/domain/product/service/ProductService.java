@@ -11,6 +11,7 @@ import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
+import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
 import com.breaditnow.owner.global.s3.upload.FileUploader;
 
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,24 @@ public class ProductService {
 		}
 
 		return savedProduct.getId();
+	}
+
+	@Transactional
+	public Long updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request,
+		MultipartFile productImage) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+		Product product = productRepository.getByBakeryIdAndId(bakeryId, productId);
+
+		String updatedProductImageUrl = uploadFile(productImage, "image/owner/product");
+		Product updatedProduct = request.toEntity(bakery, updatedProductImageUrl);
+		product.update(updatedProduct);
+
+		// Long[] breadCategoryIds = request.breadCategoryIds();
+		// if (breadCategoryIds != null) {
+		// 	productBreadCategoryService.updateProductBreadCategories(breadCategoryIds, product);
+		// }
+
+		return null;
 	}
 
 	private String uploadFile(MultipartFile file, String path) {

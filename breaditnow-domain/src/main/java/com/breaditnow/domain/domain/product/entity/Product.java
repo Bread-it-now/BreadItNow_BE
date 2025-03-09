@@ -50,9 +50,9 @@ public class Product {
 
 	private String description;
 
-	private int stock;
-
 	private String releaseTime;
+
+	private int stock;
 
 	private boolean isActive;
 
@@ -68,12 +68,22 @@ public class Product {
 		this.price = price;
 		this.image = image;
 		this.description = description;
-		this.stock = stock;
 		this.releaseTime = releaseTime;
+		this.stock = stock;
 		this.isActive = isActive;
 	}
 
 	public void updateActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public void update(Product product) {
+		this.bakery = product.getBakery();
+		this.type = product.getType();
+		this.name = product.getName();
+		this.price = product.getPrice();
+		this.image = product.getImage();
+		this.description = product.getDescription();
+		this.releaseTime = product.getReleaseTime();
 	}
 }
