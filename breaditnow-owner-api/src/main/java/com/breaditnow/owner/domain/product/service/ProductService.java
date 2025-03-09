@@ -1,5 +1,7 @@
 package com.breaditnow.owner.domain.product.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,5 +54,17 @@ public class ProductService {
 		Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
 		product.updateActive(false);
 		return product.getId();
+	}
+
+	@Transactional
+	public int deleteProducts(Long ownerId, Long bakeryId, List<Long> productIds) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+		int deletedCount = 0;
+		for (Long productId : productIds) {
+			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
+			product.updateActive(false);
+			deletedCount++;
+		}
+		return deletedCount;
 	}
 }

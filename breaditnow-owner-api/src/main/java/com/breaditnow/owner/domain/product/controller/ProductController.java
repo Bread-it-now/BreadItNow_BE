@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
+import com.breaditnow.owner.domain.product.controller.req.ProductDeleteRequest;
 import com.breaditnow.owner.domain.product.service.ProductService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
@@ -43,5 +45,15 @@ public class ProductController {
 	) {
 		Long deletedProductId = productService.deleteProduct(ownerId, bakeryId, productId);
 		return ApiSuccessResponse.of("productId", deletedProductId);
+	}
+
+	@DeleteMapping("/{bakeryId}/products")
+	public ApiSuccessResponse<Map<String, Integer>> deleteProducts(
+		@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId,
+		@RequestBody ProductDeleteRequest productDeleteRequest
+	) {
+		int deletedCount = productService.deleteProducts(ownerId, bakeryId, productDeleteRequest.productIds());
+		return ApiSuccessResponse.of("deletedCount", deletedCount);
 	}
 }
