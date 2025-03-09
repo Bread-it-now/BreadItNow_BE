@@ -1,3 +1,0 @@
-insert into owner (email, password)
-values  ('email1', 'password1'),
-        ('email2', 'password2');
