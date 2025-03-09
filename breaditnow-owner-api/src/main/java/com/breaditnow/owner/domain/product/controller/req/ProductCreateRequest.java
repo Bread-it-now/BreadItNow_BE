@@ -27,7 +27,7 @@ public record ProductCreateRequest(
 			.releaseTime(joinedReleaseTimes)
 			.image(productImageUrl)
 			.stock(0)
-			.isActive(false)
+			.isActive(true)
 			.build();
 	}
 }

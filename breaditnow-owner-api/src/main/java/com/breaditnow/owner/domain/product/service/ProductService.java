@@ -45,4 +45,12 @@ public class ProductService {
 		}
 		return "";
 	}
+
+	@Transactional
+	public Long deleteProduct(Long ownerId, Long bakeryId, Long productId) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+		Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
+		product.updateActive(false);
+		return product.getId();
+	}
 }

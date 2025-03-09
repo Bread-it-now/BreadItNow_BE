@@ -72,4 +72,8 @@ public class Product {
 		this.releaseTime = releaseTime;
 		this.isActive = isActive;
 	}
+
+	public void updateActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }
