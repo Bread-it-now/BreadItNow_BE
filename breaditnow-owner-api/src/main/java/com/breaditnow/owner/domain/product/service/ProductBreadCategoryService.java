@@ -30,10 +30,4 @@ public class ProductBreadCategoryService {
 			productBreadCategoryRepository.save(productBreadCategory);
 		}
 	}
-
-	@Transactional
-	public void updateProductBreadCategories(Long[] breadCategoryIds, Product product) {
-		product.getBreadCategories().clear();
-		addProductBreadCategories(breadCategoryIds, product);
-	}
 }

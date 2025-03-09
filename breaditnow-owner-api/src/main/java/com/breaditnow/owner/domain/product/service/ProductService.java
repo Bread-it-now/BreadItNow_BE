@@ -57,7 +57,8 @@ public class ProductService {
 
 		Long[] breadCategoryIds = request.breadCategoryIds();
 		if (breadCategoryIds != null) {
-			productBreadCategoryService.updateProductBreadCategories(breadCategoryIds, product);
+			product.getBreadCategories().clear();
+			productBreadCategoryService.addProductBreadCategories(breadCategoryIds, product);
 		}
 
 		return ProductResponse.of(product);
