@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.domain.bakeryfavorite.service.pagination;
 
 import org.springframework.data.domain.Page;
@@ -27,3 +28,4 @@ public class BakeryFavoritePageService {
 		return BakeryFavoritesPageResponse.of(favoritesPage);
 	}
 }
+*/

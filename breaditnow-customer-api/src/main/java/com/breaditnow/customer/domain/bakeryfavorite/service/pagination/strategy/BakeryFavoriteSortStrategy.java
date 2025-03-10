@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy;
 
 import org.springframework.data.domain.Page;
@@ -11,3 +12,4 @@ public interface BakeryFavoriteSortStrategy {
 
 	Sort getSort();
 }
+*/

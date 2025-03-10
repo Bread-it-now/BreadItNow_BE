@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy;
 
 import org.springframework.data.domain.Page;
@@ -26,3 +27,4 @@ public class PopularBakeryFavoriteSortStrategy implements BakeryFavoriteSortStra
 		return Sort.unsorted();
 	}
 }
+*/

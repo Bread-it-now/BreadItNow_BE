@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritesPageResponse;
+import com.breaditnow.customer.domain.productfavorite.service.ProductFavoritePageService;
 import com.breaditnow.customer.domain.productfavorite.service.ProductFavoriteService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/product")
 public class ProductFavoriteController {
 	private final ProductFavoriteService productFavoriteService;
+	private final ProductFavoritePageService productFavoritePageService;
 
 	@PostMapping("/{product_id}/like")
 	public ApiSuccessResponse<Map<String, Long>> likeProduct(@AuthCustomer Long customerId,
@@ -42,6 +44,6 @@ public class ProductFavoriteController {
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "LATEST") String sortType) {
-		return ApiSuccessResponse.of(productFavoriteService.getFavorites(customerId, page, size, sortType));
+		return ApiSuccessResponse.of(productFavoritePageService.getFavorites(customerId, page, size, sortType));
 	}
 }

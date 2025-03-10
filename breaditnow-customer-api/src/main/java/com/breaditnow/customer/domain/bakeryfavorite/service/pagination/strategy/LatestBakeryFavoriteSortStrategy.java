@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.domain.bakeryfavorite.service.pagination.strategy;
 
 import static org.springframework.data.domain.Sort.*;
@@ -30,3 +31,4 @@ public class LatestBakeryFavoriteSortStrategy implements BakeryFavoriteSortStrat
 		return by("modifiedAt").descending();
 	}
 }
+*/

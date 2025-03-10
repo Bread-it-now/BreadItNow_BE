@@ -10,8 +10,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.domain.favorite.repository.querydsl.strategy.ProductFavoriteSortStrategy;
+import com.breaditnow.domain.domain.favorite.repository.querydsl.strategy.ProductFavoriteSortStrategyFactory;
 import com.breaditnow.domain.domain.product.entity.Product;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -19,24 +19,22 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CustomerProductFavoriteRepositoryImpl implements CustomerProductFavoriteRepositoryCustom {
-
+	private final ProductFavoriteSortStrategyFactory sortFactory;
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Product> findProductFavorites(Long customerId, Pageable pageable,
-		ProductFavoriteSortStrategy sortStrategy) {
-
+	public Page<Product> findProductFavorites(Long customerId, Pageable pageable, String sortType) {
 		BooleanExpression baseCondition = customerProductFavorite.customer.id.eq(customerId)
 			.and(customerProductFavorite.product.id.eq(product.id))
 			.and(customerProductFavorite.isActive.eq(true));
 
-		OrderSpecifier<?> orderSpecifier = sortStrategy.getOrderSpecifier(product, customerProductFavorite);
+		ProductFavoriteSortStrategy strategy = sortFactory.getStrategy(sortType);
 
 		List<Product> content = queryFactory
 			.select(product)
 			.from(customerProductFavorite, product)
 			.where(baseCondition)
-			.orderBy(orderSpecifier)
+			.orderBy(strategy.getOrderSpecifier(product, customerProductFavorite))
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();

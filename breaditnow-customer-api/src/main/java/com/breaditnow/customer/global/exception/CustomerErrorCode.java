@@ -8,11 +8,6 @@ import com.breaditnow.common.exception.ErrorCode;
 
 public enum CustomerErrorCode implements ErrorCode {
 	/**
-	 * CA000
-	 */
-	SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "CA001", "존재하지 않는 정렬 조건입니다."),
-
-	/**
 	 * CY000 인증
 	 */
 	AUTHENTICATION_REQUIRED(UNAUTHORIZED, "CY001", "Customer 인증 정보가 필수입니다.");
