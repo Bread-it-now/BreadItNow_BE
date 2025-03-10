@@ -3,7 +3,10 @@ package com.breaditnow.owner.domain.product.controller.res;
 import java.util.List;
 
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.enumerate.ProductType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record ProductResponse(
 	Long id,
 	Long bakeryId,
@@ -18,12 +21,15 @@ public record ProductResponse(
 	List<BreadCategoryResponse> breadCategories
 ) {
 	public static ProductResponse of(Product product) {
-		List<BreadCategoryResponse> breadCategoryResponses = product.getBreadCategories().stream()
-			.map(relation -> new BreadCategoryResponse(
-				relation.getBreadCategory().getId(),
-				relation.getBreadCategory().getName()))
-			.toList();
-		
+		List<BreadCategoryResponse> breadCategoryResponses = null;
+		if (product.getType() == ProductType.BREAD) {
+			breadCategoryResponses = product.getBreadCategories().stream()
+				.map(relation -> new BreadCategoryResponse(
+					relation.getBreadCategory().getId(),
+					relation.getBreadCategory().getName()))
+				.toList();
+		}
+
 		return new ProductResponse(
 			product.getId(),
 			product.getBakery().getId(),

@@ -17,6 +17,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductDeleteRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
+import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
 import com.breaditnow.owner.domain.product.service.ProductService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
@@ -31,7 +32,7 @@ public class ProductController {
 	private final ProductService productService;
 
 	@PostMapping("/{bakeryId}")
-	public ApiSuccessResponse<Map<String, Long>> createProduct(
+	public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@RequestPart("data") ProductCreateRequest request,
@@ -42,7 +43,7 @@ public class ProductController {
 	}
 
 	@PutMapping("/{bakeryId}/product/{productId}")
-	public ApiSuccessResponse<ProductResponse> updateProduct(
+	public ApiSuccessResponse<ProductResponse> updateBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@PathVariable("productId") Long productId,
@@ -55,7 +56,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/{bakeryId}/product/{productId}")
-	public ApiSuccessResponse<Map<String, Long>> deleteProduct(
+	public ApiSuccessResponse<Map<String, Long>> deleteBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@PathVariable("productId") Long productId
@@ -65,7 +66,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/{bakeryId}/products")
-	public ApiSuccessResponse<Map<String, Integer>> deleteProducts(
+	public ApiSuccessResponse<Map<String, Integer>> deleteBakeryProducts(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@RequestBody ProductDeleteRequest productDeleteRequest
@@ -75,11 +76,19 @@ public class ProductController {
 	}
 
 	@GetMapping("/{bakeryId}/product/{productId}")
-	public ApiSuccessResponse<ProductResponse> getProduct(
+	public ApiSuccessResponse<ProductResponse> getBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@PathVariable("productId") Long productId
 	) {
 		return ApiSuccessResponse.of(productService.getProduct(ownerId, bakeryId, productId));
+	}
+
+	@GetMapping("/{bakeryId}")
+	public ApiSuccessResponse<ProductListResponse> getBakeryProducts(
+		@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId
+	) {
+		return ApiSuccessResponse.of(productService.getProducts(ownerId, bakeryId));
 	}
 }

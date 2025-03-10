@@ -12,6 +12,7 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
+import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
 import com.breaditnow.owner.global.s3.upload.FileUploader;
 
@@ -75,6 +76,7 @@ public class ProductService {
 	@Transactional
 	public int deleteProducts(Long ownerId, Long bakeryId, List<Long> productIds) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+
 		int deletedCount = 0;
 		for (Long productId : productIds) {
 			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
@@ -86,8 +88,14 @@ public class ProductService {
 
 	public ProductResponse getProduct(Long ownerId, Long bakeryId, Long productId) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-		Product product = productRepository.getByBakeryIdAndId(bakeryId, productId);
+		Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
 		return ProductResponse.of(product);
+	}
+
+	public ProductListResponse getProducts(Long ownerId, Long bakeryId) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+		List<Product> products = productRepository.findActiveByBakeryId(bakery.getId());
+		return ProductListResponse.of(products);
 	}
 
 	private String uploadFile(MultipartFile file, String path) {

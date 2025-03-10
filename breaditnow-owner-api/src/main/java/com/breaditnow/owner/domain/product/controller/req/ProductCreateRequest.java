@@ -17,7 +17,7 @@ public record ProductCreateRequest(
 ) {
 	public Product toEntity(Bakery bakery, String productImageUrl) {
 		String joinedReleaseTimes =
-			(releaseTimes != null && releaseTimes.length > 0) ? String.join(";", releaseTimes) : "";
+			(releaseTimes != null && releaseTimes.length > 0) ? String.join(";", releaseTimes) : null;
 		return Product.builder()
 			.bakery(bakery)
 			.type(ProductType.from(productType))
