@@ -13,6 +13,9 @@ import com.breaditnow.domain.global.exception.DomainException;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+	@Query("select coalesce(max(p.displayOrder), 0) from Product p where p.bakery.id = :bakeryId and p.isActive = true")
+	int findMaxDisplayOrderByBakeryId(@Param("bakeryId") Long bakeryId);
+
 	@Query("select p from Product p where p.bakery.id = :bakeryId and p.isActive = true")
 	List<Product> findActiveByBakeryId(@Param("bakeryId") Long bakeryId);
 

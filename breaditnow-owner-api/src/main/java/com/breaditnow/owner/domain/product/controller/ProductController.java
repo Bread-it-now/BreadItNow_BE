@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductDeleteRequest;
+import com.breaditnow.owner.domain.product.controller.req.ProductOrderUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
@@ -90,5 +92,15 @@ public class ProductController {
 		@PathVariable("bakeryId") Long bakeryId
 	) {
 		return ApiSuccessResponse.of(productService.getProducts(ownerId, bakeryId));
+	}
+
+	@PatchMapping("/{bakeryId}/order")
+	public ApiSuccessResponse<String> updateBakeryProductOrder(
+		@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId,
+		@RequestBody ProductOrderUpdateRequest orderUpdateRequest
+	) {
+		productService.updateProductOrder(ownerId, bakeryId, orderUpdateRequest.orders());
+		return ApiSuccessResponse.of();
 	}
 }

@@ -56,6 +56,8 @@ public class Product {
 
 	private boolean isActive;
 
+	private int displayOrder;
+
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductBreadCategory> breadCategories = new ArrayList<>();
 
@@ -73,10 +75,6 @@ public class Product {
 		this.isActive = isActive;
 	}
 
-	public void updateActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
 	public void update(Product product) {
 		this.bakery = product.getBakery();
 		this.type = product.getType();
@@ -85,5 +83,13 @@ public class Product {
 		this.image = product.getImage();
 		this.description = product.getDescription();
 		this.releaseTime = product.getReleaseTime();
+	}
+
+	public void updateActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public void updateDisplayOrder(int order) {
+		this.displayOrder = order;
 	}
 }

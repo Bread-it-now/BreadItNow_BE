@@ -11,6 +11,7 @@ import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
+import com.breaditnow.owner.domain.product.controller.req.ProductOrderItemRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
@@ -96,6 +97,16 @@ public class ProductService {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		List<Product> products = productRepository.findActiveByBakeryId(bakery.getId());
 		return ProductListResponse.of(products);
+	}
+
+	@Transactional
+	public void updateProductOrder(Long ownerId, Long bakeryId, List<ProductOrderItemRequest> orderItems) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+
+		for (ProductOrderItemRequest item : orderItems) {
+			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), item.productId());
+			product.updateDisplayOrder(item.order());
+		}
 	}
 
 	private String uploadFile(MultipartFile file, String path) {
