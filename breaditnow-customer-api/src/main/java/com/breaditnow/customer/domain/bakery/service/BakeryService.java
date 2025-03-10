@@ -22,7 +22,7 @@ public class BakeryService {
 
 	public BakeryDetailResponse getBakeryDetail(Long bakeryId) {
 		Bakery bakery = bakeryRepository.getById(bakeryId);
-		List<Product> products = productRepository.findByBakeryId(bakeryId);
+		List<Product> products = productRepository.findActiveByBakeryId(bakeryId);
 		return BakeryDetailResponse.of(bakery, products);
 	}
 }
