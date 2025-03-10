@@ -2,6 +2,7 @@ package com.breaditnow.customer.domain.productfavorite.controller;
 
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,16 @@ public class ProductFavoriteController {
 	private final ProductFavoriteService productFavoriteService;
 
 	@PostMapping("/{product_id}/like")
-	public ApiSuccessResponse<Map<String, Long>> likeBakery(@AuthCustomer Long customerId,
+	public ApiSuccessResponse<Map<String, Long>> likeProduct(@AuthCustomer Long customerId,
 		@PathVariable("product_id") Long productId) {
 		Long productFavoriteId = productFavoriteService.likeProduct(customerId, productId);
+		return ApiSuccessResponse.of("productFavoriteId", productFavoriteId);
+	}
+
+	@DeleteMapping("/{product_id}/like")
+	public ApiSuccessResponse<Map<String, Long>> deleteProduct(@AuthCustomer Long customerId,
+		@PathVariable("product_id") Long bakeryId) {
+		Long productFavoriteId = productFavoriteService.deleteProduct(customerId, bakeryId);
 		return ApiSuccessResponse.of("productFavoriteId", productFavoriteId);
 	}
 }

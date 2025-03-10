@@ -41,4 +41,14 @@ public class ProductFavoriteService {
 				return customerProductFavoriteRepository.save(newFavorite).getId();
 			});
 	}
+
+	@Transactional
+	public Long deleteProduct(Long customerId, Long productId) {
+		CustomerProductFavorite customerProductFavorite = customerProductFavoriteRepository.getByCustomerIdAndProductId(
+			customerId, productId);
+
+		customerProductFavorite.changeActive(false);
+
+		return customerProductFavorite.getId();
+	}
 }
