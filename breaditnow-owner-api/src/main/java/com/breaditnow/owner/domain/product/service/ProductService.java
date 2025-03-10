@@ -114,6 +114,14 @@ public class ProductService {
 		}
 	}
 
+	@Transactional
+	public Integer updateProductStock(Long ownerId, Long bakeryId, Long productId, Integer stock) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+		Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
+		product.updateStock(stock);
+		return product.getStock();
+	}
+
 	private String uploadFile(MultipartFile file, String path) {
 		if (file != null && !file.isEmpty()) {
 			return uploader.upload(file, path);

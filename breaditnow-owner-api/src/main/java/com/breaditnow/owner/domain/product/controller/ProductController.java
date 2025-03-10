@@ -18,12 +18,14 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductDeleteRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductOrderUpdateRequest;
+import com.breaditnow.owner.domain.product.controller.req.ProductStockUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
 import com.breaditnow.owner.domain.product.service.ProductService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,7 +39,7 @@ public class ProductController {
 	public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestPart("data") ProductCreateRequest request,
+		@RequestPart("data") @Valid ProductCreateRequest request,
 		@RequestPart(value = "productImage", required = false) MultipartFile productImage
 	) {
 		Long productId = productService.createProduct(ownerId, bakeryId, request, productImage);
@@ -49,7 +51,7 @@ public class ProductController {
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@PathVariable("productId") Long productId,
-		@RequestPart("data") ProductUpdateRequest request,
+		@RequestPart("data") @Valid ProductUpdateRequest request,
 		@RequestPart(value = "productImage", required = false) MultipartFile productImage
 	) {
 		ProductResponse updatedProductResponse = productService.updateProduct(ownerId, bakeryId, productId, request,
@@ -71,7 +73,7 @@ public class ProductController {
 	public ApiSuccessResponse<Map<String, Integer>> deleteBakeryProducts(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestBody ProductDeleteRequest productDeleteRequest
+		@RequestBody @Valid ProductDeleteRequest productDeleteRequest
 	) {
 		int deletedCount = productService.deleteProducts(ownerId, bakeryId, productDeleteRequest.productIds());
 		return ApiSuccessResponse.of("deletedCount", deletedCount);
@@ -98,9 +100,20 @@ public class ProductController {
 	public ApiSuccessResponse<String> updateBakeryProductOrder(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestBody ProductOrderUpdateRequest orderUpdateRequest
+		@RequestBody @Valid ProductOrderUpdateRequest orderUpdateRequest
 	) {
 		productService.updateProductOrder(ownerId, bakeryId, orderUpdateRequest.productOrders());
 		return ApiSuccessResponse.of();
+	}
+
+	@PatchMapping("/{bakery_id}/product/{product_id}/stock")
+	public ApiSuccessResponse<Map<String, Integer>> updateProductStock(
+		@AuthOwner Long ownerId,
+		@PathVariable("bakery_id") Long bakeryId,
+		@PathVariable("product_id") Long productId,
+		@RequestBody @Valid ProductStockUpdateRequest request
+	) {
+		Integer updatedStock = productService.updateProductStock(ownerId, bakeryId, productId, request.stock());
+		return ApiSuccessResponse.of("stock", updatedStock);
 	}
 }

@@ -92,4 +92,9 @@ public class Product {
 	public void updateDisplayOrder(int order) {
 		this.displayOrder = order;
 	}
+
+	public void updateStock(int stock) {
+		this.stock = stock;
+	}
+
 }
