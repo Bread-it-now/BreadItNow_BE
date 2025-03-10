@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.common.page.PageInfoRequest;
 import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritesPageResponse;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
@@ -59,16 +58,15 @@ public class ProductFavoriteService {
 		return customerProductFavorite.getId();
 	}
 
-	public ProductFavoritesPageResponse getFavorites(Long customerId, PageInfoRequest pageInfoRequest) {
+	public ProductFavoritesPageResponse getFavorites(Long customerId, int page, int size, String sortType) {
 		ProductFavoriteSortStrategy sortStrategy;
-		if ("popular".equalsIgnoreCase(pageInfoRequest.sort())) {
+		if ("popular".equalsIgnoreCase(sortType)) {
 			sortStrategy = new PopularProductFavoriteSortStrategy();
 		} else {
-			// 기본값은 최신순 정렬
 			sortStrategy = new LatestProductFavoriteSortStrategy();
 		}
 
-		Pageable pageable = PageRequest.of(pageInfoRequest.page(), pageInfoRequest.size());
+		Pageable pageable = PageRequest.of(page, size);
 
 		return ProductFavoritesPageResponse.of(
 			customerProductFavoriteRepository.findProductFavorites(customerId, pageable, sortStrategy));
