@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 import com.breaditnow.domain.domain.alert.entity.CustomerAlertSetting;
 import com.breaditnow.domain.domain.customer.enumerate.Provider;
+import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,7 +26,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString
-public class Customer {
+public class Customer extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;

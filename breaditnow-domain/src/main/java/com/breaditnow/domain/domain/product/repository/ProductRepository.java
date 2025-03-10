@@ -12,7 +12,7 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.exception.DomainException;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
+	
 	@Query("select coalesce(max(p.displayOrder), 0) from Product p where p.bakery.id = :bakeryId and p.isActive = true")
 	int findMaxDisplayOrderByBakeryId(@Param("bakeryId") Long bakeryId);
 
