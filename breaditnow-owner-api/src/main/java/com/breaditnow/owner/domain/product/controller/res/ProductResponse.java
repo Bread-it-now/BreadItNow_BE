@@ -1,5 +1,6 @@
 package com.breaditnow.owner.domain.product.controller.res;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.breaditnow.domain.domain.product.entity.Product;
@@ -15,10 +16,11 @@ public record ProductResponse(
 	int price,
 	String image,
 	String description,
-	String releaseTime,
+	List<String> releaseTimes,
 	int stock,
 	boolean isActive,
-	List<BreadCategoryResponse> breadCategories
+	List<BreadCategoryResponse> breadCategories,
+	int displayOrder
 ) {
 	public static ProductResponse of(Product product) {
 		List<BreadCategoryResponse> breadCategoryResponses = null;
@@ -30,6 +32,14 @@ public record ProductResponse(
 				.toList();
 		}
 
+		List<String> releaseTimes = null;
+		if (product.getReleaseTime() != null) {
+			releaseTimes = Arrays.stream(product.getReleaseTime().split(";"))
+				.map(String::trim)
+				.filter(s -> !s.isEmpty())
+				.toList();
+		}
+
 		return new ProductResponse(
 			product.getId(),
 			product.getBakery().getId(),
@@ -38,10 +48,11 @@ public record ProductResponse(
 			product.getPrice(),
 			product.getImage(),
 			product.getDescription(),
-			product.getReleaseTime(),
+			releaseTimes,
 			product.getStock(),
 			product.isActive(),
-			breadCategoryResponses
+			breadCategoryResponses,
+			product.getDisplayOrder()
 		);
 	}
 }

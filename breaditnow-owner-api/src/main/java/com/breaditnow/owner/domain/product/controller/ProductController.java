@@ -100,7 +100,7 @@ public class ProductController {
 		@PathVariable("bakeryId") Long bakeryId,
 		@RequestBody ProductOrderUpdateRequest orderUpdateRequest
 	) {
-		productService.updateProductOrder(ownerId, bakeryId, orderUpdateRequest.orders());
+		productService.updateProductOrder(ownerId, bakeryId, orderUpdateRequest.productOrders());
 		return ApiSuccessResponse.of();
 	}
 }

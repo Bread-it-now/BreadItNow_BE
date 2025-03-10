@@ -39,6 +39,9 @@ public class ProductService {
 		Product product = request.toEntity(bakery, productImageUrl);
 		Product savedProduct = productRepository.save(product);
 
+		int nextDisplayOrder = productRepository.findMaxDisplayOrderByBakeryId(bakery.getId()) + 1;
+		savedProduct.updateDisplayOrder(nextDisplayOrder);
+
 		Long[] breadCategoryIds = request.breadCategoryIds();
 		if (breadCategoryIds != null) {
 			productBreadCategoryService.addProductBreadCategories(breadCategoryIds, savedProduct);
@@ -71,6 +74,7 @@ public class ProductService {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
 		product.updateActive(false);
+		product.updateDisplayOrder(-1);
 		return product.getId();
 	}
 
@@ -82,6 +86,7 @@ public class ProductService {
 		for (Long productId : productIds) {
 			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
 			product.updateActive(false);
+			product.updateDisplayOrder(-1);
 			deletedCount++;
 		}
 		return deletedCount;
