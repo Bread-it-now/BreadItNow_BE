@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.product.repository;
+package com.breaditnow.domain.domain.breadcategory.repository;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
