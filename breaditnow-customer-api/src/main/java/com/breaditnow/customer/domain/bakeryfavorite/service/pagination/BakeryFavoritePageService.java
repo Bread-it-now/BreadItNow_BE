@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class BakeryFavoritePageService {
 	private final BakeryFavoriteSortFactory bakeryFavoriteSortFactory;
 
-	public BakeryFavoritesPageResponse getFavoriteBakery(Long customerId, PageInfoRequest pageInfoRequest) {
+	public BakeryFavoritesPageResponse getFavorites(Long customerId, PageInfoRequest pageInfoRequest) {
 		BakeryFavoriteSortStrategy strategy = bakeryFavoriteSortFactory.getStrategy(pageInfoRequest.sort());
 		Pageable pageable = PageRequest.of(pageInfoRequest.page(), pageInfoRequest.size(), strategy.getSort());
 

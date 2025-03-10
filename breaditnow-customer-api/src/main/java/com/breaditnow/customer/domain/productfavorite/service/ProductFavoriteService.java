@@ -2,13 +2,20 @@ package com.breaditnow.customer.domain.productfavorite.service;
 
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.breaditnow.common.page.PageInfoRequest;
+import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritesPageResponse;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.favorite.entity.CustomerProductFavorite;
-import com.breaditnow.domain.domain.favorite.repository.CustomerProductFavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.querydsl.strategy.LatestProductFavoriteSortStrategy;
+import com.breaditnow.domain.domain.favorite.repository.querydsl.strategy.PopularProductFavoriteSortStrategy;
+import com.breaditnow.domain.domain.favorite.repository.querydsl.strategy.ProductFavoriteSortStrategy;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 
@@ -50,5 +57,20 @@ public class ProductFavoriteService {
 		customerProductFavorite.changeActive(false);
 
 		return customerProductFavorite.getId();
+	}
+
+	public ProductFavoritesPageResponse getFavorites(Long customerId, PageInfoRequest pageInfoRequest) {
+		ProductFavoriteSortStrategy sortStrategy;
+		if ("popular".equalsIgnoreCase(pageInfoRequest.sort())) {
+			sortStrategy = new PopularProductFavoriteSortStrategy();
+		} else {
+			// 기본값은 최신순 정렬
+			sortStrategy = new LatestProductFavoriteSortStrategy();
+		}
+
+		Pageable pageable = PageRequest.of(pageInfoRequest.page(), pageInfoRequest.size());
+
+		return ProductFavoritesPageResponse.of(
+			customerProductFavoriteRepository.findProductFavorites(customerId, pageable, sortStrategy));
 	}
 }

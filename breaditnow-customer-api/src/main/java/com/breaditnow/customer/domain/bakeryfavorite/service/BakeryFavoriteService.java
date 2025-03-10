@@ -8,7 +8,7 @@ import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
-import com.breaditnow.domain.domain.favorite.repository.CustomerBakeryFavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.CustomerBakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
 

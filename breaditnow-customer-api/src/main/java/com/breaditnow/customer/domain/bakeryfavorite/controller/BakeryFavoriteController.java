@@ -42,6 +42,6 @@ public class BakeryFavoriteController {
 	@GetMapping("/like")
 	public ApiSuccessResponse<BakeryFavoritesPageResponse> getFavorites(
 		@AuthCustomer Long customerId, PageInfoRequest pageInfoRequest) {
-		return ApiSuccessResponse.of(bakeryFavoritePageService.getFavoriteBakery(customerId, pageInfoRequest));
+		return ApiSuccessResponse.of(bakeryFavoritePageService.getFavorites(customerId, pageInfoRequest));
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
-import com.breaditnow.domain.domain.favorite.repository.CustomerBakeryFavoriteRepository;
+import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.CustomerBakeryFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
 
