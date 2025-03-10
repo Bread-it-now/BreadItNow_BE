@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritesPageResponse;
+import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritePageResponse;
 import com.breaditnow.customer.domain.productfavorite.service.ProductFavoritePageService;
 import com.breaditnow.customer.domain.productfavorite.service.ProductFavoriteService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
@@ -40,7 +40,7 @@ public class ProductFavoriteController {
 	}
 
 	@GetMapping("/like")
-	public ApiSuccessResponse<ProductFavoritesPageResponse> getFavorites(@AuthCustomer Long customerId,
+	public ApiSuccessResponse<ProductFavoritePageResponse> getFavorites(@AuthCustomer Long customerId,
 		Pageable pageable) {
 		return ApiSuccessResponse.of(productFavoritePageService.getFavorites(customerId, pageable));
 	}

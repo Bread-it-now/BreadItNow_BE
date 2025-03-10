@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritesPageResponse;
+import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritePageResponse;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 public class ProductFavoritePageService {
 	private final CustomerProductFavoriteRepository customerProductFavoriteRepository;
 
-	public ProductFavoritesPageResponse getFavorites(Long customerId, Pageable pageable) {
+	public ProductFavoritePageResponse getFavorites(Long customerId, Pageable pageable) {
 
-		return ProductFavoritesPageResponse.of(
+		return ProductFavoritePageResponse.of(
 			customerProductFavoriteRepository.findProductFavorites(customerId, pageable));
 	}
 }

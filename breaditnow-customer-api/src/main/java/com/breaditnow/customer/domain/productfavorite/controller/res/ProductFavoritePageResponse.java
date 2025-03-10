@@ -10,11 +10,11 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import lombok.Builder;
 
 @Builder
-public record ProductFavoritesPageResponse(
+public record ProductFavoritePageResponse(
 	List<ProductFavoriteResponse> favorites,
 	PageInfo pageInfo
 ) {
-	public static ProductFavoritesPageResponse of(Page<Product> favoritesPage) {
+	public static ProductFavoritePageResponse of(Page<Product> favoritesPage) {
 		List<ProductFavoriteResponse> favorites = favoritesPage.stream()
 			.map(ProductFavoriteResponse::of)
 			.toList();
@@ -26,7 +26,7 @@ public record ProductFavoritesPageResponse(
 			.currPage(favoritesPage.getPageable().getPageNumber())
 			.build();
 
-		return ProductFavoritesPageResponse.builder()
+		return ProductFavoritePageResponse.builder()
 			.favorites(favorites)
 			.pageInfo(pageInfo)
 			.build();

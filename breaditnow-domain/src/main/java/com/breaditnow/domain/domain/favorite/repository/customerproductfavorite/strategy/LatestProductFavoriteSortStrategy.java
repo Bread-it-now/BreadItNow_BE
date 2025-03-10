@@ -10,6 +10,6 @@ import com.querydsl.core.types.OrderSpecifier;
 public class LatestProductFavoriteSortStrategy implements ProductFavoriteSortStrategy {
 	@Override
 	public OrderSpecifier<?> getOrderSpecifier(QProduct product, QCustomerProductFavorite customerProductFavorite) {
-		return product.modifiedAt.desc();
+		return customerProductFavorite.modifiedAt.desc();
 	}
 }

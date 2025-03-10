@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.strategy;
+package com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Component;
 import com.breaditnow.domain.global.exception.DomainException;
 
 @Component
-public class ProductFavoriteSortStrategyFactory {
+public class BakeryFavoriteSortStrategyFactory {
 
-	private final Map<String, ProductFavoriteSortStrategy> strategies;
+	private final Map<String, BakeryFavoriteSortStrategy> strategies;
 
-	public ProductFavoriteSortStrategyFactory(LatestProductFavoriteSortStrategy latestStrategy,
-		PopularProductFavoriteSortStrategy popularStrategy) {
+	public BakeryFavoriteSortStrategyFactory(LatestBakeryFavoriteSortStrategy latestStrategy,
+		PopularBakeryFavoriteSortStrategy popularStrategy) {
 		this.strategies = Map.of(
 			"latest", latestStrategy,
 			"popular", popularStrategy
 		);
 	}
 
-	public ProductFavoriteSortStrategy getStrategy(Sort sort) {
+	public BakeryFavoriteSortStrategy getStrategy(Sort sort) {
 		String key = sort.isSorted() ? sort.iterator().next().getProperty().toLowerCase() : "latest";
 
 		return Optional.ofNullable(strategies.get(key))
-			.orElseThrow(() -> new DomainException(BREAD_SORT_CONDITION_NOT_FOUND));
+			.orElseThrow(() -> new DomainException(BAKERY_SORT_CONDITION_NOT_FOUND));
 	}
 }

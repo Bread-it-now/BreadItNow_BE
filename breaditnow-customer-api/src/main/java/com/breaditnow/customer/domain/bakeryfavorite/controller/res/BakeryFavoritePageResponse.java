@@ -5,23 +5,18 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.favorite.entity.CustomerBakeryFavorite;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
 
 import lombok.Builder;
 
 @Builder
-public record BakeryFavoritesPageResponse(
-	List<BakeryFavoritesResponse> favorites,
+public record BakeryFavoritePageResponse(
+	List<BakeryFavoriteResponse> favorites,
 	PageInfo pageInfo
 ) {
-	public static BakeryFavoritesPageResponse of(Page<CustomerBakeryFavorite> favoritesPage) {
-		List<BakeryFavoritesResponse> favorites = favoritesPage.getContent().stream()
-			.map(favorite -> new BakeryFavoritesResponse(
-				favorite.getBakery().getId(),
-				favorite.getBakery().getName(),
-				favorite.getBakery().getProfileImage(),
-				0
-			))
+	public static BakeryFavoritePageResponse of(Page<Bakery> favoritesPage) {
+		List<BakeryFavoriteResponse> favorites = favoritesPage.stream()
+			.map(BakeryFavoriteResponse::of)
 			.toList();
 
 		PageInfo pageInfo = PageInfo.builder()
@@ -31,7 +26,7 @@ public record BakeryFavoritesPageResponse(
 			.currPage(favoritesPage.getPageable().getPageNumber())
 			.build();
 
-		return BakeryFavoritesPageResponse.builder()
+		return BakeryFavoritePageResponse.builder()
 			.favorites(favorites)
 			.pageInfo(pageInfo)
 			.build();
