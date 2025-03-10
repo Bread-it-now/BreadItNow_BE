@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.favorite.repository.querydsl.strategy;
+package com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.strategy;
 
 import com.breaditnow.domain.domain.favorite.entity.QCustomerProductFavorite;
 import com.breaditnow.domain.domain.product.entity.QProduct;

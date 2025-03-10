@@ -1,6 +1,6 @@
 package com.breaditnow.customer.domain.productfavorite.service;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class ProductFavoritePageService {
 	private final CustomerProductFavoriteRepository customerProductFavoriteRepository;
 
-	public ProductFavoritesPageResponse getFavorites(Long customerId, int page, int size, String sortType) {
-		PageRequest pageable = PageRequest.of(page, size);
+	public ProductFavoritesPageResponse getFavorites(Long customerId, Pageable pageable) {
 
 		return ProductFavoritesPageResponse.of(
-			customerProductFavoriteRepository.findProductFavorites(customerId, pageable, sortType));
+			customerProductFavoriteRepository.findProductFavorites(customerId, pageable));
 	}
 }
 

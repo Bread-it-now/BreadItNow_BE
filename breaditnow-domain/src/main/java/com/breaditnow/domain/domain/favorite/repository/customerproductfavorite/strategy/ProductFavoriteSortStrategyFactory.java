@@ -1,9 +1,11 @@
-package com.breaditnow.domain.domain.favorite.repository.querydsl.strategy;
+package com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.strategy;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import com.breaditnow.domain.global.exception.DomainException;
@@ -21,11 +23,10 @@ public class ProductFavoriteSortStrategyFactory {
 		);
 	}
 
-	public ProductFavoriteSortStrategy getStrategy(String sort) {
-		ProductFavoriteSortStrategy strategy = strategyMap.get(sort.toLowerCase());
-		if (strategy == null) {
-			throw new DomainException(BREAD_SORT_CONDITION_NOT_FOUND);
-		}
-		return strategy;
+	public ProductFavoriteSortStrategy getStrategy(Sort sort) {
+		String key = sort.isSorted() ? sort.iterator().next().getProperty().toLowerCase() : "latest";
+
+		return Optional.ofNullable(strategyMap.get(key))
+			.orElseThrow(() -> new DomainException(BREAD_SORT_CONDITION_NOT_FOUND));
 	}
 }

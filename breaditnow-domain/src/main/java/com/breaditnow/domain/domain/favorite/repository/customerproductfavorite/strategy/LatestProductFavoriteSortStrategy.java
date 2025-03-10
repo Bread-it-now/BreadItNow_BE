@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.favorite.repository.querydsl.strategy;
+package com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.strategy;
 
 import org.springframework.stereotype.Component;
 

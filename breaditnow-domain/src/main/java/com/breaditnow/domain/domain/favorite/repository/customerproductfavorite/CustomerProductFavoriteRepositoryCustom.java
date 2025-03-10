@@ -8,5 +8,5 @@ import com.breaditnow.domain.domain.product.entity.Product;
 
 @Repository
 public interface CustomerProductFavoriteRepositoryCustom {
-	Page<Product> findProductFavorites(Long customerId, Pageable pageable, String sortType);
+	Page<Product> findProductFavorites(Long customerId, Pageable pageable);
 }
