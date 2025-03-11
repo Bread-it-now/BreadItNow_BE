@@ -51,26 +51,51 @@ public class Product extends BaseEntity {
 
 	private String description;
 
-	private int stock;
-
 	private String releaseTime;
 
+	private int stock;
+
 	private boolean isActive;
+
+	private int displayOrder;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductBreadCategory> breadCategories = new ArrayList<>();
 
 	@Builder
-	public Product(Bakery bakery, String name, int price, String image, String description, int stock,
-		String releaseTime,
-		boolean isActive) {
+	public Product(Bakery bakery, ProductType type, String name, int price, String image, String description, int stock,
+		String releaseTime, boolean isActive) {
 		this.bakery = bakery;
+		this.type = type;
 		this.name = name;
 		this.price = price;
 		this.image = image;
 		this.description = description;
-		this.stock = stock;
 		this.releaseTime = releaseTime;
+		this.stock = stock;
 		this.isActive = isActive;
 	}
+
+	public void update(Product product) {
+		this.bakery = product.getBakery();
+		this.type = product.getType();
+		this.name = product.getName();
+		this.price = product.getPrice();
+		this.image = product.getImage();
+		this.description = product.getDescription();
+		this.releaseTime = product.getReleaseTime();
+	}
+
+	public void updateActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public void updateDisplayOrder(int order) {
+		this.displayOrder = order;
+	}
+
+	public void updateStock(int stock) {
+		this.stock = stock;
+	}
+
 }

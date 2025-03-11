@@ -33,16 +33,29 @@ public enum DomainErrorCode implements ErrorCode {
 	 * Customer(BE000)
 	 */
 	CUSTOMER_NOT_FOUND(NOT_FOUND, "BE001", "고객을 찾을 수 없습니다"),
-
 	/**
 	 * Favorite(BF000)
 	 */
 	BAKERY_FAVORITE_NOT_FOUND(NOT_FOUND, "BF001", "좋아요한 빵집이 아닙니다."),
-	BAKERY_FAVORITE_IS_DUPLICATED(CONFLICT, "BF002", "이미 좋아요한 빵집입니다."),
+	BAKERY_FAVORITE_IS_DUPLICATED(CONFLICT, "BF002", "이미 좋아요한 빵집입니다."),<<<<<<< HEAD
 	BAKERY_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵집에서 존재하지 않는 정렬 조건입니다."),
 
 	BREAD_FAVORITE_NOT_FOUND(NOT_FOUND, "BF003", "좋아요한 빵이 아닙니다."),
-	BREAD_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵에서 존재하지 않는 정렬 조건입니다.");
+	BREAD_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵에서 존재하지 않는 정렬 조건입니다."),
+
+
+	/**
+	 * Product(BG000)
+	 */
+	INVALID_PRODUCT_TYPE(BAD_REQUEST, "BG001", "잘못된 빵집 Type입니다."),
+	PRODUCT_NOT_FOUND(NOT_FOUND, "BG002", "메뉴를 찾을 수 없습니다."),
+	PRODUCT_INACTIVE(NOT_FOUND, "BG003", "삭제된 메뉴입니다."),
+	BAKERY_MISMATCH(NOT_FOUND, "BG004", "해당 메뉴의 빵집이 아닙니다."),
+
+	/**
+	 * BreadCategory(BH000)
+	 */
+	BREAD_CATEGORY_NOT_FOUND(NOT_FOUND, "BH001", "빵 카레고리를 찾을 수 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
