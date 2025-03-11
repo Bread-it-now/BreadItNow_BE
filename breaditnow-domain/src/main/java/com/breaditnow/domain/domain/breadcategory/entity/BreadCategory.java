@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.product.entity;
+package com.breaditnow.domain.domain.breadcategory.entity;
 
 import static lombok.AccessLevel.*;
 

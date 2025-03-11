@@ -3,7 +3,7 @@ package com.breaditnow.domain.domain.customer.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-import com.breaditnow.domain.domain.product.entity.BreadCategory;
+import com.breaditnow.domain.domain.breadcategory.entity.BreadCategory;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;

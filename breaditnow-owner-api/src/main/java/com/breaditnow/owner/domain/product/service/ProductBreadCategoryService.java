@@ -3,10 +3,10 @@ package com.breaditnow.owner.domain.product.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.domain.domain.product.entity.BreadCategory;
+import com.breaditnow.domain.domain.breadcategory.entity.BreadCategory;
+import com.breaditnow.domain.domain.breadcategory.repository.BreadCategoryRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.entity.ProductBreadCategory;
-import com.breaditnow.domain.domain.product.repository.BreadCategoryRepository;
 import com.breaditnow.domain.domain.product.repository.ProductBreadCategoryRepository;
 
 import lombok.RequiredArgsConstructor;
