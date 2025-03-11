@@ -5,6 +5,7 @@ import static lombok.AccessLevel.*;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
 @ToString
+@Embeddable
 public class Address {
 	private String sidoCode;
 	private String gugunCode;

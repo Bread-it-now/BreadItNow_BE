@@ -42,6 +42,7 @@ public enum DomainErrorCode implements ErrorCode {
 
 	BREAD_FAVORITE_NOT_FOUND(NOT_FOUND, "BF003", "좋아요한 빵이 아닙니다."),
 	BREAD_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵에서 존재하지 않는 정렬 조건입니다."),
+	CURRENT_LOCATION_NOT_SET(BAD_REQUEST, "BF005", "현재 위치 정보가 설정되지 않았습니다."),
 
 	/**
 	 * Product(BG000)

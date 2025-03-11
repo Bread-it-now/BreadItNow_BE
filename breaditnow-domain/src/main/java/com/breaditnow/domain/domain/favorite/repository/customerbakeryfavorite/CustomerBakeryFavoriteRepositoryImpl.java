@@ -2,6 +2,8 @@ package com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite;
 
 import static com.breaditnow.domain.domain.bakery.entity.QBakery.*;
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
+import static com.querydsl.core.types.Projections.*;
+import static com.querydsl.core.types.dsl.Expressions.*;
 
 import java.util.List;
 
@@ -9,10 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.breaditnow.domain.domain.bakery.entity.Bakery;
+import com.breaditnow.common.util.geodistance.GeoPoint;
+import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDto;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.BakeryFavoriteSortStrategy;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.BakeryFavoriteSortStrategyFactory;
+import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.DistanceBakeryFavoriteSortStrategy;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -23,15 +29,29 @@ public class CustomerBakeryFavoriteRepositoryImpl implements CustomerBakeryFavor
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Bakery> findBakeryFavorites(Long customerId, Pageable pageable) {
+	public Page<BakeryFavoriteDto> findBakeryFavorites(Long customerId, Pageable pageable, GeoPoint geoPoint) {
 		BooleanExpression baseCondition = customerBakeryFavorite.customer.id.eq(customerId)
 			.and(customerBakeryFavorite.bakery.id.eq(bakery.id))
 			.and(customerBakeryFavorite.isActive.eq(true));
 
 		BakeryFavoriteSortStrategy strategy = sortFactory.getStrategy(pageable.getSort());
+		if (strategy instanceof DistanceBakeryFavoriteSortStrategy) {
+			((DistanceBakeryFavoriteSortStrategy)strategy).setCurrentGeoPoint(geoPoint);
+		}
 
-		List<Bakery> content = queryFactory
-			.select(bakery)
+		NumberExpression<Double> distanceExpression = Expressions.numberTemplate(
+			Double.class,
+			"cast(function('ST_Distance_Sphere', function('Point', {0}, {1}), function('Point', {2}, {3})) as double) / 1000",
+			constant(geoPoint.longitude()),
+			constant(geoPoint.latitude()),
+			bakery.address.longitude,
+			bakery.address.latitude
+		);
+
+		List<BakeryFavoriteDto> content = queryFactory
+			.select(
+				constructor(BakeryFavoriteDto.class, bakery, distanceExpression)
+			)
 			.from(customerBakeryFavorite, bakery)
 			.where(baseCondition)
 			.orderBy(strategy.getOrderSpecifier(bakery, customerBakeryFavorite))

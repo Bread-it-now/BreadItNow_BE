@@ -16,10 +16,11 @@ public class BakeryFavoriteSortStrategyFactory {
 	private final Map<String, BakeryFavoriteSortStrategy> strategies;
 
 	public BakeryFavoriteSortStrategyFactory(LatestBakeryFavoriteSortStrategy latestStrategy,
-		PopularBakeryFavoriteSortStrategy popularStrategy) {
+		PopularBakeryFavoriteSortStrategy popularStrategy, DistanceBakeryFavoriteSortStrategy distanceStrategy) {
 		this.strategies = Map.of(
 			"latest", latestStrategy,
-			"popular", popularStrategy
+			"popular", popularStrategy,
+			"distance", distanceStrategy
 		);
 	}
 
