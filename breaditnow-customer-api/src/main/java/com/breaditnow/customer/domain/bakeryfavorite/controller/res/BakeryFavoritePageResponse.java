@@ -14,11 +14,7 @@ public record BakeryFavoritePageResponse(
 	List<BakeryFavoriteResponse> favorites,
 	PageInfo pageInfo
 ) {
-	public static BakeryFavoritePageResponse of(Page<Bakery> favoritesPage) {
-		List<BakeryFavoriteResponse> favorites = favoritesPage.stream()
-			.map(BakeryFavoriteResponse::of)
-			.toList();
-
+	public static BakeryFavoritePageResponse of(List<BakeryFavoriteResponse> favorites, Page<Bakery> favoritesPage) {
 		PageInfo pageInfo = PageInfo.builder()
 			.totalElements(favoritesPage.getTotalElements())
 			.totalPages(favoritesPage.getTotalPages())

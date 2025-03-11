@@ -4,7 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record GeoPoint(
-	double latitude,
-	double longitude
+
+	Double latitude,
+
+	Double longitude
 ) {
+
 }

@@ -9,15 +9,15 @@ public record BakeryFavoriteResponse(
 	Long bakeryId,
 	String name,
 	String profileImage,
-	double distance
+	Double distance
 ) {
 
-	public static BakeryFavoriteResponse of(Bakery bakery) {
+	public static BakeryFavoriteResponse of(Bakery bakery, Double distance) {
 		return BakeryFavoriteResponse.builder()
 			.bakeryId(bakery.getId())
 			.name(bakery.getName())
 			.profileImage(bakery.getProfileImage())
-			.distance(0)
+			.distance(distance)
 			.build();
 	}
 }
