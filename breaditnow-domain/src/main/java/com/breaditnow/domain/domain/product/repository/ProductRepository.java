@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.enumerate.ProductType;
 import com.breaditnow.domain.global.exception.DomainException;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -17,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	default Product getByTypeAndId(ProductType type, Long id) {
 		return findByTypeAndId(type, id)
-				.orElseThrow(() -> new DomainException(BREAD_NOT_FOUND));
+			.orElseThrow(() -> new DomainException(BREAD_NOT_FOUND));
 	}
 
 	Optional<Product> findByTypeAndId(ProductType type, Long id);
@@ -30,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	default Product getById(Long id) {
 		return findById(id)
-				.orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
+			.orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
 	}
 
 	default Product getByIdAndIsActiveTrue(Long id) {
@@ -48,6 +49,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 		}
 		return product;
 	}
-
-	>>>>>>>develop
 }

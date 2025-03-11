@@ -16,6 +16,7 @@ public record ProductResponse(
 	Long bakeryId,
 	String productType,
 	String name,
+	int stock,
 	int price,
 	String image,
 	String description,
@@ -30,6 +31,7 @@ public record ProductResponse(
 			.productType(product.getType().name())
 			.name(product.getName())
 			.price(product.getPrice())
+			.stock(product.getStock())
 			.image(product.getImage())
 			.description(product.getDescription())
 			.breadCategoryIds(product.getBreadCategories()

@@ -13,7 +13,6 @@ public record BakeryDetailResponse(
 	BakeryResponse store,
 	List<ProductResponse> products
 ) {
-
 	public static BakeryDetailResponse of(Bakery bakery, List<Product> products) {
 		BakeryResponse bakeryResponse = BakeryResponse.of(bakery);
 		List<ProductResponse> productResponses = products.stream()

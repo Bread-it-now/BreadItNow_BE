@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ProductService {
 
-	private final static String PRODUCT_IMAGE_PATH = "image/owner/product";
+	private static final String PRODUCT_IMAGE_PATH = "image/owner/product";
 
 	private final BakeryRepository bakeryRepository;
 	private final ProductRepository productRepository;
