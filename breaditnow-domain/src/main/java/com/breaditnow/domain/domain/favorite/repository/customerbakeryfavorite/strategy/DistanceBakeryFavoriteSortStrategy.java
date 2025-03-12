@@ -4,10 +4,6 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.common.util.GeoPoint;
-import com.breaditnow.domain.domain.bakery.entity.QBakery;
-import com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite;
-import com.breaditnow.domain.domain.favorite.repository.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.exception.DomainException;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -17,25 +13,23 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class DistanceBakeryFavoriteSortStrategy implements BakeryFavoriteSortStrategy {
-	private GeoPoint currentGeoPoint;
-	private final GeoDistanceExpressionProvider distanceExpressionProvider;
+	private NumberExpression<Double> distanceExpression;
 
 	@Override
-	public OrderSpecifier<?> getOrderSpecifier(QBakery bakery, QCustomerBakeryFavorite customerBakeryFavorite) {
-		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(
-			currentGeoPoint, bakery);
+	public OrderSpecifier<?> getOrderSpecifier() {
+		validateDistanceExpression(this.distanceExpression);
 		return distanceExpression.asc();
 	}
 
 	@Override
-	public void initialize(GeoPoint geoPoint) {
-		if (geoPoint == null) {
-			throw new DomainException(CURRENT_LOCATION_NOT_SET);
-		}
-		this.currentGeoPoint = geoPoint;
+	public void initialize(NumberExpression<Double> distanceExpression) {
+		validateDistanceExpression(distanceExpression);
+		this.distanceExpression = distanceExpression;
 	}
 
-	public void setCurrentGeoPoint(GeoPoint currentGeoPoint) {
-		this.currentGeoPoint = currentGeoPoint;
+	private void validateDistanceExpression(NumberExpression<Double> expression) {
+		if (expression == null) {
+			throw new DomainException(CURRENT_LOCATION_NOT_SET);
+		}
 	}
 }

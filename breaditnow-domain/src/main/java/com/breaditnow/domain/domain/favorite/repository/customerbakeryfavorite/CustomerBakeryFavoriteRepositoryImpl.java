@@ -33,9 +33,9 @@ public class CustomerBakeryFavoriteRepositoryImpl implements CustomerBakeryFavor
 			.and(customerBakeryFavorite.bakery.id.eq(bakery.id))
 			.and(customerBakeryFavorite.isActive.eq(true));
 
-		BakeryFavoriteSortStrategy strategy = sortFactory.getStrategy(pageable.getSort(), geoPoint);
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
+		BakeryFavoriteSortStrategy strategy = sortFactory.getStrategy(pageable.getSort(), distanceExpression);
 
 		List<BakeryFavoriteDto> content = queryFactory
 			.select(
@@ -43,7 +43,7 @@ public class CustomerBakeryFavoriteRepositoryImpl implements CustomerBakeryFavor
 			)
 			.from(customerBakeryFavorite, bakery)
 			.where(baseCondition)
-			.orderBy(strategy.getOrderSpecifier(bakery, customerBakeryFavorite))
+			.orderBy(strategy.getOrderSpecifier())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();

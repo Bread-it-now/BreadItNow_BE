@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.common.util.GeoPoint;
 import com.breaditnow.domain.global.exception.DomainException;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 @Component
 public class BakeryFavoriteSortStrategyFactory {
@@ -25,13 +25,13 @@ public class BakeryFavoriteSortStrategyFactory {
 		);
 	}
 
-	public BakeryFavoriteSortStrategy getStrategy(Sort sort, GeoPoint geoPoint) {
+	public BakeryFavoriteSortStrategy getStrategy(Sort sort, NumberExpression<Double> expression) {
 		String key = sort.isSorted() ? sort.iterator().next().getProperty().toLowerCase() : "latest";
 
 		BakeryFavoriteSortStrategy strategy = Optional.ofNullable(strategies.get(key))
 			.orElseThrow(() -> new DomainException(BAKERY_SORT_CONDITION_NOT_FOUND));
 
-		strategy.initialize(geoPoint);
+		strategy.initialize(expression);
 
 		return strategy;
 	}
