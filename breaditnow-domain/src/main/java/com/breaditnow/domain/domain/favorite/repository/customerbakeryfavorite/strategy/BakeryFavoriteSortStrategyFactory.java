@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.common.util.geodistance.GeoPoint;
+import com.breaditnow.common.util.GeoPoint;
 import com.breaditnow.domain.global.exception.DomainException;
 
 @Component

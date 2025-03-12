@@ -1,4 +1,4 @@
-package com.breaditnow.common.util.geodistance;
+package com.breaditnow.common.util;
 
 import lombok.Builder;
 
