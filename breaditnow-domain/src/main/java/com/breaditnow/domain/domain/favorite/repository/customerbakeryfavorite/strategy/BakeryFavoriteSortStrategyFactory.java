@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import com.breaditnow.common.util.geodistance.GeoPoint;
 import com.breaditnow.domain.global.exception.DomainException;
 
 @Component
@@ -24,10 +25,15 @@ public class BakeryFavoriteSortStrategyFactory {
 		);
 	}
 
-	public BakeryFavoriteSortStrategy getStrategy(Sort sort) {
+	public BakeryFavoriteSortStrategy getStrategy(Sort sort, GeoPoint geoPoint) {
 		String key = sort.isSorted() ? sort.iterator().next().getProperty().toLowerCase() : "latest";
 
-		return Optional.ofNullable(strategies.get(key))
+		BakeryFavoriteSortStrategy strategy = Optional.ofNullable(strategies.get(key))
 			.orElseThrow(() -> new DomainException(BAKERY_SORT_CONDITION_NOT_FOUND));
+
+		strategy.initialize(geoPoint);
+
+		return strategy;
 	}
+
 }

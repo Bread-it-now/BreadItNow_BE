@@ -17,16 +17,8 @@ import com.querydsl.core.types.dsl.NumberExpression;
 public class DistanceBakeryFavoriteSortStrategy implements BakeryFavoriteSortStrategy {
 	private GeoPoint currentGeoPoint;
 
-	public void setCurrentGeoPoint(GeoPoint currentGeoPoint) {
-		this.currentGeoPoint = currentGeoPoint;
-	}
-
 	@Override
 	public OrderSpecifier<?> getOrderSpecifier(QBakery bakery, QCustomerBakeryFavorite customerBakeryFavorite) {
-		if (currentGeoPoint == null) {
-			throw new DomainException(CURRENT_LOCATION_NOT_SET);
-		}
-
 		NumberExpression<Double> distanceExpression = Expressions.numberTemplate(
 			Double.class,
 			"cast(function('ST_Distance_Sphere', function('Point', {0}, {1}), function('Point', {2}, {3})) as double) / 1000",
@@ -37,5 +29,17 @@ public class DistanceBakeryFavoriteSortStrategy implements BakeryFavoriteSortStr
 		);
 
 		return distanceExpression.asc();
+	}
+
+	@Override
+	public void initialize(GeoPoint geoPoint) {
+		if (geoPoint == null) {
+			throw new DomainException(CURRENT_LOCATION_NOT_SET);
+		}
+		this.currentGeoPoint = geoPoint;
+	}
+
+	public void setCurrentGeoPoint(GeoPoint currentGeoPoint) {
+		this.currentGeoPoint = currentGeoPoint;
 	}
 }

@@ -15,7 +15,6 @@ import com.breaditnow.common.util.geodistance.GeoPoint;
 import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDto;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.BakeryFavoriteSortStrategy;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.BakeryFavoriteSortStrategyFactory;
-import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.DistanceBakeryFavoriteSortStrategy;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -34,23 +33,11 @@ public class CustomerBakeryFavoriteRepositoryImpl implements CustomerBakeryFavor
 			.and(customerBakeryFavorite.bakery.id.eq(bakery.id))
 			.and(customerBakeryFavorite.isActive.eq(true));
 
-		BakeryFavoriteSortStrategy strategy = sortFactory.getStrategy(pageable.getSort());
-		if (strategy instanceof DistanceBakeryFavoriteSortStrategy) {
-			((DistanceBakeryFavoriteSortStrategy)strategy).setCurrentGeoPoint(geoPoint);
-		}
-
-		NumberExpression<Double> distanceExpression = Expressions.numberTemplate(
-			Double.class,
-			"cast(function('ST_Distance_Sphere', function('Point', {0}, {1}), function('Point', {2}, {3})) as double) / 1000",
-			constant(geoPoint.longitude()),
-			constant(geoPoint.latitude()),
-			bakery.address.longitude,
-			bakery.address.latitude
-		);
+		BakeryFavoriteSortStrategy strategy = sortFactory.getStrategy(pageable.getSort(), geoPoint);
 
 		List<BakeryFavoriteDto> content = queryFactory
 			.select(
-				constructor(BakeryFavoriteDto.class, bakery, distanceExpression)
+				constructor(BakeryFavoriteDto.class, bakery, getDist(geoPoint))
 			)
 			.from(customerBakeryFavorite, bakery)
 			.where(baseCondition)
@@ -68,5 +55,20 @@ public class CustomerBakeryFavoriteRepositoryImpl implements CustomerBakeryFavor
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, totalCount == null ? 0 : totalCount);
+	}
+
+	private NumberExpression<Double> getDist(GeoPoint geoPoint) {
+		if (geoPoint == null) {
+			return Expressions.asNumber(Expressions.nullExpression(Double.class));
+		}
+
+		return Expressions.numberTemplate(
+			Double.class,
+			"cast(function('ST_Distance_Sphere', function('Point', {0}, {1}), function('Point', {2}, {3})) as double) / 1000",
+			constant(geoPoint.longitude()),
+			constant(geoPoint.latitude()),
+			bakery.address.longitude,
+			bakery.address.latitude
+		);
 	}
 }
