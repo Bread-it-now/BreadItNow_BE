@@ -24,6 +24,7 @@ public class ProductFavoriteService {
 
 	@Transactional
 	public Long likeProduct(Long customerId, Long productId) {
+		productRepository.checkProductIsAlive(productId);
 		return customerProductFavoriteRepository.findByCustomerIdAndProductId(customerId, productId)
 			.map(favorite -> {
 				favorite.changeActive(true);

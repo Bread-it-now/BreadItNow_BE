@@ -49,4 +49,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 		}
 		return product;
 	}
+
+	default void checkProductIsAlive(Long id) {
+		getByIdAndIsActiveTrue(id);
+	}
 }
