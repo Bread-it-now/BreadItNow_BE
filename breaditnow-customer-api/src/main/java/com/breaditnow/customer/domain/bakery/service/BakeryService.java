@@ -1,13 +1,20 @@
 package com.breaditnow.customer.domain.bakery.service;
 
+import static com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse.*;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
+import com.breaditnow.customer.domain.bakery.controller.res.BakeryResponse;
+import com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse;
+import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
+import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
+import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 
@@ -19,10 +26,22 @@ import lombok.RequiredArgsConstructor;
 public class BakeryService {
 	private final BakeryRepository bakeryRepository;
 	private final ProductRepository productRepository;
+	private final CustomerProductAlertRepository alertRepository;
+	private final CustomerProductFavoriteRepository favoriteRepository;
 
-	public BakeryDetailResponse getBakeryDetail(Long bakeryId) {
+	public BakeryDetailResponse getBakeryDetail(Long customerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getById(bakeryId);
 		List<Product> products = productRepository.findActiveByBakeryId(bakeryId);
-		return BakeryDetailResponse.of(bakery, products);
+
+		List<ProductResponse> productResponses = products.stream()
+			.map(product -> {
+				boolean alertAccepted = alertRepository.existsByCustomerIdAndProductId(customerId, product.getId());
+				boolean favorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());
+				return ProductResponse.of(product, bakery.getId(), alertAccepted, favorite);
+			})
+			.toList();
+
+		List<BreadReleaseScheduleResponse> releaseSchedulesResponse = groupReleaseSchedules(products);
+		return BakeryDetailResponse.of(BakeryResponse.of(bakery), productResponses, releaseSchedulesResponse);
 	}
 }

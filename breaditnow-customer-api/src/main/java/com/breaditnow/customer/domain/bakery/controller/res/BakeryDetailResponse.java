@@ -3,25 +3,23 @@ package com.breaditnow.customer.domain.bakery.controller.res;
 import java.util.List;
 
 import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
-import com.breaditnow.domain.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.domain.product.entity.Product;
 
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 
 @Builder
+@Slf4j
 public record BakeryDetailResponse(
-	BakeryResponse store,
+	BakeryResponse bakery,
+	List<BreadReleaseScheduleResponse> releaseSchedules,
 	List<ProductResponse> products
 ) {
-	public static BakeryDetailResponse of(Bakery bakery, List<Product> products) {
-		BakeryResponse bakeryResponse = BakeryResponse.of(bakery);
-		List<ProductResponse> productResponses = products.stream()
-			.map(product -> ProductResponse.of(product, bakery.getId()))
-			.toList();
-
+	public static BakeryDetailResponse of(BakeryResponse bakeryResponse, List<ProductResponse> productResponses,
+		List<BreadReleaseScheduleResponse> releaseSchedules) {
 		return BakeryDetailResponse.builder()
-			.store(bakeryResponse)
+			.bakery(bakeryResponse)
 			.products(productResponses)
+			.releaseSchedules(releaseSchedules)
 			.build();
 	}
 }

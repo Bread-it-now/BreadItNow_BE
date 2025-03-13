@@ -17,4 +17,6 @@ public interface CustomerProductFavoriteRepository
 	}
 
 	Optional<CustomerProductFavorite> findByCustomerIdAndProductId(Long customerId, Long productId);
+
+	boolean existsByCustomerIdAndProductId(Long customerId, Long productId);
 }

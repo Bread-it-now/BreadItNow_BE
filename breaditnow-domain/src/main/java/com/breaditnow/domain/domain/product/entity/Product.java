@@ -29,7 +29,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@ToString
+@ToString(exclude = {"bakery", "breadCategories"})
 public class Product extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

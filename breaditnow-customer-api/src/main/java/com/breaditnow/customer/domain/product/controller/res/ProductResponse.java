@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.breaditnow.domain.domain.product.entity.Product;
 
@@ -20,11 +19,20 @@ public record ProductResponse(
 	int price,
 	String image,
 	String description,
-	List<Long> breadCategoryIds,
-	List<String> releaseTimes
+	List<Long> categoryIds,
+	List<String> releaseTimes,
+	boolean alarmEnabled,
+	boolean isFavorite
 ) {
 
-	public static ProductResponse of(Product product, Long bakeryId) {
+	public static ProductResponse of(Product product, Long bakeryId, boolean alarmEnabled, boolean isFavorite) {
+		List<String> releaseTimes = product.getReleaseTime() != null
+			? Arrays.stream(product.getReleaseTime().split(";"))
+			.map(String::trim)
+			.filter(time -> !time.isEmpty())
+			.toList()
+			: List.of();
+
 		return ProductResponse.builder()
 			.productId(product.getId())
 			.bakeryId(bakeryId)
@@ -34,15 +42,14 @@ public record ProductResponse(
 			.stock(product.getStock())
 			.image(product.getImage())
 			.description(product.getDescription())
-			.breadCategoryIds(product.getBreadCategories()
+			.categoryIds(product.getBreadCategories()
 				.stream()
 				.map(o -> o.getBreadCategory().getId())
 				.collect(toList())
 			)
-			.releaseTimes(Arrays.stream(product.getReleaseTime().split(";"))
-				.map(String::trim)
-				.collect(Collectors.toList())
-			)
+			.releaseTimes(releaseTimes)
+			.alarmEnabled(alarmEnabled)
+			.isFavorite(isFavorite)
 			.build();
 	}
 }
