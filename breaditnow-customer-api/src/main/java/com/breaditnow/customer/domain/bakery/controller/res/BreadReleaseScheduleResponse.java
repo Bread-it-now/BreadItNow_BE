@@ -22,7 +22,6 @@ public record BreadReleaseScheduleResponse(
 	public static List<BreadReleaseScheduleResponse> groupReleaseSchedules(List<Product> products) {
 		Map<String, List<SimpleProductResponse>> scheduleMap = products.stream()
 			.filter(product -> BREAD == product.getType())
-			.peek(System.out::println)
 			.flatMap(BreadReleaseScheduleResponse::extractReleaseSchedule)
 			.collect(Collectors.groupingBy(
 				Map.Entry::getKey,

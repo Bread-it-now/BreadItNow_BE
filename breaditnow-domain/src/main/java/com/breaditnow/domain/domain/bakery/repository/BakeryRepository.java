@@ -40,5 +40,4 @@ public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 			throw new DomainException(DUPLICATE_OWNER_BAKERY);
 		}
 	}
-
 }

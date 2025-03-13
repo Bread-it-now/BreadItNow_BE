@@ -5,7 +5,9 @@ import static java.util.stream.Collectors.*;
 import java.util.Arrays;
 import java.util.List;
 
+import com.breaditnow.customer.domain.bakery.controller.res.BreadCategoryResponse;
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.enumerate.ProductType;
 
 import lombok.Builder;
 
@@ -13,19 +15,20 @@ import lombok.Builder;
 public record ProductResponse(
 	Long productId,
 	Long bakeryId,
-	String productType,
+	ProductType productType,
 	String name,
 	int stock,
 	int price,
 	String image,
 	String description,
-	List<Long> categoryIds,
+	List<BreadCategoryResponse> breadCategories,
 	List<String> releaseTimes,
 	boolean alarmEnabled,
-	boolean isFavorite
+	boolean isFavorite,
+	int displayOrder
 ) {
 
-	public static ProductResponse of(Product product, Long bakeryId, boolean alarmEnabled, boolean isFavorite) {
+	public static ProductResponse of(Product product, boolean alarmEnabled, boolean isFavorite) {
 		List<String> releaseTimes = product.getReleaseTime() != null
 			? Arrays.stream(product.getReleaseTime().split(";"))
 			.map(String::trim)
@@ -35,21 +38,23 @@ public record ProductResponse(
 
 		return ProductResponse.builder()
 			.productId(product.getId())
-			.bakeryId(bakeryId)
-			.productType(product.getType().name())
+			.bakeryId(product.getBakery().getId())
+			.productType(product.getType())
 			.name(product.getName())
 			.price(product.getPrice())
 			.stock(product.getStock())
 			.image(product.getImage())
 			.description(product.getDescription())
-			.categoryIds(product.getBreadCategories()
-				.stream()
-				.map(o -> o.getBreadCategory().getId())
+			.breadCategories(product.getBreadCategories().stream()
+				.map(relation -> new BreadCategoryResponse(
+					relation.getBreadCategory().getId(),
+					relation.getBreadCategory().getName()))
 				.collect(toList())
 			)
 			.releaseTimes(releaseTimes)
 			.alarmEnabled(alarmEnabled)
 			.isFavorite(isFavorite)
+			.displayOrder(product.getDisplayOrder())
 			.build();
 	}
 }
