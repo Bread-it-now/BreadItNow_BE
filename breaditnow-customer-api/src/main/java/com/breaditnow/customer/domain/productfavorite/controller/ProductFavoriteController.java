@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritePageResponse;
 import com.breaditnow.customer.domain.productfavorite.service.ProductFavoritePageService;
 import com.breaditnow.customer.domain.productfavorite.service.ProductFavoriteService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,7 +43,7 @@ public class ProductFavoriteController {
 
 	@GetMapping("/like")
 	public ApiSuccessResponse<ProductFavoritePageResponse> getFavorites(@AuthCustomer Long customerId,
-		Pageable pageable) {
-		return ApiSuccessResponse.of(productFavoritePageService.getFavorites(customerId, pageable));
+		Pageable pageable, @Valid GeoPointRequest geoPointRequest) {
+		return ApiSuccessResponse.of(productFavoritePageService.getFavorites(customerId, pageable, geoPointRequest));
 	}
 }

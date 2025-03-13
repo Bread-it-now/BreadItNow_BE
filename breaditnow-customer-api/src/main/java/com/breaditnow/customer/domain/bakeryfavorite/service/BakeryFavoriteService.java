@@ -22,6 +22,8 @@ public class BakeryFavoriteService {
 
 	@Transactional
 	public Long likeBakery(Long customerId, Long bakeryId) {
+		bakeryRepository.checkBakeryIsAlive(bakeryId);
+
 		return customerBakeryFavoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
 			.map(favorite -> {
 				favorite.changeActive(true);
@@ -42,6 +44,7 @@ public class BakeryFavoriteService {
 
 	@Transactional
 	public Long deleteBakery(Long customerId, Long bakeryId) {
+		bakeryRepository.checkBakeryIsAlive(bakeryId);
 		CustomerBakeryFavorite customerBakeryFavorite = customerBakeryFavoriteRepository.getByCustomerIdAndBakeryId(
 			customerId, bakeryId);
 

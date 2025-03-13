@@ -10,6 +10,10 @@ import com.breaditnow.domain.global.exception.DomainException;
 public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 	boolean existsByOwnerIdAndIsActiveTrue(Long ownerId);
 
+	default void checkBakeryIsAlive(Long id) {
+		getByIdAndIsActiveTrue(id);
+	}
+
 	default Bakery getById(Long id) {
 		return findById(id)
 			.orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
@@ -36,4 +40,5 @@ public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 			throw new DomainException(DUPLICATE_OWNER_BAKERY);
 		}
 	}
+
 }
