@@ -9,7 +9,8 @@ public record BakeryFavoriteResponse(
 	Long bakeryId,
 	String name,
 	String profileImage,
-	Double distance
+	Double distance,
+	boolean isBakeryActive
 ) {
 
 	public static BakeryFavoriteResponse of(Bakery bakery, Double distance) {
@@ -18,6 +19,7 @@ public record BakeryFavoriteResponse(
 			.name(bakery.getName())
 			.profileImage(bakery.getProfileImage())
 			.distance(distance)
+			.isBakeryActive(bakery.isActive())
 			.build();
 	}
 }
