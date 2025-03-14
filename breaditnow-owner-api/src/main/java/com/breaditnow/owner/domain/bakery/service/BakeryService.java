@@ -47,7 +47,7 @@ public class BakeryService {
 		regionRepository.checkExists(regionPK);
 
 		Address address = new Address(regionPK, bakeryCreateRequest.addressDescription());
-		String profileImageUrl = uploadFile(profileImage, "image/owner/bakery/profile");
+		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
@@ -79,12 +79,12 @@ public class BakeryService {
 
 		Address address = new Address(regionPK, bakeryUpdateRequest.addressDescription());
 
-		String updatedProfileImage = uploadFile(profileImage, "image/owner/bakery/profile");
+		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
 		List<BakeryImage> bakeryImages = new ArrayList<>();
 		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
 			bakeryImages = bakeryImageFiles.stream()
-				.map(file -> uploader.upload(file, "image/owner/bakery/gallery"))
+				.map(file -> uploader.upload(file, "image/owner/" + ownerId + "/bakery/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
 				.collect(Collectors.toList());
 		}
