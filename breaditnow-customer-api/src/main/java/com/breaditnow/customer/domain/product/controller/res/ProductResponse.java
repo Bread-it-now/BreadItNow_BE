@@ -38,6 +38,8 @@ public record ProductResponse(
 					relation.getBreadCategory().getName()))
 				.toList();
 		}
+		Boolean alarm = product.getType() == ProductType.OTHER ? null : alarmEnabled;
+		Boolean favorite = product.getType() == ProductType.OTHER ? null : isFavorite;
 
 		List<String> releaseTimes = null;
 		if (product.getReleaseTime() != null) {
@@ -58,8 +60,8 @@ public record ProductResponse(
 			.description(product.getDescription())
 			.breadCategories(breadCategoryResponses)
 			.releaseTimes(releaseTimes)
-			.alarmEnabled(alarmEnabled)
-			.isFavorite(isFavorite)
+			.alarmEnabled(alarm)
+			.isFavorite(favorite)
 			.displayOrder(product.getDisplayOrder())
 			.isActive(product.isActive())
 			.build();
