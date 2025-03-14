@@ -72,8 +72,7 @@ public class BakeryService {
 	@Transactional
 	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
 		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
-		Bakery bakery = bakeryRepository.getByIdAndIsActiveTrue(bakeryId);
-		Owner owner = ownerRepository.getById(ownerId);
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
@@ -91,7 +90,7 @@ public class BakeryService {
 		}
 
 		bakery.update(Bakery.builder()
-			.owner(owner)
+			.owner(bakery.getOwner())
 			.name(bakeryUpdateRequest.name())
 			.phone(bakeryUpdateRequest.phone())
 			.introduction(bakeryUpdateRequest.introduction())

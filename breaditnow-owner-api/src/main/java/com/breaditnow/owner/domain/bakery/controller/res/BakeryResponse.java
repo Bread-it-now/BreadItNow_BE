@@ -12,12 +12,12 @@ import lombok.Builder;
 public record BakeryResponse(
 	Long bakeryId,
 	String name,
-	String addressDescription,
+	String address,
 	String phone,
 	String openTime,
 	String introduction,
 	String profileImage,
-	List<String> bakeryImages,
+	List<String> additionalImages,
 	OperatingStatus operatingStatus
 ) {
 	public static BakeryResponse of(Bakery bakery) {
@@ -33,8 +33,8 @@ public record BakeryResponse(
 			.introduction(bakery.getIntroduction())
 			.openTime(bakery.getOpenTime())
 			.profileImage(bakery.getProfileImage())
-			.addressDescription(bakery.getAddress().getDescription())
-			.bakeryImages(imageUrls)
+			.address(bakery.getAddress().getDescription())
+			.additionalImages(imageUrls)
 			.operatingStatus(bakery.getOperatingStatus())
 			.build();
 	}
