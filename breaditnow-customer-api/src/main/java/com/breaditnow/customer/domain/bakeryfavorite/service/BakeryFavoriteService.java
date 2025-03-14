@@ -27,7 +27,7 @@ public class BakeryFavoriteService {
 		return customerBakeryFavoriteRepository.findByCustomerIdAndBakeryId(customerId, bakeryId)
 			.map(favorite -> {
 				favorite.changeActive(true);
-				return favorite.getId();
+				return bakeryId;
 			})
 			.orElseGet(() -> {
 				Customer customer = customerRepository.getById(customerId);
@@ -37,8 +37,9 @@ public class BakeryFavoriteService {
 					.customer(customer)
 					.bakery(bakery)
 					.build();
+				customerBakeryFavoriteRepository.save(newFavorite);
 
-				return customerBakeryFavoriteRepository.save(newFavorite).getId();
+				return bakery.getId();
 			});
 	}
 
@@ -50,6 +51,6 @@ public class BakeryFavoriteService {
 
 		customerBakeryFavorite.changeActive(false);
 
-		return customerBakeryFavorite.getId();
+		return bakeryId;
 	}
 }

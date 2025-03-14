@@ -28,7 +28,7 @@ public class ProductFavoriteService {
 		return customerProductFavoriteRepository.findByCustomerIdAndProductId(customerId, productId)
 			.map(favorite -> {
 				favorite.changeActive(true);
-				return favorite.getId();
+				return productId;
 			})
 			.orElseGet(() -> {
 				Customer customer = customerRepository.getById(customerId);
@@ -39,7 +39,8 @@ public class ProductFavoriteService {
 					.product(product)
 					.build();
 
-				return customerProductFavoriteRepository.save(newFavorite).getId();
+				customerProductFavoriteRepository.save(newFavorite);
+				return product.getId();
 			});
 	}
 
@@ -50,7 +51,7 @@ public class ProductFavoriteService {
 
 		customerProductFavorite.changeActive(false);
 
-		return customerProductFavorite.getId();
+		return productId;
 	}
 
 }

@@ -30,15 +30,15 @@ public class ProductFavoriteController {
 	@PostMapping("/{product_id}/like")
 	public ApiSuccessResponse<Map<String, Long>> likeProduct(@AuthCustomer Long customerId,
 		@PathVariable("product_id") Long productId) {
-		Long productFavoriteId = productFavoriteService.likeProduct(customerId, productId);
-		return ApiSuccessResponse.of("productFavoriteId", productFavoriteId);
+		Long savedProductId = productFavoriteService.likeProduct(customerId, productId);
+		return ApiSuccessResponse.of("productId", savedProductId);
 	}
 
 	@DeleteMapping("/{product_id}/like")
 	public ApiSuccessResponse<Map<String, Long>> deleteProduct(@AuthCustomer Long customerId,
 		@PathVariable("product_id") Long bakeryId) {
-		Long productFavoriteId = productFavoriteService.deleteProduct(customerId, bakeryId);
-		return ApiSuccessResponse.of("productFavoriteId", productFavoriteId);
+		Long savedProductId = productFavoriteService.deleteProduct(customerId, bakeryId);
+		return ApiSuccessResponse.of("productId", savedProductId);
 	}
 
 	@GetMapping("/like")
