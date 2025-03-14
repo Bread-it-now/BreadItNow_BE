@@ -78,7 +78,10 @@ VALUES (1, 'BREAD', '식빵', 3000, 'bread1.jpg', '신선한 식빵입니다.', 
 -- ProductBreadCategory
 INSERT INTO product_bread_category (product_id, bread_category_id)
 VALUES (1, 1),   -- 식빵
+       (2, 1),   -- 식빵
        (2, 8),   -- 바게트
+       (3, 1),   -- 식빵
+       (3, 8),   -- 바게트
        (3, 5),   -- 크림빵
        (6, 6),   -- 단팥빵
        (7, 7),   -- 치아바타

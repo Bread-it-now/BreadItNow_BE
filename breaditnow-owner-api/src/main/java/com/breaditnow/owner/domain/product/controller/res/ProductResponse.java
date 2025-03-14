@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.enumerate.ProductType;
+import com.breaditnow.owner.domain.breadcategory.controller.res.BreadCategoryResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,9 +27,7 @@ public record ProductResponse(
 		List<BreadCategoryResponse> breadCategoryResponses = null;
 		if (product.getType() == ProductType.BREAD) {
 			breadCategoryResponses = product.getBreadCategories().stream()
-				.map(relation -> new BreadCategoryResponse(
-					relation.getBreadCategory().getId(),
-					relation.getBreadCategory().getName()))
+				.map(relation -> BreadCategoryResponse.of(relation.getBreadCategory()))
 				.toList();
 		}
 
