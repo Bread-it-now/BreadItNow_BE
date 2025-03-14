@@ -25,7 +25,7 @@ public record BakeryDetailResponse(
 			.toList();
 
 		List<ProductResponse> otherProducts = productResponses.stream()
-			.filter(product -> product.productType() == BREAD)
+			.filter(product -> product.productType() == OTHER)
 			.toList();
 
 		return BakeryDetailResponse.builder()

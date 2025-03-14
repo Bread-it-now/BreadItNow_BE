@@ -19,7 +19,7 @@ public class BakeryController {
 	private final BakeryService bakeryService;
 
 	@GetMapping("/{bakery_id}/detail")
-	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer Long customerId,
+	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer(required = false) Long customerId,
 		@PathVariable("bakery_id") Long bakeryId) {
 		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}

@@ -15,6 +15,7 @@ import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertReposit
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
+import com.breaditnow.domain.domain.product.entity.Product;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +30,12 @@ public class BakeryService {
 	public BakeryDetailResponse getBakeryDetail(Long customerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getByIdAndIsActiveTrue(bakeryId);
 
-		List<ProductResponse> productResponses = bakery.getProducts().stream()
+		List<Product> products = bakery.getProducts().stream()
+			.filter(Product::isActive)
+			.toList();
+
+		List<ProductResponse> productResponses = products.stream()
+			.filter(Product::isActive)
 			.map(product -> {
 				boolean alertAccepted = alertRepository.existsByCustomerIdAndProductId(customerId, product.getId());
 				boolean favorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());
@@ -37,7 +43,7 @@ public class BakeryService {
 			})
 			.toList();
 
-		List<BreadReleaseScheduleResponse> releaseSchedulesResponse = groupReleaseSchedules(bakery.getProducts());
+		List<BreadReleaseScheduleResponse> releaseSchedulesResponse = groupReleaseSchedules(products);
 		return BakeryDetailResponse.of(BakeryResponse.of(bakery), productResponses, releaseSchedulesResponse);
 	}
 }
