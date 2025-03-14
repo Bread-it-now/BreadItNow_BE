@@ -27,7 +27,7 @@ public class BakeryService {
 	private final CustomerProductFavoriteRepository favoriteRepository;
 
 	public BakeryDetailResponse getBakeryDetail(Long customerId, Long bakeryId) {
-		Bakery bakery = bakeryRepository.getByOwnerIdAndId(customerId, bakeryId);
+		Bakery bakery = bakeryRepository.getByIdAndIsActiveTrue(bakeryId);
 
 		List<ProductResponse> productResponses = bakery.getProducts().stream()
 			.map(product -> {

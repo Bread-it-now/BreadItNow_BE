@@ -16,7 +16,8 @@ public record ProductFavoriteResponse(
 	String image,
 	int price,
 	List<String> releaseTimes,
-	boolean isBakeryActive
+	boolean isBakeryActive,
+	boolean isBreadActive
 ) {
 	public static ProductFavoriteResponse of(Product product) {
 		return ProductFavoriteResponse.builder()
@@ -30,6 +31,7 @@ public record ProductFavoriteResponse(
 				.collect(Collectors.toList())
 			)
 			.isBakeryActive(product.getBakery().isActive())
+			.isBreadActive(product.isActive())
 			.build();
 	}
 }
