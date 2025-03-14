@@ -6,4 +6,5 @@ import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 
 public interface CustomerProductAlertRepository extends JpaRepository<CustomerProductAlert, Long> {
 
+	boolean existsByCustomerIdAndProductId(Long customerId, Long productId);
 }

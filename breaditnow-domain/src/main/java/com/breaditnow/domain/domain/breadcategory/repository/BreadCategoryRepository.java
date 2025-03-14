@@ -8,9 +8,8 @@ import com.breaditnow.domain.domain.breadcategory.entity.BreadCategory;
 import com.breaditnow.domain.global.exception.DomainException;
 
 public interface BreadCategoryRepository extends JpaRepository<BreadCategory, Long>, BreadCategoryRepositoryCustom {
-
 	default BreadCategory getById(Long id) {
 		return findById(id)
-			.orElseThrow(() -> new DomainException(BREAD_CATEGORY_NOT_FOUND));
+				.orElseThrow(() -> new DomainException(BREAD_CATEGORY_NOT_FOUND));
 	}
 }

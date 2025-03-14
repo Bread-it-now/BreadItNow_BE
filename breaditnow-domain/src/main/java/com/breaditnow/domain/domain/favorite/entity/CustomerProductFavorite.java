@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,16 @@ public class CustomerProductFavorite extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
+
+	private boolean isActive = true;
+
+	@Builder
+	public CustomerProductFavorite(Customer customer, Product product) {
+		this.customer = customer;
+		this.product = product;
+	}
+	
+	public void changeActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }

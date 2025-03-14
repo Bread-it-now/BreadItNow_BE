@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.service.BakeryService;
+import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +19,8 @@ public class BakeryController {
 	private final BakeryService bakeryService;
 
 	@GetMapping("/{bakery_id}/detail")
-	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@PathVariable("bakery_id") Long bakeryId) {
-		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(bakeryId));
+	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer(required = false) Long customerId,
+		@PathVariable("bakery_id") Long bakeryId) {
+		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}
 }
