@@ -22,6 +22,8 @@ import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
+import com.breaditnow.owner.global.exception.OwnerErrorCode;
+import com.breaditnow.owner.global.exception.OwnerException;
 import com.breaditnow.owner.global.location.AddressCoordinate;
 import com.breaditnow.owner.global.location.GeoLocationClient;
 import com.breaditnow.owner.global.s3.FileUploader;
@@ -49,9 +51,12 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = new Address(regionPK, bakeryCreateRequest.addressDescription());
+		Address address = new Address(regionPK, bakeryCreateRequest.address());
 		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
-			bakeryCreateRequest.addressDescription());
+			bakeryCreateRequest.address());
+		if (addressCoordinate == null) {
+			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
+		}
 		address.setLatitude(addressCoordinate.latitude());
 		address.setLongitude(addressCoordinate.longitude());
 
@@ -85,7 +90,7 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = new Address(regionPK, bakeryUpdateRequest.addressDescription());
+		Address address = new Address(regionPK, bakeryUpdateRequest.address());
 
 		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
