@@ -1,28 +1,38 @@
 package com.breaditnow.customer.domain.bakery.controller.res;
 
+import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
+
 import java.util.List;
 
 import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
-import com.breaditnow.domain.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.domain.product.entity.Product;
 
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 
 @Builder
+@Slf4j
 public record BakeryDetailResponse(
-	BakeryResponse store,
-	List<ProductResponse> products
+	BakeryResponse bakery,
+	List<BreadReleaseScheduleResponse> releaseSchedules,
+	List<ProductResponse> breadProducts,
+	List<ProductResponse> otherProducts
 ) {
+	public static BakeryDetailResponse of(BakeryResponse bakeryResponse, List<ProductResponse> productResponses,
+		List<BreadReleaseScheduleResponse> releaseSchedulesResponse) {
 
-	public static BakeryDetailResponse of(Bakery bakery, List<Product> products) {
-		BakeryResponse bakeryResponse = BakeryResponse.of(bakery);
-		List<ProductResponse> productResponses = products.stream()
-			.map(product -> ProductResponse.of(product, bakery.getId()))
+		List<ProductResponse> breadProducts = productResponses.stream()
+			.filter(product -> product.productType() == BREAD)
+			.toList();
+
+		List<ProductResponse> otherProducts = productResponses.stream()
+			.filter(product -> product.productType() == OTHER)
 			.toList();
 
 		return BakeryDetailResponse.builder()
-			.store(bakeryResponse)
-			.products(productResponses)
+			.bakery(bakeryResponse)
+			.breadProducts(breadProducts)
+			.otherProducts(otherProducts)
+			.releaseSchedules(releaseSchedulesResponse)
 			.build();
 	}
 }

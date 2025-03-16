@@ -27,6 +27,7 @@ public enum DomainErrorCode implements ErrorCode {
 	BAKERY_NOT_FOUND(NOT_FOUND, "BD001", "빵집을 찾을 수 없습니다."),
 	BAKERY_INACTIVE(NOT_FOUND, "BD002", "삭제된 빵집입니다."),
 	OWNER_MISMATCH(NOT_FOUND, "BD003", "빵집 주인이 아닙니다."),
+	BREAD_NOT_FOUND(NOT_FOUND, "BD004", "빵을 찾을 수 없습니다."),
 
 	/**
 	 * Customer(BE000)
@@ -37,6 +38,11 @@ public enum DomainErrorCode implements ErrorCode {
 	 */
 	BAKERY_FAVORITE_NOT_FOUND(NOT_FOUND, "BF001", "좋아요한 빵집이 아닙니다."),
 	BAKERY_FAVORITE_IS_DUPLICATED(CONFLICT, "BF002", "이미 좋아요한 빵집입니다."),
+	BAKERY_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵집에서 존재하지 않는 정렬 조건입니다."),
+
+	BREAD_FAVORITE_NOT_FOUND(NOT_FOUND, "BF003", "좋아요한 빵이 아닙니다."),
+	BREAD_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵에서 존재하지 않는 정렬 조건입니다."),
+	CURRENT_LOCATION_NOT_SET(BAD_REQUEST, "BF005", "현재 위치 정보가 설정되지 않았습니다."),
 
 	/**
 	 * Product(BG000)
