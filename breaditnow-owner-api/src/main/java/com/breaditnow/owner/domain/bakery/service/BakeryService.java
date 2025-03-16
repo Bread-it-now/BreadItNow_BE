@@ -90,9 +90,16 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = new Address(regionPK, bakeryUpdateRequest.address());
-
 		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
+
+		Address address = new Address(regionPK, bakeryUpdateRequest.address());
+		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
+			bakeryUpdateRequest.address());
+		if (addressCoordinate == null) {
+			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
+		}
+		address.setLatitude(addressCoordinate.latitude());
+		address.setLongitude(addressCoordinate.longitude());
 
 		List<BakeryImage> bakeryImages = new ArrayList<>();
 		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
