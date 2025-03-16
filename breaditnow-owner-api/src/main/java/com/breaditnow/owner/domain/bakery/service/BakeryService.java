@@ -22,7 +22,9 @@ import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
-import com.breaditnow.owner.global.s3.upload.FileUploader;
+import com.breaditnow.owner.global.location.AddressCoordinate;
+import com.breaditnow.owner.global.location.GeoLocationClient;
+import com.breaditnow.owner.global.s3.FileUploader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class BakeryService {
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
 	private final FileUploader uploader;
+	private final GeoLocationClient geoLocationClient;
 
 	@Transactional
 	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile profileImage) {
@@ -48,6 +51,12 @@ public class BakeryService {
 
 		Address address = new Address(regionPK, bakeryCreateRequest.addressDescription());
 		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
+
+		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
+			bakeryCreateRequest.addressDescription());
+
+		address.setLatitude(addressCoordinate.latitude());
+		address.setLongitude(addressCoordinate.longitude());
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)

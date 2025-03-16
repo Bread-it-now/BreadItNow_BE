@@ -1,4 +1,4 @@
-package com.breaditnow.owner.global.s3.config;
+package com.breaditnow.owner.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
