@@ -50,13 +50,12 @@ public class BakeryService {
 		regionRepository.checkExists(regionPK);
 
 		Address address = new Address(regionPK, bakeryCreateRequest.addressDescription());
-		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
-
 		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
 			bakeryCreateRequest.addressDescription());
-
 		address.setLatitude(addressCoordinate.latitude());
 		address.setLongitude(addressCoordinate.longitude());
+
+		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)

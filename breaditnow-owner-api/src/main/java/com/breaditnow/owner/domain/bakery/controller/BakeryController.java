@@ -23,6 +23,7 @@ import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.domain.bakery.service.BakeryService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,7 +34,7 @@ public class BakeryController {
 
 	@PostMapping()
 	public ApiSuccessResponse<Map<String, Long>> createBakery(@AuthOwner Long ownerId,
-		@RequestPart("data") BakeryCreateRequest request,
+		@RequestPart("data") @Valid BakeryCreateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
 
 		Long bakeryId = bakeryService.createBakery(ownerId, request, profileImage);
