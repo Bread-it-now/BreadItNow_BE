@@ -22,7 +22,11 @@ import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
-import com.breaditnow.owner.global.s3.upload.FileUploader;
+import com.breaditnow.owner.global.exception.OwnerErrorCode;
+import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.global.location.AddressCoordinate;
+import com.breaditnow.owner.global.location.GeoLocationClient;
+import com.breaditnow.owner.global.s3.FileUploader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +40,7 @@ public class BakeryService {
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
 	private final FileUploader uploader;
+	private final GeoLocationClient geoLocationClient;
 
 	@Transactional
 	public Long createBakery(Long ownerId, BakeryCreateRequest bakeryCreateRequest, MultipartFile profileImage) {
@@ -46,8 +51,16 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryCreateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = new Address(regionPK, bakeryCreateRequest.addressDescription());
-		String profileImageUrl = uploadFile(profileImage, "image/owner/bakery/profile");
+		Address address = new Address(regionPK, bakeryCreateRequest.address());
+		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
+			bakeryCreateRequest.address());
+		if (addressCoordinate == null) {
+			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
+		}
+		address.setLatitude(addressCoordinate.latitude());
+		address.setLongitude(addressCoordinate.longitude());
+
+		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
@@ -72,26 +85,32 @@ public class BakeryService {
 	@Transactional
 	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
 		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
-		Bakery bakery = bakeryRepository.getByIdAndIsActiveTrue(bakeryId);
-		Owner owner = ownerRepository.getById(ownerId);
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		Address address = new Address(regionPK, bakeryUpdateRequest.addressDescription());
+		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
-		String updatedProfileImage = uploadFile(profileImage, "image/owner/bakery/profile");
+		Address address = new Address(regionPK, bakeryUpdateRequest.address());
+		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
+			bakeryUpdateRequest.address());
+		if (addressCoordinate == null) {
+			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
+		}
+		address.setLatitude(addressCoordinate.latitude());
+		address.setLongitude(addressCoordinate.longitude());
 
 		List<BakeryImage> bakeryImages = new ArrayList<>();
 		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
 			bakeryImages = bakeryImageFiles.stream()
-				.map(file -> uploader.upload(file, "image/owner/bakery/gallery"))
+				.map(file -> uploader.upload(file, "image/owner/" + ownerId + "/bakery/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
 				.collect(Collectors.toList());
 		}
 
 		bakery.update(Bakery.builder()
-			.owner(owner)
+			.owner(bakery.getOwner())
 			.name(bakeryUpdateRequest.name())
 			.phone(bakeryUpdateRequest.phone())
 			.introduction(bakeryUpdateRequest.introduction())

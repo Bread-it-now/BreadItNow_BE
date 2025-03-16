@@ -36,4 +36,12 @@ public class Address {
 		this.dongCode = regionPK.getDongCode();
 		this.description = description;
 	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
 }

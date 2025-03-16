@@ -15,7 +15,7 @@ import com.breaditnow.owner.domain.product.controller.req.ProductOrderItemReques
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
-import com.breaditnow.owner.global.s3.upload.FileUploader;
+import com.breaditnow.owner.global.s3.FileUploader;
 
 import lombok.RequiredArgsConstructor;
 

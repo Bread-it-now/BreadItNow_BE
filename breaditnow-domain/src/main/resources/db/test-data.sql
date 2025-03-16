@@ -14,6 +14,10 @@ VALUES ('owner1@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.
        ('owner2@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
         '2025-03-07 09:04:00', '2025-03-07 09:04:00'),
        ('owner3@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:05:00', '2025-03-07 09:05:00'),
+       ('owner4@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:05:00', '2025-03-07 09:05:00'),
+       ('owner5@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
         '2025-03-07 09:05:00', '2025-03-07 09:05:00');
 
 -- Bakery

@@ -1,4 +1,4 @@
-package com.breaditnow.owner.global.s3.upload;
+package com.breaditnow.owner.global.s3;
 
 import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 

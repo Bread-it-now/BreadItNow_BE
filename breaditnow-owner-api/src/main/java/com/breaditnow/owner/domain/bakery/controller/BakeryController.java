@@ -21,7 +21,9 @@ import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.OperatingStatusRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.domain.bakery.service.BakeryService;
+import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,9 +32,9 @@ import lombok.RequiredArgsConstructor;
 public class BakeryController {
 	private final BakeryService bakeryService;
 
-	@PostMapping("/{ownerId}")
-	public ApiSuccessResponse<Map<String, Long>> createBakery(@PathVariable("ownerId") Long ownerId,
-		@RequestPart("data") BakeryCreateRequest request,
+	@PostMapping()
+	public ApiSuccessResponse<Map<String, Long>> createBakery(@AuthOwner Long ownerId,
+		@RequestPart("data") @Valid BakeryCreateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
 
 		Long bakeryId = bakeryService.createBakery(ownerId, request, profileImage);
@@ -44,9 +46,9 @@ public class BakeryController {
 		return ApiSuccessResponse.of(bakeryService.getBakery(bakeryId));
 	}
 
-	@PutMapping("/{bakeryId}/{ownerId}")
-	public ApiSuccessResponse<BakeryResponse> updateBakery(@PathVariable("bakeryId") Long bakeryId,
-		@PathVariable("ownerId") Long ownerId,
+	@PutMapping("/{bakeryId}")
+	public ApiSuccessResponse<BakeryResponse> updateBakery(@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId,
 		@RequestPart("data") BakeryUpdateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 		@RequestPart(value = "bakeryImages", required = false) List<MultipartFile> bakeryImages
@@ -55,15 +57,16 @@ public class BakeryController {
 			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
 	}
 
-	@PatchMapping("/{bakeryId}/{ownerId}/operating-status")
-	public ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(@PathVariable("bakeryId") Long bakeryId,
-		@PathVariable("ownerId") Long ownerId, @RequestBody OperatingStatusRequest request) {
+	@PatchMapping("/{bakeryId}/operating-status")
+	public ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId,
+		@RequestBody OperatingStatusRequest request) {
 		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, request.operatingStatus());
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
 
-	@DeleteMapping("/{bakeryId}/{ownerId}")
-	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@PathVariable("ownerId") Long ownerId,
+	@DeleteMapping("/{bakeryId}")
+	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId) {
 		Long deletedBakeryId = bakeryService.deleteBakery(ownerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", deletedBakeryId);

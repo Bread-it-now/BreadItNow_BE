@@ -15,6 +15,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	 * DB000 Bakery
 	 */
 	INVALID_OWNER(HttpStatus.UNAUTHORIZED, "DB001", "사업자 아이디가 일치하지 않습니다."),
+	COORDINATE_NOT_FOUND(HttpStatus.NOT_FOUND, "DB002", "주어진 주소에서 위도, 경도를 찾을 수 없습니다."),
 
 	/**
 	 * DC000
