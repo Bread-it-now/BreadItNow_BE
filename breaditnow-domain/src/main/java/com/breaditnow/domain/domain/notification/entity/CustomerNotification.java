@@ -50,8 +50,7 @@ public class CustomerNotification extends BaseEntity {
 
 	@Builder
 	public CustomerNotification(Customer customer, Reservation reservation, Product product,
-		CustomerNotificationType type,
-		String content, boolean isRead) {
+		CustomerNotificationType type, String content, boolean isRead) {
 		this.customer = customer;
 		this.reservation = reservation;
 		this.product = product;
