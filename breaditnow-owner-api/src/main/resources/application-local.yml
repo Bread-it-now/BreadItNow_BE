@@ -23,7 +23,9 @@ aws:
       auto: false
 
 # RabbitMQ queue, exchange, routing-key 정보
-rabbitmq:
-  queue.name: sample.queue
-  exchange.name: sample.exchange
-  routing.key: sample.key
+#rabbitmq:
+#  favorite:
+#    product:
+#      exchangeName: favorite.product.exchange
+#  queue.name: sample.queue
+#  exchange.name: sample.exchange

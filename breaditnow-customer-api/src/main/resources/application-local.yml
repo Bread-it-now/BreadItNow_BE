@@ -9,8 +9,3 @@ spring:
     port: 5672
     username: root
     password: root
-    
-rabbitmq:
-  queue.name: sample.queue
-  exchange.name: sample.exchange
-  routing.key: sample.key

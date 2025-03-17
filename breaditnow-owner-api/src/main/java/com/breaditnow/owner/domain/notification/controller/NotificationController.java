@@ -3,11 +3,9 @@ package com.breaditnow.owner.domain.notification.controller;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.breaditnow.common.message.MessageDto;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.notification.service.NotificationService;
 
@@ -22,8 +20,8 @@ public class NotificationController {
 	private final NotificationService notificationService;
 
 	@PostMapping()
-	public ApiSuccessResponse<Map<String, Long>> sendMessage(@RequestBody MessageDto messageDto) {
-		notificationService.sendMessage(messageDto);
+	public ApiSuccessResponse<Map<String, Long>> sendMessage() {
+		notificationService.sendNotification(3L, "test-----test");
 		return ApiSuccessResponse.of();
 	}
 }
