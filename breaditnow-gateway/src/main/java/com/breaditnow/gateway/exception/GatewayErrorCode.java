@@ -6,13 +6,13 @@ public enum GatewayErrorCode {
 	/**
 	 * 토큰(ZA000)
 	 */
-	TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "AB001", "유효하지 않은 토큰입니다."),
-	TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "AB002", "만료된 토큰입니다."),
-	TOKEN_UNSUPPORTED(HttpStatus.UNAUTHORIZED, "AB003", "지원되지 않는 토큰입니다."),
-	TOKEN_WRONG(HttpStatus.UNAUTHORIZED, "AB004", "잘못된 토큰 서명입니다."),
-	TOKEN_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "AB005", "토큰이 일치하지 않습니다."),
-	TOKEN_USER_ID_MISSING(HttpStatus.UNAUTHORIZED, "AB006", "토큰에 사용자 ID가 존재하지 않습니다."),
-	TOKEN_USER_ROLE_MISSING(HttpStatus.FORBIDDEN, "AB007", "토큰에 유효한 역할 정보가 포함되어 있지 않습니다."),
+	TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "ZA001", "유효하지 않은 토큰입니다."),
+	TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "ZA002", "만료된 토큰입니다."),
+	TOKEN_UNSUPPORTED(HttpStatus.UNAUTHORIZED, "ZA003", "지원되지 않는 토큰입니다."),
+	TOKEN_WRONG(HttpStatus.UNAUTHORIZED, "ZA004", "잘못된 토큰 서명입니다."),
+	TOKEN_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "ZA005", "토큰이 일치하지 않습니다."),
+	TOKEN_USER_ID_MISSING(HttpStatus.UNAUTHORIZED, "ZA006", "토큰에 사용자 ID가 존재하지 않습니다."),
+	TOKEN_USER_ROLE_MISSING(HttpStatus.FORBIDDEN, "ZA007", "토큰에 유효한 역할 정보가 포함되어 있지 않습니다."),
 
 	/**
 	 * Authorization 헤더 관련 에러(ZB000)

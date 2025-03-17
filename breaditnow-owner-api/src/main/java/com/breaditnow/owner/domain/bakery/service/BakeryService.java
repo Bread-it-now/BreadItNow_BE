@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.breaditnow.common.client.kakao.GeoLocationClient;
+import com.breaditnow.common.client.kakao.dto.res.AddressCoordinate;
 import com.breaditnow.domain.domain.bakery.entity.Address;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.entity.BakeryImage;
@@ -24,8 +26,6 @@ import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.global.exception.OwnerErrorCode;
 import com.breaditnow.owner.global.exception.OwnerException;
-import com.breaditnow.owner.global.location.AddressCoordinate;
-import com.breaditnow.owner.global.location.GeoLocationClient;
 import com.breaditnow.owner.global.s3.FileUploader;
 
 import lombok.RequiredArgsConstructor;
@@ -57,8 +57,8 @@ public class BakeryService {
 		if (addressCoordinate == null) {
 			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
 		}
-		address.setLatitude(addressCoordinate.latitude());
-		address.setLongitude(addressCoordinate.longitude());
+		address.setLatitude(Double.valueOf(addressCoordinate.x()));
+		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
 		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
@@ -93,13 +93,12 @@ public class BakeryService {
 		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
 
 		Address address = new Address(regionPK, bakeryUpdateRequest.address());
-		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
-			bakeryUpdateRequest.address());
+		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(bakeryUpdateRequest.address());
 		if (addressCoordinate == null) {
 			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
 		}
-		address.setLatitude(addressCoordinate.latitude());
-		address.setLongitude(addressCoordinate.longitude());
+		address.setLatitude(Double.valueOf(addressCoordinate.x()));
+		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
 		List<BakeryImage> bakeryImages = new ArrayList<>();
 		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
