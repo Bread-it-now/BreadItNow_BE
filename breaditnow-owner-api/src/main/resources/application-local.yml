@@ -3,6 +3,12 @@ spring:
     activate:
       on-profile: local
     import: application-mysql-local.yml
+  # RabbitMQ 연결 정보
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: root
+    password: root
 
 aws:
   s3:
@@ -15,3 +21,9 @@ aws:
     auto: false
     stack:
       auto: false
+
+# RabbitMQ queue, exchange, routing-key 정보
+rabbitmq:
+  queue.name: sample.queue
+  exchange.name: sample.exchange
+  routing.key: sample.key
