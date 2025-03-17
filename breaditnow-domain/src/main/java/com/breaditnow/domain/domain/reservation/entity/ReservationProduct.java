@@ -32,15 +32,23 @@ public class ReservationProduct extends BaseEntity {
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
-	private int quantity;
+	private Integer quantity;
 
-	private int unitPrice;
+	private Integer unitPrice;
+
+	private String productName;
+
+	private String productImage;
 
 	@Builder
-	public ReservationProduct(Reservation reservation, Product product, int quantity, int unitPrice) {
+	public ReservationProduct(Reservation reservation, Product product, Integer quantity, Integer unitPrice,
+		String productName,
+		String productImage) {
 		this.reservation = reservation;
 		this.product = product;
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
+		this.productName = productName;
+		this.productImage = productImage;
 	}
 }

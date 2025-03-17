@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.breaditnow.common.util.GeoPoint;
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.vo.GeoPoint;
 
 @Repository
 public interface CustomerProductFavoriteRepositoryCustom {

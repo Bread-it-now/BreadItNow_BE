@@ -24,3 +24,7 @@ spring:
     init:
       mode: always
       data-locations: classpath:db/seoul-code.sql, classpath:db/bread-category.sql, classpath:db/test-data.sql
+
+geolocation:
+  kakao:
+    client-id: ${OAUTH2_KAKAO_CLIENT_ID}

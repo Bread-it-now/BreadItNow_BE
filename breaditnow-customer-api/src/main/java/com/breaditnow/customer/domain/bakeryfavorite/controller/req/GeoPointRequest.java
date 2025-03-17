@@ -1,6 +1,6 @@
 package com.breaditnow.customer.domain.bakeryfavorite.controller.req;
 
-import com.breaditnow.common.util.GeoPoint;
+import com.breaditnow.domain.domain.vo.GeoPoint;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;

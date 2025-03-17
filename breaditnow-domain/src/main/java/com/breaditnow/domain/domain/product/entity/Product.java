@@ -45,7 +45,7 @@ public class Product extends BaseEntity {
 	@Column(nullable = false)
 	private String name;
 
-	private int price;
+	private Integer price;
 
 	private String image;
 
@@ -53,18 +53,19 @@ public class Product extends BaseEntity {
 
 	private String releaseTime;
 
-	private int stock;
+	private Integer stock;
 
 	private boolean isActive;
 
-	private int displayOrder;
+	private Integer displayOrder;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductBreadCategory> breadCategories = new ArrayList<>();
 
 	@Builder
-	public Product(Bakery bakery, ProductType type, String name, int price, String image, String description, int stock,
-		String releaseTime, boolean isActive) {
+	public Product(Bakery bakery, ProductType type, String name, Integer price, String image, String description,
+		Integer stock,
+		String releaseTime, Boolean isActive) {
 		this.bakery = bakery;
 		this.type = type;
 		this.name = name;

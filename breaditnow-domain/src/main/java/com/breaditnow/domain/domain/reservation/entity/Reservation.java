@@ -1,12 +1,9 @@
 package com.breaditnow.domain.domain.reservation.entity;
 
-import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.customer.entity.Customer;
@@ -21,7 +18,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,25 +41,17 @@ public class Reservation extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ReservationStatus status;
 
-	@OneToMany(mappedBy = "reservation", cascade = {PERSIST, MERGE})
-	private List<ReservationProductHistory> reservationHistories = new ArrayList<>();
-
-	private int totalPrice;
+	private Integer totalPrice;
 
 	private LocalDateTime pickupDeadline;
 
 	@Builder
-	public Reservation(Customer customer, Bakery bakery, ReservationStatus status, int totalPrice,
+	public Reservation(Customer customer, Bakery bakery, ReservationStatus status, Integer totalPrice,
 		LocalDateTime pickupDeadline) {
 		this.customer = customer;
 		this.bakery = bakery;
 		this.status = status;
 		this.totalPrice = totalPrice;
 		this.pickupDeadline = pickupDeadline;
-	}
-
-	public void addHistory(ReservationProductHistory history) {
-		reservationHistories.add(history);
-		history.setReservation(this);
 	}
 }

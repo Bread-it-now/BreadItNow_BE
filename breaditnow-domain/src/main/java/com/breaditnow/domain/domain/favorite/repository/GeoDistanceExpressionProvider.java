@@ -4,8 +4,8 @@ import static com.querydsl.core.types.dsl.Expressions.*;
 
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.common.util.GeoPoint;
 import com.breaditnow.domain.domain.bakery.entity.QBakery;
+import com.breaditnow.domain.domain.vo.GeoPoint;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 

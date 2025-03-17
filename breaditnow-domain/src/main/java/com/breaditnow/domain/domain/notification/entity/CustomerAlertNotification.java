@@ -41,11 +41,11 @@ public class CustomerAlertNotification extends BaseEntity {
 
 	private String productName;
 
-	private Boolean isRead;
+	private boolean isRead;
 
 	@Builder
 	public CustomerAlertNotification(Customer customer, Product product, Integer remainingCount, Integer alertCount,
-		String bakeryName, String productName, Boolean isRead) {
+		String bakeryName, String productName, boolean isRead) {
 		this.customer = customer;
 		this.product = product;
 		this.remainingCount = remainingCount;
