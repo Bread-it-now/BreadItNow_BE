@@ -12,6 +12,7 @@ import com.breaditnow.owner.domain.notification.controller.req.NotificationReque
 import com.breaditnow.owner.domain.notification.service.NotificationService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ public class NotificationController {
 
 	@PostMapping()
 	public ApiSuccessResponse<Map<String, Long>> sendMessage(@AuthOwner Long ownerId,
-		@RequestBody NotificationRequest notificationRequest) {
+		@RequestBody @Valid NotificationRequest notificationRequest) {
 		notificationService.sendNotification(ownerId, notificationRequest);
 		return ApiSuccessResponse.of();
 	}

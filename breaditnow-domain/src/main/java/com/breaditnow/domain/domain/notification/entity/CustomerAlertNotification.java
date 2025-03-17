@@ -4,14 +4,10 @@ import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.notification.enumerate.CustomerNotificationType;
 import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -24,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CustomerNotification extends BaseEntity {
+public class CustomerAlertNotification extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -34,28 +30,28 @@ public class CustomerNotification extends BaseEntity {
 	private Customer customer;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "reservation_id")
-	private Reservation reservation;
-
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 
-	@Enumerated(EnumType.STRING)
-	private CustomerNotificationType type;
+	private Integer remainingCount;
 
-	private String content;
+	private Integer alertCount;
 
-	private boolean isRead;
+	private String bakeryName;
+
+	private String productName;
+
+	private Boolean isRead;
 
 	@Builder
-	public CustomerNotification(Customer customer, Reservation reservation, Product product,
-		CustomerNotificationType type, String content, boolean isRead) {
+	public CustomerAlertNotification(Customer customer, Product product, Integer remainingCount, Integer alertCount,
+		String bakeryName, String productName, Boolean isRead) {
 		this.customer = customer;
-		this.reservation = reservation;
 		this.product = product;
-		this.type = type;
-		this.content = content;
+		this.remainingCount = remainingCount;
+		this.alertCount = alertCount;
+		this.bakeryName = bakeryName;
+		this.productName = productName;
 		this.isRead = isRead;
 	}
 }

@@ -3,14 +3,11 @@ package com.breaditnow.domain.domain.notification.entity;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
-import com.breaditnow.domain.domain.notification.enumerate.OwnerNotificationType;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class OwnerNotification extends BaseEntity {
+public class OwnerReservationNotification extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -36,20 +33,12 @@ public class OwnerNotification extends BaseEntity {
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 
-	@Enumerated(EnumType.STRING)
-	private OwnerNotificationType type;
-
-	private String content;
-
 	private boolean isRead;
 
 	@Builder
-	public OwnerNotification(Owner owner, Reservation reservation, OwnerNotificationType type, String content,
-		boolean isRead) {
+	public OwnerReservationNotification(Owner owner, Reservation reservation, boolean isRead) {
 		this.owner = owner;
 		this.reservation = reservation;
-		this.type = type;
-		this.content = content;
 		this.isRead = isRead;
 	}
 }
