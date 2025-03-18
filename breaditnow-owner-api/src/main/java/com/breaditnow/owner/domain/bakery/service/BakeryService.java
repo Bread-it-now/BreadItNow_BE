@@ -126,7 +126,7 @@ public class BakeryService {
 	@Transactional
 	public Long deleteBakery(Long ownerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-		bakery.updateActive(false);
+		bakery.changeIsActive(false);
 		return bakery.getId();
 	}
 

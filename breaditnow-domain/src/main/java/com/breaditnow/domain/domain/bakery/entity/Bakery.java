@@ -95,7 +95,7 @@ public class Bakery extends BaseEntity {
 		this.bakeryImages.addAll(bakery.getBakeryImages());
 	}
 
-	public void updateActive(boolean isActive) {
+	public void changeIsActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 

@@ -43,6 +43,8 @@ public class CustomerAlertNotification extends BaseEntity {
 
 	private boolean isRead;
 
+	private boolean isActive = true;
+
 	@Builder
 	public CustomerAlertNotification(Customer customer, Product product, Integer remainingCount, Integer alertCount,
 		String bakeryName, String productName, boolean isRead) {
@@ -53,5 +55,13 @@ public class CustomerAlertNotification extends BaseEntity {
 		this.remainingCount = remainingCount;
 		this.alertCount = alertCount;
 		this.isRead = isRead;
+	}
+
+	public void changeIsRead(boolean isRead) {
+		this.isRead = isRead;
+	}
+
+	public void changeIsActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }
