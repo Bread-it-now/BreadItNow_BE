@@ -1,5 +1,6 @@
 package com.breaditnow.domain.domain.notification.entity;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -8,7 +9,6 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -25,11 +25,11 @@ public class CustomerAlertNotification extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 
@@ -47,11 +47,11 @@ public class CustomerAlertNotification extends BaseEntity {
 	public CustomerAlertNotification(Customer customer, Product product, Integer remainingCount, Integer alertCount,
 		String bakeryName, String productName, boolean isRead) {
 		this.customer = customer;
+		this.bakeryName = bakeryName;
 		this.product = product;
+		this.productName = productName;
 		this.remainingCount = remainingCount;
 		this.alertCount = alertCount;
-		this.bakeryName = bakeryName;
-		this.productName = productName;
 		this.isRead = isRead;
 	}
 }
