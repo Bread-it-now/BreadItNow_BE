@@ -51,4 +51,8 @@ public class ReservationProduct extends BaseEntity {
 		this.productName = productName;
 		this.productImage = productImage;
 	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
+	}
 }
