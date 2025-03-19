@@ -1,5 +1,7 @@
 package com.breaditnow.domain.domain.reservation.entity;
 
+import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -11,9 +13,7 @@ import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -30,15 +30,15 @@ public class Reservation extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "bakery_id", nullable = false)
 	private Bakery bakery;
 
-	@Enumerated(EnumType.STRING)
+	@Enumerated(STRING)
 	private ReservationStatus status;
 
 	private Integer totalPrice;

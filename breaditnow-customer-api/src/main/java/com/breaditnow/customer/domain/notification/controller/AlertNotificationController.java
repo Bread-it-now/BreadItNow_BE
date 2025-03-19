@@ -1,16 +1,19 @@
 package com.breaditnow.customer.domain.notification.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.notification.service.AlertNotificationService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
+import com.breaditnow.domain.domain.notification.enumerate.NotificationType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,17 +25,21 @@ public class AlertNotificationController {
 
 	@PatchMapping("/{alert_notification_id}/read")
 	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthCustomer Long customerId,
-		@PathVariable("alert_notification_id") Long notificationId) {
+		@PathVariable("alert_notification_id") Long notificationId, @RequestParam("type") String type) {
 
-		Long alertNotificationId = alertNotificationService.readAlertNotification(customerId, notificationId);
+		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
+		Long alertNotificationId = alertNotificationService.readAlertNotification(customerId, notificationId,
+			notificationTypes);
 		return ApiSuccessResponse.of("alertNotificationId", alertNotificationId);
 	}
 
 	@DeleteMapping("/{alert_notification_id}")
 	public ApiSuccessResponse<Map<String, Long>> deleteNotification(@AuthCustomer Long customerId,
-		@PathVariable("alert_notification_id") Long notificationId) {
+		@PathVariable("alert_notification_id") Long notificationId, @RequestParam("type") String type) {
 
-		Long alertNotificationId = alertNotificationService.deleteNotification(customerId, notificationId);
+		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
+		Long alertNotificationId = alertNotificationService.deleteNotification(customerId, notificationId,
+			notificationTypes);
 		return ApiSuccessResponse.of("alertNotificationId", alertNotificationId);
 	}
 }
