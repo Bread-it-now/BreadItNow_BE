@@ -1,6 +1,8 @@
 package com.breaditnow.customer.domain.reservation.service;
 
+import com.breaditnow.customer.domain.reservation.controller.req.ReservationCancelRequest;
 import com.breaditnow.customer.domain.reservation.controller.req.ReservationRequest;
+import com.breaditnow.customer.domain.reservation.controller.res.ReservationCancelResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationDetailResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationResponse;
@@ -26,6 +28,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.WAITING;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -49,7 +53,7 @@ public class ReservationService {
         Reservation tempReservation = Reservation.builder()
                 .customer(customer)
                 .bakery(bakery)
-                .status(ReservationStatus.WAITING)
+                .status(WAITING)
                 .totalPrice(totalPrice)
                 .pickupDeadline(LocalDateTime.now().plusHours(2))
                 .build();
@@ -82,5 +86,21 @@ public class ReservationService {
         List<ReservationProduct> reservationProducts = reservationProductRepository.findByReservationId(reservationId);
 
         return ReservationDetailResponse.of(reservation, reservation.getBakery(), reservationProducts);
+    }
+
+    public ReservationCancelResponse cancelReservation(Long customerId, Long reservationId, ReservationCancelRequest request) {
+        Reservation reservation = reservationRepository.getByIdAndCustomerId(reservationId, customerId);
+
+        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+            throw new IllegalStateException("이미 취소된 예약입니다.");
+        }
+
+        reservation.updateStatus(ReservationStatus.CANCELLED);
+        reservation.updateCancelReason(request.reason());
+
+        // 명시적으로 save 호출 (JPA 변경감지가 자동으로 되지 않을 때를 대비)
+        reservationRepository.save(reservation);
+
+        return ReservationCancelResponse.of(reservation);
     }
 }

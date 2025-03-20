@@ -1,7 +1,9 @@
 package com.breaditnow.customer.domain.reservation.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.reservation.controller.req.ReservationCancelRequest;
 import com.breaditnow.customer.domain.reservation.controller.req.ReservationRequest;
+import com.breaditnow.customer.domain.reservation.controller.res.ReservationCancelResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationDetailResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationResponse;
@@ -26,6 +28,14 @@ public class ReservationController {
             @AuthCustomer Long customerId,
             @RequestBody @Valid ReservationRequest request) {
         return ApiSuccessResponse.of(reservationService.createReservation(customerId, request));
+    }
+
+    @PatchMapping("/{reservationId}/cancel")
+    public ApiSuccessResponse<ReservationCancelResponse> cancelReservation(
+            @AuthCustomer Long customerId,
+            @PathVariable("reservationId") Long reservationId,
+            @RequestBody @Valid ReservationCancelRequest request) {
+        return ApiSuccessResponse.of(reservationService.cancelReservation(customerId, reservationId, request));
     }
 
     @GetMapping

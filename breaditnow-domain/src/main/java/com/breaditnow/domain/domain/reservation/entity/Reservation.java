@@ -1,5 +1,6 @@
 package com.breaditnow.domain.domain.reservation.entity;
 
+import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.CANCELLED;
 import static jakarta.persistence.GenerationType.*;
 import static java.util.UUID.randomUUID;
 import static lombok.AccessLevel.*;
@@ -37,6 +38,8 @@ public class Reservation extends BaseEntity {
 
 	private int totalPrice;
 
+	private String cancelReason;
+
 	private LocalDateTime pickupDeadline;
 
 	@Column(unique = true, nullable = false)
@@ -55,5 +58,13 @@ public class Reservation extends BaseEntity {
 
 	private String generateReservationNumber() {
 		return randomUUID().toString().substring(0, 6).toUpperCase();
+	}
+
+	public void updateStatus(ReservationStatus status) {
+		this.status = status;
+	}
+
+	public void updateCancelReason(String reason) {
+		this.cancelReason = reason;
 	}
 }
