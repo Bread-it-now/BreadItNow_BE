@@ -34,7 +34,7 @@ public class CustomerReservationNotification extends BaseEntity {
 	private Reservation reservation;
 
 	private boolean isRead;
-	private boolean isActive;
+	private boolean isActive = true;
 
 	@Builder
 	public CustomerReservationNotification(Customer customer, Reservation reservation, boolean isRead) {

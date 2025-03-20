@@ -126,3 +126,27 @@ VALUES
     (3, 11, false, '2025-03-08 09:17:00', '2025-03-08 09:17:00'),  -- 치즈빵 (product_id=11)
     (3, 14, true,  '2025-03-08 09:18:00', '2025-03-08 09:18:00');  -- 바나나빵 (product_id=14)
 
+-- CustomerAlertNotification
+INSERT INTO customer_alert_notification
+    (customer_id, product_id, remaining_count, alert_count, bakery_name, product_name, is_read, is_active, created_at, modified_at)
+VALUES
+    (1, 4, 3, 1, '오븐 아틀리에', '딸기잼', false, true, '2025-03-08 10:00:00', '2025-03-08 10:00:00'),
+    (2, 11, 2, 1, '빵 갤러리', '치즈빵', true, true, '2025-03-08 10:05:00', '2025-03-08 10:05:00'),
+    (3, 12, 5, 2, '빵 갤러리', '감자빵', false, true, '2025-03-08 10:10:00', '2025-03-08 10:10:00');
+
+
+-- Reservation
+INSERT INTO reservation
+    (customer_id, bakery_id, status, total_price, pickup_deadline, created_at, modified_at)
+VALUES
+    (1, 1, 'APPROVED', 3000, '2025-03-08 11:00:00', '2025-03-08 10:30:00', '2025-03-08 10:30:00'),
+    (2, 4, 'WAITING', 4000, '2025-03-08 12:00:00', '2025-03-08 10:35:00', '2025-03-08 10:35:00'),
+    (3, 5, 'CANCELLED', 3500, '2025-03-08 13:00:00', '2025-03-08 10:40:00', '2025-03-08 10:40:00');
+
+-- CustomerReservationNotification
+INSERT INTO customer_reservation_notification
+    (customer_id, reservation_id, is_read, is_active, created_at, modified_at)
+VALUES
+    (1, 1, false, true, '2025-03-08 10:45:00', '2025-03-08 10:45:00'),
+    (2, 2, true, true, '2025-03-08 10:50:00', '2025-03-08 10:50:00'),
+    (3, 3, false, true, '2025-03-08 10:55:00', '2025-03-08 10:55:00');

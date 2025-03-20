@@ -22,28 +22,28 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/alert-notification")
+@RequestMapping("/api/v1/notification")
 public class NotificationController {
 	private final NotificationService notificationService;
 
-	@PatchMapping("/{alert_notification_id}/read")
+	@PatchMapping("/{notification_id}/read")
 	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthCustomer Long customerId,
-		@PathVariable("alert_notification_id") Long notificationId, @RequestParam("type") String type) {
+		@PathVariable("notification_id") Long notificationId, @RequestParam("type") String type) {
 
 		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
-		Long alertNotificationId = notificationService.readAlertNotification(customerId, notificationId,
+		Long savedNotificationId = notificationService.readAlertNotification(customerId, notificationId,
 			notificationTypes);
-		return ApiSuccessResponse.of("alertNotificationId", alertNotificationId);
+		return ApiSuccessResponse.of("notificationId", savedNotificationId);
 	}
 
-	@DeleteMapping("/{alert_notification_id}")
+	@DeleteMapping("/{notification_id}")
 	public ApiSuccessResponse<Map<String, Long>> deleteNotification(@AuthCustomer Long customerId,
-		@PathVariable("alert_notification_id") Long notificationId, @RequestParam("type") String type) {
+		@PathVariable("notification_id") Long notificationId, @RequestParam("type") String type) {
 
 		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
-		Long alertNotificationId = notificationService.deleteNotification(customerId, notificationId,
+		Long deletedNotificationId = notificationService.deleteNotification(customerId, notificationId,
 			notificationTypes);
-		return ApiSuccessResponse.of("alertNotificationId", alertNotificationId);
+		return ApiSuccessResponse.of("notificationId", deletedNotificationId);
 	}
 
 	@GetMapping()
