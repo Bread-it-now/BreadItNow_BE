@@ -1,0 +1,67 @@
+package com.breaditnow.customer.domain.reservation.service;
+
+import com.breaditnow.customer.domain.reservation.controller.req.ReservationRequest;
+import com.breaditnow.customer.domain.reservation.controller.res.ReservationResponse;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
+import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
+import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.repository.ProductRepository;
+import com.breaditnow.domain.domain.reservation.entity.Reservation;
+import com.breaditnow.domain.domain.reservation.entity.ReservationProduct;
+import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
+import com.breaditnow.domain.domain.reservation.repository.ReservationProductRepository;
+import com.breaditnow.domain.domain.reservation.repository.ReservationRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class ReservationService {
+
+    private final ReservationRepository reservationRepository;
+    private final ReservationProductRepository reservationProductRepository;
+    private final ProductRepository productRepository;
+    private final BakeryRepository bakeryRepository;
+    private final CustomerRepository customerRepository;
+
+    @Transactional
+    public ReservationResponse createReservation(Long customerId, ReservationRequest request) {
+        Customer customer = customerRepository.getById(customerId);
+        Bakery bakery = bakeryRepository.getById(request.bakeryId());
+
+        int totalPrice = request.reservationProducts().stream()
+                .mapToInt(req -> productRepository.getById(req.productId()).getPrice() * req.quantity())
+                .sum();
+
+        Reservation tempReservation = Reservation.builder()
+                .customer(customer)
+                .bakery(bakery)
+                .status(ReservationStatus.WAITING)
+                .totalPrice(totalPrice)
+                .pickupDeadline(LocalDateTime.now().plusHours(2))
+                .build();
+
+        final Reservation savedReservation = reservationRepository.save(tempReservation);
+
+        List<ReservationProduct> reservationProducts = request.reservationProducts().stream()
+                .map(req -> ReservationProduct.builder()
+                        .reservation(savedReservation)
+                        .product(productRepository.getById(req.productId()))
+                        .quantity(req.quantity())
+                        .unitPrice(productRepository.getById(req.productId()).getPrice())
+                        .build())
+                .collect(Collectors.toList());
+
+        reservationProductRepository.saveAll(reservationProducts);
+
+        return ReservationResponse.of(savedReservation.getId(), savedReservation.getStatus().name(), totalPrice, savedReservation.getPickupDeadline());
+    }
+}
