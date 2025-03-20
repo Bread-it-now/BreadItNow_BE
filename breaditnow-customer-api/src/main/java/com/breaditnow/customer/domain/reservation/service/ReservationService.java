@@ -1,6 +1,7 @@
 package com.breaditnow.customer.domain.reservation.service;
 
 import com.breaditnow.customer.domain.reservation.controller.req.ReservationRequest;
+import com.breaditnow.customer.domain.reservation.controller.res.ReservationDetailResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationResponse;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
@@ -73,5 +74,13 @@ public class ReservationService {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Reservation> reservationsPage = reservationRepository.getReservationsByStatus(customerId, status, pageable);
         return ReservationPageResponse.of(reservationsPage);
+    }
+
+    public ReservationDetailResponse getReservationDetail(Long customerId, Long reservationId) {
+        Reservation reservation = reservationRepository.getByIdAndCustomerId(reservationId, customerId);
+
+        List<ReservationProduct> reservationProducts = reservationProductRepository.findByReservationId(reservationId);
+
+        return ReservationDetailResponse.of(reservation, reservation.getBakery(), reservationProducts);
     }
 }

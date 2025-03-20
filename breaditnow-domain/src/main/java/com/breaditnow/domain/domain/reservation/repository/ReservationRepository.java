@@ -11,6 +11,8 @@ import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_NOT_FOUND;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -20,11 +22,21 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
                 .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
     }
 
-    @Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND (:status IS NULL OR r.status = :status)")
-    Page<Reservation> findByCustomerIdAndOptionalStatus(@Param("customerId") Long customerId, @Param("status") ReservationStatus status, Pageable pageable);
+    default Reservation getByIdAndCustomerId(Long reservationId, Long customerId) {
+        return findByIdAndCustomerId(reservationId, customerId)
+                .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
+    }
 
     default Page<Reservation> getReservationsByStatus(Long customerId, ReservationRequestStatus status, Pageable pageable) {
         return findByCustomerIdAndOptionalStatus(customerId, ReservationRequestStatus.toReservationStatus(status), pageable);
     }
+
+    @Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND (:status IS NULL OR r.status = :status)")
+    Page<Reservation> findByCustomerIdAndOptionalStatus(@Param("customerId") Long customerId, @Param("status") ReservationStatus status, Pageable pageable);
+
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.bakery WHERE r.id = :reservationId AND r.customer.id = :customerId")
+    Optional<Reservation> findByIdAndCustomerId(@Param("reservationId") Long reservationId, @Param("customerId") Long customerId);
+
+
 }
 

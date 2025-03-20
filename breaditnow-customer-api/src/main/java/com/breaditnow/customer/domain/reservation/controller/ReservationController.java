@@ -2,6 +2,7 @@ package com.breaditnow.customer.domain.reservation.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.reservation.controller.req.ReservationRequest;
+import com.breaditnow.customer.domain.reservation.controller.res.ReservationDetailResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationResponse;
 import com.breaditnow.customer.domain.reservation.service.ReservationService;
@@ -35,5 +36,12 @@ public class ReservationController {
             @RequestParam(name = "size", defaultValue = "10") int size
     ){
         return ApiSuccessResponse.of(reservationService.getReservations(customerId, status, page, size));
+    }
+
+    @GetMapping("/{reservationId}")
+    public ApiSuccessResponse<ReservationDetailResponse> getReservationDetail(
+            @AuthCustomer Long customerId,
+            @PathVariable("reservationId") Long reservationId) {
+        return ApiSuccessResponse.of(reservationService.getReservationDetail(customerId, reservationId));
     }
 }
