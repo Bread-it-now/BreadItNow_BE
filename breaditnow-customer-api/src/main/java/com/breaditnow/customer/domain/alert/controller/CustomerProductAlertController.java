@@ -31,4 +31,12 @@ public class CustomerProductAlertController {
         customerProductAlertService.deleteProductAlert(customerId, productId);
         return ApiSuccessResponse.of(null);
     }
+
+    @PatchMapping("/product/{product_id}/toggle")
+    public ApiSuccessResponse<Map<String, Boolean>> toggleProductAlert(
+            @AuthCustomer Long customerId,
+            @PathVariable("product_id") Long productId) {
+        boolean newStatus = customerProductAlertService.toggleProductAlert(customerId, productId);
+        return ApiSuccessResponse.of("active", newStatus);
+    }
 }

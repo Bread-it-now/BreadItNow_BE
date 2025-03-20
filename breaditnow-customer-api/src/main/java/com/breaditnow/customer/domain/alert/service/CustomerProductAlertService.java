@@ -59,4 +59,22 @@ public class CustomerProductAlertService {
 
         alertRepository.delete(optionalAlert.get());
     }
+
+    @Transactional
+    public boolean toggleProductAlert(Long customerId, Long productId) {
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomerException(AUTHENTICATION_REQUIRED));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NoSuchElementException("Product not found"));
+
+        CustomerProductAlert alert = alertRepository.findByCustomerAndProduct(customer, product)
+                .orElseThrow(() -> new NoSuchElementException("Alert not found"));
+
+        boolean newStatus = !alert.isActive();
+        alert.setActive(newStatus);
+
+        return newStatus;
+    }
 }
