@@ -22,8 +22,7 @@ public enum NotificationType {
 			return Arrays.asList(ALERT, RESERVATION);
 		}
 		try {
-			NotificationType nt = NotificationType.valueOf(normalized);
-			return List.of(nt);
+			return List.of(NotificationType.valueOf(normalized));
 		} catch (IllegalArgumentException e) {
 			throw new DomainException(INVALID_NOTIFICATION_TYPE);
 		}

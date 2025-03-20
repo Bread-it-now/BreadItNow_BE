@@ -14,6 +14,7 @@ import com.breaditnow.domain.domain.notification.entity.CustomerReservationNotif
 import com.breaditnow.domain.domain.notification.enumerate.NotificationType;
 import com.breaditnow.domain.domain.notification.repository.CustomerAlertNotificationRepository;
 import com.breaditnow.domain.domain.notification.repository.CustomerReservationNotificationRepository;
+import com.breaditnow.domain.domain.notification.repository.UnifiedNotificationRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class NotificationService {
 	private final CustomerAlertNotificationRepository alertNotificationRepository;
 	private final CustomerReservationNotificationRepository reservationNotificationRepository;
+	private final UnifiedNotificationRepository unifiedNotificationRepository;
 
 	@Transactional
 	public Long readAlertNotification(Long customerId, Long notificationId,
@@ -65,6 +67,22 @@ public class NotificationService {
 
 	public NotificationPageResponse getNotifications(Long customerId, Pageable pageable,
 		List<NotificationType> notificationTypes) {
+		// if (notificationTypes.contains(NotificationType.ALERT) && notificationTypes.contains(
+		// 	NotificationType.RESERVATION)) {
+		// 	Page<NotificationDTO> unifiedPage = unifiedNotificationRepository.findUnifiedNotifications(customerId,
+		// 		pageable);
+		// 	return NotificationPageResponse.of(unifiedPage.getContent(), unifiedPage.getTotalElements());
+		// } else if (notificationTypes.contains(NotificationType.RESERVATION)) {
+		// 	Page<NotificationDTO> reservationPage = unifiedNotificationRepository.findByCustomerId(customerId,
+		// 		pageable);
+		// 	return NotificationPageResponse.ofReservation(reservationPage.getContent(),
+		// 		reservationPage.getTotalElements());
+		// } else if (notificationTypes.contains(NotificationType.ALERT)) {
+		// 	Page<NotificationDTO> alertPage = unifiedNotificationRepository.findByCustomerId(customerId, pageable);
+		// 	return NotificationPageResponse.ofAlert(alertPage.getContent(), alertPage.getTotalElements());
+		// } else {
+		// 	throw new DomainException(INVALID_NOTIFICATION_TYPE);
+		// }
 		return null;
 	}
 }

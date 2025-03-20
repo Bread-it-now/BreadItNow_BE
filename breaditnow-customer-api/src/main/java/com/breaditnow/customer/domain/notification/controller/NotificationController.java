@@ -1,9 +1,12 @@
 package com.breaditnow.customer.domain.notification.controller;
 
+import static org.springframework.data.domain.Sort.Direction.*;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -47,8 +50,11 @@ public class NotificationController {
 	}
 
 	@GetMapping()
-	public ApiSuccessResponse<NotificationPageResponse> getNotifications(@AuthCustomer Long customerId,
-		Pageable pageable, @RequestParam("type") String type) {
+	public ApiSuccessResponse<NotificationPageResponse> getNotifications(
+		@AuthCustomer Long customerId,
+		@PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable,
+		@RequestParam("type") String type
+	) {
 		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
 		return ApiSuccessResponse.of(notificationService.getNotifications(customerId, pageable, notificationTypes));
 	}
