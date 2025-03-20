@@ -1,19 +1,23 @@
 package com.breaditnow.customer.domain.reservation.service;
 
 import com.breaditnow.customer.domain.reservation.controller.req.ReservationRequest;
+import com.breaditnow.customer.domain.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.customer.domain.reservation.controller.res.ReservationResponse;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
-import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import com.breaditnow.domain.domain.reservation.entity.ReservationProduct;
+import com.breaditnow.domain.domain.reservation.enumerate.ReservationRequestStatus;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
 import com.breaditnow.domain.domain.reservation.repository.ReservationProductRepository;
 import com.breaditnow.domain.domain.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,5 +67,11 @@ public class ReservationService {
         reservationProductRepository.saveAll(reservationProducts);
 
         return ReservationResponse.of(savedReservation.getId(), savedReservation.getStatus().name(), totalPrice, savedReservation.getPickupDeadline());
+    }
+
+    public ReservationPageResponse getReservations(Long customerId, ReservationRequestStatus status, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Reservation> reservationsPage = reservationRepository.getReservationsByStatus(customerId, status, pageable);
+        return ReservationPageResponse.of(reservationsPage);
     }
 }
