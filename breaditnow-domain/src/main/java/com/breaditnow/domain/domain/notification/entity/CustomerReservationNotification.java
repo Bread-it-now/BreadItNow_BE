@@ -1,6 +1,7 @@
 package com.breaditnow.domain.domain.notification.entity;
 
 import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
@@ -10,9 +11,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("reservation")
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 public class CustomerReservationNotification extends CustomerNotification {
 	@ManyToOne(fetch = LAZY)

@@ -125,26 +125,3 @@ VALUES
     (3, 9,  true,  '2025-03-08 09:16:00', '2025-03-08 09:16:00'),  -- 브리오슈 (product_id=9)
     (3, 11, false, '2025-03-08 09:17:00', '2025-03-08 09:17:00'),  -- 치즈빵 (product_id=11)
     (3, 14, true,  '2025-03-08 09:18:00', '2025-03-08 09:18:00');  -- 바나나빵 (product_id=14)
-
--- Reservation
-INSERT INTO reservation (id, customer_id, bakery_id, status, total_price, pickup_deadline, created_at, modified_at)
-VALUES
-  (10, 1, 1, 'APPROVED', 3000, '2025-03-08 11:00:00', '2025-03-08 10:30:00', '2025-03-08 10:30:00'),
-  (11, 2, 4, 'WAITING', 4000, '2025-03-08 12:00:00', '2025-03-08 10:35:00', '2025-03-08 10:35:00'),
-  (12, 3, 5, 'CANCELLED', 3500, '2025-03-08 13:00:00', '2025-03-08 10:40:00', '2025-03-08 10:40:00');
-
--- CustomerAlertNotification
-INSERT INTO customer_notification
-    (customer_id, created_at, modified_at, is_active, is_read, alert_count, remaining_count, product_id, reservation_id, notification_type, bakery_name, product_name)
-VALUES
-    (1, '2025-03-08 10:00:00', '2025-03-08 10:00:00', TRUE, FALSE, 1, 3, 4, NULL, 'ALERT', '오븐 아틀리에', '딸기잼'),
-    (2, '2025-03-08 10:05:00', '2025-03-08 10:05:00', TRUE, TRUE, 1, 2, 11, NULL, 'ALERT', '빵 갤러리', '치즈빵'),
-    (3, '2025-03-08 10:10:00', '2025-03-08 10:10:00', TRUE, FALSE, 2, 5, 12, NULL, 'ALERT', '빵 갤러리', '감자빵');
-
--- CustomerReservationNotification
-INSERT INTO customer_notification
-    (customer_id, created_at, modified_at, is_active, is_read, alert_count, remaining_count, product_id, reservation_id, notification_type, bakery_name, product_name)
-VALUES
-    (1, '2025-03-08 10:45:00', '2025-03-08 10:45:00', TRUE, FALSE, NULL, NULL, NULL, 10, 'RESERVATION', NULL, NULL),
-    (2, '2025-03-08 10:50:00', '2025-03-08 10:50:00', TRUE, TRUE, NULL, NULL, NULL, 11, 'RESERVATION', NULL, NULL),
-    (3, '2025-03-08 10:55:00', '2025-03-08 10:55:00', TRUE, FALSE, NULL, NULL, NULL, 12, 'RESERVATION', NULL, NULL);

@@ -1,6 +1,7 @@
 package com.breaditnow.domain.domain.notification.entity;
 
 import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.product.entity.Product;
@@ -11,9 +12,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("alert")
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 public class CustomerAlertNotification extends CustomerNotification {
 	@ManyToOne(fetch = LAZY)

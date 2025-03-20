@@ -4,12 +4,14 @@ import static com.breaditnow.domain.domain.notification.enumerate.NotificationTy
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.notification.controller.res.NotificationPageResponse;
 import com.breaditnow.domain.domain.notification.entity.CustomerAlertNotification;
+import com.breaditnow.domain.domain.notification.entity.CustomerNotification;
 import com.breaditnow.domain.domain.notification.entity.CustomerReservationNotification;
 import com.breaditnow.domain.domain.notification.enumerate.NotificationType;
 import com.breaditnow.domain.domain.notification.repository.CustomerAlertNotificationRepository;
@@ -67,22 +69,9 @@ public class NotificationService {
 
 	public NotificationPageResponse getNotifications(Long customerId, Pageable pageable,
 		List<NotificationType> notificationTypes) {
-		// if (notificationTypes.contains(NotificationType.ALERT) && notificationTypes.contains(
-		// 	NotificationType.RESERVATION)) {
-		// 	Page<NotificationDTO> unifiedPage = unifiedNotificationRepository.findUnifiedNotifications(customerId,
-		// 		pageable);
-		// 	return NotificationPageResponse.of(unifiedPage.getContent(), unifiedPage.getTotalElements());
-		// } else if (notificationTypes.contains(NotificationType.RESERVATION)) {
-		// 	Page<NotificationDTO> reservationPage = unifiedNotificationRepository.findByCustomerId(customerId,
-		// 		pageable);
-		// 	return NotificationPageResponse.ofReservation(reservationPage.getContent(),
-		// 		reservationPage.getTotalElements());
-		// } else if (notificationTypes.contains(NotificationType.ALERT)) {
-		// 	Page<NotificationDTO> alertPage = unifiedNotificationRepository.findByCustomerId(customerId, pageable);
-		// 	return NotificationPageResponse.ofAlert(alertPage.getContent(), alertPage.getTotalElements());
-		// } else {
-		// 	throw new DomainException(INVALID_NOTIFICATION_TYPE);
-		// }
+		Page<CustomerNotification> customerNotifications = unifiedNotificationRepository.find(customerId, pageable,
+			notificationTypes);
+
 		return null;
 	}
 }

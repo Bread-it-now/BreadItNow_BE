@@ -9,6 +9,7 @@ import static lombok.AccessLevel.*;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,10 @@ public class CustomerNotification extends BaseEntity {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
+
+	// Discriminator 컬럼을 읽기 전용 필드로 매핑
+	@Column(name = "notification_type", insertable = false, updatable = false)
+	private String notificationType;
 
 	private boolean isActive = true;
 	private boolean isRead;
