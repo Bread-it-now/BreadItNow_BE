@@ -5,10 +5,7 @@ import com.breaditnow.customer.domain.alert.service.CustomerProductAlertService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -25,5 +22,13 @@ public class CustomerProductAlertController {
             @AuthCustomer Long customerId,
             @PathVariable("product_id") Long productId) {
         return customerProductAlertService.registerProductAlert(customerId, productId);
+    }
+
+    @DeleteMapping("/product/{product_id}")
+    public ApiSuccessResponse<Void> deleteProductAlert(
+            @AuthCustomer Long customerId,
+            @PathVariable("product_id") Long productId) {
+        customerProductAlertService.deleteProductAlert(customerId, productId);
+        return ApiSuccessResponse.of(null);
     }
 }
