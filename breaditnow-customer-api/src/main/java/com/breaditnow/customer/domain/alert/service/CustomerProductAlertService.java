@@ -1,6 +1,8 @@
 package com.breaditnow.customer.domain.alert.service;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertPageResponse;
+import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertResponse;
 import com.breaditnow.customer.global.exception.CustomerException;
 import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
@@ -9,9 +11,14 @@ import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -76,5 +83,17 @@ public class CustomerProductAlertService {
         alert.setActive(newStatus);
 
         return newStatus;
+    }
+
+    public CustomerProductAlertPageResponse getProductAlerts(Long customerId, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<CustomerProductAlert> alertsPage = alertRepository.findByCustomerId(customerId, pageable);
+
+        List<CustomerProductAlertResponse> alertResponses = alertsPage.getContent().stream()
+                .map(CustomerProductAlertResponse::of)
+                .toList();
+
+        return CustomerProductAlertPageResponse.of(alertResponses, alertsPage);
     }
 }

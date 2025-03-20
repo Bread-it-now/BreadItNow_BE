@@ -1,6 +1,7 @@
 package com.breaditnow.customer.domain.alert.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertPageResponse;
 import com.breaditnow.customer.domain.alert.service.CustomerProductAlertService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,14 @@ public class CustomerProductAlertController {
             @PathVariable("product_id") Long productId) {
         boolean newStatus = customerProductAlertService.toggleProductAlert(customerId, productId);
         return ApiSuccessResponse.of("active", newStatus);
+    }
+
+    @GetMapping("/product")
+    public ApiSuccessResponse<CustomerProductAlertPageResponse> getProductAlerts(
+            @AuthCustomer Long customerId,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
+    ) {
+        return ApiSuccessResponse.of(customerProductAlertService.getProductAlerts(customerId, page, size));
     }
 }
