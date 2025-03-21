@@ -35,6 +35,8 @@ public class UnifiedNotificationRepository {
 			.select(customerNotification)
 			.from(customerNotification)
 			.where(predicate)
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
 			.orderBy(customerNotification.createdAt.desc())
 			.fetch();
 
@@ -43,7 +45,6 @@ public class UnifiedNotificationRepository {
 			.select(customerNotification.count())
 			.from(customerNotification)
 			.where(predicate)
-			.orderBy(customerNotification.createdAt.desc())
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, totalCount == null ? 0 : totalCount);

@@ -72,6 +72,6 @@ public class NotificationService {
 		Page<CustomerNotification> customerNotifications = unifiedNotificationRepository.find(customerId, pageable,
 			notificationTypes);
 
-		return null;
+		return NotificationPageResponse.of(customerNotifications);
 	}
 }
