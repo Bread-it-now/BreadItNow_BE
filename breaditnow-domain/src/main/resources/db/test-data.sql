@@ -104,7 +104,7 @@ VALUES (1, 1),   -- 식빵
 INSERT INTO customer_product_alert (customer_id, product_id, is_active, created_at, modified_at)
 VALUES
     -- user1
-    (1, 4,  true,  '2025-03-08 09:01:00', '2025-03-08 09:01:00'),   -- 딸기잼 (product_id=4)
+    (1, 4,  true,  '2025-03-08 09:01:00', '2025-03-08 09:01:00'),  -- 딸기잼 (product_id=4)
     (1, 5,  false, '2025-03-08 09:02:00', '2025-03-08 09:02:00'),  -- 사과잼 (product_id=5)
     (1, 6,  true,  '2025-03-08 09:03:00', '2025-03-08 09:03:00'),  -- 단팥빵 (product_id=6)
     (1, 7,  false, '2025-03-08 09:04:00', '2025-03-08 09:04:00'),  -- 치아바타 (product_id=7)

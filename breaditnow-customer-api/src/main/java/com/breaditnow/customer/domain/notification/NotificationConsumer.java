@@ -10,7 +10,7 @@ import com.breaditnow.common.message.AlertNotificationMessage;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.notification.entity.CustomerAlertNotification;
-import com.breaditnow.domain.domain.notification.repository.CustomerAlertNotificationRepository;
+import com.breaditnow.domain.domain.notification.repository.UnifiedNotificationRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 public class NotificationConsumer {
 	private final CustomerProductAlertRepository alertRepository;
-	private final CustomerAlertNotificationRepository notificationRepository;
+	private final UnifiedNotificationRepository notificationRepository;
 	private final ProductRepository productRepository;
 
 	@Transactional

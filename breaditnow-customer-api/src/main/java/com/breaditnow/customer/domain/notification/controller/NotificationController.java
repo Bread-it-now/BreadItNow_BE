@@ -1,9 +1,12 @@
 package com.breaditnow.customer.domain.notification.controller;
 
+import static org.springframework.data.domain.Sort.Direction.*;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,28 +31,22 @@ public class NotificationController {
 
 	@PatchMapping("/{notification_id}/read")
 	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthCustomer Long customerId,
-		@PathVariable("notification_id") Long notificationId, @RequestParam("type") String type) {
-
-		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
-		Long savedNotificationId = notificationService.readAlertNotification(customerId, notificationId,
-			notificationTypes);
+		@PathVariable("notification_id") Long notificationId) {
+		Long savedNotificationId = notificationService.readAlertNotification(customerId, notificationId);
 		return ApiSuccessResponse.of("notificationId", savedNotificationId);
 	}
 
 	@DeleteMapping("/{notification_id}")
 	public ApiSuccessResponse<Map<String, Long>> deleteNotification(@AuthCustomer Long customerId,
-		@PathVariable("notification_id") Long notificationId, @RequestParam("type") String type) {
-
-		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
-		Long deletedNotificationId = notificationService.deleteNotification(customerId, notificationId,
-			notificationTypes);
+		@PathVariable("notification_id") Long notificationId) {
+		Long deletedNotificationId = notificationService.deleteNotification(customerId, notificationId);
 		return ApiSuccessResponse.of("notificationId", deletedNotificationId);
 	}
 
 	@GetMapping()
 	public ApiSuccessResponse<NotificationPageResponse> getNotifications(
 		@AuthCustomer Long customerId,
-		Pageable pageable,
+		@PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable,
 		@RequestParam("type") String type
 	) {
 		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
