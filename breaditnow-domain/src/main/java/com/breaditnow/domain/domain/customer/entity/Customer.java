@@ -36,6 +36,8 @@ public class Customer extends BaseEntity {
 
 	private String oauth2Id;
 
+	private String fcmToken;
+
 	@Column(unique = true)
 	private String email;
 
@@ -68,5 +70,9 @@ public class Customer extends BaseEntity {
 
 	public boolean isFirstLogin() {
 		return this.nickname == null;
+	}
+
+	public void changeFcmToken(String token) {
+		this.fcmToken = token;
 	}
 }
