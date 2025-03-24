@@ -26,9 +26,16 @@ public class Owner extends BaseEntity {
 
 	String password;
 
+	private String fcmToken;
+
 	@Builder
-	public Owner(String email, String password) {
+	public Owner(String email, String password, String fcmToken) {
 		this.email = email;
 		this.password = password;
+		this.fcmToken = fcmToken;
+	}
+
+	public void changeFcmToken(String token) {
+		this.fcmToken = token;
 	}
 }
