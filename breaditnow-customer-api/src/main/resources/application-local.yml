@@ -4,8 +4,6 @@ spring:
       on-profile: local
     import: application-mysql-local.yml
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: root
-    password: root
+fcm:
+  file_path: firebase/breaditnow-fcm.json
+  project_id: ${FCM_PROJECT_ID}

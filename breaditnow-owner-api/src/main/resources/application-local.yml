@@ -3,12 +3,6 @@ spring:
     activate:
       on-profile: local
     import: application-mysql-local.yml
-  # RabbitMQ 연결 정보
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: root
-    password: root
 
 aws:
   s3:
@@ -22,10 +16,8 @@ aws:
     stack:
       auto: false
 
-# RabbitMQ queue, exchange, routing-key 정보
-#rabbitmq:
-#  favorite:
-#    product:
-#      exchangeName: favorite.product.exchange
-#  queue.name: sample.queue
-#  exchange.name: sample.exchange
+fcm:
+  file_path: firebase/breaditnow-fcm.json
+  url: ${FCM_URL}
+  google_api: https://www.googleapis.com/auth/cloud-platform
+  project_id: ${FCM_PROJECT_ID}

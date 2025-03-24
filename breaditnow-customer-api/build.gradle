@@ -1,6 +1,7 @@
 dependencies {
     implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
+    implementation project(":breaditnow-external")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -11,9 +12,6 @@ dependencies {
 
     // RabbitMQ
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
-
-    // FCM
-    implementation 'com.google.firebase:firebase-admin:9.4.3'
 }
 
 test {

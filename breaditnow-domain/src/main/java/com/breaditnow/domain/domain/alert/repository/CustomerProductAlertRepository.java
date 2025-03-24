@@ -13,9 +13,13 @@ public interface CustomerProductAlertRepository extends JpaRepository<CustomerPr
 
 	boolean existsByCustomerIdAndProductId(Long customerId, Long productId);
 
-	@Query("SELECT cpa.customer " +
+	@Query("SELECT DISTINCT c " +
 		"FROM CustomerProductAlert cpa " +
+		"JOIN cpa.customer c " +
 		"WHERE cpa.product.id = :productId " +
-		"  AND cpa.isActive = true")
-	List<Customer> findByProductIdAndIsActiveTrue(@Param("productId") Long productId);
+		"  AND cpa.isActive = true " +
+		"  AND c.fcmToken IS NOT NULL " +
+		"  AND c.fcmToken <> ''")
+	List<Customer> findByProductIdAndIsActiveTrueAndFcmTokenExists(@Param("productId") Long productId);
+
 }

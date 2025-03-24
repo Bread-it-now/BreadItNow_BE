@@ -1,0 +1,21 @@
+dependencies {
+    implementation project(':breaditnow-domain')
+    
+    // fcm
+    implementation 'com.google.firebase:firebase-admin:9.4.3'
+
+    // firebase
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
