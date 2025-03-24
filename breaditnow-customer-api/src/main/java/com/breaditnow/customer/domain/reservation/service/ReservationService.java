@@ -91,14 +91,14 @@ public class ReservationService {
     public ReservationCancelResponse cancelReservation(Long customerId, Long reservationId, ReservationCancelRequest request) {
         Reservation reservation = reservationRepository.getByIdAndCustomerId(reservationId, customerId);
 
-        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+        if (reservation.getStatus() == ReservationStatus.CANCELLED || !reservation.isActive()) {
             throw new IllegalStateException("이미 취소된 예약입니다.");
         }
 
         reservation.updateStatus(ReservationStatus.CANCELLED);
         reservation.updateCancelReason(request.reason());
+        reservation.deactivate();
 
-        // 명시적으로 save 호출 (JPA 변경감지가 자동으로 되지 않을 때를 대비)
         reservationRepository.save(reservation);
 
         return ReservationCancelResponse.of(reservation);

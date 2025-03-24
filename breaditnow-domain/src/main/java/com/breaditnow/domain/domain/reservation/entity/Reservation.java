@@ -45,6 +45,8 @@ public class Reservation extends BaseEntity {
 	@Column(unique = true, nullable = false)
 	private String reservationNumber;
 
+	private boolean isActive = true;
+
 	@Builder
 	public Reservation(Customer customer, Bakery bakery, ReservationStatus status, int totalPrice,
 					   LocalDateTime pickupDeadline) {
@@ -66,5 +68,9 @@ public class Reservation extends BaseEntity {
 
 	public void updateCancelReason(String reason) {
 		this.cancelReason = reason;
+	}
+
+	public void deactivate() {
+		this.isActive = false;
 	}
 }

@@ -31,10 +31,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
         return findByCustomerIdAndOptionalStatus(customerId, ReservationRequestStatus.toReservationStatus(status), pageable);
     }
 
-    @Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND (:status IS NULL OR r.status = :status)")
+    @Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND r.isActive = true AND (:status IS NULL OR r.status = :status)")
     Page<Reservation> findByCustomerIdAndOptionalStatus(@Param("customerId") Long customerId, @Param("status") ReservationStatus status, Pageable pageable);
 
-    @Query("SELECT r FROM Reservation r JOIN FETCH r.bakery WHERE r.id = :reservationId AND r.customer.id = :customerId")
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.bakery WHERE r.id = :reservationId AND r.customer.id = :customerId AND r.isActive = true")
     Optional<Reservation> findByIdAndCustomerId(@Param("reservationId") Long reservationId, @Param("customerId") Long customerId);
 
 
