@@ -3,7 +3,6 @@ package com.breaditnow.customer.domain.alert.service;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertPageResponse;
 import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertResponse;
-import com.breaditnow.customer.global.exception.CustomerException;
 import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
@@ -20,11 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static com.breaditnow.customer.global.exception.CustomerErrorCode.ALERT_NOT_FOUND;
-import static com.breaditnow.customer.global.exception.CustomerErrorCode.AUTHENTICATION_REQUIRED;
 
 @Service
 @Transactional(readOnly = true)
@@ -40,9 +34,7 @@ public class CustomerProductAlertService {
         Customer customer = customerRepository.getById(customerId);
         Product product = productRepository.getById(productId);
 
-        if (alertRepository.existsByCustomerIdAndProductId(customerId, productId)) {
-            throw new IllegalStateException("Alert already exists for this product.");
-        }
+        alertRepository.validateAlertNotExists(customerId, productId);
 
         CustomerProductAlert alert = new CustomerProductAlert(customer, product, true);
         alertRepository.save(alert);
@@ -51,33 +43,22 @@ public class CustomerProductAlertService {
     }
 
     @Transactional
-    public void deleteProductAlert(Long customerId, Long productId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerException(AUTHENTICATION_REQUIRED));
+    public void deactivateProductAlert(Long customerId, Long productId) {
+        Customer customer = customerRepository.getById(customerId);
+        Product product = productRepository.getById(productId);
+        CustomerProductAlert alert = alertRepository.getActiveByCustomerAndProduct(customer, product);
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NoSuchElementException("Product not found"));
-
-        Optional<CustomerProductAlert> optionalAlert = alertRepository.findByCustomerAndProduct(customer, product);
-
-        if (optionalAlert.isEmpty()) {
-            throw new CustomerException(ALERT_NOT_FOUND);
-        }
-
-        alertRepository.delete(optionalAlert.get());
+        alert.setActive(false);
+        alertRepository.save(alert);
     }
 
     @Transactional
     public boolean toggleProductAlert(Long customerId, Long productId) {
 
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerException(AUTHENTICATION_REQUIRED));
+        Customer customer = customerRepository.getById(customerId);
+        Product product = productRepository.getById(productId);
+        CustomerProductAlert alert = alertRepository.getByCustomerAndProduct(customer, product);
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NoSuchElementException("Product not found"));
-
-        CustomerProductAlert alert = alertRepository.findByCustomerAndProduct(customer, product)
-                .orElseThrow(() -> new NoSuchElementException("Alert not found"));
 
         boolean newStatus = !alert.isActive();
         alert.setActive(newStatus);

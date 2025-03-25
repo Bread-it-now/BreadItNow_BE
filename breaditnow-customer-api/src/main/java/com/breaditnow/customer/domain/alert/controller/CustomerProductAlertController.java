@@ -29,7 +29,7 @@ public class CustomerProductAlertController {
     public ApiSuccessResponse<Void> deleteProductAlert(
             @AuthCustomer Long customerId,
             @PathVariable("product_id") Long productId) {
-        customerProductAlertService.deleteProductAlert(customerId, productId);
+        customerProductAlertService.deactivateProductAlert(customerId, productId);
         return ApiSuccessResponse.of(null);
     }
 
