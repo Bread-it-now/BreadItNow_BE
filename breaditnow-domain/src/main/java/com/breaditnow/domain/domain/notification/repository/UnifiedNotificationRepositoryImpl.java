@@ -29,7 +29,10 @@ public class UnifiedNotificationRepositoryImpl extends QuerydslRepositorySupport
 
 		JPQLQuery<CustomerNotification> query = from(customerNotification)
 			.select(customerNotification)
-			.where(customerNotification.customer.id.eq(customerId));
+			.where(
+				customerNotification.customer.id.eq(customerId)
+					.and(customerNotification.isActive.eq(true))
+			);
 
 		if (notificationTypes != null && !notificationTypes.isEmpty()) {
 			BooleanBuilder typePredicate = new BooleanBuilder();
