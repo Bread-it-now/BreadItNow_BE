@@ -1,5 +1,7 @@
 package com.breaditnow.owner.domain.notification.controller.res;
 
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import com.breaditnow.domain.domain.notification.entity.OwnerReservationNotifica
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import com.breaditnow.domain.domain.reservation.entity.ReservationProduct;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Builder;
 
@@ -18,6 +21,7 @@ public record OwnerReservationNotificationResponse(
 	ReservationStatus status,
 	boolean isRead,
 	List<String> productsName,
+	@JsonFormat(shape = STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	LocalDateTime createAt
 ) {
 	public static OwnerReservationNotificationResponse of(OwnerReservationNotification notification) {
