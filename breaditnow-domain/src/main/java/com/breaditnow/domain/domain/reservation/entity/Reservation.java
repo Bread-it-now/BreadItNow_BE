@@ -3,6 +3,7 @@ package com.breaditnow.domain.domain.reservation.entity;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
+import static java.util.UUID.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +51,12 @@ public class Reservation extends BaseEntity {
 
 	private Integer totalPrice;
 
+	private String cancelReason;
+
 	private LocalDateTime pickupDeadline;
+
+	@Column(unique = true, nullable = false)
+	private String reservationNumber;
 
 	@Builder
 	public Reservation(Customer customer, Bakery bakery, ReservationStatus status, Integer totalPrice,
@@ -59,6 +66,19 @@ public class Reservation extends BaseEntity {
 		this.status = status;
 		this.totalPrice = totalPrice;
 		this.pickupDeadline = pickupDeadline;
+		this.reservationNumber = generateReservationNumber();
+	}
+
+	private String generateReservationNumber() {
+		return randomUUID().toString().substring(0, 6).toUpperCase();
+	}
+
+	public void updateStatus(ReservationStatus status) {
+		this.status = status;
+	}
+
+	public void updateCancelReason(String reason) {
+		this.cancelReason = reason;
 	}
 
 	public void addReservationProduct(ReservationProduct reservationProduct) {

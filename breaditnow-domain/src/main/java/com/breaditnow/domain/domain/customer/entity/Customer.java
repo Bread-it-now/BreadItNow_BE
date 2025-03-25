@@ -4,8 +4,11 @@ import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.breaditnow.domain.domain.alert.entity.CustomerAlertSetting;
+import com.breaditnow.domain.domain.breadcategory.entity.BreadCategory;
 import com.breaditnow.domain.domain.customer.enumerate.Provider;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
@@ -16,6 +19,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,6 +59,9 @@ public class Customer extends BaseEntity {
 
 	private LocalDateTime lastLoginAt;
 
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CustomerBreadCategoryPreference> breadCategoryPreferences = new ArrayList<>();
+
 	@Builder
 	public Customer(Provider provider, String oauth2Id, String fcmToken, String email, String password, String nickname,
 		String phone, String profileImage, CustomerAlertSetting alertSetting, LocalDateTime lastLoginAt) {
@@ -80,5 +87,16 @@ public class Customer extends BaseEntity {
 
 	public void changeFcmToken(String token) {
 		this.fcmToken = token;
+	}
+
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void updateBreadCategoryPreferences(List<BreadCategory> breadCategories) {
+		this.breadCategoryPreferences.clear();
+		breadCategories.forEach(category ->
+			this.breadCategoryPreferences.add(new CustomerBreadCategoryPreference(this, category))
+		);
 	}
 }

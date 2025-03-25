@@ -17,6 +17,11 @@ public interface RegionRepository extends JpaRepository<Region, RegionPK> {
 		}
 	}
 
+	default Region getById(RegionPK regionPK) {
+		return findById(regionPK)
+				.orElseThrow(() -> new DomainException(REGION_NOT_FOUND));
+	}
+
 	@Query("SELECT DISTINCT r.id.sidoCode, r.sidoName FROM Region r ORDER BY r.id.sidoCode")
 	List<Object[]> findSidoList();
 

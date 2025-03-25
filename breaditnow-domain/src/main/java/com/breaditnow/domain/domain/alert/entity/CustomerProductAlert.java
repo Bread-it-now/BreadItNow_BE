@@ -41,4 +41,8 @@ public class CustomerProductAlert extends BaseEntity {
 		this.product = product;
 		this.isActive = isActive;
 	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }
