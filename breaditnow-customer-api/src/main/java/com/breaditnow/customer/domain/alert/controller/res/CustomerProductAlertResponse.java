@@ -31,6 +31,6 @@ public record CustomerProductAlertResponse(
         if (releaseTimeStr == null || releaseTimeStr.isBlank()) {
             return List.of();
         }
-        return Arrays.asList(releaseTimeStr.split(",", -1));
+        return Arrays.asList(releaseTimeStr.split(";", -1));
     }
 }
