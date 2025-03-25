@@ -141,8 +141,8 @@ VALUES
   (3, 3, 1, 1, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:25:00', '2025-03-07 09:25:00');
 
 -- OwnerReservationNotification 데이터 (Bakery 소유자에게 온 예약 알림)
-INSERT INTO owner_reservation_notification (id, owner_id, reservation_id, is_read, created_at, modified_at)
+INSERT INTO owner_reservation_notification (id, owner_id, reservation_id, is_read, is_active, created_at, modified_at)
 VALUES
-  (1, 1, 1, false, '2025-03-07 09:26:00', '2025-03-07 09:26:00'),
-  (2, 1, 2, true, '2025-03-07 09:27:00', '2025-03-07 09:27:00'),
-  (3, 1, 3, false, '2025-03-07 09:28:00', '2025-03-07 09:28:00');
+  (1, 1, 1, false, true, '2025-03-07 09:26:00', '2025-03-07 09:26:00'),
+  (2, 1, 2, true, true, '2025-03-07 09:27:00', '2025-03-07 09:27:00'),
+  (3, 1, 3, false, true, '2025-03-07 09:28:00', '2025-03-07 09:28:00');

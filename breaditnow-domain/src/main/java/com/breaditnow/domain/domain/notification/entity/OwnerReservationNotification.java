@@ -33,12 +33,22 @@ public class OwnerReservationNotification extends BaseEntity {
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 
+	private boolean isActive = true;
 	private boolean isRead;
 
 	@Builder
-	public OwnerReservationNotification(Owner owner, Reservation reservation, boolean isRead) {
+	public OwnerReservationNotification(Owner owner, Reservation reservation, boolean isActive, boolean isRead) {
 		this.owner = owner;
 		this.reservation = reservation;
+		this.isActive = isActive;
 		this.isRead = isRead;
+	}
+	
+	public void changeIsRead(boolean isRead) {
+		this.isRead = isRead;
+	}
+
+	public void changeIsActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

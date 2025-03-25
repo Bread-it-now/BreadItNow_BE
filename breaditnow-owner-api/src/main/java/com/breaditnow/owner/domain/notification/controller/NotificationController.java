@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,20 @@ public class NotificationController {
 		@RequestBody @Valid NotificationRequest notificationRequest) {
 		notificationSendService.sendNotification(ownerId, notificationRequest);
 		return ApiSuccessResponse.of();
+	}
+
+	@PatchMapping("/{notification_id}/read")
+	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthOwner Long ownerId,
+		@PathVariable("notification_id") Long notificationId) {
+		Long savedNotificationId = notificationService.readAlertNotification(ownerId, notificationId);
+		return ApiSuccessResponse.of("notificationId", savedNotificationId);
+	}
+
+	@DeleteMapping("/{notification_id}")
+	public ApiSuccessResponse<Map<String, Long>> deleteNotification(@AuthOwner Long ownerId,
+		@PathVariable("notification_id") Long notificationId) {
+		Long deletedNotificationId = notificationService.deleteNotification(ownerId, notificationId);
+		return ApiSuccessResponse.of("notificationId", deletedNotificationId);
 	}
 
 	@GetMapping()

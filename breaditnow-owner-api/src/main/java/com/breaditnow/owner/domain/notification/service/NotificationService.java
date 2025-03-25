@@ -1,5 +1,7 @@
 package com.breaditnow.owner.domain.notification.service;
 
+import java.util.function.Consumer;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,14 +23,25 @@ public class NotificationService {
 
 	public NotificationPageResponse getNotifications(Long ownerId, Pageable pageable) {
 		Page<OwnerReservationNotification> ownerReservationNotificationPage =
-			ownerReservationNotificationRepository.findByReservationStatus(ownerId, pageable);
+			ownerReservationNotificationRepository.getNotifications(ownerId, pageable);
 		return NotificationPageResponse.of(ownerReservationNotificationPage);
 	}
 
-	// private void updateNotification(Long ownerId, Long notificationId, Consumer<CustomerNotification> updater) {
-	// 	CustomerNotification notification = ownerReservationNotificationRepository.getByOwnerIdAndId(ow,
-	// 		notificationId);
-	// 	updater.accept(notification);
-	// }
+	@Transactional
+	public Long readAlertNotification(Long ownerId, Long notificationId) {
+		updateNotification(ownerId, notificationId, notification -> notification.changeIsRead(true));
+		return notificationId;
+	}
 
+	@Transactional
+	public Long deleteNotification(Long ownerId, Long notificationId) {
+		updateNotification(ownerId, notificationId, notification -> notification.changeIsActive(false));
+		return notificationId;
+	}
+
+	private void updateNotification(Long ownerId, Long notificationId, Consumer<OwnerReservationNotification> updater) {
+		OwnerReservationNotification notification = ownerReservationNotificationRepository.getByOwnerIdAndId(ownerId,
+			notificationId);
+		updater.accept(notification);
+	}
 }
