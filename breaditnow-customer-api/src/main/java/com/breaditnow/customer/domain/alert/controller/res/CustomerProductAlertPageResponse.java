@@ -17,7 +17,7 @@ public record CustomerProductAlertPageResponse(
                 .totalElements(alertsPage.getTotalElements())
                 .totalPages(alertsPage.getTotalPages())
                 .isLast(alertsPage.isLast())
-                .currPage(alertsPage.getPageable().getPageNumber() + 1)
+                .currPage(alertsPage.getPageable().getPageNumber())
                 .build();
 
         return CustomerProductAlertPageResponse.builder()

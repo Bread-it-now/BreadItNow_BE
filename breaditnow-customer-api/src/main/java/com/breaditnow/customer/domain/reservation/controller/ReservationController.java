@@ -42,7 +42,7 @@ public class ReservationController {
     public ApiSuccessResponse<ReservationPageResponse> getReservations(
             @AuthCustomer Long customerId,
             @RequestParam(name = "status",defaultValue = "ALL") ReservationRequestStatus status,
-            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ){
         return ApiSuccessResponse.of(reservationService.getReservations(customerId, status, page, size));

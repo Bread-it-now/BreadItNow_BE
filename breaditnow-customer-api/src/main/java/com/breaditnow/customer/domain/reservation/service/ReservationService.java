@@ -77,7 +77,7 @@ public class ReservationService {
     }
 
     public ReservationPageResponse getReservations(Long customerId, ReservationRequestStatus status, int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+        Pageable pageable = PageRequest.of(page, size);
         Page<Reservation> reservationsPage = reservationRepository.getReservationsByStatus(customerId, status, pageable);
         return ReservationPageResponse.of(reservationsPage);
     }

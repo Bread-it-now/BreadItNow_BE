@@ -20,7 +20,7 @@ public record ReservationPageResponse(
                         reservationsPage.getTotalElements(),
                         reservationsPage.getTotalPages(),
                         reservationsPage.isLast(),
-                        reservationsPage.getNumber() + 1
+                        reservationsPage.getNumber()
                 )
         );
     }

@@ -44,7 +44,7 @@ public class CustomerProductAlertController {
     @GetMapping("/product")
     public ApiSuccessResponse<CustomerProductAlertPageResponse> getProductAlerts(
             @AuthCustomer Long customerId,
-            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ) {
         return ApiSuccessResponse.of(customerProductAlertService.getProductAlerts(customerId, page, size));

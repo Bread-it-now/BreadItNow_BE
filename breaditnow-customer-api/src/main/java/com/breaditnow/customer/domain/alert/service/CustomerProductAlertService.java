@@ -68,7 +68,7 @@ public class CustomerProductAlertService {
 
     public CustomerProductAlertPageResponse getProductAlerts(Long customerId, int page, int size) {
 
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<CustomerProductAlert> alertsPage = alertRepository.findByCustomerId(customerId, pageable);
 
         List<CustomerProductAlertResponse> alertResponses = alertsPage.getContent().stream()
