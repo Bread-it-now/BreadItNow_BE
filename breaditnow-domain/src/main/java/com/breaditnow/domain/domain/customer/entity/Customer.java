@@ -4,19 +4,15 @@ import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.breaditnow.domain.domain.alert.entity.CustomerAlertSetting;
+import com.breaditnow.domain.domain.breadcategory.entity.BreadCategory;
 import com.breaditnow.domain.domain.customer.enumerate.Provider;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,6 +49,9 @@ public class Customer extends BaseEntity {
 
 	private LocalDateTime lastLoginAt;
 
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<CustomerBreadCategoryPreference> breadCategoryPreferences = new ArrayList<>();
+
 	@Builder
 	public Customer(Provider provider, String oauth2Id, String email, String password) {
 		this.provider = provider;
@@ -68,5 +67,16 @@ public class Customer extends BaseEntity {
 
 	public boolean isFirstLogin() {
 		return this.nickname == null;
+	}
+
+	public void updateNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void updateBreadCategoryPreferences(List<BreadCategory> breadCategories) {
+		this.breadCategoryPreferences.clear();
+		breadCategories.forEach(category ->
+				this.breadCategoryPreferences.add(new CustomerBreadCategoryPreference(this, category))
+		);
 	}
 }

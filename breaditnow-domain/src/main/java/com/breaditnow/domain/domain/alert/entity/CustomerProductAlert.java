@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,4 +34,15 @@ public class CustomerProductAlert extends BaseEntity {
 	private Product product;
 
 	private boolean isActive;
+
+	@Builder
+	public CustomerProductAlert(Customer customer, Product product, boolean isActive) {
+		this.customer = customer;
+		this.product = product;
+		this.isActive = isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }

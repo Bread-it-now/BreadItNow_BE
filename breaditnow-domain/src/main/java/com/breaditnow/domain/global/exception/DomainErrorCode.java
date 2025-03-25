@@ -55,7 +55,20 @@ public enum DomainErrorCode implements ErrorCode {
 	/**
 	 * BreadCategory(BH000)
 	 */
-	BREAD_CATEGORY_NOT_FOUND(NOT_FOUND, "BH001", "빵 카레고리를 찾을 수 없습니다.");
+	BREAD_CATEGORY_NOT_FOUND(NOT_FOUND, "BH001", "빵 카레고리를 찾을 수 없습니다."),
+
+	/**
+	 * Reservation(BI000)
+	 */
+	RESERVATION_NOT_FOUND(NOT_FOUND, "BI001", "예약을 찾을 수 없습니다."),
+	RESERVATION_ALREADY_CANCELLED(BAD_REQUEST, "BI002", "이미 취소된 예약입니다."),
+
+	/**
+	 * Alert(BJ000)
+	 */
+	ALERT_NOT_FOUND(NOT_FOUND, "BJ001", "등록된 알람이 없습니다."),
+	ALERT_ALREADY_INACTIVE(BAD_REQUEST, "BJ002", "이미 비활성화된 알림입니다."),
+	ALERT_ALREADY_EXISTS(CONFLICT, "BI003", "이미 등록된 알림입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
