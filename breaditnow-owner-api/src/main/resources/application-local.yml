@@ -18,6 +18,4 @@ aws:
 
 fcm:
   file_path: firebase/breaditnow-fcm.json
-  url: ${FCM_URL}
-  google_api: https://www.googleapis.com/auth/cloud-platform
   project_id: ${FCM_PROJECT_ID}
