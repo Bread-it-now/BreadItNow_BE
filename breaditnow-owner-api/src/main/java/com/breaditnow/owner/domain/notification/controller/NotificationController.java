@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.notification.controller.req.NotificationRequest;
 import com.breaditnow.owner.domain.notification.controller.res.NotificationPageResponse;
+import com.breaditnow.owner.domain.notification.service.NotificationSendService;
 import com.breaditnow.owner.domain.notification.service.NotificationService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
@@ -27,16 +28,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notification")
 public class NotificationController {
+	private final NotificationSendService notificationSendService;
 	private final NotificationService notificationService;
 
 	@PostMapping()
 	public ApiSuccessResponse<Map<String, Long>> sendMessage(@AuthOwner Long ownerId,
 		@RequestBody @Valid NotificationRequest notificationRequest) {
-		notificationService.sendNotification(ownerId, notificationRequest);
+		notificationSendService.sendNotification(ownerId, notificationRequest);
 		return ApiSuccessResponse.of();
 	}
 
-	// 타입, 페이지, 사이즈
 	@GetMapping()
 	public ApiSuccessResponse<NotificationPageResponse> getNotifications(
 		@AuthOwner Long ownerId,

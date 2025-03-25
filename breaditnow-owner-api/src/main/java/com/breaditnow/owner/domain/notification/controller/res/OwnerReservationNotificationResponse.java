@@ -12,6 +12,7 @@ import lombok.Builder;
 
 @Builder
 public record OwnerReservationNotificationResponse(
+	Long notificationId,
 	Long reservationId,
 	String nickname,
 	ReservationStatus status,
@@ -29,6 +30,7 @@ public record OwnerReservationNotificationResponse(
 			.toList();
 
 		return OwnerReservationNotificationResponse.builder()
+			.notificationId(notification.getId())
 			.reservationId(reservation.getId())
 			.nickname(nickname)
 			.productsName(productsName)

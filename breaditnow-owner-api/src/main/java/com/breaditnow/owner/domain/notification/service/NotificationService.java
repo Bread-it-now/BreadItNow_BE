@@ -1,25 +1,12 @@
 package com.breaditnow.owner.domain.notification.service;
 
-import java.util.List;
-import java.util.Objects;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
-import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.notification.entity.CustomerAlertNotification;
 import com.breaditnow.domain.domain.notification.entity.OwnerReservationNotification;
 import com.breaditnow.domain.domain.notification.repository.OwnerReservationNotificationRepository;
-import com.breaditnow.domain.domain.notification.repository.UnifiedNotificationRepository;
-import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.domain.product.repository.ProductRepository;
-import com.breaditnow.external.firebase.FcmNotificationService;
-import com.breaditnow.external.firebase.dto.request.NotificationMulticastRequest;
-import com.breaditnow.owner.domain.notification.controller.req.NotificationRequest;
 import com.breaditnow.owner.domain.notification.controller.res.NotificationPageResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -30,26 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class NotificationService {
-	private final BakeryRepository bakeryRepository;
-	private final ProductRepository productRepository;
-	private final CustomerProductAlertRepository alertRepository;
-	private final UnifiedNotificationRepository notificationRepository;
-	private final FcmNotificationService fcmNotificationService;
 	private final OwnerReservationNotificationRepository ownerReservationNotificationRepository;
-
-	@Transactional
-	public void sendNotification(Long ownerId, NotificationRequest request) {
-		verifyOwnerForBakery(ownerId, request.bakeryId());
-
-		Product product = productRepository.getByBakeryIdAndId(request.bakeryId(), request.productId());
-		List<Customer> customers = alertRepository.findByProductIdAndIsActiveTrueAndFcmTokenExists(request.productId());
-
-		int alertCount = customers.size();
-		customers.forEach(customer -> saveCustomerAlertNotification(customer, product, alertCount));
-
-		List<String> fcmTokens = extractFcmTokens(customers);
-		sendFcmNotifications(fcmTokens);
-	}
 
 	public NotificationPageResponse getNotifications(Long ownerId, Pageable pageable) {
 		Page<OwnerReservationNotification> ownerReservationNotificationPage =
@@ -57,34 +25,10 @@ public class NotificationService {
 		return NotificationPageResponse.of(ownerReservationNotificationPage);
 	}
 
-	private void verifyOwnerForBakery(Long ownerId, Long bakeryId) {
-		bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-	}
-
-	private void saveCustomerAlertNotification(Customer customer, Product product, int alertCount) {
-		CustomerAlertNotification notification = CustomerAlertNotification.builder()
-			.customer(customer)
-			.bakeryName(product.getBakery().getName())
-			.product(product)
-			.productName(product.getName())
-			.remainingCount(product.getStock())
-			.alertCount(alertCount)
-			.build();
-		notificationRepository.save(notification);
-	}
-
-	private List<String> extractFcmTokens(List<Customer> customers) {
-		return customers.stream()
-			.map(Customer::getFcmToken)
-			.filter(Objects::nonNull)
-			.toList();
-	}
-
-	private void sendFcmNotifications(List<String> fcmTokens) {
-		String title = "test title";
-		String body = "test body";
-		NotificationMulticastRequest multicastRequest = NotificationMulticastRequest.of(fcmTokens, title, body);
-		fcmNotificationService.sendMessages(multicastRequest);
-	}
+	// private void updateNotification(Long ownerId, Long notificationId, Consumer<CustomerNotification> updater) {
+	// 	CustomerNotification notification = ownerReservationNotificationRepository.getByOwnerIdAndId(ow,
+	// 		notificationId);
+	// 	updater.accept(notification);
+	// }
 
 }
