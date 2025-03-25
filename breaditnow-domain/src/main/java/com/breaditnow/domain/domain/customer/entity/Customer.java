@@ -56,12 +56,18 @@ public class Customer extends BaseEntity {
 	private LocalDateTime lastLoginAt;
 
 	@Builder
-	public Customer(Provider provider, String oauth2Id, String email, String password) {
+	public Customer(Provider provider, String oauth2Id, String fcmToken, String email, String password, String nickname,
+		String phone, String profileImage, CustomerAlertSetting alertSetting, LocalDateTime lastLoginAt) {
 		this.provider = provider;
 		this.oauth2Id = oauth2Id;
+		this.fcmToken = fcmToken;
 		this.email = email;
 		this.password = password;
-		this.lastLoginAt = LocalDateTime.now();
+		this.nickname = nickname;
+		this.phone = phone;
+		this.profileImage = profileImage;
+		this.alertSetting = alertSetting;
+		this.lastLoginAt = lastLoginAt;
 	}
 
 	public void updateLastLoginAt() {

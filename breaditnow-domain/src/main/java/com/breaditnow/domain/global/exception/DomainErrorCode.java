@@ -62,7 +62,8 @@ public enum DomainErrorCode implements ErrorCode {
 	 * Alert(BI000)
 	 */
 	ALERT_NOTIFICATION_NOT_FOUND(NOT_FOUND, "BI001", "알림을 찾을 수 없습니다."),
-	INVALID_NOTIFICATION_TYPE(BAD_REQUEST, "BI002", "잘못된 알림 타입입니다.");
+	INVALID_NOTIFICATION_TYPE(BAD_REQUEST, "BI002", "잘못된 알림 타입입니다."),
+	INVALID_RESERVATION_STATUS_TYPE(BAD_REQUEST, "BI002", "잘못된 예약 상태 타입입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

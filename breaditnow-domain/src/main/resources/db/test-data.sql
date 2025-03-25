@@ -125,3 +125,24 @@ VALUES
     (3, 9,  true,  '2025-03-08 09:16:00', '2025-03-08 09:16:00'),  -- 브리오슈 (product_id=9)
     (3, 11, false, '2025-03-08 09:17:00', '2025-03-08 09:17:00'),  -- 치즈빵 (product_id=11)
     (3, 14, true,  '2025-03-08 09:18:00', '2025-03-08 09:18:00');  -- 바나나빵 (product_id=14)
+
+-- Reservation 데이터 (3명의 Customer가 Bakery(1)에 예약)
+INSERT INTO reservation (id, customer_id, bakery_id, status, total_price, pickup_deadline, created_at, modified_at)
+VALUES
+  (1, 1, 1, 'WAITING', 6000, '2025-03-08 10:00:00', '2025-03-07 09:20:00', '2025-03-07 09:20:00'),
+  (2, 2, 1, 'APPROVED', 9000, '2025-03-08 10:30:00', '2025-03-07 09:21:00', '2025-03-07 09:21:00'),
+  (3, 3, 1, 'CANCELLED', 3000, '2025-03-08 11:00:00', '2025-03-07 09:22:00', '2025-03-07 09:22:00');
+
+-- ReservationProduct 데이터 (각 Reservation에 대한 주문 상품)
+INSERT INTO reservation_product (id, reservation_id, product_id, quantity, unit_price, product_name, product_image, created_at, modified_at)
+VALUES
+  (1, 1, 1, 2, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:23:00', '2025-03-07 09:23:00'),
+  (2, 2, 1, 3, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:24:00', '2025-03-07 09:24:00'),
+  (3, 3, 1, 1, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:25:00', '2025-03-07 09:25:00');
+
+-- OwnerReservationNotification 데이터 (Bakery 소유자에게 온 예약 알림)
+INSERT INTO owner_reservation_notification (id, owner_id, reservation_id, is_read, created_at, modified_at)
+VALUES
+  (1, 1, 1, false, '2025-03-07 09:26:00', '2025-03-07 09:26:00'),
+  (2, 1, 2, true, '2025-03-07 09:27:00', '2025-03-07 09:27:00'),
+  (3, 1, 3, false, '2025-03-07 09:28:00', '2025-03-07 09:28:00');

@@ -98,5 +98,4 @@ public class Product extends BaseEntity {
 	public void updateStock(int stock) {
 		this.stock = stock;
 	}
-
 }
