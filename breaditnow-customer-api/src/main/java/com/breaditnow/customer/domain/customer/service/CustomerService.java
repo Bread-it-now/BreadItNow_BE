@@ -1,8 +1,10 @@
 package com.breaditnow.customer.domain.customer.service;
 
+import com.breaditnow.customer.domain.customer.controller.req.CustomerInitRequest;
 import com.breaditnow.customer.domain.customer.controller.req.RegionUpdateRequest;
 import com.breaditnow.customer.domain.customer.controller.res.CustomerInfoResponse;
 import com.breaditnow.customer.domain.customer.controller.res.NicknameDuplicateResponse;
+import com.breaditnow.domain.domain.breadcategory.repository.BreadCategoryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.entity.CustomerRegionPreference;
 import com.breaditnow.domain.domain.customer.repository.CustomerRegionPreferenceRepository;
@@ -24,7 +26,20 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final RegionRepository regionRepository;
     private final CustomerRegionPreferenceRepository customerRegionPreferenceRepository;
+    private final BreadCategoryRepository breadCategoryRepository;
 
+    @Transactional
+    public void initCustomerInfo(Long customerId, CustomerInitRequest request) {
+        Customer customer = customerRepository.getById(customerId);
+
+        customer.updateNickname(request.nickname());
+
+        customer.updateBreadCategoryPreferences(
+                request.breadCategoryIds().stream()
+                        .map(breadCategoryRepository::getById)
+                        .toList()
+        );
+    }
 
     public CustomerInfoResponse getCustomerInfo(Long customerId) {
         Customer customer = customerRepository.getById(customerId);

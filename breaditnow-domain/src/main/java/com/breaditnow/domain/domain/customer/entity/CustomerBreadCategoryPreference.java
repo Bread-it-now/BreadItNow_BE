@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,10 @@ public class CustomerBreadCategoryPreference extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bread_category_id", nullable = false)
 	private BreadCategory breadCategory;
+
+	@Builder
+	public CustomerBreadCategoryPreference(Customer customer, BreadCategory breadCategory) {
+		this.customer = customer;
+		this.breadCategory = breadCategory;
+	}
 }

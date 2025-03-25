@@ -1,6 +1,7 @@
 package com.breaditnow.customer.domain.customer.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.customer.controller.req.CustomerInitRequest;
 import com.breaditnow.customer.domain.customer.controller.req.RegionUpdateRequest;
 import com.breaditnow.customer.domain.customer.controller.res.CustomerInfoResponse;
 import com.breaditnow.customer.domain.customer.controller.res.NicknameDuplicateResponse;
@@ -18,6 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     private final CustomerService customerService;
+
+    @PostMapping("/me/init")
+    public ApiSuccessResponse<Void> initCustomerInfo(
+            @AuthCustomer Long customerId,
+            @RequestBody @Valid CustomerInitRequest request) {
+
+        customerService.initCustomerInfo(customerId, request);
+        return ApiSuccessResponse.of();
+    }
 
     @GetMapping("/me/info")
     public ApiSuccessResponse<CustomerInfoResponse> getMyInfo(
