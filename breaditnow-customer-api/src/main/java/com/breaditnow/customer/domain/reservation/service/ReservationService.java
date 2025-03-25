@@ -17,6 +17,7 @@ import com.breaditnow.domain.domain.reservation.enumerate.ReservationRequestStat
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
 import com.breaditnow.domain.domain.reservation.repository.ReservationProductRepository;
 import com.breaditnow.domain.domain.reservation.repository.ReservationRepository;
+import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.WAITING;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_ALREADY_CANCELLED;
 
 @Service
 @Transactional(readOnly = true)
@@ -88,16 +90,16 @@ public class ReservationService {
         return ReservationDetailResponse.of(reservation, reservation.getBakery(), reservationProducts);
     }
 
+    @Transactional
     public ReservationCancelResponse cancelReservation(Long customerId, Long reservationId, ReservationCancelRequest request) {
         Reservation reservation = reservationRepository.getByIdAndCustomerId(reservationId, customerId);
 
-        if (reservation.getStatus() == ReservationStatus.CANCELLED || !reservation.isActive()) {
-            throw new IllegalStateException("이미 취소된 예약입니다.");
+        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+            throw new DomainException(RESERVATION_ALREADY_CANCELLED);
         }
 
         reservation.updateStatus(ReservationStatus.CANCELLED);
         reservation.updateCancelReason(request.reason());
-        reservation.deactivate();
 
         reservationRepository.save(reservation);
 

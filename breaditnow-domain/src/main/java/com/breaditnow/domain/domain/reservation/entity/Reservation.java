@@ -1,21 +1,19 @@
 package com.breaditnow.domain.domain.reservation.entity;
 
-import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.CANCELLED;
-import static jakarta.persistence.GenerationType.*;
-import static java.util.UUID.randomUUID;
-import static lombok.AccessLevel.*;
-
-import java.time.LocalDateTime;
-
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
 import com.breaditnow.domain.global.entity.BaseEntity;
-
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
+import static java.util.UUID.randomUUID;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -45,8 +43,6 @@ public class Reservation extends BaseEntity {
 	@Column(unique = true, nullable = false)
 	private String reservationNumber;
 
-	private boolean isActive = true;
-
 	@Builder
 	public Reservation(Customer customer, Bakery bakery, ReservationStatus status, int totalPrice,
 					   LocalDateTime pickupDeadline) {
@@ -68,9 +64,5 @@ public class Reservation extends BaseEntity {
 
 	public void updateCancelReason(String reason) {
 		this.cancelReason = reason;
-	}
-
-	public void deactivate() {
-		this.isActive = false;
 	}
 }
