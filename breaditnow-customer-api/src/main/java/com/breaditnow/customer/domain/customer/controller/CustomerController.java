@@ -2,12 +2,14 @@ package com.breaditnow.customer.domain.customer.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.customer.controller.res.CustomerInfoResponse;
+import com.breaditnow.customer.domain.customer.controller.res.NicknameDuplicateResponse;
 import com.breaditnow.customer.domain.customer.service.CustomerService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,5 +24,11 @@ public class CustomerController {
     public ApiSuccessResponse<CustomerInfoResponse> getMyInfo(
             @AuthCustomer Long customerId) {
         return ApiSuccessResponse.of(customerService.getCustomerInfo(customerId));
+    }
+
+    @GetMapping("/duplicate-nickname")
+    public ApiSuccessResponse<NicknameDuplicateResponse> checkDuplicateNickname(
+            @RequestParam("nickname") String nickname) {
+        return ApiSuccessResponse.of(customerService.checkDuplicateNickname(nickname));
     }
 }

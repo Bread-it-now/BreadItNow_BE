@@ -1,6 +1,7 @@
 package com.breaditnow.customer.domain.customer.service;
 
 import com.breaditnow.customer.domain.customer.controller.res.CustomerInfoResponse;
+import com.breaditnow.customer.domain.customer.controller.res.NicknameDuplicateResponse;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,10 @@ public class CustomerService {
         Customer customer = customerRepository.getById(customerId);
 
         return CustomerInfoResponse.of(customer);
+    }
+
+    public NicknameDuplicateResponse checkDuplicateNickname(String nickname) {
+        boolean duplicated = customerRepository.existsByNickname(nickname);
+        return NicknameDuplicateResponse.of(duplicated);
     }
 }
