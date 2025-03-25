@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,4 +39,10 @@ public class CustomerRegionPreference extends BaseEntity {
 		@JoinColumn(name = "dong_code", referencedColumnName = "dongCode")
 	})
 	private Region region;
+
+	@Builder
+	public CustomerRegionPreference(Customer customer, Region region) {
+		this.customer = customer;
+		this.region = region;
+	}
 }

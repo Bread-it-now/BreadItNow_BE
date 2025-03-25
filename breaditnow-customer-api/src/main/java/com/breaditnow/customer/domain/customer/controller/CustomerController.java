@@ -1,16 +1,15 @@
 package com.breaditnow.customer.domain.customer.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.customer.controller.req.RegionUpdateRequest;
 import com.breaditnow.customer.domain.customer.controller.res.CustomerInfoResponse;
 import com.breaditnow.customer.domain.customer.controller.res.NicknameDuplicateResponse;
 import com.breaditnow.customer.domain.customer.service.CustomerService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,5 +29,14 @@ public class CustomerController {
     public ApiSuccessResponse<NicknameDuplicateResponse> checkDuplicateNickname(
             @RequestParam("nickname") String nickname) {
         return ApiSuccessResponse.of(customerService.checkDuplicateNickname(nickname));
+    }
+
+    @PatchMapping("/me/region")
+    public ApiSuccessResponse<Void> updateMyRegions(
+            @AuthCustomer Long customerId,
+            @RequestBody @Valid RegionUpdateRequest request) {
+
+        customerService.updateCustomerRegions(customerId, request);
+        return ApiSuccessResponse.of();
     }
 }
