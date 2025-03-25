@@ -47,7 +47,7 @@ public class NotificationController {
 	public ApiSuccessResponse<NotificationPageResponse> getNotifications(
 		@AuthCustomer Long customerId,
 		@PageableDefault(sort = "createdAt", direction = DESC) Pageable pageable,
-		@RequestParam("type") String type
+		@RequestParam(value = "type", defaultValue = "all", required = false) String type
 	) {
 		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
 		return ApiSuccessResponse.of(notificationService.getNotifications(customerId, pageable, notificationTypes));
