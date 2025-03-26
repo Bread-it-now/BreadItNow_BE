@@ -57,7 +57,7 @@ public class ReservationService {
                 .bakery(bakery)
                 .status(WAITING)
                 .totalPrice(totalPrice)
-                .pickupDeadline(LocalDateTime.now().plusHours(2))
+                .pickupDeadline(LocalDateTime.now().plusMinutes(30))
                 .build();
 
         final Reservation savedReservation = reservationRepository.save(tempReservation);
