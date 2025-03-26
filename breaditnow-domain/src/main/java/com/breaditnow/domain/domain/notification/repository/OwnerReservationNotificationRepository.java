@@ -22,7 +22,7 @@ public interface OwnerReservationNotificationRepository extends JpaRepository<Ow
 
 	default OwnerReservationNotification getByOwnerIdAndId(Long ownerId, Long notificationId) {
 		return findByOwnerIdAndId(ownerId, notificationId)
-			.orElseThrow(() -> new DomainException(ALERT_NOTIFICATION_NOT_FOUND));
+			.orElseThrow(() -> new DomainException(NOTIFICATION_NOT_FOUND));
 	}
 
 	Optional<OwnerReservationNotification> findByOwnerIdAndId(Long ownerId, Long id);

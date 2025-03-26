@@ -19,7 +19,7 @@ public record CustomerAlertNotificationResponse(
 	String productName,
 	Integer remainingCount,
 	Integer alertCount,
-	boolean isRead,
+	Boolean isRead,
 	LocalDateTime createdAt
 ) implements CustomerNotificationResponse {
 	public static CustomerNotificationResponse of(CustomerAlertNotification alertNotification) {

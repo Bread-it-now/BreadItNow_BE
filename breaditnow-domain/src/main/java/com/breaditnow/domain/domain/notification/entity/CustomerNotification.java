@@ -34,7 +34,6 @@ public class CustomerNotification extends BaseEntity {
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	// Discriminator 컬럼을 읽기 전용 필드로 매핑
 	@Column(name = "notification_type", insertable = false, updatable = false)
 	private String notificationType;
 

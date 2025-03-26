@@ -14,7 +14,7 @@ public interface UnifiedNotificationRepository
 
 	default CustomerNotification getByCustomerIdAndId(Long customerId, Long notificationId) {
 		return findByCustomerIdAndId(customerId, notificationId)
-			.orElseThrow(() -> new DomainException(ALERT_NOTIFICATION_NOT_FOUND));
+			.orElseThrow(() -> new DomainException(NOTIFICATION_NOT_FOUND));
 	}
 
 	Optional<CustomerNotification> findByCustomerIdAndId(Long customerId, Long id);

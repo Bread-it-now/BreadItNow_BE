@@ -127,11 +127,11 @@ VALUES
     (3, 14, true,  '2025-03-08 09:18:00', '2025-03-08 09:18:00');  -- 바나나빵 (product_id=14)
 
 -- Reservation 데이터 (3명의 Customer가 Bakery(1)에 예약)
-INSERT INTO reservation (id, customer_id, bakery_id, status, total_price, pickup_deadline, created_at, modified_at)
+INSERT INTO reservation (id, customer_id, bakery_id, status, total_price, pickup_deadline, reservation_number, created_at, modified_at)
 VALUES
-  (1, 1, 1, 'WAITING', 6000, '2025-03-08 10:00:00', '2025-03-07 09:20:00', '2025-03-07 09:20:00'),
-  (2, 2, 1, 'APPROVED', 9000, '2025-03-08 10:30:00', '2025-03-07 09:21:00', '2025-03-07 09:21:00'),
-  (3, 3, 1, 'CANCELLED', 3000, '2025-03-08 11:00:00', '2025-03-07 09:22:00', '2025-03-07 09:22:00');
+  (1, 1, 1, 'WAITING', 6000, '2025-03-08 10:00:00', 'a', '2025-03-07 09:20:00', '2025-03-07 09:20:00'),
+  (2, 2, 1, 'APPROVED', 9000, '2025-03-08 10:30:00', 'b', '2025-03-07 09:21:00', '2025-03-07 09:21:00'),
+  (3, 3, 1, 'CANCELLED', 3000, '2025-03-08 11:00:00', 'c', '2025-03-07 09:22:00', '2025-03-07 09:22:00');
 
 -- ReservationProduct 데이터 (각 Reservation에 대한 주문 상품)
 INSERT INTO reservation_product (id, reservation_id, product_id, quantity, unit_price, product_name, product_image, created_at, modified_at)
