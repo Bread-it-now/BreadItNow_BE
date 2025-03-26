@@ -3,7 +3,7 @@ version: '3.9'
 services:
   bin-mysql:
     image: mysql:8.4.3
-    container_name: bin_mysql
+    container_name: bin-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=breaditnow
@@ -19,7 +19,7 @@ services:
 
   bin-redis:
     image: redis:latest
-    container_name: bin_redis
+    container_name: bin-redis
     ports:
       - "6379:6379"
     networks:
@@ -32,4 +32,4 @@ services:
 
 networks:
   bin-network:
-    driver: bridge
+    external: true

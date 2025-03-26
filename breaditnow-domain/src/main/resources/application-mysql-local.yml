@@ -13,13 +13,11 @@ spring:
     open-in-view: false
     defer-datasource-initialization: true
 
-
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/breaditnow?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    url: jdbc:mysql://${DATASOURCE_URL}/breaditnow?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
 
   sql:
     init:
