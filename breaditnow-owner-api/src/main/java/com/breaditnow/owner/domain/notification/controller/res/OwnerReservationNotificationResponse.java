@@ -22,7 +22,7 @@ public record OwnerReservationNotificationResponse(
 	boolean isRead,
 	List<String> productsName,
 	@JsonFormat(shape = STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	LocalDateTime createAt
+	LocalDateTime createdAt
 ) {
 	public static OwnerReservationNotificationResponse of(OwnerReservationNotification notification) {
 		Reservation reservation = notification.getReservation();
@@ -40,7 +40,7 @@ public record OwnerReservationNotificationResponse(
 			.productsName(productsName)
 			.status(status)
 			.isRead(notification.isRead())
-			.createAt(notification.getCreatedAt())
+			.createdAt(notification.getCreatedAt())
 			.build();
 	}
 }
