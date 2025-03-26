@@ -13,8 +13,8 @@ import com.breaditnow.domain.domain.notification.entity.CustomerAlertNotificatio
 import com.breaditnow.domain.domain.notification.repository.UnifiedNotificationRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
-import com.breaditnow.external.firebase.FcmNotificationService;
-import com.breaditnow.external.firebase.dto.request.NotificationMulticastRequest;
+import com.breaditnow.external.domain.firebase.FcmNotificationService;
+import com.breaditnow.external.domain.firebase.dto.request.NotificationMulticastRequest;
 import com.breaditnow.owner.domain.notification.controller.req.NotificationRequest;
 
 import lombok.RequiredArgsConstructor;

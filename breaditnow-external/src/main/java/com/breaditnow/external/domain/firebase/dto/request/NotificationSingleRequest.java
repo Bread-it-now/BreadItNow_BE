@@ -1,4 +1,4 @@
-package com.breaditnow.external.firebase.dto.request;
+package com.breaditnow.external.domain.firebase.dto.request;
 
 import static lombok.AccessLevel.*;
 

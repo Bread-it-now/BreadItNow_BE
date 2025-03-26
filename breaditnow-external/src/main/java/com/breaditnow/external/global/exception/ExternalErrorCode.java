@@ -1,29 +1,21 @@
-package com.breaditnow.owner.global.exception;
+package com.breaditnow.external.global.exception;
 
 import org.springframework.http.HttpStatus;
 
 import com.breaditnow.common.exception.ErrorCode;
 
-public enum OwnerErrorCode implements ErrorCode {
+public enum ExternalErrorCode implements ErrorCode {
 	/**
-	 * DB000 Bakery
+	 * FA001 S3
 	 */
-	COORDINATE_NOT_FOUND(HttpStatus.NOT_FOUND, "DB001", "주어진 주소에서 위도, 경도를 찾을 수 없습니다."),
-
-	/**
-	 * DC000
-	 */
-
-	/**
-	 * DY000 인증
-	 */
-	AUTHENTICATION_REQUIRED(HttpStatus.UNAUTHORIZED, "DY001", "Owner 인증 정보가 필수입니다.");
+	FILE_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FA001", "파일 생성에 실패했습니다."),
+	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FA002", "S3 파일 업로드에 실패했습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
 
-	OwnerErrorCode(HttpStatus httpStatus, String code, String message) {
+	ExternalErrorCode(HttpStatus httpStatus, String code, String message) {
 		this.httpStatus = httpStatus;
 		this.code = code;
 		this.message = message;

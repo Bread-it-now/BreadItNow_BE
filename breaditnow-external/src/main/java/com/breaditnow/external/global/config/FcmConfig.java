@@ -1,4 +1,4 @@
-package com.breaditnow.external.firebase.config;
+package com.breaditnow.external.global.config;
 
 import java.io.IOException;
 

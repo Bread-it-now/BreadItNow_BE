@@ -10,12 +10,12 @@ import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
+import com.breaditnow.external.domain.s3.FileUploaderService;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductOrderItemRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.res.ProductListResponse;
 import com.breaditnow.owner.domain.product.controller.res.ProductResponse;
-import com.breaditnow.owner.global.s3.FileUploader;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,18 +24,19 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ProductService {
 
-	private static final String PRODUCT_IMAGE_PATH = "image/owner/product";
+	private static final String PRODUCT_IMAGE_PATH = "image/owner/";
 
 	private final BakeryRepository bakeryRepository;
 	private final ProductRepository productRepository;
-	private final FileUploader uploader;
+	private final FileUploaderService uploaderService;
 	private final ProductBreadCategoryService productBreadCategoryService;
 
 	@Transactional
 	public Long createProduct(Long ownerId, Long bakeryId, ProductCreateRequest request, MultipartFile productImage) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
-		String productImageUrl = uploadFile(productImage, PRODUCT_IMAGE_PATH);
+		String productImageUrl = uploadFile(productImage,
+			PRODUCT_IMAGE_PATH + ownerId + "/bakery/" + bakeryId + "/products");
 		Product product = request.toEntity(bakery, productImageUrl);
 		Product savedProduct = productRepository.save(product);
 
@@ -124,7 +125,7 @@ public class ProductService {
 
 	private String uploadFile(MultipartFile file, String path) {
 		if (file != null && !file.isEmpty()) {
-			return uploader.upload(file, path);
+			return uploaderService.upload(file, path);
 		}
 		return "";
 	}

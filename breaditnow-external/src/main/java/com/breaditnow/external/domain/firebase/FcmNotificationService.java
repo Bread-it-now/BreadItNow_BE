@@ -1,10 +1,10 @@
-package com.breaditnow.external.firebase;
+package com.breaditnow.external.domain.firebase;
 
 import org.springframework.stereotype.Service;
 
-import com.breaditnow.external.firebase.dto.request.NotificationMulticastRequest;
-import com.breaditnow.external.firebase.dto.request.NotificationRequest;
-import com.breaditnow.external.firebase.dto.request.NotificationSingleRequest;
+import com.breaditnow.external.domain.firebase.dto.request.NotificationMulticastRequest;
+import com.breaditnow.external.domain.firebase.dto.request.NotificationRequest;
+import com.breaditnow.external.domain.firebase.dto.request.NotificationSingleRequest;
 import com.google.firebase.messaging.ApnsConfig;
 import com.google.firebase.messaging.Aps;
 import com.google.firebase.messaging.ApsAlert;

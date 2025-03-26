@@ -1,6 +1,12 @@
 dependencies {
     implementation project(':breaditnow-domain')
-    
+    implementation project(':breaditnow-common')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // s3
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
     // fcm
     implementation 'com.google.firebase:firebase-admin:9.4.3'
 
