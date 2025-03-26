@@ -1,6 +1,19 @@
 version: '3.9'
 
 services:
+  gateway:
+    build:
+      context: ../breaditnow-gateway
+    image: breaditnow-gateway:latest
+    container_name: breaditnow-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      AUTH_TOKEN_SECRET_KEY: ${AUTH_TOKEN_SECRET_KEY}
+    networks:
+      - bin-network
+
   auth-api:
     build:
       context: ../breaditnow-auth-api
@@ -18,9 +31,39 @@ services:
       OAUTH2_NAVER_REDIRECT_URI: ${OAUTH2_NAVER_REDIRECT_URI}
       AUTH_TOKEN_SECRET_KEY: ${AUTH_TOKEN_SECRET_KEY}
       REFRESH_COOKIE_KEY: ${REFRESH_COOKIE_KEY}
-    #    depends_on:
-    #      - bin-mysql
-    #      - bin-redis
+    networks:
+      - bin-network
+
+  customer-api:
+    build:
+      context: ../breaditnow-customer-api
+    image: breaditnow-customer-api:latest
+    container_name: breaditnow-customer-api
+    ports:
+      - "9001:9001"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      OAUTH2_KAKAO_CLIENT_ID: ${OAUTH2_KAKAO_CLIENT_ID}
+      AWS_S3_CREDENTIALS_ACCESS_KEY: ${AWS_S3_CREDENTIALS_ACCESS_KEY}
+      AWS_S3_CREDENTIALS_SECRET_KEY: ${AWS_S3_CREDENTIALS_SECRET_KEY}
+      FCM_PROJECT_ID: ${FCM_PROJECT_ID}
+    networks:
+      - bin-network
+
+  owner-api:
+    build:
+      context: ../breaditnow-owner-api
+    image: breaditnow-owner-api:latest
+    container_name: breaditnow-owner-api
+    ports:
+      - "9002:9002"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      OAUTH2_KAKAO_CLIENT_ID: ${OAUTH2_KAKAO_CLIENT_ID}
+      AWS_S3_CREDENTIALS_ACCESS_KEY: ${AWS_S3_CREDENTIALS_ACCESS_KEY}
+      AWS_S3_CREDENTIALS_SECRET_KEY: ${AWS_S3_CREDENTIALS_SECRET_KEY}
+      FCM_PROJECT_ID: ${FCM_PROJECT_ID}
+      AUTH_TOKEN_SECRET_KEY: ${AUTH_TOKEN_SECRET_KEY}
     networks:
       - bin-network
 
