@@ -36,7 +36,10 @@ class BakeryServiceTest {
 	@Rollback(value = false)
 	void createBakery() {
 		// given
-		Owner owner = new Owner("email", "password");
+		Owner owner = Owner.builder()
+			.email("email")
+			.password("password")
+			.build();
 		ownerRepository.save(owner);
 
 		bakeryCreateRequest = new BakeryCreateRequest(
@@ -63,7 +66,10 @@ class BakeryServiceTest {
 	@Rollback(value = false)
 	void updateBakery() {
 		// given
-		Owner owner = new Owner("email", "password");
+		Owner owner = Owner.builder()
+			.email("email")
+			.password("password")
+			.build();
 		Owner savedOwner = ownerRepository.save(owner);
 
 		bakeryCreateRequest = new BakeryCreateRequest(

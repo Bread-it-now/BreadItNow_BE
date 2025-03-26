@@ -32,7 +32,7 @@ public record BakeryResponse(
 			.openTime(bakery.getOpenTime())
 			.introduction(bakery.getIntroduction())
 			.profileImage(bakery.getProfileImage())
-			.additionalImages(bakery.getBakeryImages()
+			.additionalImages(bakery.getAdditionalImages()
 				.stream()
 				.map(BakeryImage::getImageUrl)
 				.collect(toList()))

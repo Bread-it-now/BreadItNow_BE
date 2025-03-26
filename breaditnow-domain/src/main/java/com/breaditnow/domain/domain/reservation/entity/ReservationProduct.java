@@ -1,5 +1,6 @@
 package com.breaditnow.domain.domain.reservation.entity;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -7,7 +8,6 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -24,23 +24,35 @@ public class ReservationProduct extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "reservation_id", nullable = false)
 	private Reservation reservation;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
-	private int quantity;
+	private Integer quantity;
 
-	private int unitPrice;
+	private Integer unitPrice;
+
+	private String productName;
+
+	private String productImage;
 
 	@Builder
-	public ReservationProduct(Reservation reservation, Product product, int quantity, int unitPrice) {
+	public ReservationProduct(Reservation reservation, Product product, Integer quantity, Integer unitPrice,
+		String productName,
+		String productImage) {
 		this.reservation = reservation;
 		this.product = product;
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
+		this.productName = productName;
+		this.productImage = productImage;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
 	}
 }

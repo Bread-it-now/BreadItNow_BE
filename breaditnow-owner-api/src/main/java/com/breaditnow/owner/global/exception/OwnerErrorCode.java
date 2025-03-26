@@ -6,16 +6,9 @@ import com.breaditnow.common.exception.ErrorCode;
 
 public enum OwnerErrorCode implements ErrorCode {
 	/**
-	 * DA000 File
-	 */
-	FILE_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "DA001", "파일 생성에 실패했습니다."),
-	FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "DA002", "S3 파일 업로드에 실패했습니다."),
-
-	/**
 	 * DB000 Bakery
 	 */
-	INVALID_OWNER(HttpStatus.UNAUTHORIZED, "DB001", "사업자 아이디가 일치하지 않습니다."),
-	COORDINATE_NOT_FOUND(HttpStatus.NOT_FOUND, "DB002", "주어진 주소에서 위도, 경도를 찾을 수 없습니다."),
+	COORDINATE_NOT_FOUND(HttpStatus.NOT_FOUND, "DB001", "주어진 주소에서 위도, 경도를 찾을 수 없습니다."),
 
 	/**
 	 * DC000

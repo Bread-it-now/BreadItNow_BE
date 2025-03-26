@@ -1,6 +1,6 @@
-package com.breaditnow.owner.global.s3;
+package com.breaditnow.external.domain.s3;
 
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
+import static com.breaditnow.external.global.exception.ExternalErrorCode.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.external.global.exception.ExternalException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class S3Uploader implements FileUploader {
+public class S3UploaderService implements FileUploaderService {
 	private final AmazonS3 amazonS3Client;
 
 	@Value("${aws.s3.bucket}")
@@ -30,7 +30,7 @@ public class S3Uploader implements FileUploader {
 
 	public String upload(MultipartFile multipartFile, String dirName) {
 		File localFile = convertToFile(multipartFile)
-			.orElseThrow(() -> new OwnerException(FILE_CREATION_FAILED));
+			.orElseThrow(() -> new ExternalException(FILE_CREATION_FAILED));
 
 		String s3Url = uploadFileToS3(localFile, dirName);
 		deleteLocalFile(localFile);
@@ -63,12 +63,13 @@ public class S3Uploader implements FileUploader {
 				log.error("새 파일 생성에 실패했습니다: {}", file.getAbsolutePath());
 			}
 		} catch (IOException e) {
-			throw new OwnerException(FILE_UPLOAD_FAILED, e);
+			throw new ExternalException(FILE_UPLOAD_FAILED, e);
 		}
 		return Optional.empty();
 	}
 
 	private void deleteLocalFile(File file) {
+
 		if (file.delete()) {
 			log.info("로컬 파일 삭제 성공: {}", file.getAbsolutePath());
 		} else {

@@ -10,11 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.breaditnow.common.util.GeoPoint;
 import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDto;
 import com.breaditnow.domain.domain.favorite.repository.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.BakeryFavoriteSortStrategy;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.strategy.BakeryFavoriteSortStrategyFactory;
+import com.breaditnow.domain.domain.vo.GeoPoint;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

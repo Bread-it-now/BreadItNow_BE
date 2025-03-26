@@ -46,3 +46,7 @@ out/
 
 ### queryDsl ###
 breaditnow-domain/src/main/generated/
+
+### fcm ###
+/breaditnow-customer-api/src/main/resources/firebase/breaditnow-fcm.json
+/breaditnow-owner-api/src/main/resources/firebase/breaditnow-fcm.json

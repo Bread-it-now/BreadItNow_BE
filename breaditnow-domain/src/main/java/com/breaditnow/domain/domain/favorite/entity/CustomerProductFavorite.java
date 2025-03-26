@@ -40,7 +40,7 @@ public class CustomerProductFavorite extends BaseEntity {
 		this.customer = customer;
 		this.product = product;
 	}
-	
+
 	public void changeActive(boolean isActive) {
 		this.isActive = isActive;
 	}

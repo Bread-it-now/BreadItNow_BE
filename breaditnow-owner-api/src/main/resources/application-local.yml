@@ -15,3 +15,7 @@ aws:
     auto: false
     stack:
       auto: false
+
+fcm:
+  file_path: firebase/breaditnow-fcm.json
+  project_id: ${FCM_PROJECT_ID}

@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
 	"com.breaditnow.owner",
-	"com.breaditnow.domain"})
+	"com.breaditnow.domain",
+	"com.breaditnow.external"
+})
 public class BreaditnowOwnerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BreaditnowOwnerApplication.class, args);

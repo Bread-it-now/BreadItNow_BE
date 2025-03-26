@@ -14,6 +14,7 @@ spring:
     defer-datasource-initialization: true
 
 
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/breaditnow?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
@@ -24,3 +25,7 @@ spring:
     init:
       mode: always
       data-locations: classpath:db/seoul-code.sql, classpath:db/bread-category.sql, classpath:db/test-data.sql
+
+geolocation:
+  kakao:
+    client-id: ${OAUTH2_KAKAO_CLIENT_ID}

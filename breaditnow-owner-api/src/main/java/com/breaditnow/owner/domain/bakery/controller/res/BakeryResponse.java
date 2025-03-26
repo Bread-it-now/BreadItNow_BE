@@ -21,7 +21,7 @@ public record BakeryResponse(
 	OperatingStatus operatingStatus
 ) {
 	public static BakeryResponse of(Bakery bakery) {
-		List<String> imageUrls = bakery.getBakeryImages()
+		List<String> imageUrls = bakery.getAdditionalImages()
 			.stream()
 			.map(BakeryImage::getImageUrl)
 			.toList();

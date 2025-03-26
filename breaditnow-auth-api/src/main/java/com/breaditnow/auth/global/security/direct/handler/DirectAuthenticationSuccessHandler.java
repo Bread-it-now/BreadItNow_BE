@@ -7,6 +7,8 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -20,7 +22,9 @@ import com.breaditnow.auth.global.security.jwt.token.AuthToken;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.util.CookieUtil;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
+import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +39,7 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 	private final CookieUtil cookieUtil;
 	private final CustomerRepository customerRepository;
 	private final BakeryRepository bakeryRepository;
+	private final OwnerRepository ownerRepository;
 
 	@Value("${auth.token.refresh-cookie-key}")
 	private String refreshCookieKey;
@@ -50,11 +55,17 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 			.anyMatch(auth -> toAuthority(OWNER).equalsIgnoreCase(auth.getAuthority()));
 
 		boolean isNewUser;
+		String fcmToken;
 		if (isOwner) {
 			isNewUser = !bakeryRepository.existsByOwnerIdAndIsActiveTrue(userId);
+			fcmToken = ownerRepository.getById(userId).getFcmToken();
 		} else {
-			isNewUser = (customerRepository.getById(userId).getNickname() == null);
+			Customer customer = customerRepository.getById(userId);
+			isNewUser = customer.getNickname() == null;
+			fcmToken = customer.getFcmToken();
 		}
+
+		boolean hasFcmToken = fcmToken != null && !fcmToken.trim().isEmpty();
 
 		AuthToken accessToken = jwtTokenCreator.createToken(authentication, ACCESS);
 
@@ -67,7 +78,12 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 		cookieUtil.addCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 
 		response.setContentType(APPLICATION_JSON_VALUE);
-		String responseBody = new ObjectMapper().writeValueAsString(ApiSuccessResponse.of("isNewUser", isNewUser));
+
+		Map<String, Object> responseData = new HashMap<>();
+		responseData.put("isNewUser", isNewUser);
+		responseData.put("hasFcmToken", hasFcmToken);
+
+		String responseBody = new ObjectMapper().writeValueAsString(ApiSuccessResponse.of(responseData));
 		response.getWriter().write(responseBody);
 	}
 }

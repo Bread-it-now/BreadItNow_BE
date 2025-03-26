@@ -59,7 +59,7 @@ public class Bakery extends BaseEntity {
 	private OperatingStatus operatingStatus;
 
 	@OneToMany(mappedBy = "bakery", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<BakeryImage> bakeryImages = new ArrayList<>();
+	private List<BakeryImage> additionalImages = new ArrayList<>();
 
 	@OneToMany(mappedBy = "bakery")
 	private List<Product> products = new ArrayList<>();
@@ -68,13 +68,13 @@ public class Bakery extends BaseEntity {
 
 	@Builder
 	public Bakery(Owner owner, String name, String phone, String introduction, String profileImage, String openTime,
-		Address address, List<BakeryImage> bakeryImages, OperatingStatus operatingStatus) {
+		Address address, List<BakeryImage> additionalImages, OperatingStatus operatingStatus) {
 		this.owner = owner;
 		this.name = name;
 		this.phone = phone;
 		this.introduction = introduction;
 		this.profileImage = profileImage;
-		this.bakeryImages = bakeryImages;
+		this.additionalImages = additionalImages;
 		this.openTime = openTime;
 		this.address = address;
 		this.operatingStatus = operatingStatus;
@@ -91,11 +91,11 @@ public class Bakery extends BaseEntity {
 		this.address = bakery.getAddress();
 		this.operatingStatus = bakery.getOperatingStatus();
 
-		this.bakeryImages.clear();
-		this.bakeryImages.addAll(bakery.getBakeryImages());
+		this.additionalImages.clear();
+		this.additionalImages.addAll(bakery.getAdditionalImages());
 	}
 
-	public void updateActive(boolean isActive) {
+	public void changeIsActive(boolean isActive) {
 		this.isActive = isActive;
 	}
 

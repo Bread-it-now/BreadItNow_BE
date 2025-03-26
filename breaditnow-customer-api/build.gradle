@@ -1,6 +1,7 @@
 dependencies {
     implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
+    implementation project(":breaditnow-external")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

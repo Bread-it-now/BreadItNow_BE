@@ -21,12 +21,12 @@ import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 import com.breaditnow.domain.domain.region.repository.RegionRepository;
+import com.breaditnow.external.domain.s3.FileUploaderService;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.global.exception.OwnerErrorCode;
 import com.breaditnow.owner.global.exception.OwnerException;
-import com.breaditnow.owner.global.s3.FileUploader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class BakeryService {
 	private final RegionRepository regionRepository;
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
-	private final FileUploader uploader;
+	private final FileUploaderService uploaderService;
 	private final GeoLocationClient geoLocationClient;
 
 	@Transactional
@@ -100,10 +100,10 @@ public class BakeryService {
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
-		List<BakeryImage> bakeryImages = new ArrayList<>();
+		List<BakeryImage> additionalImages = new ArrayList<>();
 		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
-			bakeryImages = bakeryImageFiles.stream()
-				.map(file -> uploader.upload(file, "image/owner/" + ownerId + "/bakery/gallery"))
+			additionalImages = bakeryImageFiles.stream()
+				.map(file -> uploaderService.upload(file, "image/owner/" + ownerId + "/bakery/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
 				.collect(Collectors.toList());
 		}
@@ -116,7 +116,7 @@ public class BakeryService {
 			.profileImage(updatedProfileImage)
 			.openTime(bakeryUpdateRequest.openTime())
 			.address(address)
-			.bakeryImages(bakeryImages)
+			.additionalImages(additionalImages)
 			.operatingStatus(CLOSED)
 			.build());
 
@@ -126,7 +126,7 @@ public class BakeryService {
 	@Transactional
 	public Long deleteBakery(Long ownerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-		bakery.updateActive(false);
+		bakery.changeIsActive(false);
 		return bakery.getId();
 	}
 
@@ -139,7 +139,7 @@ public class BakeryService {
 
 	private String uploadFile(MultipartFile file, String path) {
 		if (file != null && !file.isEmpty()) {
-			return uploader.upload(file, path);
+			return uploaderService.upload(file, path);
 		}
 		return "";
 	}

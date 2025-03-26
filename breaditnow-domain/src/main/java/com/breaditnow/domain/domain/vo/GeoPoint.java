@@ -1,4 +1,4 @@
-package com.breaditnow.common.util;
+package com.breaditnow.domain.domain.vo;
 
 import lombok.Builder;
 
