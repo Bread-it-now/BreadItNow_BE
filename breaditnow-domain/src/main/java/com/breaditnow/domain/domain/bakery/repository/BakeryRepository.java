@@ -2,6 +2,8 @@ package com.breaditnow.domain.domain.bakery.repository;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
@@ -9,6 +11,8 @@ import com.breaditnow.domain.global.exception.DomainException;
 
 public interface BakeryRepository extends JpaRepository<Bakery, Long> {
 	boolean existsByOwnerIdAndIsActiveTrue(Long ownerId);
+
+	Optional<Bakery> findByOwnerIdAndIsActiveTrue(Long ownerId);
 
 	default void checkBakeryIsAlive(Long id) {
 		getByIdAndIsActiveTrue(id);
