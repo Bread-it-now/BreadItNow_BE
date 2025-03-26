@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  auth-api:
+    build:
+      context: ../breaditnow-auth-api
+    image: breaditnow-auth-api:latest
+    container_name: breaditnow-auth-api
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      OAUTH2_KAKAO_CLIENT_ID: ${OAUTH2_KAKAO_CLIENT_ID}
+      OAUTH2_KAKAO_CLIENT_SECRET: ${OAUTH2_KAKAO_CLIENT_SECRET}
+      OAUTH2_KAKAO_REDIRECT_URI: ${OAUTH2_KAKAO_REDIRECT_URI}
+      OAUTH2_NAVER_CLIENT_ID: ${OAUTH2_NAVER_CLIENT_ID}
+      OAUTH2_NAVER_CLIENT_SECRET: ${OAUTH2_NAVER_CLIENT_SECRET}
+      OAUTH2_NAVER_REDIRECT_URI: ${OAUTH2_NAVER_REDIRECT_URI}
+      AUTH_TOKEN_SECRET_KEY: ${AUTH_TOKEN_SECRET_KEY}
+      REFRESH_COOKIE_KEY: ${REFRESH_COOKIE_KEY}
+    #    depends_on:
+    #      - bin-mysql
+    #      - bin-redis
+    networks:
+      - bin-network
+
+networks:
+  bin-network:
+    external: true
