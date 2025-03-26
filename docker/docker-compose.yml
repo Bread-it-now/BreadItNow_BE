@@ -30,25 +30,6 @@ services:
       timeout: 5s
       retries: 5
 
-  bin-rabbitmq:
-    image: rabbitmq:3-management
-    container_name: bin_rabbitmq
-    environment:
-      - RABBITMQ_ERLANG_COOKIE=My-Cookies
-      - RABBITMQ_DEFAULT_USER=root
-      - RABBITMQ_DEFAULT_PASS=root
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - bin-network
-    healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "status" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-
 networks:
   bin-network:
     driver: bridge
