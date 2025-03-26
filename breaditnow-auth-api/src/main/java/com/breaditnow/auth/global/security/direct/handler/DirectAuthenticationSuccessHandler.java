@@ -21,6 +21,7 @@ import com.breaditnow.auth.global.security.jwt.provider.JwtTokenCreator;
 import com.breaditnow.auth.global.security.jwt.token.AuthToken;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.util.CookieUtil;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
@@ -56,9 +57,13 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		boolean isNewUser;
 		String fcmToken;
+		Long bakeryId = null;
 		if (isOwner) {
 			isNewUser = !bakeryRepository.existsByOwnerIdAndIsActiveTrue(userId);
 			fcmToken = ownerRepository.getById(userId).getFcmToken();
+			bakeryId = bakeryRepository.findByOwnerIdAndIsActiveTrue(userId)
+				.map(Bakery::getId)
+				.orElse(null);
 		} else {
 			Customer customer = customerRepository.getById(userId);
 			isNewUser = customer.getNickname() == null;
@@ -82,6 +87,9 @@ public class DirectAuthenticationSuccessHandler implements AuthenticationSuccess
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("isNewUser", isNewUser);
 		responseData.put("hasFcmToken", hasFcmToken);
+		if (bakeryId != null) {
+			responseData.put("bakeryId", bakeryId);
+		}
 
 		String responseBody = new ObjectMapper().writeValueAsString(ApiSuccessResponse.of(responseData));
 		response.getWriter().write(responseBody);
