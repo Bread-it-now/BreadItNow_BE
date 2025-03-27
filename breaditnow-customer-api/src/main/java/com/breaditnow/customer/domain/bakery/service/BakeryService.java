@@ -36,7 +36,6 @@ public class BakeryService {
 			.toList();
 
 		List<ProductResponse> productResponses = products.stream()
-			.filter(Product::isActive)
 			.map(product -> {
 				boolean alertAccepted = alertRepository.existsByCustomerIdAndProductId(customerId, product.getId());
 				boolean favorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());
