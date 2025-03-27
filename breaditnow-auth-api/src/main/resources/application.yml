@@ -6,7 +6,7 @@ spring:
     name: auth-api
 
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE}
 
   security:
     oauth2:

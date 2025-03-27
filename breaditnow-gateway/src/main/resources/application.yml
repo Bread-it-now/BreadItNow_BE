@@ -5,6 +5,9 @@ spring:
   application:
     name: gateway-service
 
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
   webflux:
     static-path-pattern: "/static/**"
 
