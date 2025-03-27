@@ -8,7 +8,7 @@ public record ReservationListResponse(
         Long reservationId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime reservationDate,
-        String reservationNumber,
+        int reservationNumber,
         String status,
         Long bakeryId,
         String bakeryName,
