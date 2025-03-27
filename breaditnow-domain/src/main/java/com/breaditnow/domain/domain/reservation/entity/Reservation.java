@@ -55,22 +55,18 @@ public class Reservation extends BaseEntity {
 
 	private LocalDateTime pickupDeadline;
 
-	@Column(unique = true, nullable = false)
-	private String reservationNumber;
+	@Column(nullable = false)
+	private Integer reservationNumber;
 
 	@Builder
 	public Reservation(Customer customer, Bakery bakery, ReservationStatus status, Integer totalPrice,
-		LocalDateTime pickupDeadline) {
+		LocalDateTime pickupDeadline, Integer reservationNumber) {
 		this.customer = customer;
 		this.bakery = bakery;
 		this.status = status;
 		this.totalPrice = totalPrice;
 		this.pickupDeadline = pickupDeadline;
-		this.reservationNumber = generateReservationNumber();
-	}
-
-	private String generateReservationNumber() {
-		return randomUUID().toString().substring(0, 6).toUpperCase();
+		this.reservationNumber = reservationNumber;
 	}
 
 	public void updateStatus(ReservationStatus status) {
