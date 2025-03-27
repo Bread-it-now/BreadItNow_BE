@@ -20,6 +20,7 @@ public record ProductResponse(
 	List<String> releaseTimes,
 	int stock,
 	boolean isActive,
+	boolean isHidden,
 	List<BreadCategoryResponse> breadCategories,
 	int displayOrder
 ) {
@@ -50,6 +51,7 @@ public record ProductResponse(
 			releaseTimes,
 			product.getStock(),
 			product.isActive(),
+			product.isHidden(),
 			breadCategoryResponses,
 			product.getDisplayOrder()
 		);

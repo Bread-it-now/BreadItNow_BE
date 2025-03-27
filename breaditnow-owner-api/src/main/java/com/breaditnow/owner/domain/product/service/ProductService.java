@@ -99,7 +99,6 @@ public class ProductService {
 		for (Long productId : productIds) {
 			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
 			product.updateHidden(true);
-			product.updateDisplayOrder(-1);
 		}
 	}
 
@@ -111,7 +110,7 @@ public class ProductService {
 
 	public ProductListResponse getProducts(Long ownerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-		List<Product> products = productRepository.findActiveAndNotHiddenByBakeryId(bakery.getId());
+		List<Product> products = productRepository.findActiveByBakeryId(bakery.getId());
 		return ProductListResponse.of(products);
 	}
 
