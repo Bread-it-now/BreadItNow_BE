@@ -32,6 +32,7 @@ public class BakeryService {
 
 		List<Product> products = bakery.getProducts().stream()
 			.filter(Product::isActive)
+			.filter(o -> !o.isHidden())
 			.toList();
 
 		List<ProductResponse> productResponses = products.stream()
