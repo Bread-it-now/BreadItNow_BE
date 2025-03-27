@@ -12,13 +12,10 @@ public record ReservationResponse(
         Long reservationId,
         Integer reservationNumber,
         String bakeryName,
-        String status,
         Integer totalReservationProducts,
         int totalPrice,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime reservationDate,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-        LocalDateTime pickupDeadline,
         List<ReservationItemResponse> reservationItems
 ) {
     public static ReservationResponse of(Reservation reservation, List<ReservationProduct> products) {
@@ -28,11 +25,9 @@ public record ReservationResponse(
                 reservation.getId(),
                 reservation.getReservationNumber(),
                 reservation.getBakery().getName(),
-                reservation.getStatus().name(),
                 totalCount,
                 reservation.getTotalPrice(),
                 reservation.getCreatedAt(),
-                reservation.getPickupDeadline(),
                 products.stream()
                         .map(ReservationItemResponse::of)
                         .collect(Collectors.toList())
