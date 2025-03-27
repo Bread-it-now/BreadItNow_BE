@@ -9,7 +9,7 @@ import java.util.List;
 
 public record ReservationInfoResponse(
         Long reservationId,
-        String reservationNumber,
+        int reservationNumber,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime reservationDate,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")

@@ -10,13 +10,16 @@ import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import com.breaditnow.domain.domain.reservation.entity.ReservationProduct;
+import com.breaditnow.domain.domain.reservation.entity.ReservationSequence;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationRequestStatus;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus;
 import com.breaditnow.domain.domain.reservation.repository.ReservationProductRepository;
 import com.breaditnow.domain.domain.reservation.repository.ReservationRepository;
+import com.breaditnow.domain.domain.reservation.repository.ReservationSequenceRepository;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,12 +28,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.WAITING;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_ALREADY_CANCELLED;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_OUT_OF_STOCK;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,6 +44,7 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final ReservationProductRepository reservationProductRepository;
+    private final ReservationSequenceRepository reservationSequenceRepository;
     private final ProductRepository productRepository;
     private final BakeryRepository bakeryRepository;
     private final CustomerRepository customerRepository;
@@ -49,31 +55,48 @@ public class ReservationService {
         Bakery bakery = bakeryRepository.getById(request.bakeryId());
 
         int totalPrice = request.reservationProducts().stream()
-                .mapToInt(req -> productRepository.getById(req.productId()).getPrice() * req.quantity())
+                .mapToInt(req -> {
+                    Product product = productRepository.getById(req.productId());
+
+                    if (product.getStock() < req.quantity()) {
+                        throw new DomainException(RESERVATION_OUT_OF_STOCK);
+                    }
+
+                    return product.getPrice() * req.quantity();
+                })
                 .sum();
+
+        int todayNumber = generateTodaySequenceNumber();
 
         Reservation tempReservation = Reservation.builder()
                 .customer(customer)
                 .bakery(bakery)
                 .status(WAITING)
                 .totalPrice(totalPrice)
-                .pickupDeadline(LocalDateTime.now().plusHours(2))
+                .pickupDeadline(LocalDateTime.now().plusMinutes(30))
+                .reservationNumber(todayNumber)
                 .build();
 
         final Reservation savedReservation = reservationRepository.save(tempReservation);
 
         List<ReservationProduct> reservationProducts = request.reservationProducts().stream()
-                .map(req -> ReservationProduct.builder()
-                        .reservation(savedReservation)
-                        .product(productRepository.getById(req.productId()))
-                        .quantity(req.quantity())
-                        .unitPrice(productRepository.getById(req.productId()).getPrice())
-                        .build())
+                .map(req -> {
+                    Product product = productRepository.getById(req.productId());
+
+                    return ReservationProduct.builder()
+                            .reservation(savedReservation)
+                            .product(product)
+                            .quantity(req.quantity())
+                            .unitPrice(product.getPrice())
+                            .productName(product.getName())
+                            .productImage(product.getImage())
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         reservationProductRepository.saveAll(reservationProducts);
 
-        return ReservationResponse.of(savedReservation.getId(), savedReservation.getStatus().name(), totalPrice, savedReservation.getPickupDeadline());
+        return ReservationResponse.of(savedReservation, reservationProducts);
     }
 
     public ReservationPageResponse getReservations(Long customerId, ReservationRequestStatus status, int page, int size) {
@@ -104,5 +127,20 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return ReservationCancelResponse.of(reservation);
+    }
+
+    private int generateTodaySequenceNumber() {
+        LocalDate today = LocalDate.now();
+
+        ReservationSequence sequence = reservationSequenceRepository
+                .findById(today)
+                .orElseGet(() -> ReservationSequence.builder()
+                        .date(today)
+                        .currentNumber(0)
+                        .build());
+
+        int number = sequence.nextNumber();
+        reservationSequenceRepository.save(sequence);
+        return number;
     }
 }

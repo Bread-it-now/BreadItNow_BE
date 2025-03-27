@@ -11,6 +11,15 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
+    url: jdbc:mysql://${DATASOURCE_URL}?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+
+  sql:
+    init:
+      mode: never
+      data-locations: classpath:db/seoul-code.sql, classpath:db/bread-category.sql
+
+geolocation:
+  kakao:
+    client-id: ${OAUTH2_KAKAO_CLIENT_ID}
