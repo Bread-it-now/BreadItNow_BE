@@ -27,6 +27,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query("select p from Product p where p.bakery.id = :bakeryId and p.isActive = true order by p.displayOrder asc")
 	List<Product> findActiveByBakeryId(@Param("bakeryId") Long bakeryId);
 
+	@Query("select p from Product p where p.bakery.id = :bakeryId and p.isActive = true and p.isHidden = false order by p.displayOrder asc")
+	List<Product> findActiveAndNotHiddenByBakeryId(@Param("bakeryId") Long bakeryId);
+
 	default Product getById(Long id) {
 		return findById(id)
 			.orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
