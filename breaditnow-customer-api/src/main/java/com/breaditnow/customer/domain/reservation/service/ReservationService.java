@@ -10,6 +10,7 @@ import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
+import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 import com.breaditnow.domain.domain.reservation.entity.Reservation;
 import com.breaditnow.domain.domain.reservation.entity.ReservationProduct;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.WAITING;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_ALREADY_CANCELLED;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_OUT_OF_STOCK;
 
 @Service
 @Transactional(readOnly = true)
@@ -53,7 +55,15 @@ public class ReservationService {
         Bakery bakery = bakeryRepository.getById(request.bakeryId());
 
         int totalPrice = request.reservationProducts().stream()
-                .mapToInt(req -> productRepository.getById(req.productId()).getPrice() * req.quantity())
+                .mapToInt(req -> {
+                    Product product = productRepository.getById(req.productId());
+
+                    if (product.getStock() < req.quantity()) {
+                        throw new DomainException(RESERVATION_OUT_OF_STOCK);
+                    }
+
+                    return product.getPrice() * req.quantity();
+                })
                 .sum();
 
         int todayNumber = generateTodaySequenceNumber();
@@ -70,12 +80,18 @@ public class ReservationService {
         final Reservation savedReservation = reservationRepository.save(tempReservation);
 
         List<ReservationProduct> reservationProducts = request.reservationProducts().stream()
-                .map(req -> ReservationProduct.builder()
-                        .reservation(savedReservation)
-                        .product(productRepository.getById(req.productId()))
-                        .quantity(req.quantity())
-                        .unitPrice(productRepository.getById(req.productId()).getPrice())
-                        .build())
+                .map(req -> {
+                    Product product = productRepository.getById(req.productId());
+
+                    return ReservationProduct.builder()
+                            .reservation(savedReservation)
+                            .product(product)
+                            .quantity(req.quantity())
+                            .unitPrice(product.getPrice())
+                            .productName(product.getName())
+                            .productImage(product.getImage())
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         reservationProductRepository.saveAll(reservationProducts);

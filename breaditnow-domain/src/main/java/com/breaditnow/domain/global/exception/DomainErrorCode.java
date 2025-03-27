@@ -63,6 +63,7 @@ public enum DomainErrorCode implements ErrorCode {
 	 */
 	RESERVATION_NOT_FOUND(NOT_FOUND, "BI001", "예약을 찾을 수 없습니다."),
 	RESERVATION_ALREADY_CANCELLED(BAD_REQUEST, "BI002", "이미 취소된 예약입니다."),
+	RESERVATION_OUT_OF_STOCK(BAD_REQUEST, "BI003", "재고보다 많은 수량을 요청했습니다."),
 
 	/**
 	 * Alert(BJ000)
