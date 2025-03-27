@@ -80,13 +80,14 @@ public class ProductController {
 		return ApiSuccessResponse.of("deletedCount", deletedCount);
 	}
 
-	@PatchMapping("/{bakeryId}/products/hidden")
+	@PatchMapping("/{bakeryId}/products/hide")
 	public ApiSuccessResponse<Map<String, Integer>> updateHiddenBakeryProducts(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@RequestBody @Valid ProductHiddenRequest productHiddenRequest
 	) {
-		productService.updateHiddenBakeryProducts(ownerId, bakeryId, productHiddenRequest.productIds());
+		productService.updateHiddenBakeryProducts(ownerId, bakeryId, productHiddenRequest.productIds(),
+			productHiddenRequest.hidden());
 		return ApiSuccessResponse.of();
 	}
 

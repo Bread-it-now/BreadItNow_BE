@@ -93,12 +93,12 @@ public class ProductService {
 	}
 
 	@Transactional
-	public void updateHiddenBakeryProducts(Long ownerId, Long bakeryId, List<Long> productIds) {
+	public void updateHiddenBakeryProducts(Long ownerId, Long bakeryId, List<Long> productIds, boolean isHidden) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
 		for (Long productId : productIds) {
 			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
-			product.updateHidden(true);
+			product.updateHidden(isHidden);
 		}
 	}
 
