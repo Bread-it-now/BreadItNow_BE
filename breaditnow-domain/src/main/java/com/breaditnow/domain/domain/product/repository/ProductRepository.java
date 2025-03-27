@@ -14,8 +14,6 @@ import com.breaditnow.domain.domain.product.enumerate.ProductType;
 import com.breaditnow.domain.global.exception.DomainException;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-	List<Product> findByBakeryId(Long bakeryId);
-
 	default Product getByTypeAndId(ProductType type, Long id) {
 		return findByTypeAndId(type, id)
 			.orElseThrow(() -> new DomainException(BREAD_NOT_FOUND));
