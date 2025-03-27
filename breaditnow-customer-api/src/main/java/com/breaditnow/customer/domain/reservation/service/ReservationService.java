@@ -96,7 +96,7 @@ public class ReservationService {
 
         reservationProductRepository.saveAll(reservationProducts);
 
-        return ReservationResponse.of(savedReservation.getId(), savedReservation.getStatus().name(), totalPrice, savedReservation.getPickupDeadline());
+        return ReservationResponse.of(savedReservation, reservationProducts);
     }
 
     public ReservationPageResponse getReservations(Long customerId, ReservationRequestStatus status, int page, int size) {
