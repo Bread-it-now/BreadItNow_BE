@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductDeleteRequest;
+import com.breaditnow.owner.domain.product.controller.req.ProductHiddenRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductOrderUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductStockUpdateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
@@ -77,6 +78,17 @@ public class ProductController {
 	) {
 		int deletedCount = productService.deleteProducts(ownerId, bakeryId, productDeleteRequest.productIds());
 		return ApiSuccessResponse.of("deletedCount", deletedCount);
+	}
+
+	@PatchMapping("/{bakeryId}/products/hide")
+	public ApiSuccessResponse<Map<String, Integer>> updateHiddenBakeryProducts(
+		@AuthOwner Long ownerId,
+		@PathVariable("bakeryId") Long bakeryId,
+		@RequestBody @Valid ProductHiddenRequest productHiddenRequest
+	) {
+		productService.updateHiddenBakeryProducts(ownerId, bakeryId, productHiddenRequest.productIds(),
+			productHiddenRequest.hidden());
+		return ApiSuccessResponse.of();
 	}
 
 	@GetMapping("/{bakeryId}/product/{productId}")

@@ -32,10 +32,10 @@ public class BakeryService {
 
 		List<Product> products = bakery.getProducts().stream()
 			.filter(Product::isActive)
+			.filter(o -> !o.isHidden())
 			.toList();
 
 		List<ProductResponse> productResponses = products.stream()
-			.filter(Product::isActive)
 			.map(product -> {
 				boolean alertAccepted = alertRepository.existsByCustomerIdAndProductId(customerId, product.getId());
 				boolean favorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());

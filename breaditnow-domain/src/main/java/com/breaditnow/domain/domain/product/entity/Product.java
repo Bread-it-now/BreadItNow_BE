@@ -57,6 +57,8 @@ public class Product extends BaseEntity {
 
 	private boolean isActive;
 
+	private boolean isHidden;
+
 	private Integer displayOrder;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,8 +66,7 @@ public class Product extends BaseEntity {
 
 	@Builder
 	public Product(Bakery bakery, ProductType type, String name, Integer price, String image, String description,
-		Integer stock,
-		String releaseTime, Boolean isActive) {
+		Integer stock, String releaseTime, boolean isActive, boolean isHidden) {
 		this.bakery = bakery;
 		this.type = type;
 		this.name = name;
@@ -75,6 +76,7 @@ public class Product extends BaseEntity {
 		this.releaseTime = releaseTime;
 		this.stock = stock;
 		this.isActive = isActive;
+		this.isHidden = isHidden;
 	}
 
 	public void update(Product product) {
@@ -97,5 +99,9 @@ public class Product extends BaseEntity {
 
 	public void updateStock(int stock) {
 		this.stock = stock;
+	}
+
+	public void updateHidden(boolean isHidden) {
+		this.isHidden = isHidden;
 	}
 }

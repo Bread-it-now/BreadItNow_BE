@@ -47,7 +47,6 @@ public class ProductService {
 		if (breadCategoryIds != null) {
 			productBreadCategoryService.addProductBreadCategories(breadCategoryIds, savedProduct);
 		}
-
 		return savedProduct.getId();
 	}
 
@@ -91,6 +90,16 @@ public class ProductService {
 			deletedCount++;
 		}
 		return deletedCount;
+	}
+
+	@Transactional
+	public void updateHiddenBakeryProducts(Long ownerId, Long bakeryId, List<Long> productIds, boolean isHidden) {
+		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
+
+		for (Long productId : productIds) {
+			Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
+			product.updateHidden(isHidden);
+		}
 	}
 
 	public ProductResponse getProduct(Long ownerId, Long bakeryId, Long productId) {
