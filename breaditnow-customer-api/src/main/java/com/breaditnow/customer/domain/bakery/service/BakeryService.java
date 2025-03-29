@@ -5,6 +5,7 @@ import static com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseS
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,8 +51,9 @@ public class BakeryService {
 		return BakeryDetailResponse.of(BakeryResponse.of(bakery), productResponses, releaseSchedulesResponse);
 	}
 
-	public HotBakeryPageResponse searchHotBakeries(Long customerId, Pageable pageable) {
-		Page<Bakery> bakeries = bakeryRepository.searchHotBakeries(customerId, pageable);
+	public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Bakery> bakeries = bakeryRepository.searchHotBakeries(customerId, sort, pageable);
 		return HotBakeryPageResponse.of(bakeries);
 	}
 }

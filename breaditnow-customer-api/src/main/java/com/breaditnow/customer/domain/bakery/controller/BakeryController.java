@@ -1,10 +1,9 @@
 package com.breaditnow.customer.domain.bakery.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
@@ -32,7 +31,9 @@ public class BakeryController {
 	 */
 	@GetMapping("/hot")
 	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer Long customerId,
-		@PageableDefault Pageable pageable) {
-		return ApiSuccessResponse.of(bakeryService.searchHotBakeries(customerId, pageable));
+		@RequestParam(name = "page", defaultValue = "0") int page,
+		@RequestParam(name = "size", defaultValue = "10") int size,
+		@RequestParam(value = "sort", defaultValue = "reservation") String sort) {
+		return ApiSuccessResponse.of(bakeryService.searchHotBakeries(customerId, page, size, sort));
 	}
 }

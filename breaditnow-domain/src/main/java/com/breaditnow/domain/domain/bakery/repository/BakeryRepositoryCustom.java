@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 
 public interface BakeryRepositoryCustom {
-	Page<Bakery> searchHotBakeries(Long customerId, Pageable pageable);
+	Page<Bakery> searchHotBakeries(Long customerId, String sort, Pageable pageable);
 }
