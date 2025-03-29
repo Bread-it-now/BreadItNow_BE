@@ -1,0 +1,34 @@
+package com.breaditnow.customer.domain.bakery.controller.res;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import com.breaditnow.common.page.PageInfo;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
+
+import lombok.Builder;
+
+@Builder
+public record HotBakeryPageResponse(
+	List<HotBakeryResponse> hotBakeries,
+	PageInfo pageInfo
+) {
+	public static HotBakeryPageResponse of(Page<Bakery> bakeryPage) {
+		List<HotBakeryResponse> hotBakeries = bakeryPage.stream()
+			.map(HotBakeryResponse::of)
+			.toList();
+
+		PageInfo pageInfo = PageInfo.builder()
+			.totalElements(bakeryPage.getTotalElements())
+			.totalPages(bakeryPage.getTotalPages())
+			.isLast(bakeryPage.isLast())
+			.currPage(bakeryPage.getPageable().getPageNumber())
+			.build();
+
+		return HotBakeryPageResponse.builder()
+			.hotBakeries(hotBakeries)
+			.pageInfo(pageInfo)
+			.build();
+	}
+}

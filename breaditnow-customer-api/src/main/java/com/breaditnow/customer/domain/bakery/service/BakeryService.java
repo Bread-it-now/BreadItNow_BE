@@ -4,12 +4,15 @@ import static com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseS
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse;
+import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
 import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
@@ -45,5 +48,10 @@ public class BakeryService {
 
 		List<BreadReleaseScheduleResponse> releaseSchedulesResponse = groupReleaseSchedules(products);
 		return BakeryDetailResponse.of(BakeryResponse.of(bakery), productResponses, releaseSchedulesResponse);
+	}
+
+	public HotBakeryPageResponse searchHotBakeries(Long customerId, Pageable pageable) {
+		Page<Bakery> bakeries = bakeryRepository.searchHotBakeries(customerId, pageable);
+		return HotBakeryPageResponse.of(bakeries);
 	}
 }

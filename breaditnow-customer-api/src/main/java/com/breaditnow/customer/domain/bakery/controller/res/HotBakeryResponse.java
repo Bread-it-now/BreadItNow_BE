@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakeryfavorite.controller.res;
+package com.breaditnow.customer.domain.bakery.controller.res;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
@@ -6,22 +6,19 @@ import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 import lombok.Builder;
 
 @Builder
-public record BakeryFavoriteResponse(
+public record HotBakeryResponse(
 	Long bakeryId,
 	String name,
 	String profileImage,
 	Double distance,
-	boolean isBakeryActive,
 	OperatingStatus operatingStatus
 ) {
-
-	public static BakeryFavoriteResponse of(Bakery bakery, Double distance) {
-		return BakeryFavoriteResponse.builder()
+	public static HotBakeryResponse of(Bakery bakery) {
+		return HotBakeryResponse.builder()
 			.bakeryId(bakery.getId())
 			.name(bakery.getName())
 			.profileImage(bakery.getProfileImage())
-			.distance(distance)
-			.isBakeryActive(bakery.isActive())
+			.distance(0.0)
 			.operatingStatus(bakery.getOperatingStatus())
 			.build();
 	}
