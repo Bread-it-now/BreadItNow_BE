@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDto;
+import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDistanceDto;
 
 import lombok.Builder;
 
@@ -14,7 +14,7 @@ public record BakeryFavoritePageResponse(
 	List<BakeryFavoriteResponse> favorites,
 	PageInfo pageInfo
 ) {
-	public static BakeryFavoritePageResponse of(Page<BakeryFavoriteDto> favoritesPage) {
+	public static BakeryFavoritePageResponse of(Page<BakeryFavoriteDistanceDto> favoritesPage) {
 		PageInfo pageInfo = PageInfo.builder()
 			.totalElements(favoritesPage.getTotalElements())
 			.totalPages(favoritesPage.getTotalPages())
