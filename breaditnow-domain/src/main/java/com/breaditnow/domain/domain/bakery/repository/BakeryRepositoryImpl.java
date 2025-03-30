@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
-import com.breaditnow.domain.domain.customer.entity.QCustomerRegionPreference;
 import com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite;
 import com.breaditnow.domain.domain.favorite.repository.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.domain.vo.GeoPoint;
@@ -58,19 +57,6 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
 	}
 
-	private void applyInterestAreaCondition(JPAQuery<?> query, Long customerId) {
-		if (customerId != null) {
-			QCustomerRegionPreference preference = customerRegionPreference;
-			query.leftJoin(preference)
-				.on(preference.customer.id.eq(customerId));
-
-			query.where(preference.isNull().or(
-				preference.region.id.sidoCode.eq(bakery.address.sidoCode)
-					.and(preference.region.id.gugunCode.eq(bakery.address.gugunCode))
-			));
-		}
-	}
-
 	private OrderSpecifier<?> buildOrderSpecifier(String sort, JPAQuery<BakeryDistanceDto> query) {
 		if ("like".equalsIgnoreCase(sort)) {
 			QCustomerBakeryFavorite favorite = customerBakeryFavorite;
@@ -85,4 +71,27 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			return reservationProduct.count().desc();
 		}
 	}
+
+	private void applyInterestAreaCondition(JPAQuery<?> query, Long customerId) {
+		if (customerId == null) {
+			return;
+		}
+		Long interestCount = queryFactory
+			.select(customerRegionPreference.id.count())
+			.from(customerRegionPreference)
+			.where(customerRegionPreference.customer.id.eq(customerId)
+				.and(customerRegionPreference.region.id.sidoCode.isNotNull())
+				.and(customerRegionPreference.region.id.gugunCode.isNotNull()))
+			.fetchOne();
+
+		if (interestCount != null && interestCount > 0) {
+			query.leftJoin(customerRegionPreference)
+				.on(customerRegionPreference.customer.id.eq(customerId));
+			query.where(
+				customerRegionPreference.region.id.sidoCode.eq(bakery.address.sidoCode)
+					.and(customerRegionPreference.region.id.gugunCode.eq(bakery.address.gugunCode))
+			);
+		}
+	}
+
 }

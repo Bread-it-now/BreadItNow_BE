@@ -8,8 +8,6 @@ import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -37,14 +35,16 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 			.select(product)
 			.from(product)
 			.leftJoin(product.bakery, bakery).fetchJoin()
+			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
+			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
+			.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product))
 			.where(baseCondition)
 			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize());
+			.limit(pageable.getPageSize())
+			.groupBy(product.id);
 
 		applyInterestAreaCondition(query, customerId);
-
-		OrderSpecifier<?> orderSpecifier = buildOrderSpecifier(sort, query);
-		query.orderBy(orderSpecifier);
+		query.orderBy(buildOrderSpecifier(sort));
 
 		JPAQuery<Long> countQuery = queryFactory
 			.select(product.count())
@@ -58,40 +58,33 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
 	}
 
-	private OrderSpecifier<?> buildOrderSpecifier(String sort, JPAQuery<Product> query) {
+	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
 		if ("like".equalsIgnoreCase(sort)) {
-			query.leftJoin(customerProductFavorite)
-				.on(customerProductFavorite.product.eq(product))
-				.groupBy(product.id);
 			return customerProductFavorite.count().desc();
 		} else {
-			query.leftJoin(reservation).on(reservation.bakery.eq(bakery));
-			query.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation));
-			query.where(reservation.createdAt.goe(LocalDateTime.now().minusMonths(1)));
-			query.groupBy(product.id);
 			return reservationProduct.count().desc();
 		}
 	}
 
 	private void applyInterestAreaCondition(JPAQuery<?> query, Long customerId) {
-		if (customerId != null) {
-			Long interestCount = queryFactory
-				.select(customerRegionPreference.id.count())
-				.from(customerRegionPreference)
-				.where(customerRegionPreference.customer.id.eq(customerId)
-					.and(customerRegionPreference.region.id.sidoCode.isNotNull())
-					.and(customerRegionPreference.region.id.gugunCode.isNotNull()))
-				.fetchOne();
+		if (customerId == null) {
+			return;
+		}
+		Long interestCount = queryFactory
+			.select(customerRegionPreference.id.count())
+			.from(customerRegionPreference)
+			.where(customerRegionPreference.customer.id.eq(customerId)
+				.and(customerRegionPreference.region.id.sidoCode.isNotNull())
+				.and(customerRegionPreference.region.id.gugunCode.isNotNull()))
+			.fetchOne();
 
-			if (interestCount != null && interestCount > 0) {
-				query.leftJoin(customerRegionPreference)
-					.on(customerRegionPreference.customer.id.eq(customerId));
-
-				query.where(
-					customerRegionPreference.region.id.sidoCode.eq(bakery.address.sidoCode)
-						.and(customerRegionPreference.region.id.gugunCode.eq(bakery.address.gugunCode))
-				);
-			}
+		if (interestCount != null && interestCount > 0) {
+			query.leftJoin(customerRegionPreference)
+				.on(customerRegionPreference.customer.id.eq(customerId));
+			query.where(
+				customerRegionPreference.region.id.sidoCode.eq(bakery.address.sidoCode)
+					.and(customerRegionPreference.region.id.gugunCode.eq(bakery.address.gugunCode))
+			);
 		}
 	}
 }

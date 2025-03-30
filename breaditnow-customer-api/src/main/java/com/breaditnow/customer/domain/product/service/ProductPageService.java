@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductPageService {
 	private final ProductRepository productRepository;
 
 	public HotProductPageResponse searchHotProducts(Long customerId, int page, int size, String sort) {
