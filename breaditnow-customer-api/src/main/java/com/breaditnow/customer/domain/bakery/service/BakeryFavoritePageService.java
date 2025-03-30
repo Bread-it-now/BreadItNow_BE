@@ -26,8 +26,7 @@ public class BakeryFavoritePageService {
 		Pageable pageable = PageRequest.of(page, size);
 
 		Page<BakeryFavoriteDistanceDto> pageBakeryFavorites = customerBakeryFavoriteRepository.findBakeryFavorites(
-			customerId,
-			pageable, sort, currentGeoPoint);
+			customerId, pageable, sort, currentGeoPoint);
 
 		return BakeryFavoritePageResponse.of(pageBakeryFavorites);
 	}

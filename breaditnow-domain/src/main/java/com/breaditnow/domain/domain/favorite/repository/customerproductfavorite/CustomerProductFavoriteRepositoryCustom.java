@@ -9,5 +9,5 @@ import com.breaditnow.domain.domain.vo.GeoPoint;
 
 @Repository
 public interface CustomerProductFavoriteRepositoryCustom {
-	Page<Product> findProductFavorites(Long customerId, Pageable pageable, GeoPoint geoPoint);
+	Page<Product> findProductFavorites(Long customerId, Pageable pageable, String sort, GeoPoint geoPoint);
 }

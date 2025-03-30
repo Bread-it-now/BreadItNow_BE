@@ -2,12 +2,12 @@ package com.breaditnow.customer.domain.product.controller;
 
 import java.util.Map;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
@@ -43,7 +43,11 @@ public class ProductFavoriteController {
 
 	@GetMapping("/like")
 	public ApiSuccessResponse<ProductFavoritePageResponse> getFavorites(@AuthCustomer Long customerId,
-		Pageable pageable, @Valid GeoPointRequest geoPointRequest) {
-		return ApiSuccessResponse.of(productFavoritePageService.getFavorites(customerId, pageable, geoPointRequest));
+		@RequestParam(name = "page", defaultValue = "0") int page,
+		@RequestParam(name = "size", defaultValue = "10") int size,
+		@RequestParam(name = "sort", defaultValue = "latest") String sort,
+		@Valid GeoPointRequest geoPointRequest) {
+		return ApiSuccessResponse.of(
+			productFavoritePageService.getFavorites(customerId, page, size, sort, geoPointRequest));
 	}
 }
