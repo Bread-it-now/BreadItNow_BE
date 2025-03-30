@@ -29,10 +29,7 @@ public class BakeryController {
 		@PathVariable("bakery_id") Long bakeryId) {
 		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}
-
-	/**
-	 * 핫한 빵집 조회하기
-	 */
+	
 	@GetMapping("/hot")
 	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer(required = false) Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,

@@ -7,14 +7,11 @@ import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
 import static com.querydsl.core.types.Projections.*;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
-import com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite;
 import com.breaditnow.domain.domain.favorite.repository.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.domain.vo.GeoPoint;
 import com.querydsl.core.types.OrderSpecifier;
@@ -32,21 +29,22 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	@Override
 	public Page<BakeryDistanceDto> searchHotBakeries(Long customerId, String sort, Pageable pageable,
 		GeoPoint geoPoint) {
-
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory.select(
 				constructor(BakeryDistanceDto.class, bakery, distanceExpression))
 			.from(bakery)
+			.leftJoin(customerBakeryFavorite).on(customerBakeryFavorite.bakery.eq(bakery))
+			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
+			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
 			.where(bakery.isActive.eq(true))
+			.groupBy(bakery.id)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize());
-
+		
 		applyInterestAreaCondition(query, customerId);
-
-		OrderSpecifier<?> orderSpecifier = buildOrderSpecifier(sort, query);
-		query.orderBy(orderSpecifier);
+		query.orderBy(buildOrderSpecifier(sort));
 
 		JPAQuery<Long> countQuery = queryFactory.select(bakery.id.countDistinct())
 			.from(bakery)
@@ -57,17 +55,10 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
 	}
 
-	private OrderSpecifier<?> buildOrderSpecifier(String sort, JPAQuery<BakeryDistanceDto> query) {
-		if ("like".equalsIgnoreCase(sort)) {
-			QCustomerBakeryFavorite favorite = customerBakeryFavorite;
-			query.leftJoin(favorite).on(favorite.bakery.eq(bakery));
-			query.groupBy(bakery.id);
-			return favorite.count().desc();
+	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
+		if ("favorite".equalsIgnoreCase(sort)) {
+			return customerBakeryFavorite.count().desc();
 		} else {
-			query.leftJoin(reservation).on(reservation.bakery.eq(bakery));
-			query.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation));
-			query.where(reservation.createdAt.goe(LocalDateTime.now().minusMonths(1)));
-			query.groupBy(bakery.id);
 			return reservationProduct.count().desc();
 		}
 	}

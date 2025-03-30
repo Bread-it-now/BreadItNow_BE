@@ -39,9 +39,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
 			.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product))
 			.where(baseCondition)
+			.groupBy(product.id)
 			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.groupBy(product.id);
+			.limit(pageable.getPageSize());
 
 		applyInterestAreaCondition(query, customerId);
 		query.orderBy(buildOrderSpecifier(sort));
@@ -59,7 +59,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	}
 
 	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
-		if ("like".equalsIgnoreCase(sort)) {
+		if ("favorite".equalsIgnoreCase(sort)) {
 			return customerProductFavorite.count().desc();
 		} else {
 			return reservationProduct.count().desc();
