@@ -38,14 +38,12 @@ public class BakeryFavoriteService {
 					.bakery(bakery)
 					.build();
 				customerBakeryFavoriteRepository.save(newFavorite);
-
 				return bakery.getId();
 			});
 	}
 
 	@Transactional
 	public Long deleteBakery(Long customerId, Long bakeryId) {
-		bakeryRepository.checkBakeryIsAlive(bakeryId);
 		CustomerBakeryFavorite customerBakeryFavorite = customerBakeryFavoriteRepository.getByCustomerIdAndBakeryId(
 			customerId, bakeryId);
 

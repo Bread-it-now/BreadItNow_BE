@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakery;
+package com.breaditnow.customer.domain.bakery.controller;
 
 import java.util.Map;
 
@@ -27,21 +27,21 @@ public class BakeryFavoriteController {
 	private final BakeryFavoriteService bakeryFavoriteService;
 	private final BakeryFavoritePageService bakeryFavoritePageService;
 
-	@PostMapping("/{bakery_id}/like")
+	@PostMapping("/{bakery_id}/favorite")
 	public ApiSuccessResponse<Map<String, Long>> likeBakery(@AuthCustomer Long customerId,
 		@PathVariable("bakery_id") Long bakeryId) {
 		Long savedBakeryId = bakeryFavoriteService.likeBakery(customerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
 
-	@DeleteMapping("/{bakery_id}/like")
+	@DeleteMapping("/{bakery_id}/favorite")
 	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@AuthCustomer Long customerId,
 		@PathVariable("bakery_id") Long bakeryId) {
 		Long savedBakeryId = bakeryFavoriteService.deleteBakery(customerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
 
-	@GetMapping("/like")
+	@GetMapping("/favorite")
 	public ApiSuccessResponse<BakeryFavoritePageResponse> getFavorites(@AuthCustomer Long customerId,
 		Pageable pageable, @Valid GeoPointRequest geoPointRequest) {
 		return ApiSuccessResponse.of(
