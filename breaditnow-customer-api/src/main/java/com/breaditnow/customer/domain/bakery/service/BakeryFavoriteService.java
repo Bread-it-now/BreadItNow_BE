@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakeryfavorite.service;
+package com.breaditnow.customer.domain.bakery.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

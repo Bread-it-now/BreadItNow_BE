@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakeryfavorite.controller.req;
+package com.breaditnow.customer.domain.bakery.controller.req;
 
 import com.breaditnow.domain.domain.vo.GeoPoint;
 

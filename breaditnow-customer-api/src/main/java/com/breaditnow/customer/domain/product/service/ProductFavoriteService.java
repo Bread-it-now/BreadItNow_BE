@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.productfavorite.service;
+package com.breaditnow.customer.domain.product.service;
 
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 

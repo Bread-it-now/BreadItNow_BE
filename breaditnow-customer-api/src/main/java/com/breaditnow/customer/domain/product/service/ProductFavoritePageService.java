@@ -1,11 +1,11 @@
-package com.breaditnow.customer.domain.productfavorite.service;
+package com.breaditnow.customer.domain.product.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.customer.domain.bakeryfavorite.controller.req.GeoPointRequest;
-import com.breaditnow.customer.domain.productfavorite.controller.res.ProductFavoritePageResponse;
+import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
+import com.breaditnow.customer.domain.product.controller.res.ProductFavoritePageResponse;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.domain.vo.GeoPoint;
 

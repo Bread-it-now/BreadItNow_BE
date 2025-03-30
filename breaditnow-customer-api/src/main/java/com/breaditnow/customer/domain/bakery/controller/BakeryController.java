@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
 import com.breaditnow.customer.domain.bakery.service.BakeryService;
-import com.breaditnow.customer.domain.bakeryfavorite.controller.req.GeoPointRequest;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
 import jakarta.validation.Valid;

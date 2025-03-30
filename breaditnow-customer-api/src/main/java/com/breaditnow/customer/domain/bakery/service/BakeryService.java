@@ -10,11 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
-import com.breaditnow.customer.domain.bakeryfavorite.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
 import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;

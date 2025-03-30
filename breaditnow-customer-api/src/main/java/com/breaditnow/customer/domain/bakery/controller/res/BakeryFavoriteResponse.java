@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakeryfavorite.controller.res;
+package com.breaditnow.customer.domain.bakery.controller.res;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;

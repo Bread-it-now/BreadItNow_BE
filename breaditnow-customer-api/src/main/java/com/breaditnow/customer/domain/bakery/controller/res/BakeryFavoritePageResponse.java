@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakeryfavorite.controller.res;
+package com.breaditnow.customer.domain.bakery.controller.res;
 
 import java.util.List;
 

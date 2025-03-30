@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.productfavorite.controller.res;
+package com.breaditnow.customer.domain.product.controller.res;
 
 import java.util.List;
 

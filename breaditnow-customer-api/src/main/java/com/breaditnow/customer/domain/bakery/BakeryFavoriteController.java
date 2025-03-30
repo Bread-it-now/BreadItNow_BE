@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakeryfavorite.controller;
+package com.breaditnow.customer.domain.bakery;
 
 import java.util.Map;
 
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.bakeryfavorite.controller.req.GeoPointRequest;
-import com.breaditnow.customer.domain.bakeryfavorite.controller.res.BakeryFavoritePageResponse;
-import com.breaditnow.customer.domain.bakeryfavorite.service.BakeryFavoritePageService;
-import com.breaditnow.customer.domain.bakeryfavorite.service.BakeryFavoriteService;
+import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
+import com.breaditnow.customer.domain.bakery.controller.res.BakeryFavoritePageResponse;
+import com.breaditnow.customer.domain.bakery.service.BakeryFavoritePageService;
+import com.breaditnow.customer.domain.bakery.service.BakeryFavoriteService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
 import jakarta.validation.Valid;
