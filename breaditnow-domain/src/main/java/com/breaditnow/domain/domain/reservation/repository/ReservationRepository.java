@@ -33,6 +33,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 			pageable);
 	}
 
+	default Page<Reservation> getReservationsByOwnerAndStatus(Long ownerId, ReservationRequestStatus status, Pageable pageable) {
+		return findByOwnerIdAndOptionalStatus(ownerId, ReservationRequestStatus.toReservationStatus(status), pageable);
+	}
+
 	@Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND (:status IS NULL OR r.status = :status)")
 	Page<Reservation> findByCustomerIdAndOptionalStatus(@Param("customerId") Long customerId,
 		@Param("status") ReservationStatus status, Pageable pageable);
@@ -41,5 +45,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	Optional<Reservation> findByIdAndCustomerId(@Param("reservationId") Long reservationId,
 		@Param("customerId") Long customerId);
 
+	@Query("SELECT r FROM Reservation r JOIN r.bakery b WHERE b.owner.id = :ownerId AND (:status IS NULL OR r.status = :status)")
+	Page<Reservation> findByOwnerIdAndOptionalStatus(@Param("ownerId") Long ownerId,
+	    @Param("status") ReservationStatus status, Pageable pageable);
 }
 
