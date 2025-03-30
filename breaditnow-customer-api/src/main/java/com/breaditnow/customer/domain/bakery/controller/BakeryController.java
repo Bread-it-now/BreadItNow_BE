@@ -10,6 +10,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
+import com.breaditnow.customer.domain.bakery.service.BakeryPageService;
 import com.breaditnow.customer.domain.bakery.service.BakeryService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/bakery")
 public class BakeryController {
 	private final BakeryService bakeryService;
+	private final BakeryPageService bakeryPageService;
 
 	@GetMapping("/{bakery_id}/detail")
 	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer(required = false) Long customerId,
@@ -37,6 +39,7 @@ public class BakeryController {
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "reservation") String sort,
 		@Valid GeoPointRequest geoPointRequest) {
-		return ApiSuccessResponse.of(bakeryService.searchHotBakeries(customerId, page, size, sort, geoPointRequest));
+		return ApiSuccessResponse.of(
+			bakeryPageService.searchHotBakeries(customerId, page, size, sort, geoPointRequest));
 	}
 }

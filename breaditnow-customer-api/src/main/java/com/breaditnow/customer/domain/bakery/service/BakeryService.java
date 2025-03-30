@@ -4,25 +4,18 @@ import static com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseS
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse;
-import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
 import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
-import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.domain.vo.GeoPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,14 +45,5 @@ public class BakeryService {
 
 		List<BreadReleaseScheduleResponse> releaseSchedulesResponse = groupReleaseSchedules(products);
 		return BakeryDetailResponse.of(BakeryResponse.of(bakery), productResponses, releaseSchedulesResponse);
-	}
-
-	public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort,
-		GeoPointRequest geoPointRequest) {
-		GeoPoint currentGeoPoint = geoPointRequest.toEntity();
-		Pageable pageable = PageRequest.of(page, size);
-		Page<BakeryDistanceDto> bakeries = bakeryRepository.searchHotBakeries(customerId, sort, pageable,
-			currentGeoPoint);
-		return HotBakeryPageResponse.of(bakeries);
 	}
 }
