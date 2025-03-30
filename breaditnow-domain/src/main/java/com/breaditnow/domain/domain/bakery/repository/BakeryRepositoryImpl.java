@@ -5,6 +5,7 @@ import static com.breaditnow.domain.domain.customer.entity.QCustomerRegionPrefer
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 import static com.querydsl.core.types.Projections.*;
 
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
 import com.breaditnow.domain.domain.favorite.repository.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.domain.vo.GeoPoint;
+import com.breaditnow.domain.global.exception.DomainException;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -35,14 +37,16 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		JPAQuery<BakeryDistanceDto> query = queryFactory.select(
 				constructor(BakeryDistanceDto.class, bakery, distanceExpression))
 			.from(bakery)
-			.leftJoin(customerBakeryFavorite).on(customerBakeryFavorite.bakery.eq(bakery))
 			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
 			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
+			.leftJoin(customerBakeryFavorite).on(customerBakeryFavorite.bakery.eq(bakery)
+				.and(customerBakeryFavorite.isActive.eq(true))
+			)
 			.where(bakery.isActive.eq(true))
 			.groupBy(bakery.id)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize());
-		
+
 		applyInterestAreaCondition(query, customerId);
 		query.orderBy(buildOrderSpecifier(sort));
 
@@ -58,9 +62,10 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
 		if ("favorite".equalsIgnoreCase(sort)) {
 			return customerBakeryFavorite.count().desc();
-		} else {
+		} else if ("reservation".equalsIgnoreCase(sort)) {
 			return reservationProduct.count().desc();
 		}
+		throw new DomainException(BAKERY_SORT_CONDITION_NOT_FOUND);
 	}
 
 	private void applyInterestAreaCondition(JPAQuery<?> query, Long customerId) {

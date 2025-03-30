@@ -7,12 +7,14 @@ import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.global.exception.DomainException;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -34,10 +36,12 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		JPAQuery<Product> query = queryFactory
 			.select(product)
 			.from(product)
-			.leftJoin(product.bakery, bakery).fetchJoin()
+			.leftJoin(product.bakery, bakery)
 			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
 			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
-			.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product))
+			.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product)
+				.and(customerProductFavorite.isActive.eq(true))
+			)
 			.where(baseCondition)
 			.groupBy(product.id)
 			.offset(pageable.getOffset())
@@ -61,9 +65,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
 		if ("favorite".equalsIgnoreCase(sort)) {
 			return customerProductFavorite.count().desc();
-		} else {
+		} else if ("reservation".equalsIgnoreCase(sort)) {
 			return reservationProduct.count().desc();
 		}
+		throw new DomainException(PRODUCT_SORT_CONDITION_NOT_FOUND);
 	}
 
 	private void applyInterestAreaCondition(JPAQuery<?> query, Long customerId) {

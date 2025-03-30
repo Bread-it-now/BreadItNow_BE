@@ -43,7 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 	default Product getByBakeryIdAndId(Long bakeryId, Long id) {
 		Product product = getByIdAndIsActiveTrue(id);
 		if (!product.getBakery().getId().equals(bakeryId)) {
-			throw new DomainException(BAKERY_MISMATCH);
+			throw new DomainException(PRODUCT_MISMATCH);
 		}
 		return product;
 	}
