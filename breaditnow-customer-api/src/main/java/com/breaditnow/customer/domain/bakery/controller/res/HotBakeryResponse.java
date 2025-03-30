@@ -13,12 +13,12 @@ public record HotBakeryResponse(
 	Double distance,
 	OperatingStatus operatingStatus
 ) {
-	public static HotBakeryResponse of(Bakery bakery) {
+	public static HotBakeryResponse of(Bakery bakery, Double distance) {
 		return HotBakeryResponse.builder()
 			.bakeryId(bakery.getId())
 			.name(bakery.getName())
 			.profileImage(bakery.getProfileImage())
-			.distance(0.0)
+			.distance(distance)
 			.operatingStatus(bakery.getOperatingStatus())
 			.build();
 	}

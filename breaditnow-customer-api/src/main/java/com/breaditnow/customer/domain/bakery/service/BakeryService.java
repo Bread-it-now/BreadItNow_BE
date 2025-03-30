@@ -14,12 +14,15 @@ import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
+import com.breaditnow.customer.domain.bakeryfavorite.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.product.controller.res.ProductResponse;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
+import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.vo.GeoPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,9 +54,12 @@ public class BakeryService {
 		return BakeryDetailResponse.of(BakeryResponse.of(bakery), productResponses, releaseSchedulesResponse);
 	}
 
-	public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort) {
+	public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort,
+		GeoPointRequest geoPointRequest) {
+		GeoPoint currentGeoPoint = geoPointRequest.toEntity();
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Bakery> bakeries = bakeryRepository.searchHotBakeries(customerId, sort, pageable);
+		Page<BakeryDistanceDto> bakeries = bakeryRepository.searchHotBakeries(customerId, sort, pageable,
+			currentGeoPoint);
 		return HotBakeryPageResponse.of(bakeries);
 	}
 }
