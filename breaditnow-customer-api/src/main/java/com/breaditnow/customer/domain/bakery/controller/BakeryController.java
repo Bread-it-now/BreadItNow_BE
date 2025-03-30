@@ -32,10 +32,10 @@ public class BakeryController {
 	 * 핫한 빵집 조회하기
 	 */
 	@GetMapping("/hot")
-	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer Long customerId,
+	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer(required = false) Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,
-		@RequestParam(value = "sort", defaultValue = "reservation") String sort,
+		@RequestParam(name = "sort", defaultValue = "reservation") String sort,
 		@Valid GeoPointRequest geoPointRequest) {
 		return ApiSuccessResponse.of(bakeryService.searchHotBakeries(customerId, page, size, sort, geoPointRequest));
 	}

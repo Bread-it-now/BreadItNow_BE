@@ -13,7 +13,7 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.enumerate.ProductType;
 import com.breaditnow.domain.global.exception.DomainException;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 	default Product getByTypeAndId(ProductType type, Long id) {
 		return findByTypeAndId(type, id)
 			.orElseThrow(() -> new DomainException(BREAD_NOT_FOUND));

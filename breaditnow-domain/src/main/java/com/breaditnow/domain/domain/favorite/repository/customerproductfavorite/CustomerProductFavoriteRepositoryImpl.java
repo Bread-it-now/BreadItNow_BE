@@ -49,9 +49,7 @@ public class CustomerProductFavoriteRepositoryImpl implements CustomerProductFav
 		Long totalCount = queryFactory
 			.select(customerProductFavorite.count())
 			.from(customerProductFavorite, product)
-			.where(customerProductFavorite.customer.id.eq(customerId)
-				.and(customerProductFavorite.product.id.eq(product.id))
-				.and(customerProductFavorite.isActive.eq(true)))
+			.where(baseCondition)
 			.fetchOne();
 
 		return new PageImpl<>(content, pageable, totalCount == null ? 0 : totalCount);
