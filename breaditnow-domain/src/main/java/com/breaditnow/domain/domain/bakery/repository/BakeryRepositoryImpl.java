@@ -7,6 +7,7 @@ import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 import static com.querydsl.core.types.Projections.*;
+import static com.querydsl.core.types.dsl.Expressions.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,7 +18,10 @@ import com.breaditnow.domain.domain.favorite.repository.GeoDistanceExpressionPro
 import com.breaditnow.domain.domain.vo.GeoPoint;
 import com.breaditnow.domain.global.exception.DomainException;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -33,9 +37,18 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		GeoPoint geoPoint) {
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
+		BooleanExpression bakeryFavoriteExist = isBakeryFavoriteExist(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory.select(
-				constructor(BakeryDistanceDto.class, bakery, distanceExpression))
+				constructor(BakeryDistanceDto.class,
+					bakery,
+					distanceExpression,
+					new CaseBuilder()
+						.when(bakeryFavoriteExist)
+						.then(true)
+						.otherwise(false)
+				)
+			)
 			.from(bakery)
 			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
 			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
@@ -90,4 +103,18 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		}
 	}
 
+	private BooleanExpression isBakeryFavoriteExist(Long customerId) {
+		if (customerId == null) {
+			return FALSE;
+		}
+
+		return JPAExpressions.selectOne()
+			.from(customerBakeryFavorite)
+			.where(
+				customerBakeryFavorite.bakery.eq(bakery)
+					.and(customerBakeryFavorite.customer.id.eq(customerId))
+					.and(customerBakeryFavorite.isActive.eq(true))
+			)
+			.exists();
+	}
 }

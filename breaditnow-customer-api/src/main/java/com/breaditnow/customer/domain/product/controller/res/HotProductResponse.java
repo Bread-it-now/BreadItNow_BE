@@ -8,7 +8,8 @@ import lombok.Builder;
 public record HotProductResponse(
 	Long productId,
 	Long bakeryId,
-	String name,
+	String bakeryName,
+	String productName,
 	String image,
 	Integer price,
 	Integer stock
@@ -17,7 +18,8 @@ public record HotProductResponse(
 		return HotProductResponse.builder()
 			.productId(product.getId())
 			.bakeryId(product.getBakery().getId())
-			.name(product.getName())
+			.bakeryName(product.getBakery().getName())
+			.productName(product.getName())
 			.image(product.getImage())
 			.price(product.getPrice())
 			.stock(product.getStock())

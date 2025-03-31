@@ -26,6 +26,7 @@ public class BakeryPageService {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<BakeryDistanceDto> bakeries = bakeryRepository.searchHotBakeries(customerId, sort, pageable,
 			currentGeoPoint);
+
 		return HotBakeryPageResponse.of(bakeries);
 	}
 }

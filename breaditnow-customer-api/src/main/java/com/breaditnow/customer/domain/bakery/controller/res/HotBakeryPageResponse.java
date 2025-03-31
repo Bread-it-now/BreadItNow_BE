@@ -16,7 +16,7 @@ public record HotBakeryPageResponse(
 ) {
 	public static HotBakeryPageResponse of(Page<BakeryDistanceDto> bakeryPage) {
 		List<HotBakeryResponse> hotBakeries = bakeryPage.stream()
-			.map(o -> HotBakeryResponse.of(o.bakery(), o.distance()))
+			.map(o -> HotBakeryResponse.of(o.bakery(), o.distance(), o.bakeryFavorite()))
 			.toList();
 
 		PageInfo pageInfo = PageInfo.builder()

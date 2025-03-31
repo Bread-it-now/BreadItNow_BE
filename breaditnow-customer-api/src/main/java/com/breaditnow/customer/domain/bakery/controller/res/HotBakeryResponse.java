@@ -8,17 +8,19 @@ import lombok.Builder;
 @Builder
 public record HotBakeryResponse(
 	Long bakeryId,
-	String name,
+	String bakeryName,
 	String profileImage,
 	Double distance,
+	Boolean isFavorite,
 	OperatingStatus operatingStatus
 ) {
-	public static HotBakeryResponse of(Bakery bakery, Double distance) {
+	public static HotBakeryResponse of(Bakery bakery, Double distance, Boolean isFavorite) {
 		return HotBakeryResponse.builder()
 			.bakeryId(bakery.getId())
-			.name(bakery.getName())
+			.bakeryName(bakery.getName())
 			.profileImage(bakery.getProfileImage())
 			.distance(distance)
+			.isFavorite(isFavorite)
 			.operatingStatus(bakery.getOperatingStatus())
 			.build();
 	}
