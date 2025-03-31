@@ -4,7 +4,7 @@ import static com.breaditnow.domain.domain.bakery.entity.QBakery.*;
 import static com.breaditnow.domain.domain.customer.entity.QCustomerRegionPreference.*;
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
-import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
+import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -76,14 +76,14 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			.from(bakery)
 			.leftJoin(product)
 			.on(product.bakery.eq(bakery).and(product.isActive.eq(true)).and(product.isHidden.eq(false)))
-			.leftJoin(reservationProduct)
-			.on(reservationProduct.product.eq(product).and(recentReservationCondition()))
+			.leftJoin(reservation)
+			.on(reservation.bakery.eq(bakery).and(reservation.createdAt.goe(LocalDateTime.now().minusMonths(1))))
 			.where(
 				buildBaseCondition()
 					.and(buildInterestAreaCondition(customerId))
 			)
 			.groupBy(bakery.id)
-			.orderBy(reservationProduct.reservation.id.countDistinct().desc(), bakery.id.asc())
+			.orderBy(reservation.id.countDistinct().desc(), bakery.id.asc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize());
 
@@ -145,7 +145,4 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			.exists();
 	}
 
-	private BooleanExpression recentReservationCondition() {
-		return reservationProduct.createdAt.goe(LocalDateTime.now().minusMonths(1));
-	}
 }
