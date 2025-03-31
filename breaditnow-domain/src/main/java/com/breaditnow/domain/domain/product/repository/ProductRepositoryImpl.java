@@ -8,15 +8,19 @@ import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
+import static com.querydsl.core.types.Projections.*;
+import static com.querydsl.core.types.dsl.Expressions.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.dto.ProductFavoriteDto;
 import com.breaditnow.domain.global.exception.DomainException;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -27,14 +31,23 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Product> searchHotProducts(Long customerId, String sort, Pageable pageable) {
+	public Page<ProductFavoriteDto> searchHotProducts(Long customerId, String sort, Pageable pageable) {
 		BooleanExpression baseCondition = product.isActive.eq(true)
 			.and(product.isHidden.eq(false))
 			.and(product.type.eq(BREAD))
 			.and(bakery.isActive.eq(true));
 
-		JPAQuery<Product> query = queryFactory
-			.select(product)
+		JPAQuery<ProductFavoriteDto> query = queryFactory
+			.select(
+				constructor(
+					ProductFavoriteDto.class,
+					product,
+					new CaseBuilder()
+						.when(isFavoriteExist(customerId))
+						.then(true)
+						.otherwise(false)
+				)
+			)
 			.from(product)
 			.leftJoin(product.bakery, bakery)
 			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
@@ -60,6 +73,21 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		Long totalCount = countQuery.fetchOne();
 
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
+	}
+
+	private static BooleanExpression isFavoriteExist(Long customerId) {
+		if (customerId == null) {
+			return FALSE;
+		}
+		
+		return JPAExpressions.selectOne()
+			.from(customerProductFavorite)
+			.where(
+				customerProductFavorite.product.eq(product)
+					.and(customerProductFavorite.customer.id.eq(customerId))
+					.and(customerProductFavorite.isActive.eq(true))
+			)
+			.exists();
 	}
 
 	private OrderSpecifier<?> buildOrderSpecifier(String sort) {

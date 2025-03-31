@@ -3,8 +3,8 @@ package com.breaditnow.domain.domain.product.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.dto.ProductFavoriteDto;
 
 public interface ProductRepositoryCustom {
-	Page<Product> searchHotProducts(Long customerId, String sort, Pageable pageable);
+	Page<ProductFavoriteDto> searchHotProducts(Long customerId, String sort, Pageable pageable);
 }

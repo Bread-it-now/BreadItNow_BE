@@ -37,14 +37,13 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		GeoPoint geoPoint) {
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
-		BooleanExpression bakeryFavoriteExist = isBakeryFavoriteExist(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory.select(
 				constructor(BakeryDistanceDto.class,
 					bakery,
 					distanceExpression,
 					new CaseBuilder()
-						.when(bakeryFavoriteExist)
+						.when(isBakeryFavoriteExist(customerId))
 						.then(true)
 						.otherwise(false)
 				)

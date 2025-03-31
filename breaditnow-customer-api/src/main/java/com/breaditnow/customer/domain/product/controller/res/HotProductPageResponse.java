@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.domain.product.dto.ProductFavoriteDto;
 
 import lombok.Builder;
 
@@ -14,16 +14,17 @@ public record HotProductPageResponse(
 	List<HotProductResponse> hotProducts,
 	PageInfo pageInfo
 ) {
-	public static HotProductPageResponse of(Page<Product> productPage) {
-		List<HotProductResponse> hotProductResponses = productPage.stream()
-			.map(HotProductResponse::of)
+	public static HotProductPageResponse of(Page<ProductFavoriteDto> productFavoritePage) {
+		List<HotProductResponse> hotProductResponses = productFavoritePage.stream()
+			.map(productFavoriteDto -> HotProductResponse.of(productFavoriteDto.product(),
+				productFavoriteDto.isFavorite()))
 			.toList();
 
 		PageInfo pageInfo = PageInfo.builder()
-			.totalElements(productPage.getTotalElements())
-			.totalPages(productPage.getTotalPages())
-			.isLast(productPage.isLast())
-			.currPage(productPage.getPageable().getPageNumber())
+			.totalElements(productFavoritePage.getTotalElements())
+			.totalPages(productFavoritePage.getTotalPages())
+			.isLast(productFavoritePage.isLast())
+			.currPage(productFavoritePage.getPageable().getPageNumber())
 			.build();
 
 		return HotProductPageResponse.builder()
