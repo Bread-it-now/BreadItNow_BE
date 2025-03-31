@@ -1,11 +1,10 @@
-package com.breaditnow.domain.domain.favorite.repository;
+package com.breaditnow.domain.global.dto;
 
 import static com.querydsl.core.types.dsl.Expressions.*;
 
 import org.springframework.stereotype.Component;
 
 import com.breaditnow.domain.domain.bakery.entity.QBakery;
-import com.breaditnow.domain.domain.vo.GeoPoint;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 

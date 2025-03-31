@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDistanceDto;
+import com.breaditnow.domain.global.dto.BakeryFavoriteDistanceDto;
 
 import lombok.Builder;
 

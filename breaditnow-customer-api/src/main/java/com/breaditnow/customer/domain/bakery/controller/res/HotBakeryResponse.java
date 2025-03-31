@@ -1,7 +1,7 @@
 package com.breaditnow.customer.domain.bakery.controller.res;
 
-import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
+import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 
 import lombok.Builder;
 
@@ -14,14 +14,14 @@ public record HotBakeryResponse(
 	Boolean isFavorite,
 	OperatingStatus operatingStatus
 ) {
-	public static HotBakeryResponse of(Bakery bakery, Double distance, Boolean isFavorite) {
+	public static HotBakeryResponse of(BakeryDistanceDto bakeryDistanceDto) {
 		return HotBakeryResponse.builder()
-			.bakeryId(bakery.getId())
-			.bakeryName(bakery.getName())
-			.profileImage(bakery.getProfileImage())
-			.distance(distance)
-			.isFavorite(isFavorite)
-			.operatingStatus(bakery.getOperatingStatus())
+			.bakeryId(bakeryDistanceDto.bakeryId())
+			.bakeryName(bakeryDistanceDto.bakeryName())
+			.profileImage(bakeryDistanceDto.profileImage())
+			.distance(bakeryDistanceDto.distance())
+			.isFavorite(bakeryDistanceDto.isFavorite())
+			.operatingStatus(bakeryDistanceDto.operatingStatus())
 			.build();
 	}
 }

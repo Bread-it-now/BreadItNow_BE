@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.favorite.dto;
+package com.breaditnow.domain.global.dto;
 
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 

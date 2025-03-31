@@ -40,6 +40,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		List<Long> productIds = queryFactory
 			.select(product.id)
 			.from(product)
+			.leftJoin(bakery).on(product.bakery.eq(bakery))
 			.leftJoin(customerProductFavorite).on(
 				customerProductFavorite.product.eq(product)
 					.and(customerProductFavorite.isActive.eq(true))
@@ -70,14 +71,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		List<Long> productIds = queryFactory
 			.select(product.id)
 			.from(product)
-			.leftJoin(reservationProduct).on(reservationProduct.product.eq(product))
-			.where(
-				buildBaseCondition()
-					.and(buildInterestAreaCondition(customerId))
-					.and(recentReservationCondition())
-			)
+			.leftJoin(bakery).on(product.bakery.eq(bakery))
+			.leftJoin(reservationProduct).on(reservationProduct.product.eq(product).and(recentReservationCondition()))
+			.where(buildBaseCondition().and(buildInterestAreaCondition(customerId)))
 			.groupBy(product.id)
-			.orderBy(reservationProduct.count().desc(), product.id.asc())
+			.orderBy(reservationProduct.id.count().desc(), product.id.asc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();

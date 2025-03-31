@@ -1,4 +1,4 @@
-package com.breaditnow.domain.domain.vo;
+package com.breaditnow.domain.global.dto;
 
 import lombok.Builder;
 

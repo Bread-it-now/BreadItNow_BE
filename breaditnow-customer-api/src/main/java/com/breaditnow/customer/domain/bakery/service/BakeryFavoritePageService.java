@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryFavoritePageResponse;
-import com.breaditnow.domain.domain.favorite.dto.BakeryFavoriteDistanceDto;
 import com.breaditnow.domain.domain.favorite.repository.customerbakeryfavorite.CustomerBakeryFavoriteRepository;
-import com.breaditnow.domain.domain.vo.GeoPoint;
+import com.breaditnow.domain.global.dto.BakeryFavoriteDistanceDto;
+import com.breaditnow.domain.global.dto.GeoPoint;
 
 import lombok.RequiredArgsConstructor;
 

@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
-import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
-import com.breaditnow.domain.domain.vo.GeoPoint;
+import com.breaditnow.domain.global.dto.BakeryDistanceDto;
+import com.breaditnow.domain.global.dto.GeoPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,9 +24,11 @@ public class BakeryPageService {
 		GeoPointRequest geoPointRequest) {
 		GeoPoint currentGeoPoint = geoPointRequest.toEntity();
 		Pageable pageable = PageRequest.of(page, size);
-		Page<BakeryDistanceDto> bakeries = bakeryRepository.searchHotBakeries(customerId, sort, pageable,
-			currentGeoPoint);
 
-		return HotBakeryPageResponse.of(bakeries);
+		BakerySortStrategy bakerySortStrategy = BakerySortStrategy.from(sort);
+		Page<BakeryDistanceDto> bakeryDistances = bakerySortStrategy.search(customerId, pageable, currentGeoPoint,
+			bakeryRepository);
+
+		return HotBakeryPageResponse.of(bakeryDistances);
 	}
 }

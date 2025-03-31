@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.bakery.dto.BakeryDistanceDto;
+import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 
 import lombok.Builder;
 
@@ -15,9 +15,9 @@ public record HotBakeryPageResponse(
 	PageInfo pageInfo
 ) {
 	public static HotBakeryPageResponse of(Page<BakeryDistanceDto> bakeryPage) {
-		List<HotBakeryResponse> hotBakeries = bakeryPage.stream()
-			.map(o -> HotBakeryResponse.of(o.bakery(), o.distance(), o.bakeryFavorite()))
-			.toList();
+		List<HotBakeryResponse> hotBakeries = bakeryPage
+			.map(HotBakeryResponse::of)
+			.getContent();
 
 		PageInfo pageInfo = PageInfo.builder()
 			.totalElements(bakeryPage.getTotalElements())
