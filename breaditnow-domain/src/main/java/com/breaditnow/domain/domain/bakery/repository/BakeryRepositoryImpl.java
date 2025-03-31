@@ -71,7 +71,7 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
 	}
 
-	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
+	private OrderSpecifier<Long> buildOrderSpecifier(String sort) {
 		if ("favorite".equalsIgnoreCase(sort)) {
 			return customerBakeryFavorite.count().desc();
 		} else if ("reservation".equalsIgnoreCase(sort)) {

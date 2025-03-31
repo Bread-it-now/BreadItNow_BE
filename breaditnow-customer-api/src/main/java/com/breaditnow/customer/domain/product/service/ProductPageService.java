@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.product.controller.res.HotProductPageResponse;
-import com.breaditnow.domain.domain.product.dto.ProductFavoriteDto;
+import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ProductPageService {
 
 	public HotProductPageResponse searchHotProducts(Long customerId, int page, int size, String sort) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<ProductFavoriteDto> productFavoritePage = productRepository.searchHotProducts(customerId, sort, pageable);
-		return HotProductPageResponse.of(productFavoritePage);
+		Page<Product> products = productRepository.searchHotProducts(customerId, sort, pageable);
+		return HotProductPageResponse.of(products);
 	}
 }

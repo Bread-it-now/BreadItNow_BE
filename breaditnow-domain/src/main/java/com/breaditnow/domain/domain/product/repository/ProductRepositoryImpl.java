@@ -5,22 +5,17 @@ import static com.breaditnow.domain.domain.customer.entity.QCustomerRegionPrefer
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerProductFavorite.*;
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
-import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
-import static com.querydsl.core.types.Projections.*;
-import static com.querydsl.core.types.dsl.Expressions.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.breaditnow.domain.domain.product.dto.ProductFavoriteDto;
+import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.exception.DomainException;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -31,66 +26,45 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<ProductFavoriteDto> searchHotProducts(Long customerId, String sort, Pageable pageable) {
-		BooleanExpression baseCondition = product.isActive.eq(true)
-			.and(product.isHidden.eq(false))
-			.and(product.type.eq(BREAD))
-			.and(bakery.isActive.eq(true));
+	public Page<Product> searchHotProducts(Long customerId, String sort, Pageable pageable) {
+		BooleanExpression baseCondition = buildBaseCondition();
 
-		JPAQuery<ProductFavoriteDto> query = queryFactory
-			.select(
-				constructor(
-					ProductFavoriteDto.class,
-					product,
-					new CaseBuilder()
-						.when(isFavoriteExist(customerId))
-						.then(true)
-						.otherwise(false)
-				)
-			)
-			.from(product)
-			.leftJoin(product.bakery, bakery)
-			.leftJoin(reservation).on(reservation.bakery.eq(bakery))
-			.leftJoin(reservationProduct).on(reservationProduct.reservation.eq(reservation))
-			.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product)
-				.and(customerProductFavorite.isActive.eq(true))
-			)
-			.where(baseCondition)
-			.groupBy(product.id)
+		JPAQuery<Product> query = queryFactory
+			.selectFrom(product)
+			.leftJoin(product.bakery, bakery).fetchJoin()
+			.where(baseCondition);
+
+		if ("favorite".equalsIgnoreCase(sort)) {
+			query.leftJoin(customerProductFavorite)
+				.on(customerProductFavorite.product.eq(product)
+					.and(customerProductFavorite.isActive.eq(true))
+					.and(customerProductFavorite.customer.id.eq(customerId))
+				);
+		} else if ("reservation".equalsIgnoreCase(sort)) {
+			query.leftJoin(reservationProduct).on(reservationProduct.product.eq(product));
+		} else {
+			throw new DomainException(PRODUCT_SORT_CONDITION_NOT_FOUND);
+		}
+
+		query.groupBy(product.id)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize());
 
 		applyInterestAreaCondition(query, customerId);
 		query.orderBy(buildOrderSpecifier(sort));
 
-		JPAQuery<Long> countQuery = queryFactory
-			.select(product.count())
-			.from(product)
-			.leftJoin(product.bakery, bakery)
-			.where(baseCondition);
-
-		applyInterestAreaCondition(countQuery, customerId);
-		Long totalCount = countQuery.fetchOne();
-
+		Long totalCount = buildCountQuery(baseCondition, customerId).fetchOne();
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
 	}
 
-	private static BooleanExpression isFavoriteExist(Long customerId) {
-		if (customerId == null) {
-			return FALSE;
-		}
-		
-		return JPAExpressions.selectOne()
-			.from(customerProductFavorite)
-			.where(
-				customerProductFavorite.product.eq(product)
-					.and(customerProductFavorite.customer.id.eq(customerId))
-					.and(customerProductFavorite.isActive.eq(true))
-			)
-			.exists();
+	private BooleanExpression buildBaseCondition() {
+		return product.isActive.eq(true)
+			.and(product.isHidden.eq(false))
+			.and(product.type.eq(BREAD))
+			.and(bakery.isActive.eq(true));
 	}
 
-	private OrderSpecifier<?> buildOrderSpecifier(String sort) {
+	private OrderSpecifier<Long> buildOrderSpecifier(String sort) {
 		if ("favorite".equalsIgnoreCase(sort)) {
 			return customerProductFavorite.count().desc();
 		} else if ("reservation".equalsIgnoreCase(sort)) {
@@ -119,5 +93,15 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 					.and(customerRegionPreference.region.id.gugunCode.eq(bakery.address.gugunCode))
 			);
 		}
+	}
+
+	private JPAQuery<Long> buildCountQuery(BooleanExpression baseCondition, Long customerId) {
+		JPAQuery<Long> countQuery = queryFactory
+			.select(product.count())
+			.from(product)
+			.leftJoin(product.bakery, bakery)
+			.where(baseCondition);
+		applyInterestAreaCondition(countQuery, customerId);
+		return countQuery;
 	}
 }
