@@ -15,7 +15,7 @@ public record HotProductResponse(
 	Boolean isFavorite,
 	Integer stock
 ) {
-	public static HotProductResponse of(Product product) {
+	public static HotProductResponse of(Product product, Boolean isFavorite) {
 		return HotProductResponse.builder()
 			.productId(product.getId())
 			.bakeryId(product.getBakery().getId())
@@ -23,7 +23,7 @@ public record HotProductResponse(
 			.productName(product.getName())
 			.image(product.getImage())
 			.price(product.getPrice())
-			.isFavorite(false)
+			.isFavorite(isFavorite)
 			.stock(product.getStock())
 			.build();
 	}

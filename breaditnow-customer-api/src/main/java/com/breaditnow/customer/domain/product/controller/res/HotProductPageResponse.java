@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.breaditnow.common.page.PageInfo;
-import com.breaditnow.domain.domain.product.entity.Product;
 
 import lombok.Builder;
 
@@ -14,20 +13,16 @@ public record HotProductPageResponse(
 	List<HotProductResponse> hotProducts,
 	PageInfo pageInfo
 ) {
-	public static HotProductPageResponse of(Page<Product> products) {
-		List<HotProductResponse> hotProductResponses = products.stream()
-			.map(HotProductResponse::of)
-			.toList();
-
+	public static HotProductPageResponse of(Page<HotProductResponse> hotProductResponses) {
 		PageInfo pageInfo = PageInfo.builder()
-			.totalElements(products.getTotalElements())
-			.totalPages(products.getTotalPages())
-			.isLast(products.isLast())
-			.currPage(products.getPageable().getPageNumber())
+			.totalElements(hotProductResponses.getTotalElements())
+			.totalPages(hotProductResponses.getTotalPages())
+			.isLast(hotProductResponses.isLast())
+			.currPage(hotProductResponses.getPageable().getPageNumber())
 			.build();
 
 		return HotProductPageResponse.builder()
-			.hotProducts(hotProductResponses)
+			.hotProducts(hotProductResponses.getContent())
 			.pageInfo(pageInfo)
 			.build();
 	}

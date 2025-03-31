@@ -38,7 +38,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 			query.leftJoin(customerProductFavorite)
 				.on(customerProductFavorite.product.eq(product)
 					.and(customerProductFavorite.isActive.eq(true))
-					.and(customerProductFavorite.customer.id.eq(customerId))
 				);
 		} else if ("reservation".equalsIgnoreCase(sort)) {
 			query.leftJoin(reservationProduct).on(reservationProduct.product.eq(product));
