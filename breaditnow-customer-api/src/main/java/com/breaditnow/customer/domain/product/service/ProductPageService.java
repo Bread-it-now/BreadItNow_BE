@@ -23,7 +23,8 @@ public class ProductPageService {
 
 	public HotProductPageResponse searchHotProducts(Long customerId, int page, int size, String sort) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Product> productPage = productRepository.searchHotProducts(customerId, sort, pageable);
+		ProductSortStrategy productSortStrategy = ProductSortStrategy.from(sort);
+		Page<Product> productPage = productSortStrategy.search(customerId, pageable, productRepository);
 
 		Page<HotProductResponse> hotProductResponses = productPage.map(product -> {
 			boolean isFavorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());

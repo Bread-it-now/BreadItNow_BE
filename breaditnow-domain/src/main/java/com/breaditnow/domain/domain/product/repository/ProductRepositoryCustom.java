@@ -6,5 +6,7 @@ import org.springframework.data.domain.Pageable;
 import com.breaditnow.domain.domain.product.entity.Product;
 
 public interface ProductRepositoryCustom {
-	Page<Product> searchHotProducts(Long customerId, String sort, Pageable pageable);
+	Page<Product> searchHotProductsByFavorite(Long customerId, Pageable pageable);
+
+	Page<Product> searchHotProductsByReservation(Long customerId, Pageable pageable);
 }
