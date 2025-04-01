@@ -2,6 +2,7 @@ package com.breaditnow.owner.domain.reservation.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationRequestStatus;
+import com.breaditnow.owner.domain.reservation.controller.req.ReservationStatusUpdateRequest;
 import com.breaditnow.owner.domain.reservation.controller.res.ReservationDetailResponse;
 import com.breaditnow.owner.domain.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.owner.domain.reservation.service.ReservationService;
@@ -34,5 +35,15 @@ public class ReservationController {
             @PathVariable("reservationId") Long reservationId
     ) {
         return ApiSuccessResponse.of(reservationService.getReservationDetailForOwner(ownerId, reservationId));
+    }
+
+    @PatchMapping("/{reservationId}/status")
+    public ApiSuccessResponse<?> updateReservationStatus(
+            @AuthOwner Long ownerId,
+            @PathVariable("reservationId") Long reservationId,
+            @RequestBody ReservationStatusUpdateRequest request) {
+
+        reservationService.updateReservationStatus(ownerId, reservationId, request);
+        return ApiSuccessResponse.of("success");
     }
 }
