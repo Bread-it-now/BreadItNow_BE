@@ -19,6 +19,7 @@ import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
+import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.region.entity.RegionPK;
 import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.external.domain.s3.FileUploaderService;
@@ -127,6 +128,9 @@ public class BakeryService {
 	public Long deleteBakery(Long ownerId, Long bakeryId) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 		bakery.changeIsActive(false);
+		for (Product product : bakery.getProducts()) {
+			product.updateActive(false);
+		}
 		return bakery.getId();
 	}
 

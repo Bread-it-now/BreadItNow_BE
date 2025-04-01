@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.global.exception.DomainException;
 
-public interface BakeryRepository extends JpaRepository<Bakery, Long> {
+public interface BakeryRepository extends JpaRepository<Bakery, Long>, BakeryRepositoryCustom {
 	boolean existsByOwnerIdAndIsActiveTrue(Long ownerId);
 
 	Optional<Bakery> findByOwnerIdAndIsActiveTrue(Long ownerId);

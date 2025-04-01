@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.notification.controller.res.NotificationPageResponse;
+import com.breaditnow.customer.domain.notification.service.NotificationPageService;
 import com.breaditnow.customer.domain.notification.service.NotificationService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import com.breaditnow.domain.domain.notification.enumerate.NotificationType;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/notification")
 public class NotificationController {
 	private final NotificationService notificationService;
+	private final NotificationPageService notificationPageService;
 
 	@PatchMapping("/{notification_id}/read")
 	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthCustomer Long customerId,
@@ -50,6 +52,6 @@ public class NotificationController {
 		@RequestParam(value = "type", defaultValue = "all", required = false) String type
 	) {
 		List<NotificationType> notificationTypes = NotificationType.parseTypes(type);
-		return ApiSuccessResponse.of(notificationService.getNotifications(customerId, pageable, notificationTypes));
+		return ApiSuccessResponse.of(notificationPageService.getNotifications(customerId, pageable, notificationTypes));
 	}
 }
