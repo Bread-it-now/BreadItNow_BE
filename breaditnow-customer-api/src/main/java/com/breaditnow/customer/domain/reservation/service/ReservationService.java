@@ -34,8 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.WAITING;
-import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_ALREADY_CANCELLED;
-import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_OUT_OF_STOCK;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -57,6 +56,10 @@ public class ReservationService {
         int totalPrice = request.reservationProducts().stream()
                 .mapToInt(req -> {
                     Product product = productRepository.getById(req.productId());
+
+                    if (!product.isActive() || product.isHidden()) {
+                        throw new DomainException(PRODUCT_CANNOT_ORDER);
+                    }
 
                     if (product.getStock() < req.quantity()) {
                         throw new DomainException(RESERVATION_OUT_OF_STOCK);
