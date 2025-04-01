@@ -5,6 +5,10 @@ spring:
   application:
     name: gateway-service
 
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
 
