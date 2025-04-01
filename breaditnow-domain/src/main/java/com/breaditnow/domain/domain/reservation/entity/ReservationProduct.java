@@ -55,4 +55,8 @@ public class ReservationProduct extends BaseEntity {
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
+
+	public void updateQuantity(int newQuantity) {
+		this.quantity = newQuantity;
+	}
 }
