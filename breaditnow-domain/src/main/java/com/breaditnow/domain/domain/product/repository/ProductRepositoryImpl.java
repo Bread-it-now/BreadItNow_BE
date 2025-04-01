@@ -7,6 +7,7 @@ import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
 import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.*;
+import static com.querydsl.core.types.dsl.Expressions.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -131,7 +132,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 	private BooleanExpression buildInterestAreaCondition(Long customerId) {
 		if (customerId == null) {
-			return null;
+			return TRUE;
 		}
 
 		Long preferenceCount = queryFactory
@@ -145,7 +146,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 			.fetchOne();
 
 		if (preferenceCount == null || preferenceCount == 0) {
-			return null;
+			return TRUE;
 		}
 
 		return JPAExpressions

@@ -6,6 +6,7 @@ import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavori
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
 import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.*;
+import static com.querydsl.core.types.dsl.Expressions.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -99,6 +100,9 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	}
 
 	private static BooleanExpression buildIsFavoriteExpression(Long customerId) {
+		if (customerId == null)
+			return FALSE;
+		
 		return JPAExpressions
 			.selectOne()
 			.from(customerBakeryFavorite)
@@ -124,7 +128,7 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 
 	private BooleanExpression buildInterestAreaCondition(Long customerId) {
 		if (customerId == null) {
-			return null;
+			return TRUE;
 		}
 
 		Long preferenceCount = queryFactory
@@ -138,7 +142,7 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			.fetchOne();
 
 		if (preferenceCount == null || preferenceCount == 0) {
-			return null;
+			return TRUE;
 		}
 
 		return JPAExpressions
