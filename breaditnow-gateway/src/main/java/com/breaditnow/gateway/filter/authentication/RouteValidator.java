@@ -1,4 +1,4 @@
-package com.breaditnow.gateway.filter;
+package com.breaditnow.gateway.filter.authentication;
 
 import java.util.List;
 import java.util.function.Predicate;

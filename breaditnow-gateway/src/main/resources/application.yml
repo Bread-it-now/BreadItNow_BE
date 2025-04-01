@@ -17,6 +17,11 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - name: LoggingFilter
+          args:
+            preLogger: true
+            postLogger: true
       routes:
         - id: oauth2
           uri: http://localhost:9000/
