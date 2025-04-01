@@ -37,6 +37,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 		return findByOwnerIdAndOptionalStatus(ownerId, ReservationRequestStatus.toReservationStatus(status), pageable);
 	}
 
+	default Reservation getByIdAndOwnerId(Long reservationId, Long ownerId) {
+		return findByIdAndOwnerId(reservationId, ownerId)
+				.orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
+	}
+
 	@Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND (:status IS NULL OR r.status = :status)")
 	Page<Reservation> findByCustomerIdAndOptionalStatus(@Param("customerId") Long customerId,
 		@Param("status") ReservationStatus status, Pageable pageable);
@@ -48,5 +53,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	@Query("SELECT r FROM Reservation r JOIN r.bakery b WHERE b.owner.id = :ownerId AND (:status IS NULL OR r.status = :status)")
 	Page<Reservation> findByOwnerIdAndOptionalStatus(@Param("ownerId") Long ownerId,
 	    @Param("status") ReservationStatus status, Pageable pageable);
+
+	@Query("SELECT r FROM Reservation r JOIN FETCH r.bakery b WHERE r.id = :reservationId AND b.owner.id = :ownerId")
+	Optional<Reservation> findByIdAndOwnerId(@Param("reservationId") Long reservationId, @Param("ownerId") Long ownerId);
+
 }
 
