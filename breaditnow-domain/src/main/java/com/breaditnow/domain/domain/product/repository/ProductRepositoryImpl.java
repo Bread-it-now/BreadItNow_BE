@@ -6,12 +6,13 @@ import static com.breaditnow.domain.domain.favorite.entity.QCustomerProductFavor
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservationProduct.*;
+import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -68,17 +70,22 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 			return new PageImpl<>(Collections.emptyList(), pageable, 0);
 		}
 
-		List<Long> productIds = queryFactory
+		JPAQuery<Long> query = queryFactory
 			.select(product.id)
 			.from(product)
 			.leftJoin(bakery).on(product.bakery.eq(bakery))
-			.leftJoin(reservationProduct).on(reservationProduct.product.eq(product).and(recentReservationCondition()))
+			.leftJoin(reservationProduct).on(
+				reservationProduct.product.eq(product)
+					.and(reservationProduct.reservation.status.eq(APPROVED))
+					.and(recentReservationCondition())
+			)
 			.where(buildBaseCondition().and(buildInterestAreaCondition(customerId)))
 			.groupBy(product.id)
 			.orderBy(reservationProduct.id.count().desc(), product.id.asc())
 			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.fetch();
+			.limit(pageable.getPageSize());
+
+		List<Long> productIds = query.fetch();
 
 		if (productIds.isEmpty()) {
 			return new PageImpl<>(Collections.emptyList(), pageable, totalCount);
@@ -109,14 +116,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 		Map<Long, Product> productMap = fetchedList.stream()
 			.collect(Collectors.toMap(Product::getId, p -> p));
 
-		List<Product> sortedList = new ArrayList<>();
-		for (Long pid : productIds) {
-			Product p = productMap.get(pid);
-			if (p != null) {
-				sortedList.add(p);
-			}
-		}
-		return sortedList;
+		return productIds.stream()
+			.map(productMap::get)
+			.filter(Objects::nonNull)
+			.toList();
 	}
 
 	private BooleanExpression buildBaseCondition() {
