@@ -5,6 +5,7 @@ import static com.breaditnow.domain.domain.customer.entity.QCustomerRegionPrefer
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.breaditnow.domain.domain.reservation.entity.QReservation.*;
+import static com.breaditnow.domain.domain.reservation.enumerate.ReservationStatus.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -74,10 +75,16 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression,
 				bakery.operatingStatus, isFavoriteExpr))
 			.from(bakery)
-			.leftJoin(product)
-			.on(product.bakery.eq(bakery).and(product.isActive.eq(true)).and(product.isHidden.eq(false)))
-			.leftJoin(reservation)
-			.on(reservation.bakery.eq(bakery).and(reservation.createdAt.goe(LocalDateTime.now().minusMonths(1))))
+			.leftJoin(product).on(
+				product.bakery.eq(bakery)
+					.and(product.isActive.eq(true))
+					.and(product.isHidden.eq(false))
+			)
+			.leftJoin(reservation).on(
+				reservation.bakery.eq(bakery)
+					.and(reservation.status.eq(APPROVED))
+					.and(reservation.createdAt.goe(LocalDateTime.now().minusMonths(1)))
+			)
 			.where(
 				buildBaseCondition()
 					.and(buildInterestAreaCondition(customerId))
