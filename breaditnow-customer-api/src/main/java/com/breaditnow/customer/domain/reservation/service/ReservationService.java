@@ -57,6 +57,10 @@ public class ReservationService {
                 .mapToInt(req -> {
                     Product product = productRepository.getById(req.productId());
 
+                    if (!product.getBakery().getId().equals(request.bakeryId())) {
+                        throw new DomainException(BAKERY_MISMATCH);
+                    }
+
                     if (!product.isActive() || product.isHidden()) {
                         throw new DomainException(PRODUCT_CANNOT_ORDER);
                     }
