@@ -27,13 +27,16 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
 			ServerHttpResponse response = exchange.getResponse();
 
 			if (config.isPreLogger()) {
-				log.info("Logging PRE Filter ===> Request Id: {}, Method: {}, URI: {}",
+				String formattedRequest = String.format("[Request-%-10s]  ==> Method: %6s | URI: %s",
 					request.getId(), request.getMethod(), request.getURI());
+				log.info(formattedRequest);
 			}
 
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 				if (config.isPostLogger()) {
-					log.info("Logging POST Filter ===> Request Id: {}, Response Code: {}", response.getStatusCode());
+					String formattedResponse = String.format("[Response-%-10s] ==> Status: %s",
+						request.getId(), response.getStatusCode());
+					log.info(formattedResponse);
 				}
 			}));
 		}, Ordered.HIGHEST_PRECEDENCE);

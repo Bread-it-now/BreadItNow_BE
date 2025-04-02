@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: gateway-service
+    name: gateway
 
   banner:
     location: static/banner/banner.txt
@@ -54,3 +54,10 @@ spring:
 auth:
   token:
     secret-key: ${AUTH_TOKEN_SECRET_KEY}
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
