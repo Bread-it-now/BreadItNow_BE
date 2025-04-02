@@ -1,6 +1,7 @@
 package com.breaditnow.owner.domain.bakery.service;
 
 import static com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus.*;
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ import com.breaditnow.external.domain.s3.FileUploaderService;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
-import com.breaditnow.owner.global.exception.OwnerErrorCode;
 import com.breaditnow.owner.global.exception.OwnerException;
 
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class BakeryService {
 		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(
 			bakeryCreateRequest.address());
 		if (addressCoordinate == null) {
-			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
+			throw new OwnerException(COORDINATE_NOT_FOUND);
 		}
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
@@ -96,7 +96,7 @@ public class BakeryService {
 		Address address = new Address(regionPK, bakeryUpdateRequest.address());
 		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(bakeryUpdateRequest.address());
 		if (addressCoordinate == null) {
-			throw new OwnerException(OwnerErrorCode.COORDINATE_NOT_FOUND);
+			throw new OwnerException(COORDINATE_NOT_FOUND);
 		}
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
