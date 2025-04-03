@@ -1,7 +1,8 @@
 dependencies {
-    implementation project(":breaditnow-redis")
     implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
+    implementation project(":breaditnow-redis")
+    implementation project(":breaditnow-logging")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
