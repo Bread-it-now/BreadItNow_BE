@@ -27,14 +27,14 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
 			ServerHttpResponse response = exchange.getResponse();
 
 			if (config.isPreLogger()) {
-				String formattedRequest = String.format("[Request-%-10s]  ==> Method: %6s | URI: %s",
+				String formattedRequest = String.format("[Request] ID: %-10s, Method: %s, URI: %s",
 					request.getId(), request.getMethod(), request.getURI());
 				log.info(formattedRequest);
 			}
 
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 				if (config.isPostLogger()) {
-					String formattedResponse = String.format("[Response-%-10s] ==> Status: %s",
+					String formattedResponse = String.format("[Response] ID: %-10s,  Status: %s",
 						request.getId(), response.getStatusCode());
 					log.info(formattedResponse);
 				}

@@ -5,6 +5,7 @@
     <springProfile name="local">
         <include resource="logging/console-appender.xml"/>
         <include resource="logging/file-appender.xml"/>
+        <include resource="logging/res-res-appender.xml"/>
 
         <root level="${LOG_LEVEL}">
             <appender-ref ref="CONSOLE"/>
@@ -18,6 +19,7 @@
     <springProfile name="prod">
         <include resource="logging/console-appender.xml"/>
         <include resource="logging/file-appender.xml"/>
+        <include resource="logging/res-res-appender.xml"/>
 
         <root level="${LOG_LEVEL}">
             <appender-ref ref="CONSOLE"/>

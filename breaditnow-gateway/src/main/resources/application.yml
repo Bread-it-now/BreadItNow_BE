@@ -61,3 +61,4 @@ logging:
     path: logs
   level:
     root: INFO
+    com.breaditnow.gateway.filter: DEBUG
