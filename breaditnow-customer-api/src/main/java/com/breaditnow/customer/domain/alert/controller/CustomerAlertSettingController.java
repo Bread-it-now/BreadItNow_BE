@@ -3,6 +3,7 @@ package com.breaditnow.customer.domain.alert.controller;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.alert.controller.req.CustomerDoNotDisturbUpdateRequest;
 import com.breaditnow.customer.domain.alert.controller.res.CustomerDoNotDisturbResponse;
+import com.breaditnow.customer.domain.alert.controller.res.CustomerDoNotDisturbToggleResponse;
 import com.breaditnow.customer.domain.alert.service.CustomerAlertSettingService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,13 @@ public class CustomerAlertSettingController {
     ) {
         customerAlertSettingService.updateDoNotDisturbSetting(customerId, request);
         return ApiSuccessResponse.of();
+    }
+
+    @PatchMapping("/do-not-disturb/toggle")
+    public ApiSuccessResponse<CustomerDoNotDisturbToggleResponse> toggleDoNotDisturb(
+            @AuthCustomer Long customerId
+    ) {
+        boolean isActive = customerAlertSettingService.toggleDoNotDisturb(customerId);
+        return ApiSuccessResponse.of(CustomerDoNotDisturbToggleResponse.of(isActive));
     }
 }

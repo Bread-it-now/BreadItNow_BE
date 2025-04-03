@@ -51,4 +51,14 @@ public class CustomerAlertSettingService {
 
         alertSettingRepository.save(setting);
     }
+
+    @Transactional
+    public boolean toggleDoNotDisturb(Long customerId) {
+        CustomerAlertSetting setting = alertSettingRepository.getByCustomerId(customerId);
+
+        setting.setActive(!setting.isActive());
+        alertSettingRepository.save(setting);
+
+        return setting.isActive();
+    }
 }
