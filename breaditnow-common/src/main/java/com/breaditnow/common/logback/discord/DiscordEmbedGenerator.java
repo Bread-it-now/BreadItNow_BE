@@ -34,7 +34,7 @@ public class DiscordEmbedGenerator {
 		Map<String, String> mdc = event.getMDCPropertyMap();
 
 		EmbedObject embed = new EmbedObject()
-			.setTitle("🚨 에러 발생")
+			.setTitle("🚨 API 에러 발생")
 			.setColor(getLevelColor(event))
 			.setDescription(getExceptionSummary(event))
 			.addField("[문제 발생 시각]", nowString(), false);

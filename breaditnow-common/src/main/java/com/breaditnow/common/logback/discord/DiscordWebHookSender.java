@@ -9,11 +9,11 @@ import org.springframework.http.ResponseEntity;
 import com.breaditnow.common.exception.BreaditnowException;
 import com.breaditnow.common.util.RestTemplateUtil;
 
-public class DiscordWebHook {
+public class DiscordWebHookSender {
 
 	private final String urlString;
 
-	public DiscordWebHook(String urlString) {
+	public DiscordWebHookSender(String urlString) {
 		this.urlString = urlString;
 	}
 

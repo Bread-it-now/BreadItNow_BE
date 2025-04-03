@@ -27,11 +27,11 @@ public class DiscordAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
 	@Override
 	protected void append(ILoggingEvent eventObject) {
-		DiscordWebHook discordWebHook = new DiscordWebHook(discordWebhookUrl);
+		DiscordWebHookSender discordWebHookSender = new DiscordWebHookSender(discordWebhookUrl);
 
 		String payload = createPayload(eventObject, username, avatarUrl);
 
-		discordWebHook.send(payload);
+		discordWebHookSender.send(payload);
 	}
 
 	public String createPayload(ILoggingEvent event, String username, String avatarUrl) {

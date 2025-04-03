@@ -4,6 +4,7 @@ import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.breaditnow.gateway.client.discord.DiscordWebHookSender;
 import com.breaditnow.gateway.exception.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,9 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class ErrorExceptionConfig {
 
 	private final ObjectMapper objectMapper;
+	private final DiscordWebHookSender discordWebHookSender;
 
 	@Bean
 	public ErrorWebExceptionHandler globalExceptionHandler() {
-		return new GlobalExceptionHandler(objectMapper);
+		return new GlobalExceptionHandler(objectMapper, discordWebHookSender);
 	}
 }
