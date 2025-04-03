@@ -34,7 +34,7 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
 
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 				if (config.isPostLogger()) {
-					String formattedResponse = String.format("[Response] ID: %-10s,  Status: %s",
+					String formattedResponse = String.format("[Response] ID: %-10s, Status: %s",
 						request.getId(), response.getStatusCode());
 					log.info(formattedResponse);
 				}
