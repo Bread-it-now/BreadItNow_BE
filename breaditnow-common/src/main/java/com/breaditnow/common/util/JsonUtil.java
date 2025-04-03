@@ -1,12 +1,15 @@
 package com.breaditnow.common.util;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import static com.breaditnow.common.exception.CommonErrorCode.*;
 
+import java.io.IOException;
+
+import com.breaditnow.common.exception.BreaditnowException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public class JsonUtil {
 
@@ -16,25 +19,24 @@ public class JsonUtil {
 		try {
 			return mapper.readValue(request.getInputStream(), type);
 		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
+			throw new BreaditnowException(JSON_DESERIALIZATION_ERROR, e.getMessage());
 		}
 	}
 
-	public static void writeValue(OutputStream stream, Object value) {
+	public static <T> T fromJson(String json, TypeReference<T> typeRef) {
 		try {
-			mapper.writeValue(stream, value);
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
+			return mapper.readValue(json, typeRef);
+		} catch (JsonProcessingException e) {
+			throw new BreaditnowException(JSON_DESERIALIZATION_ERROR, e.getMessage());
 		}
 	}
 
-	public static void writeValue(HttpServletResponse response, Object value) {
+	public static String toJson(Object object) {
 		try {
-			mapper.writeValue(response.getOutputStream(), value);
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
+			return mapper.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			throw new BreaditnowException(JSON_SERIALIZATION_ERROR, e.getMessage());
 		}
-
 	}
 
 }

@@ -10,9 +10,11 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.breaditnow.gateway.client.discord.DiscordWebHookSender;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,9 +28,11 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 	private final ObjectMapper objectMapper;
+	private final DiscordWebHookSender discordWebHookSender;
 
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
+		ServerHttpRequest request = exchange.getRequest();
 		ServerHttpResponse response = exchange.getResponse();
 
 		if (response.isCommitted()) {
@@ -40,6 +44,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 		if (ex instanceof GatewayException gatewayException) {
 			gwErrorResponse = GWErrorResponse.of(gatewayException.getErrorCode());
 			status = gatewayException.getErrorCode().getHttpStatus();
+
 			log.error("[{}}] code={}, message={}",
 				gatewayException.getClass().getName(),
 				gatewayException.getErrorCode().name(),
@@ -49,11 +54,10 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 			gwErrorResponse = GWErrorResponse.of(UNDEFINED_ERROR, ex.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-			log.error("[{}] message={}",
-				ex.getClass().getName(),
-				ex.getMessage(), ex
-			);
+			log.error("[{}] message={}", ex.getClass().getName(), ex.getMessage(), ex);
 		}
+
+		discordWebHookSender.sendError(ex, exchange.getRequest());
 
 		response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 		response.setStatusCode(status);
@@ -72,4 +76,5 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 		DataBuffer buffer = bufferFactory.wrap(errorResponse);
 		return exchange.getResponse().writeWith(Flux.just(buffer));
 	}
+
 }

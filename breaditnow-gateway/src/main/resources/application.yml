@@ -62,3 +62,9 @@ logging:
   level:
     root: INFO
     com.breaditnow.gateway.filter: DEBUG
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}

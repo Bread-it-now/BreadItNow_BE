@@ -7,8 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 	"com.breaditnow.owner",
 	"com.breaditnow.domain",
 	"com.breaditnow.common",
-	"com.breaditnow.external",
-	"com.breaditnow.logging"
+	"com.breaditnow.external"
 })
 public class BreaditnowOwnerApplication {
 	public static void main(String[] args) {
