@@ -40,7 +40,7 @@ public class DiscordWebHookSender {
 		Map<String, Object> embed = new LinkedHashMap<>();
 		embed.put("title", "🚨 Gateway 에러 발생");
 		embed.put("description", "[" + ex.getClass().getSimpleName() + "] " + ex.getMessage());
-		embed.put("color", 0xFF4500);
+		embed.put("color", 0x3498DB);
 		embed.put("fields", new Object[] {
 			createField("[문제 발생 시각]", timestamp, true),
 			createField("[이용자 요청 전체 URL 정보]", safe(request.getURI().toString()), false),
