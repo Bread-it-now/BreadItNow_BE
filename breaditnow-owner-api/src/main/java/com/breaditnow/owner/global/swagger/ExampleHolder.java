@@ -1,4 +1,4 @@
-package com.breaditnow.external.domain.swagger;
+package com.breaditnow.owner.global.swagger;
 
 import io.swagger.v3.oas.models.examples.Example;
 import lombok.Builder;

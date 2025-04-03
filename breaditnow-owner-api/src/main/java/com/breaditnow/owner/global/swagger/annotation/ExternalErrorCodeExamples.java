@@ -1,4 +1,4 @@
-package com.breaditnow.external.domain.swagger;
+package com.breaditnow.owner.global.swagger.annotation;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
@@ -6,10 +6,10 @@ import static java.lang.annotation.RetentionPolicy.*;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.breaditnow.common.exception.ErrorCode;
+import com.breaditnow.external.global.exception.ExternalErrorCode;
 
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface ApiErrorCodeExample {
-	Class<? extends ErrorCode> value();
+public @interface ExternalErrorCodeExamples {
+	ExternalErrorCode[] value();
 }

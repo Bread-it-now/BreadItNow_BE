@@ -1,8 +1,10 @@
-package com.breaditnow.external.global.config;
+package com.breaditnow.owner.global.config;
 
+import static io.swagger.v3.oas.models.security.SecurityScheme.In.*;
 import static io.swagger.v3.oas.models.security.SecurityScheme.Type.*;
 import static java.util.stream.Collectors.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +19,11 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.breaditnow.common.exception.ErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;
-import com.breaditnow.external.domain.swagger.ApiErrorCodeExample;
-import com.breaditnow.external.domain.swagger.ExampleHolder;
+import com.breaditnow.owner.global.swagger.ExampleHolder;
+import com.breaditnow.owner.global.swagger.annotation.CommonErrorCodeExamples;
+import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.owner.global.swagger.annotation.ExternalErrorCodeExamples;
+import com.breaditnow.owner.global.swagger.annotation.OwnerApiErrorCodeExamples;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.core.jackson.ModelResolver;
@@ -26,7 +31,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -42,25 +46,18 @@ public class SwaggerConfig {
 
 	@Bean
 	public OpenAPI openAPI() {
-		String jwt = "JWT";
-		SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
-		Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
-			.name(jwt)
+		SecurityScheme apiKey = new SecurityScheme()
 			.type(HTTP)
+			.in(HEADER)
+			.name("Authorization")
 			.scheme("bearer")
-			.bearerFormat(jwt)
-		);
-		return new OpenAPI()
-			.info(apiInfo())
-			.addSecurityItem(securityRequirement)
-			.components(components);
-	}
+			.bearerFormat("JWT");
 
-	private Info apiInfo() {
-		return new Info()
-			.title("API Test") // API의 제목
-			.description("Let's practice Swagger UI") // API에 대한 설명
-			.version("1.0.0"); // API의 버전
+		SecurityRequirement securityRequirement = new SecurityRequirement().addList("Bearer Token");
+
+		return new OpenAPI()
+			.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
+			.addSecurityItem(securityRequirement);
 	}
 
 	@Bean
@@ -72,20 +69,39 @@ public class SwaggerConfig {
 	@Primary
 	public OperationCustomizer customize() {
 		return (Operation operation, HandlerMethod handlerMethod) -> {
-			ApiErrorCodeExample apiErrorCodeExample = handlerMethod.getMethodAnnotation(ApiErrorCodeExample.class);
-			if (apiErrorCodeExample != null) {
-				generateErrorCodeResponseExample(operation, apiErrorCodeExample.value());
+			List<ErrorCode> errorCodes = new ArrayList<>();
+
+			OwnerApiErrorCodeExamples ownerApiErrorCodeExamples = handlerMethod.getMethodAnnotation(
+				OwnerApiErrorCodeExamples.class);
+			DomainErrorCodeExamples domainErrorCodeExamples = handlerMethod.getMethodAnnotation(
+				DomainErrorCodeExamples.class);
+			ExternalErrorCodeExamples externalErrorCodeExamples = handlerMethod.getMethodAnnotation(
+				ExternalErrorCodeExamples.class);
+			CommonErrorCodeExamples commonErrorCodeExamples = handlerMethod.getMethodAnnotation(
+				CommonErrorCodeExamples.class);
+
+			if (ownerApiErrorCodeExamples != null) {
+				errorCodes.addAll(Arrays.asList(ownerApiErrorCodeExamples.value()));
 			}
+			if (domainErrorCodeExamples != null) {
+				errorCodes.addAll(Arrays.asList(domainErrorCodeExamples.value()));
+			}
+			if (externalErrorCodeExamples != null) {
+				errorCodes.addAll(Arrays.asList(externalErrorCodeExamples.value()));
+			}
+			if (commonErrorCodeExamples != null) {
+				errorCodes.addAll(Arrays.asList(commonErrorCodeExamples.value()));
+			}
+
+			generateErrorCodeResponseExample(operation, errorCodes);
+
 			return operation;
 		};
 	}
 
-	private void generateErrorCodeResponseExample(Operation operation, Class<? extends ErrorCode> type) {
+	private void generateErrorCodeResponseExample(Operation operation, List<ErrorCode> errorCodes) {
 		ApiResponses responses = operation.getResponses();
-
-		ErrorCode[] errorCodes = type.getEnumConstants();
-
-		Map<Integer, List<ExampleHolder>> statusWithExampleHolders = Arrays.stream(errorCodes)
+		Map<Integer, List<ExampleHolder>> statusWithExampleHolders = errorCodes.stream()
 			.map(errorCode -> ExampleHolder.builder()
 				.holder(getSwaggerExample(errorCode))
 				.code(errorCode.getHttpStatus().value())
