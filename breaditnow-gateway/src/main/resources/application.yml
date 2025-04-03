@@ -3,13 +3,25 @@ server:
 
 spring:
   application:
-    name: gateway-service
+    name: gateway
+
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
 
   webflux:
     static-path-pattern: "/static/**"
 
   cloud:
     gateway:
+      default-filters:
+        - name: LoggingFilter
+          args:
+            preLogger: true
+            postLogger: true
       routes:
         - id: oauth2
           uri: http://localhost:9000/
@@ -42,3 +54,11 @@ spring:
 auth:
   token:
     secret-key: ${AUTH_TOKEN_SECRET_KEY}
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+    com.breaditnow.gateway.filter: DEBUG

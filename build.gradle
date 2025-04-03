@@ -66,13 +66,13 @@ subprojects {
 task cleanAll {
     dependsOn ':breaditnow-gateway:clean', ':breaditnow-auth-api:clean',
             ':breaditnow-customer-api:clean', ':breaditnow-owner-api:clean',
-            ':breaditnow-external:clean', ':breaditnow-common:clean',
+            ':breaditnow-external:clean', ':breaditnow-common:clean', ':breaditnow-logging:clean',
             ':breaditnow-domain:clean', ':breaditnow-redis:clean'
 }
 
 // 공통 모듈 build
 task buildCommons {
-    dependsOn ':breaditnow-external:build', ':breaditnow-common:build',
+    dependsOn ':breaditnow-external:build', ':breaditnow-common:build', ':breaditnow-logging:build',
             ':breaditnow-domain:build', ':breaditnow-redis:build'
 }
 

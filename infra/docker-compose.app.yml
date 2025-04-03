@@ -36,6 +36,8 @@ services:
       OAUTH2_NAVER_REDIRECT_URI: ${OAUTH2_NAVER_REDIRECT_URI}
       AUTH_TOKEN_SECRET_KEY: ${AUTH_TOKEN_SECRET_KEY}
       REFRESH_COOKIE_KEY: ${REFRESH_COOKIE_KEY}
+    volumes:
+      - ${LOG_VOLUME_PATH}/auth-api:/app/logs/auth-api
     networks:
       - bin-network
 
@@ -55,6 +57,8 @@ services:
       AWS_S3_CREDENTIALS_ACCESS_KEY: ${AWS_S3_CREDENTIALS_ACCESS_KEY}
       AWS_S3_CREDENTIALS_SECRET_KEY: ${AWS_S3_CREDENTIALS_SECRET_KEY}
       FCM_PROJECT_ID: ${FCM_PROJECT_ID}
+    volumes:
+      - ${LOG_VOLUME_PATH}/customer-api:/app/logs/customer-api
     networks:
       - bin-network
 
@@ -75,6 +79,8 @@ services:
       AWS_S3_CREDENTIALS_ACCESS_KEY: ${AWS_S3_CREDENTIALS_ACCESS_KEY}
       AWS_S3_CREDENTIALS_SECRET_KEY: ${AWS_S3_CREDENTIALS_SECRET_KEY}
       FCM_PROJECT_ID: ${FCM_PROJECT_ID}
+    volumes:
+      - ${LOG_VOLUME_PATH}/owner-api:/app/logs/owner-api
     networks:
       - bin-network
 

@@ -1,4 +1,4 @@
-package com.breaditnow.gateway.filter;
+package com.breaditnow.gateway.filter.authentication;
 
 import static com.breaditnow.gateway.exception.GatewayErrorCode.*;
 

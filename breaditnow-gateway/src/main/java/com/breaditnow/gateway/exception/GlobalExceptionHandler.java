@@ -40,9 +40,19 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 		if (ex instanceof GatewayException gatewayException) {
 			gwErrorResponse = GWErrorResponse.of(gatewayException.getErrorCode());
 			status = gatewayException.getErrorCode().getHttpStatus();
+			log.error("[{}}] code={}, message={}",
+				gatewayException.getClass().getName(),
+				gatewayException.getErrorCode().name(),
+				gatewayException.getMessage()
+			);
 		} else {
 			gwErrorResponse = GWErrorResponse.of(UNDEFINED_ERROR, ex.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+			log.error("[{}] message={}",
+				ex.getClass().getName(),
+				ex.getMessage(), ex
+			);
 		}
 
 		response.getHeaders().setContentType(MediaType.APPLICATION_JSON);

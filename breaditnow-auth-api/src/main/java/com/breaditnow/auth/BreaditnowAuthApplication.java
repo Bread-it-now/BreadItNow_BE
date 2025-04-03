@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 	"com.breaditnow.auth",
 	"com.breaditnow.domain",
 	"com.breaditnow.common",
-	"com.breaditnow.redis"})
+	"com.breaditnow.redis",
+	"com.breaditnow.logging"})
 public class BreaditnowAuthApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BreaditnowAuthApplication.class, args);

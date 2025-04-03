@@ -27,22 +27,17 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	protected ApiErrorResponse handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException ex) {
+		log.error("[{}] {}", ex.getClass().getName(), ex.getMessage());
 		List<ErrorDetail> errors = ex.getBindingResult().getFieldErrors().stream()
 			.map(fieldError -> new ErrorDetail(fieldError.getField(), fieldError.getDefaultMessage()))
 			.collect(toList());
 		return ApiErrorResponse.of(INVALID_PARAMETER, errors);
 	}
 
-	@ExceptionHandler(value = BreaditnowException.class)
-	public ResponseEntity<ApiErrorResponse> handleBusinessException(BreaditnowException ex) {
-		ErrorCode errorCode = ex.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus())
-			.body(ApiErrorResponse.of(errorCode));
-	}
-
 	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ApiErrorResponse> handleMethodArgumentTypeMismatchException(
 		MethodArgumentTypeMismatchException ex) {
+		log.error("[{}] {}", ex.getClass().getName(), ex.getMessage());
 		Throwable root = NestedExceptionUtils.getRootCause(ex);
 
 		if (root instanceof BreaditnowException customerEx) {
@@ -55,8 +50,21 @@ public class GlobalExceptionHandler {
 			.body(ApiErrorResponse.of(ARGUMENT_TYPE_MISMATCH, ex.getMessage()));
 	}
 
+	@ExceptionHandler(value = BreaditnowException.class)
+	public ResponseEntity<ApiErrorResponse> handleBusinessException(BreaditnowException ex) {
+		ErrorCode errorCode = ex.getErrorCode();
+		log.error("[{}] code={}, message={}",
+			ex.getClass().getName(),
+			errorCode.getCode(),
+			ex.getMessage()
+		);
+		return ResponseEntity.status(errorCode.getHttpStatus())
+			.body(ApiErrorResponse.of(errorCode));
+	}
+
 	@ExceptionHandler(value = Exception.class)
 	public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
+		log.error("[{}] {}", ex.getClass().getName(), ex.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(ApiErrorResponse.of(UNDEFINED_ERROR, ex.getMessage()));
 	}
