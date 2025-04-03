@@ -6,8 +6,10 @@ import static java.lang.annotation.RetentionPolicy.*;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.breaditnow.common.exception.ErrorCode;
+
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface ApiErrorBaseExamples {
-	ApiErrorBaseExample[] value();
+public @interface ApiErrorCodeExample {
+	Class<? extends ErrorCode> value();
 }

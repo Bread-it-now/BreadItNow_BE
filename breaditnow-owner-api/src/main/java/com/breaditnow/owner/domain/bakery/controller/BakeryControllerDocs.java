@@ -7,8 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.domain.global.exception.DomainErrorCode;
-import com.breaditnow.external.domain.swagger.ApiErrorBaseExample;
-import com.breaditnow.external.domain.swagger.ApiErrorBaseExamples;
+import com.breaditnow.external.domain.swagger.ApiErrorCodeExample;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.OperatingStatusRequest;
@@ -19,33 +18,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Owner - 빵집 API")
 public interface BakeryControllerDocs {
-	@Operation(
-		summary = "빵집 등록",
-		description = "소유자 정보를 바탕으로 빵집을 등록합니다."
-	)
-	@ApiErrorBaseExamples({
-		@ApiErrorBaseExample(
-			codeClass = DomainErrorCode.class,
-			codeConstant = "OWNER_NOT_FOUND"),
-		@ApiErrorBaseExample(
-			codeClass = DomainErrorCode.class,
-			codeConstant = "DUPLICATE_OWNER_BAKERY")
-	})
+	@Operation(summary = "소유자 정보를 바탕으로 빵집을 등록합니다.")
+	@ApiErrorCodeExample(DomainErrorCode.class)
 	ApiSuccessResponse<Map<String, Long>> createBakery(Long ownerId, BakeryCreateRequest request,
 		MultipartFile profileImage);
 
-	@Operation(
-		summary = "빵집 조회",
-		description = "빵집 아이디로 빵집의 상세 정보를 조회합니다."
-	)
-	@ApiErrorBaseExamples({
-		@ApiErrorBaseExample(
-			codeClass = DomainErrorCode.class,
-			codeConstant = "BAKERY_NOT_FOUND"),
-		@ApiErrorBaseExample(
-			codeClass = DomainErrorCode.class,
-			codeConstant = "BAKERY_INACTIVE")
-	})
+	@Operation(summary = "빵집 아이디로 빵집의 상세 정보를 조회합니다.")
+	@ApiErrorCodeExample(DomainErrorCode.class)
 	ApiSuccessResponse<BakeryResponse> getBakery(Long bakeryId);
 
 	@Operation(

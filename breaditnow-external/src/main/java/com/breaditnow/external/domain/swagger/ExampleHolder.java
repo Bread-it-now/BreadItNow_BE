@@ -5,8 +5,8 @@ import lombok.Builder;
 
 @Builder
 public record ExampleHolder(
-	Example example,
-	String exampleName,
-	int httpStatusValue
+	Example holder,
+	String name,
+	int code
 ) {
 }
