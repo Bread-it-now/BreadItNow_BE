@@ -1,9 +1,12 @@
 package com.breaditnow.common.logback.discord;
 
+import static com.breaditnow.common.exception.CommonErrorCode.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.breaditnow.common.exception.BreaditnowException;
 import com.breaditnow.common.logback.discord.object.EmbedObject;
 import com.breaditnow.common.logback.discord.object.Field;
 import com.breaditnow.common.logback.discord.object.JsonObject;
@@ -12,7 +15,7 @@ public class DiscordEmbedBuilder {
 
 	public JsonObject createEmbedJson(List<EmbedObject> embeds) {
 		if (embeds.isEmpty()) {
-			// throw new BreaditnowException(CREATE_DISCORD_APPEND_MESSAGE_FAILURE);
+			throw new BreaditnowException(CREATE_DISCORD_APPEND_MESSAGE_FAILURE);
 		}
 
 		List<JsonObject> embedObjects = new ArrayList<>();
