@@ -14,7 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class DirectAuthenticationFailureHandler implements AuthenticationFailureHandler {
 	@Override
@@ -24,6 +26,9 @@ public class DirectAuthenticationFailureHandler implements AuthenticationFailure
 		String errorMessage = exception.getMessage();
 
 		AuthErrorCode authErrorCode = AuthErrorCode.valueOf(errorMessage);
+
+		log.error("[{}] code={}, message={}", exception.getClass().getName(), authErrorCode.getCode(),
+			exception.getMessage());
 
 		response.setContentType(APPLICATION_JSON_UTF8_VALUE);
 		String responseBody = new ObjectMapper().writeValueAsString(
