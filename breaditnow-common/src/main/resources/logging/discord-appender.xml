@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty name="DISCORD_USERNAME" source="webhook.discord.username"/>
+    <springProperty name="DISCORD_AVATAR_URL" source="webhook.discord.avatar-url"/>
+    <springProperty name="DISCORD_WEBHOOK_ERROR_URL" source="webhook.discord.error-url"/>
+
+    <appender name="DISCORD"
+              class="com.breaditnow.common.logback.discord.DiscordAppender">
+        <discordWebhookURL>${DISCORD_WEBHOOK_ERROR_URL}</discordWebhookURL>
+        <username>${DISCORD_USERNAME}</username>
+        <avatarUrl>${DISCORD_AVATAR_URL}</avatarUrl>
+    </appender>
+
+    <appender name="ASYNC_DISCORD" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="DISCORD"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+</configuration>
