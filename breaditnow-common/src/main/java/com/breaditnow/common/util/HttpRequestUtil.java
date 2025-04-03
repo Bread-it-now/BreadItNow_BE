@@ -21,6 +21,12 @@ public class HttpRequestUtil {
 		return request.getRequestURI();
 	}
 
+	public static String getRequestFullUrl(HttpServletRequest request) {
+		StringBuffer requestURL = request.getRequestURL();
+		String queryString = request.getQueryString();
+		return queryString == null ? requestURL.toString() : requestURL.append('?').append(queryString).toString();
+	}
+
 	public static Map<String, String> getParamMap(HttpServletRequest request) {
 		Map<String, String> paramMap = new HashMap<>();
 		request.getParameterNames().asIterator()

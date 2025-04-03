@@ -40,7 +40,8 @@ public class DiscordEmbedGenerator {
 			.addField("[문제 발생 시각]", nowString(), false);
 
 		if (mdc.get(MDCUtil.REQUEST_URI_MDC) != null) {
-			embed.addField("[" + MDCUtil.REQUEST_URI_MDC + "]", escape(mdc.get(MDCUtil.REQUEST_URI_MDC)), false)
+			embed.addField("[" + MDCUtil.REQUEST_FULL_URL_MDC + "]", escape(mdc.get(MDCUtil.REQUEST_FULL_URL_MDC)),
+					false)
 				.addField("[" + MDCUtil.USER_IP_MDC + "]", escape(mdc.get(MDCUtil.USER_IP_MDC)), false)
 				.addField("[" + MDCUtil.USER_AGENT_DETAIL_MDC + "]", escape(mdc.get(MDCUtil.USER_AGENT_DETAIL_MDC)),
 					false)
