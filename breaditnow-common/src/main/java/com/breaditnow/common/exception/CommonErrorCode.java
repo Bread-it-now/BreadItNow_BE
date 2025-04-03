@@ -25,10 +25,16 @@ public enum CommonErrorCode implements ErrorCode {
 	/**
 	 * Webhook(AC000)
 	 */
-	JSON_PARSER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Y002", "Json Parser 오류"),
-	CREATE_DISCORD_APPEND_MESSAGE_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "Y001", "디스코드 메시지 생성을 실패했습니다."),
-	DISCORD_SEND_MESSAGE_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "Y001", "디스코드 메시지 전송을 실패했습니다."),
-	MISSING_DISCORD_CONTENT_OR_EMBEDS(HttpStatus.BAD_REQUEST, "Y003", "디스코드 메시지 내용 또는 Embed가 누락되었습니다.");
+	CREATE_DISCORD_APPEND_MESSAGE_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "AC001", "디스코드 메시지 생성을 실패했습니다."),
+	DISCORD_SEND_MESSAGE_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "AC001", "디스코드 메시지 전송을 실패했습니다."),
+	MISSING_DISCORD_CONTENT_OR_EMBEDS(HttpStatus.BAD_REQUEST, "AC003", "디스코드 메시지 내용 또는 Embed가 누락되었습니다."),
+
+	/**
+	 * Json(AD000)
+	 */
+	JSON_PARSER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AD001", "Json Parser 오류"),
+	JSON_SERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AD002", "JSON으로 직렬화하는데 실패했습니다."),
+	JSON_DESERIALIZATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "AD003", "JSON을 역직렬화하는데 실패했습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
