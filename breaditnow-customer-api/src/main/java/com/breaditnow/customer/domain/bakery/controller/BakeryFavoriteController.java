@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bakery")
-public class BakeryFavoriteController {
+public class BakeryFavoriteController implements BakeryFavoriteControllerDocs {
 	private final BakeryFavoriteService bakeryFavoriteService;
 	private final BakeryFavoritePageService bakeryFavoritePageService;
 

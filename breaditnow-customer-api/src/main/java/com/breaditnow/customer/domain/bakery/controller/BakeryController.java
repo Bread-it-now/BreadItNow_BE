@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bakery")
-public class BakeryController {
+public class BakeryController implements BakeryControllerDocs {
 	private final BakeryService bakeryService;
 	private final BakeryPageService bakeryPageService;
 
@@ -29,7 +29,7 @@ public class BakeryController {
 		@PathVariable("bakery_id") Long bakeryId) {
 		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}
-	
+
 	@GetMapping("/hot")
 	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer(required = false) Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,

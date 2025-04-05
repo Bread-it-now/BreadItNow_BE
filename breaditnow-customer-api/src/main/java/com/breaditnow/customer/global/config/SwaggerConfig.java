@@ -1,4 +1,4 @@
-package com.breaditnow.owner.global.config;
+package com.breaditnow.customer.global.config;
 
 import static io.swagger.v3.oas.models.security.SecurityScheme.In.*;
 import static io.swagger.v3.oas.models.security.SecurityScheme.Type.*;
@@ -20,10 +20,10 @@ import org.springframework.web.method.HandlerMethod;
 import com.breaditnow.common.exception.ErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;
 import com.breaditnow.common.swagger.ExampleHolder;
-import com.breaditnow.owner.global.swagger.annotation.CommonErrorCodeExamples;
-import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
-import com.breaditnow.owner.global.swagger.annotation.ExternalErrorCodeExamples;
-import com.breaditnow.owner.global.swagger.annotation.OwnerApiErrorCodeExamples;
+import com.breaditnow.customer.global.swagger.annotation.CommonErrorCodeExamples;
+import com.breaditnow.customer.global.swagger.annotation.CustomerApiErrorCodeExamples;
+import com.breaditnow.customer.global.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.global.swagger.annotation.ExternalErrorCodeExamples;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.core.jackson.ModelResolver;
@@ -71,8 +71,8 @@ public class SwaggerConfig {
 		return (Operation operation, HandlerMethod handlerMethod) -> {
 			List<ErrorCode> errorCodes = new ArrayList<>();
 
-			OwnerApiErrorCodeExamples ownerApiErrorCodeExamples = handlerMethod.getMethodAnnotation(
-				OwnerApiErrorCodeExamples.class);
+			CustomerApiErrorCodeExamples customerApiErrorCodeExamples = handlerMethod.getMethodAnnotation(
+				CustomerApiErrorCodeExamples.class);
 			DomainErrorCodeExamples domainErrorCodeExamples = handlerMethod.getMethodAnnotation(
 				DomainErrorCodeExamples.class);
 			ExternalErrorCodeExamples externalErrorCodeExamples = handlerMethod.getMethodAnnotation(
@@ -80,8 +80,8 @@ public class SwaggerConfig {
 			CommonErrorCodeExamples commonErrorCodeExamples = handlerMethod.getMethodAnnotation(
 				CommonErrorCodeExamples.class);
 
-			if (ownerApiErrorCodeExamples != null) {
-				errorCodes.addAll(Arrays.asList(ownerApiErrorCodeExamples.value()));
+			if (customerApiErrorCodeExamples != null) {
+				errorCodes.addAll(Arrays.asList(customerApiErrorCodeExamples.value()));
 			}
 			if (domainErrorCodeExamples != null) {
 				errorCodes.addAll(Arrays.asList(domainErrorCodeExamples.value()));
