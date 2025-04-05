@@ -39,6 +39,24 @@ spring:
             - JwtAuthentication=ROLE_OWNER
             - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
 
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    use-root-path: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /auth-api/v3/api-docs
+        name: Auth API
+      - url: /customer-api/v3/api-docs
+        name: Customer API
+      - url: /owner-api/v3/api-docs
+        name: Owner API
+
 auth:
   token:
     secret-key: ${AUTH_TOKEN_SECRET_KEY}
+
