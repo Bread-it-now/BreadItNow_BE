@@ -11,14 +11,21 @@ import com.breaditnow.customer.global.swagger.annotation.DomainErrorCodeExamples
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Customer - 빵집 API")
+@Tag(name = "Customer - 빵집 API", description = "고객용 빵집 관련 API")
 public interface BakeryControllerDocs {
-	@Operation(summary = "고객 ID와 빵집 ID를 기반으로 빵집 상세 정보를 조회합니다.")
+
+	@Operation(
+		summary = "빵집 상세 정보 조회",
+		description = "고객 ID와 빵집 ID를 기반으로 빵집의 상세 정보를 조회합니다."
+	)
 	@DomainErrorCodeExamples({BAKERY_INACTIVE, BAKERY_NOT_FOUND})
 	ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(Long customerId, Long bakeryId);
 
-	@Operation(summary = "고객 ID, 페이지, 정렬, 위치 정보를 기반으로 인기 빵집 목록을 조회합니다.")
+	@Operation(
+		summary = "인기 빵집 목록 조회",
+		description = "고객 ID, 페이지, 정렬, 위치 정보를 기반으로 인기 빵집 목록을 조회합니다."
+	)
 	@DomainErrorCodeExamples({BAKERY_SORT_CONDITION_NOT_FOUND})
-	ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(Long customerId, int page, int size, String sort,
-		GeoPointRequest geoPointRequest);
+	ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
+		Long customerId, int page, int size, String sort, GeoPointRequest geoPointRequest);
 }
