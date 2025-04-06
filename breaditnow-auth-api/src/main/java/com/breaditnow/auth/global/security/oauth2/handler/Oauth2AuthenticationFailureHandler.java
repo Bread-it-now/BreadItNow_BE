@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.breaditnow.auth.global.exception.AuthErrorCode;
 import com.breaditnow.auth.global.security.oauth2.cookie.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.common.util.CookieUtil;
 
@@ -16,7 +17,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class Oauth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -34,6 +37,17 @@ public class Oauth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 		targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
 			.queryParam("error", exception.getLocalizedMessage())
 			.build().encode().toUriString();
+
+		String errorMessage = exception.getMessage();
+		try {
+			AuthErrorCode errorCode = AuthErrorCode.valueOf(errorMessage);
+			log.error("[{}] code={}, message={}",
+				exception.getClass().getName(),
+				errorCode.getCode(),
+				errorCode.getMessage());
+		} catch (Exception e) {
+			log.error("[{}] {}", exception.getClass().getName(), errorMessage);
+		}
 
 		cookieAuthorizationRequestRepository.removeAuthorizationRequest(request, response);
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);

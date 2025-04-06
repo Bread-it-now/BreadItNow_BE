@@ -5,8 +5,12 @@ spring:
   application:
     name: customer-api
 
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE}
 
 geolocation:
   kakao:
@@ -21,3 +25,16 @@ springdoc:
 openapi:
   service:
     url: http://localhost:8080/customer-api
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}
