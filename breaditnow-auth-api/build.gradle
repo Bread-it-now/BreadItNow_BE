@@ -16,6 +16,9 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:3.12.0"
 
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 }
 
 test {
