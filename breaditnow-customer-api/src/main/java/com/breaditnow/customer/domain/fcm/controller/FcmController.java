@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/fcm")
-public class FcmController {
+public class FcmController implements FcmControllerDocs {
 	private final FcmService fcmService;
 
 	@PostMapping("/update-token")

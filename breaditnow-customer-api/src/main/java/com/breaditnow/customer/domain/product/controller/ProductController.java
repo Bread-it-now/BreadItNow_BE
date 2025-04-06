@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/product")
-public class ProductController {
+public class ProductController implements ProductControllerDocs {
 	private final ProductPageService productPageService;
 
 	@GetMapping("/hot")

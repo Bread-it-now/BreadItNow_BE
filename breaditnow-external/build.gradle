@@ -13,6 +13,9 @@ dependencies {
     // firebase
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 }
 
 test {

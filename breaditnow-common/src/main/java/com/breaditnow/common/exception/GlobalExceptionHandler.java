@@ -17,8 +17,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.breaditnow.common.response.ApiErrorResponse;
 import com.breaditnow.common.response.ErrorDetail;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 
+@Hidden
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

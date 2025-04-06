@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notification")
-public class NotificationController {
+public class NotificationController implements NotificationControllerDocs {
 	private final NotificationSendService notificationSendService;
 	private final NotificationService notificationService;
 

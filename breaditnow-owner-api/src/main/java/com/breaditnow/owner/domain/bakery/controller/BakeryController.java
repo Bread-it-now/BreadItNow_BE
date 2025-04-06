@@ -29,14 +29,13 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bakery")
-public class BakeryController {
+public class BakeryController implements BakeryControllerDocs {
 	private final BakeryService bakeryService;
 
 	@PostMapping()
 	public ApiSuccessResponse<Map<String, Long>> createBakery(@AuthOwner Long ownerId,
 		@RequestPart("data") @Valid BakeryCreateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
-
 		Long bakeryId = bakeryService.createBakery(ownerId, request, profileImage);
 		return ApiSuccessResponse.of("bakeryId", bakeryId);
 	}

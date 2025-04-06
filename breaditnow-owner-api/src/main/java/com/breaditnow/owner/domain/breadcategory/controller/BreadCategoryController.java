@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/bread-category")
-public class BreadCategoryController {
+public class BreadCategoryController implements BreadCategoryControllerDocs {
 
 	private final BreadCategoryService breadCategoryService;
 

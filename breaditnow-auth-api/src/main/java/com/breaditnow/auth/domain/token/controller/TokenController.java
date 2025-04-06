@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/token")
-public class TokenController {
+public class TokenController implements TokenControllerDocs {
 
 	private final TokenService tokenService;
 

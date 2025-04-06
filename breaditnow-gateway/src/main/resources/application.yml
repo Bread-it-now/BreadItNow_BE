@@ -18,10 +18,57 @@ spring:
   cloud:
     gateway:
       default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
         - name: LoggingFilter
           args:
             preLogger: true
             postLogger: true
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins:
+              - "http://localhost:8080"
+              - "https://localhost:8080"
+            allow-credentials: true
+            allowedHeaders:
+              - x-requested-with
+              - Authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            exposedHeaders:
+              - x-requested-with
+              - Authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /auth-api/v3/api-docs
+        name: Auth API
+      - url: /customer-api/v3/api-docs
+        name: Customer API
+      - url: /owner-api/v3/api-docs
+        name: Owner API
 
 auth:
   token:
