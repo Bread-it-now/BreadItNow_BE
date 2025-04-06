@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,13 +32,13 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -46,12 +47,7 @@ public class SwaggerConfig {
 	private final ApplicationContext applicationContext;
 
 	@Bean
-	public OpenAPI openAPI() {
-		Info info = new Info()
-			.version("버전")
-			.title("제목")
-			.description("설명");
-
+	public OpenAPI openAPI(@Value("${openapi.service.url}") String url) {
 		SecurityScheme apiKey = new SecurityScheme()
 			.type(HTTP)
 			.in(HEADER)
@@ -62,7 +58,7 @@ public class SwaggerConfig {
 		SecurityRequirement securityRequirement = new SecurityRequirement().addList("Bearer Token");
 
 		return new OpenAPI()
-			.info(info)
+			.servers(List.of(new Server().url(url)))
 			.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
 			.addSecurityItem(securityRequirement);
 	}

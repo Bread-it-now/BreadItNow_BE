@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -45,7 +47,7 @@ public class SwaggerConfig {
 	private final ApplicationContext applicationContext;
 
 	@Bean
-	public OpenAPI openAPI() {
+	public OpenAPI openAPI(@Value("${openapi.service.url}") String url) {
 		SecurityScheme apiKey = new SecurityScheme()
 			.type(HTTP)
 			.in(HEADER)
@@ -56,6 +58,7 @@ public class SwaggerConfig {
 		SecurityRequirement securityRequirement = new SecurityRequirement().addList("Bearer Token");
 
 		return new OpenAPI()
+			.servers(List.of(new Server().url(url)))
 			.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
 			.addSecurityItem(securityRequirement);
 	}

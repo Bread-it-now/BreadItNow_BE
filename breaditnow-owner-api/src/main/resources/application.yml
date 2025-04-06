@@ -14,6 +14,10 @@ geolocation:
 
 springdoc:
   api-docs:
-    path: /owner-api/v3/api-docs
+    path: /v3/api-docs
   swagger-ui:
-    path: /owner-api/swagger-ui.html
+    path: /swagger-ui/index.html
+
+openapi:
+  service:
+    url: http://localhost:8080/owner-api
