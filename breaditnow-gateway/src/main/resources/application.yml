@@ -3,42 +3,87 @@ server:
 
 spring:
   application:
-    name: gateway-service
+    name: gateway
+
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
 
   webflux:
     static-path-pattern: "/static/**"
 
   cloud:
     gateway:
-      routes:
-        - id: oauth2
-          uri: http://localhost:9000/
-          predicates:
-            - Path=/oauth2/authorization/**, /oauth/callback/**  # 소셜 로그인 처리
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+        - name: LoggingFilter
+          args:
+            preLogger: true
+            postLogger: true
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins:
+              - "http://localhost:8080"
+              - "https://localhost:8080"
+            allow-credentials: true
+            allowedHeaders:
+              - x-requested-with
+              - Authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            exposedHeaders:
+              - x-requested-with
+              - Authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
 
-        - id: auth-api
-          uri: http://localhost:9000/
-          predicates:
-            - Path=/auth-api/**
-          filters:
-            - RewritePath=/auth-api/(?<segment>.*), /$\{segment}
-
-        - id: customer-api
-          uri: http://localhost:9001/
-          predicates:
-            - Path=/customer-api/**
-          filters:
-            - JwtAuthentication=ROLE_CUSTOMER
-            - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
-
-        - id: owner-api
-          uri: http://localhost:9002/
-          predicates:
-            - Path=/owner-api/**
-          filters:
-            - JwtAuthentication=ROLE_OWNER
-            - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /auth-api/v3/api-docs
+        name: Auth API
+      - url: /customer-api/v3/api-docs
+        name: Customer API
+      - url: /owner-api/v3/api-docs
+        name: Owner API
 
 auth:
   token:
     secret-key: ${AUTH_TOKEN_SECRET_KEY}
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+    com.breaditnow.gateway.filter: DEBUG
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}

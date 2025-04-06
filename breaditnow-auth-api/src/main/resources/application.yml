@@ -5,8 +5,12 @@ spring:
   application:
     name: auth-api
 
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE}
 
   security:
     oauth2:
@@ -40,6 +44,29 @@ spring:
 auth:
   token:
     secret-key: ${AUTH_TOKEN_SECRET_KEY}
-    access-token-valid-millisecond: 86400000  # 1 day in milliseconds
-    refresh-token-valid-millisecond: 604800000  # 7 days in milliseconds
+    access-token-valid-millisecond: 86400000 # 1 day in milliseconds
+    refresh-token-valid-millisecond: 604800000 # 7 days in milliseconds
     refresh-cookie-key: ${REFRESH_COOKIE_KEY}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+openapi:
+  service:
+    url: http://localhost:8080/auth-api
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}

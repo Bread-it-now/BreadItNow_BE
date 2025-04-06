@@ -5,9 +5,36 @@ spring:
   application:
     name: owner-api
 
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
   profiles:
-    active: local
+    active: ${SPRING_PROFILES_ACTIVE}
 
 geolocation:
   kakao:
     client-id: ${OAUTH2_KAKAO_CLIENT_ID}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+openapi:
+  service:
+    url: http://localhost:8080/owner-api
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}

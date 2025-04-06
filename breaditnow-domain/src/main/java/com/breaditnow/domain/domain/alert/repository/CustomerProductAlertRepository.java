@@ -4,6 +4,7 @@ import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.exception.DomainException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,9 +21,8 @@ public interface CustomerProductAlertRepository extends JpaRepository<CustomerPr
 	boolean existsByCustomerIdAndProductId(Long customerId, Long productId);
 
 	@Query("SELECT DISTINCT c " + "FROM CustomerProductAlert cpa " + "JOIN cpa.customer c "
-			+ "WHERE cpa.product.id = :productId " + "  AND cpa.isActive = true " + "  AND c.fcmToken IS NOT NULL "
-			+ "  AND c.fcmToken <> ''")
-
+		+ "WHERE cpa.product.id = :productId " + "  AND cpa.isActive = true " + "  AND c.fcmToken IS NOT NULL "
+		+ "  AND c.fcmToken <> ''")
 	List<Customer> findByProductIdAndIsActiveTrueAndFcmTokenExists(@Param("productId") Long productId);
 
 	Optional<CustomerProductAlert> findByCustomerAndProduct(Customer customer, Product product);
@@ -33,7 +33,7 @@ public interface CustomerProductAlertRepository extends JpaRepository<CustomerPr
 
 	default CustomerProductAlert getByCustomerAndProduct(Customer customer, Product product) {
 		return findByCustomerAndProduct(customer, product)
-				.orElseThrow(() -> new DomainException(ALERT_NOT_FOUND));
+			.orElseThrow(() -> new DomainException(ALERT_NOT_FOUND));
 	}
 
 	default CustomerProductAlert getActiveByCustomerAndProduct(Customer customer, Product product) {

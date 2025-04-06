@@ -1,7 +1,11 @@
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
-    implementation project(":breaditnow-redis")
     implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
+    implementation project(":breaditnow-redis")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -15,7 +19,12 @@ dependencies {
 
     implementation "org.apache.commons:commons-lang3:3.12.0"
 
+    implementation 'com.github.napstr:logback-discord-appender:1.0.0'
+
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 }
 
 test {
