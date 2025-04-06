@@ -14,6 +14,8 @@ services:
       DISCORD_USERNAME: ${DISCORD_USERNAME}
       DISCORD_AVATAR_URL: ${DISCORD_AVATAR_URL}
       DISCORD_ERROR_URL: ${DISCORD_ERROR_URL}
+    volumes:
+      - ${LOG_VOLUME_PATH}/gateway:/app/logs/gateway
     networks:
       - bin-network
 
