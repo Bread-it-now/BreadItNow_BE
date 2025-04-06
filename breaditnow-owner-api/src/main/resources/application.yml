@@ -33,6 +33,22 @@ logging:
   level:
     root: INFO
 
+aws:
+  s3:
+    bucket: bread-it-now-server
+  credentials:
+    access-key: ${AWS_S3_CREDENTIALS_ACCESS_KEY}
+    secret-key: ${AWS_S3_CREDENTIALS_SECRET_KEY}
+  region:
+    static: ap-northeast-2
+    auto: false
+    stack:
+      auto: false
+
+fcm:
+  file_path: firebase/breaditnow-fcm.json
+  project_id: ${FCM_PROJECT_ID}
+
 webhook:
   discord:
     username: ${DISCORD_USERNAME}

@@ -21,7 +21,7 @@ spring:
 
   sql:
     init:
-      mode: always
+      mode: never
       defer-datasource-initialization: true
       data-locations: classpath:db/seoul-code.sql, classpath:db/bread-category.sql, classpath:db/test-data.sql
 
