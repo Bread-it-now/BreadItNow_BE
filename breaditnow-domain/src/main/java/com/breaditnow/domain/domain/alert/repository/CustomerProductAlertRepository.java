@@ -1,9 +1,9 @@
 package com.breaditnow.domain.domain.alert.repository;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
-
-import java.util.List;
-import java.util.Optional;
+import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
+import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.domain.product.entity.Product;
+import com.breaditnow.domain.global.exception.DomainException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.global.exception.DomainException;
+import java.util.List;
+import java.util.Optional;
+
+import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 public interface CustomerProductAlertRepository extends JpaRepository<CustomerProductAlert, Long> {
 
@@ -28,6 +28,8 @@ public interface CustomerProductAlertRepository extends JpaRepository<CustomerPr
 	Optional<CustomerProductAlert> findByCustomerAndProduct(Customer customer, Product product);
 
 	Page<CustomerProductAlert> findByCustomerId(Long customerId, Pageable pageable);
+
+	List<CustomerProductAlert> findByCustomerId(Long customerId);
 
 	default CustomerProductAlert getByCustomerAndProduct(Customer customer, Product product) {
 		return findByCustomerAndProduct(customer, product)
