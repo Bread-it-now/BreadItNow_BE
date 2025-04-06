@@ -29,6 +29,8 @@ spring:
             allowedOrigins:
               - "http://localhost:8080"
               - "https://localhost:8080"
+              - ${BREADITNOW_HTTP_HOST}
+              - ${BREADITNOW_HTTPS_HOST}
             allow-credentials: true
             allowedHeaders:
               - x-requested-with

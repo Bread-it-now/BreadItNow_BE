@@ -24,7 +24,7 @@ springdoc:
 
 openapi:
   service:
-    url: http://localhost:8080/owner-api
+    url: ${BREADITNOW_HTTP_HOST}/owner-api
 
 logging:
   config: classpath:logging/logback-spring.xml
