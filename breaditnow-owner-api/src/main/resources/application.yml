@@ -11,3 +11,9 @@ spring:
 geolocation:
   kakao:
     client-id: ${OAUTH2_KAKAO_CLIENT_ID}
+
+springdoc:
+  api-docs:
+    path: /owner-api/v3/api-docs
+  swagger-ui:
+    path: /owner-api/swagger-ui.html

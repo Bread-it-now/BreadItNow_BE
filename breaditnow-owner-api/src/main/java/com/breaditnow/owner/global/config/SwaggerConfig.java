@@ -31,6 +31,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -46,6 +47,11 @@ public class SwaggerConfig {
 
 	@Bean
 	public OpenAPI openAPI() {
+		Info info = new Info()
+			.version("버전")
+			.title("제목")
+			.description("설명");
+
 		SecurityScheme apiKey = new SecurityScheme()
 			.type(HTTP)
 			.in(HEADER)
@@ -56,6 +62,7 @@ public class SwaggerConfig {
 		SecurityRequirement securityRequirement = new SecurityRequirement().addList("Bearer Token");
 
 		return new OpenAPI()
+			.info(info)
 			.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
 			.addSecurityItem(securityRequirement);
 	}
