@@ -1,5 +1,7 @@
 package com.breaditnow.owner.domain.bakery.controller;
 
+import static org.springframework.http.MediaType.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class BakeryController implements BakeryControllerDocs {
 	private final BakeryService bakeryService;
 
-	@PostMapping()
+	@PostMapping(consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<Map<String, Long>> createBakery(@AuthOwner Long ownerId,
 		@RequestPart("data") @Valid BakeryCreateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
