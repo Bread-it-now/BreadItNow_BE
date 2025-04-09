@@ -47,7 +47,7 @@ public class BakeryController implements BakeryControllerDocs {
 		return ApiSuccessResponse.of(bakeryService.getBakery(bakeryId));
 	}
 
-	@PutMapping("/{bakeryId}")
+	@PutMapping(value = "/{bakeryId}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<BakeryResponse> updateBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
 		@RequestPart("data") BakeryUpdateRequest request,
