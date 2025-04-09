@@ -37,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 @Slf4j
 public class BakeryService {
+	private static final String BAKERY_IMAGE_PATH = "image/owner/";
+
 	private final RegionRepository regionRepository;
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
@@ -61,20 +63,25 @@ public class BakeryService {
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
-		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
-
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
 			.name(bakeryCreateRequest.name())
 			.phone(bakeryCreateRequest.phone())
 			.introduction(bakeryCreateRequest.introduction())
-			.profileImage(profileImageUrl)
+			.profileImage(null)
 			.openTime(bakeryCreateRequest.openTime())
 			.address(address)
 			.operatingStatus(CLOSED)
 			.build();
 
 		Bakery savedBakery = bakeryRepository.save(bakery);
+
+		String profileImageUrl = uploadFile(
+			profileImage,
+			"image/owner/" + ownerId + "/bakery/" + savedBakery.getId() + "/profile"
+		);
+
+		savedBakery.updateProfileImage(profileImageUrl);
 		return savedBakery.getId();
 	}
 
@@ -104,7 +111,8 @@ public class BakeryService {
 		List<BakeryImage> additionalImages = new ArrayList<>();
 		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
 			additionalImages = bakeryImageFiles.stream()
-				.map(file -> uploaderService.upload(file, "image/owner/" + ownerId + "/bakery/gallery"))
+				.map(
+					file -> uploaderService.upload(file, "image/owner/" + ownerId + "/bakery/" + bakeryId + "/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
 				.collect(Collectors.toList());
 		}
