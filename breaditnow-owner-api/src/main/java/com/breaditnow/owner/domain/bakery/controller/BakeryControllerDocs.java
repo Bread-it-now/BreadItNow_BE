@@ -19,6 +19,7 @@ import com.breaditnow.owner.global.swagger.annotation.ExternalErrorCodeExamples;
 import com.breaditnow.owner.global.swagger.annotation.OwnerApiErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Owner - 빵집 API", description = "소유자를 위한 빵집 관리 API입니다. 이 API는 빵집 생성, 조회, 수정, 운영 상태 업데이트 및 삭제 기능을 제공합니다.")
@@ -39,6 +40,12 @@ public interface BakeryControllerDocs {
 		description = "빵집 ID를 기반으로 해당 빵집의 상세 정보를 조회합니다."
 	)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE})
+	@Parameter(
+		name = "bakeryId",
+		description = "조회할 빵집의 ID",
+		example = "1",
+		required = true
+	)
 	ApiSuccessResponse<BakeryResponse> getBakery(Long bakeryId);
 
 	@Operation(
@@ -48,13 +55,15 @@ public interface BakeryControllerDocs {
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, REGION_NOT_FOUND})
 	@OwnerApiErrorCodeExamples({COORDINATE_NOT_FOUND})
 	@ExternalErrorCodeExamples({FILE_CREATION_FAILED})
+	@Parameter(name = "bakeryId", description = "수정 대상 빵집 ID", example = "1", required = true)
 	ApiSuccessResponse<BakeryResponse> updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest request,
-		MultipartFile profileImage, List<MultipartFile> bakeryImages);
+		MultipartFile profileImage, List<MultipartFile> additionalImages);
 
 	@Operation(
 		summary = "운영 상태 업데이트",
 		description = "소유자 정보와 빵집 ID를 기반으로 빵집의 운영 상태를 변경합니다. 요청 데이터에는 새로운 운영 상태 정보가 포함됩니다."
 	)
+	@Parameter(name = "bakeryId", description = "빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH})
 	ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(Long ownerId, Long bakeryId,
 		OperatingStatusRequest request);
@@ -63,6 +72,7 @@ public interface BakeryControllerDocs {
 		summary = "빵집 삭제",
 		description = "소유자 정보와 빵집 ID를 기반으로 해당 빵집을 삭제합니다. 삭제 시 빵집과 관련된 모든 정보가 제거됩니다."
 	)
+	@Parameter(name = "bakeryId", description = "삭제할 빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH})
 	ApiSuccessResponse<Map<String, Long>> deleteBakery(Long ownerId, Long bakeryId);
 }

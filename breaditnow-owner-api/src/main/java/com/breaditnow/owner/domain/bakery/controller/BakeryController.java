@@ -50,7 +50,7 @@ public class BakeryController implements BakeryControllerDocs {
 	@PutMapping(value = "/{bakeryId}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<BakeryResponse> updateBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestPart("data") BakeryUpdateRequest request,
+		@RequestPart("data") @Valid BakeryUpdateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 		@RequestPart(value = "additionalImages", required = false) List<MultipartFile> additionalImages
 	) {
@@ -61,7 +61,7 @@ public class BakeryController implements BakeryControllerDocs {
 	@PatchMapping("/{bakeryId}/operating-status")
 	public ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestBody OperatingStatusRequest request) {
+		@RequestBody @Valid OperatingStatusRequest request) {
 		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, request.operatingStatus());
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
