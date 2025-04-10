@@ -1,38 +1,55 @@
-package com.breaditnow.domain.domain.alert.entity;
+	package com.breaditnow.domain.domain.alert.entity;
 
-import static jakarta.persistence.GenerationType.*;
-import static lombok.AccessLevel.*;
+	import static jakarta.persistence.GenerationType.*;
+	import static lombok.AccessLevel.*;
 
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.global.entity.BaseEntity;
+	import com.breaditnow.domain.domain.customer.entity.Customer;
+	import com.breaditnow.domain.global.entity.BaseEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+	import jakarta.persistence.*;
+	import lombok.Builder;
+	import lombok.Getter;
+	import lombok.NoArgsConstructor;
+	import lombok.Setter;
 
-@Entity
-@Getter
-@NoArgsConstructor(access = PROTECTED)
-public class CustomerAlertSetting extends BaseEntity {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	private Long id;
+	import java.util.List;
 
-	@OneToOne
-	@JoinColumn(name = "customer_id", nullable = false)
-	private Customer customer;
+	@Entity
+	@Getter
+	@NoArgsConstructor(access = PROTECTED)
+	public class CustomerAlertSetting extends BaseEntity {
+		@Id
+		@GeneratedValue(strategy = IDENTITY)
+		private Long id;
 
-	private boolean isActive = false;
+		@OneToOne
+		@JoinColumn(name = "customer_id", nullable = false)
+		private Customer customer;
 
-	private String monTime;
-	private String tueTime;
-	private String wedTime;
-	private String thuTime;
-	private String friTime;
-	private String satTime;
-	private String sunTime;
-}
+		@Setter
+		private boolean isActive = false;
+
+		@Setter
+		private String doNotDisturbStartTime;
+
+		@Setter
+		private String doNotDisturbEndTime;
+
+		@Setter
+		@ElementCollection(fetch = FetchType.EAGER)
+		@CollectionTable(
+				name = "alert_dnd_days",
+				joinColumns = @JoinColumn(name = "alert_setting_id")
+		)
+		@Column(name = "day")
+		private List<String> doNotDisturbDays;
+
+		@Builder
+		public CustomerAlertSetting(Customer customer, boolean isActive, String doNotDisturbStartTime, String doNotDisturbEndTime, List<String> doNotDisturbDays) {
+			this.customer = customer;
+			this.isActive = isActive;
+			this.doNotDisturbStartTime = doNotDisturbStartTime;
+			this.doNotDisturbEndTime = doNotDisturbEndTime;
+			this.doNotDisturbDays = doNotDisturbDays;
+		}
+	}

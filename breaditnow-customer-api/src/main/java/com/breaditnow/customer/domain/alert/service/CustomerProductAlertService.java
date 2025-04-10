@@ -3,8 +3,11 @@ package com.breaditnow.customer.domain.alert.service;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertPageResponse;
 import com.breaditnow.customer.domain.alert.controller.res.CustomerProductAlertResponse;
+import com.breaditnow.customer.domain.alert.controller.res.TodayAlertListResponse;
+import com.breaditnow.customer.domain.alert.controller.res.TodayAlertResponse;
 import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
+import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
@@ -17,8 +20,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -76,5 +81,33 @@ public class CustomerProductAlertService {
                 .toList();
 
         return CustomerProductAlertPageResponse.of(alertResponses, alertsPage);
+    }
+
+    public TodayAlertListResponse getTodayAlerts(Long customerId) {
+        List<CustomerProductAlert> alerts = alertRepository.findByCustomerId(customerId);
+        List<TodayAlertResponse> alertResponses = alerts.stream()
+                .map(alert -> {
+                    Product product = alert.getProduct();
+                    Bakery bakery = product.getBakery();
+                    return TodayAlertResponse.of(
+                            bakery.getId(),
+                            bakery.getName(),
+                            product.getId(),
+                            product.getName(),
+                            parseReleaseTimes(product.getReleaseTime())
+                    );
+                })
+                .collect(Collectors.toList());
+
+        return TodayAlertListResponse.of(alertResponses);
+    }
+
+    private static List<String> parseReleaseTimes(String releaseTimeStr) {
+        if (releaseTimeStr == null || releaseTimeStr.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(releaseTimeStr.split(";"))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 }
