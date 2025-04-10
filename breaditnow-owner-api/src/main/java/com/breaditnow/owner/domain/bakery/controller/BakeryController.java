@@ -52,10 +52,10 @@ public class BakeryController implements BakeryControllerDocs {
 		@PathVariable("bakeryId") Long bakeryId,
 		@RequestPart("data") BakeryUpdateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-		@RequestPart(value = "bakeryImages", required = false) List<MultipartFile> bakeryImages
+		@RequestPart(value = "additionalImages", required = false) List<MultipartFile> additionalImages
 	) {
 		return ApiSuccessResponse.of(
-			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
+			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, additionalImages));
 	}
 
 	@PatchMapping("/{bakeryId}/operating-status")

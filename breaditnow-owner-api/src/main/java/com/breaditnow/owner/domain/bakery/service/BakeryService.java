@@ -92,7 +92,7 @@ public class BakeryService {
 
 	@Transactional
 	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
-		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
+		MultipartFile profileImage, List<MultipartFile> additionalImages) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
@@ -108,9 +108,9 @@ public class BakeryService {
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
-		List<BakeryImage> additionalImages = new ArrayList<>();
-		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
-			additionalImages = bakeryImageFiles.stream()
+		List<BakeryImage> savedAdditionalImages = new ArrayList<>();
+		if (additionalImages != null && !additionalImages.isEmpty()) {
+			savedAdditionalImages = additionalImages.stream()
 				.map(
 					file -> uploaderService.upload(file, "image/owner/" + ownerId + "/bakery/" + bakeryId + "/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
@@ -125,7 +125,7 @@ public class BakeryService {
 			.profileImage(updatedProfileImage)
 			.openTime(bakeryUpdateRequest.openTime())
 			.address(address)
-			.additionalImages(additionalImages)
+			.additionalImages(savedAdditionalImages)
 			.operatingStatus(CLOSED)
 			.build());
 
