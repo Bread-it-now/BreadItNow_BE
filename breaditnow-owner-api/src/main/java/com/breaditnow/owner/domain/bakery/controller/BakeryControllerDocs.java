@@ -60,7 +60,7 @@ public interface BakeryControllerDocs {
 
 	@Operation(summary = "빵집 운영 상태 업데이트", description = "해당 빵집의 현재 운영 상태를 변경(영업중, 휴업 등)합니다.")
 	@Parameter(name = "bakeryId", description = "운영 상태를 변경할 빵집의 ID", example = "1", required = true)
-	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH})
+	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, BAKERY_OPERATING_NOT_FOUND})
 	ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(Long ownerId, Long bakeryId,
 		OperatingStatusRequest request);
 
