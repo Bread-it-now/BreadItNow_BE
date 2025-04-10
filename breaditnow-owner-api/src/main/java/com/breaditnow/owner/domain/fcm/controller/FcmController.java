@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.owner.domain.fcm.controller.req.FcmSendRequest;
 import com.breaditnow.owner.domain.fcm.service.FcmService;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 
@@ -21,9 +20,9 @@ public class FcmController implements FcmControllerDocs {
 
 	@PostMapping("/update-token")
 	public ApiSuccessResponse<Void> pushMessage(@AuthOwner Long ownerId,
-		@RequestBody @Valid FcmSendRequest fcmSendRequest) {
+		@RequestBody @Valid String fcmToken) {
 
-		fcmService.updateToken(ownerId, fcmSendRequest);
+		fcmService.updateToken(ownerId, fcmToken);
 
 		return ApiSuccessResponse.of();
 	}

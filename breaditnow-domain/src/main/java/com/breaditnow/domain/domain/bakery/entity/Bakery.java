@@ -102,4 +102,8 @@ public class Bakery extends BaseEntity {
 	public void updateOperatingStatus(OperatingStatus operatingStatus) {
 		this.operatingStatus = operatingStatus;
 	}
+
+	public void updateProfileImage(String profileImageUrl) {
+		this.profileImage = profileImageUrl;
+	}
 }

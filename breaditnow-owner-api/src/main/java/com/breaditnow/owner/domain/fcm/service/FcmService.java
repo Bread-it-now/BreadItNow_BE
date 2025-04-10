@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
-import com.breaditnow.owner.domain.fcm.controller.req.FcmSendRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,8 +15,8 @@ public class FcmService {
 	private final OwnerRepository ownerRepository;
 
 	@Transactional
-	public void updateToken(Long ownerId, FcmSendRequest fcmSendRequest) {
+	public void updateToken(Long ownerId, String fcmToken) {
 		Owner owner = ownerRepository.getById(ownerId);
-		owner.changeFcmToken(fcmSendRequest.fcmToken());
+		owner.changeFcmToken(fcmToken);
 	}
 }

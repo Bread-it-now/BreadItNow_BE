@@ -1,5 +1,7 @@
 package com.breaditnow.owner.domain.bakery.controller;
 
+import static org.springframework.http.MediaType.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class BakeryController implements BakeryControllerDocs {
 	private final BakeryService bakeryService;
 
-	@PostMapping()
+	@PostMapping(consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<Map<String, Long>> createBakery(@AuthOwner Long ownerId,
 		@RequestPart("data") @Valid BakeryCreateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
@@ -45,22 +47,22 @@ public class BakeryController implements BakeryControllerDocs {
 		return ApiSuccessResponse.of(bakeryService.getBakery(bakeryId));
 	}
 
-	@PutMapping("/{bakeryId}")
+	@PutMapping(value = "/{bakeryId}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<BakeryResponse> updateBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestPart("data") BakeryUpdateRequest request,
+		@RequestPart("data") @Valid BakeryUpdateRequest request,
 		@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-		@RequestPart(value = "bakeryImages", required = false) List<MultipartFile> bakeryImages
+		@RequestPart(value = "additionalImages", required = false) List<MultipartFile> additionalImages
 	) {
 		return ApiSuccessResponse.of(
-			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, bakeryImages));
+			bakeryService.updateBakery(ownerId, bakeryId, request, profileImage, additionalImages));
 	}
 
 	@PatchMapping("/{bakeryId}/operating-status")
 	public ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestBody OperatingStatusRequest request) {
-		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, request.operatingStatus());
+		@RequestBody @Valid OperatingStatusRequest operatingStatusRequest) {
+		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, operatingStatusRequest);
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
 

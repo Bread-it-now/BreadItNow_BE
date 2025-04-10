@@ -29,6 +29,8 @@ public enum DomainErrorCode implements ErrorCode {
 	OWNER_MISMATCH(NOT_FOUND, "BD003", "빵집 주인이 아닙니다."),
 	BREAD_NOT_FOUND(NOT_FOUND, "BD004", "빵을 찾을 수 없습니다."),
 	BAKERY_MISMATCH(NOT_FOUND, "BD005", "해당 메뉴의 빵집이 아닙니다."),
+	BAKERY_OPERATING_NOT_FOUND(BAD_REQUEST, "BD005", "유효하지 않은 운영 상태입니다."),
+
 	/**
 	 * Customer(BE000)
 	 */

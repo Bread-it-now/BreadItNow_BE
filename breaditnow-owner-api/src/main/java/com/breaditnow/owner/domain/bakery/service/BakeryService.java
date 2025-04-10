@@ -26,6 +26,7 @@ import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.external.domain.s3.FileUploaderService;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
+import com.breaditnow.owner.domain.bakery.controller.req.OperatingStatusRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.global.exception.OwnerException;
 
@@ -37,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 @Slf4j
 public class BakeryService {
+
 	private final RegionRepository regionRepository;
 	private final OwnerRepository ownerRepository;
 	private final BakeryRepository bakeryRepository;
@@ -61,20 +63,25 @@ public class BakeryService {
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
-		String profileImageUrl = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
-
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
 			.name(bakeryCreateRequest.name())
 			.phone(bakeryCreateRequest.phone())
 			.introduction(bakeryCreateRequest.introduction())
-			.profileImage(profileImageUrl)
+			.profileImage(null)
 			.openTime(bakeryCreateRequest.openTime())
 			.address(address)
 			.operatingStatus(CLOSED)
 			.build();
 
 		Bakery savedBakery = bakeryRepository.save(bakery);
+
+		String profileImageUrl = uploadFile(
+			profileImage,
+			"image/owner/" + ownerId + "/bakery/" + savedBakery.getId() + "/profile"
+		);
+
+		savedBakery.updateProfileImage(profileImageUrl);
 		return savedBakery.getId();
 	}
 
@@ -85,13 +92,14 @@ public class BakeryService {
 
 	@Transactional
 	public BakeryResponse updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest bakeryUpdateRequest,
-		MultipartFile profileImage, List<MultipartFile> bakeryImageFiles) {
+		MultipartFile profileImage, List<MultipartFile> additionalImages) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
+		String updatedProfileImage = uploadFile(profileImage,
+			"image/owner/" + ownerId + "/bakery/" + bakery.getId() + "/profile");
 
 		Address address = new Address(regionPK, bakeryUpdateRequest.address());
 		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(bakeryUpdateRequest.address());
@@ -101,10 +109,11 @@ public class BakeryService {
 		address.setLatitude(Double.valueOf(addressCoordinate.x()));
 		address.setLongitude(Double.valueOf(addressCoordinate.y()));
 
-		List<BakeryImage> additionalImages = new ArrayList<>();
-		if (bakeryImageFiles != null && !bakeryImageFiles.isEmpty()) {
-			additionalImages = bakeryImageFiles.stream()
-				.map(file -> uploaderService.upload(file, "image/owner/" + ownerId + "/bakery/gallery"))
+		List<BakeryImage> savedAdditionalImages = new ArrayList<>();
+		if (additionalImages != null && !additionalImages.isEmpty()) {
+			savedAdditionalImages = additionalImages.stream()
+				.map(
+					file -> uploaderService.upload(file, "image/owner/" + ownerId + "/bakery/" + bakeryId + "/gallery"))
 				.map(bakeryImageUrl -> new BakeryImage(bakery, bakeryImageUrl))
 				.collect(Collectors.toList());
 		}
@@ -117,7 +126,7 @@ public class BakeryService {
 			.profileImage(updatedProfileImage)
 			.openTime(bakeryUpdateRequest.openTime())
 			.address(address)
-			.additionalImages(additionalImages)
+			.additionalImages(savedAdditionalImages)
 			.operatingStatus(CLOSED)
 			.build());
 
@@ -135,9 +144,10 @@ public class BakeryService {
 	}
 
 	@Transactional
-	public Long updateOperatingStatus(Long ownerId, Long bakeryId, String type) {
+	public Long updateOperatingStatus(Long ownerId, Long bakeryId, OperatingStatusRequest operatingStatusRequest) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-		bakery.updateOperatingStatus(OperatingStatus.from(type));
+		OperatingStatus operatingStatus = OperatingStatus.from(operatingStatusRequest.operatingStatus());
+		bakery.updateOperatingStatus(operatingStatus);
 		return bakery.getId();
 	}
 

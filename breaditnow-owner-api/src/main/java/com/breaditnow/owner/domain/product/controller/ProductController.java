@@ -1,5 +1,7 @@
 package com.breaditnow.owner.domain.product.controller;
 
+import static org.springframework.http.MediaType.*;
+
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +38,7 @@ public class ProductController implements ProductControllerDocs {
 
 	private final ProductService productService;
 
-	@PostMapping("/{bakeryId}")
+	@PostMapping(value = "/{bakeryId}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
@@ -47,7 +49,7 @@ public class ProductController implements ProductControllerDocs {
 		return ApiSuccessResponse.of("productId", productId);
 	}
 
-	@PutMapping("/{bakeryId}/product/{productId}")
+	@PutMapping(value = "/{bakeryId}/product/{productId}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ApiSuccessResponse<ProductResponse> updateBakeryProduct(
 		@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,

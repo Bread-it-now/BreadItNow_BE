@@ -27,16 +27,16 @@ public class BakeryFavoriteController implements BakeryFavoriteControllerDocs {
 	private final BakeryFavoriteService bakeryFavoriteService;
 	private final BakeryFavoritePageService bakeryFavoritePageService;
 
-	@PostMapping("/{bakery_id}/favorite")
+	@PostMapping("/{bakeryId}/favorite")
 	public ApiSuccessResponse<Map<String, Long>> likeBakery(@AuthCustomer Long customerId,
-		@PathVariable("bakery_id") Long bakeryId) {
+		@PathVariable("bakeryId") Long bakeryId) {
 		Long savedBakeryId = bakeryFavoriteService.likeBakery(customerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
 
-	@DeleteMapping("/{bakery_id}/favorite")
+	@DeleteMapping("/{bakeryId}/favorite")
 	public ApiSuccessResponse<Map<String, Long>> deleteBakery(@AuthCustomer Long customerId,
-		@PathVariable("bakery_id") Long bakeryId) {
+		@PathVariable("bakeryId") Long bakeryId) {
 		Long savedBakeryId = bakeryFavoriteService.deleteBakery(customerId, bakeryId);
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
