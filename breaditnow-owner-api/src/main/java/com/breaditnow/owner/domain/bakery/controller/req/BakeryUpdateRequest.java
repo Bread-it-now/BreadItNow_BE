@@ -17,8 +17,7 @@ public record BakeryUpdateRequest(
 	String address,
 
 	@NotBlank(message = "전화번호는 필수 입력 사항입니다.")
-	@Pattern(regexp = "\\d{2,3}-\\d{3,4}-\\d{4}",
-		message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
+	@Pattern(regexp = "\\d{2,3}-\\d{3,4}-\\d{4}", message = "전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)")
 	@Schema(description = "수정된 빵집 전화번호", example = "02-1234-5678")
 	String phone,
 
