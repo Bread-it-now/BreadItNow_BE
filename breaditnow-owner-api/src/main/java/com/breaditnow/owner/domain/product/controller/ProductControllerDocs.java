@@ -97,7 +97,7 @@ public interface ProductControllerDocs {
 
 	@Operation(
 		summary = "전체 상품 목록 조회",
-		description = "소유자와 빵집 ID를 기반으로 전체 상품 목록을 조회하여, 페이징된 결과를 반환합니다."
+		description = "소유자와 빵집 ID를 기반으로 전체 상품 목록을 조회합니다."
 	)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH})
 	ApiSuccessResponse<ProductListResponse> getBakeryProducts(
