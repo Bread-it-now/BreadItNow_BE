@@ -37,7 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 @Slf4j
 public class BakeryService {
-	private static final String BAKERY_IMAGE_PATH = "image/owner/";
 
 	private final RegionRepository regionRepository;
 	private final OwnerRepository ownerRepository;
@@ -98,7 +97,8 @@ public class BakeryService {
 		RegionPK regionPK = new RegionPK(bakeryUpdateRequest.addressCode());
 		regionRepository.checkExists(regionPK);
 
-		String updatedProfileImage = uploadFile(profileImage, "image/owner/" + ownerId + "/bakery/profile");
+		String updatedProfileImage = uploadFile(profileImage,
+			"image/owner/" + ownerId + "/bakery/" + bakery.getId() + "/profile");
 
 		Address address = new Address(regionPK, bakeryUpdateRequest.address());
 		AddressCoordinate addressCoordinate = geoLocationClient.lookupCoordinates(bakeryUpdateRequest.address());
