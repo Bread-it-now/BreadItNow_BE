@@ -26,6 +26,7 @@ import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import com.breaditnow.external.domain.s3.FileUploaderService;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryCreateRequest;
 import com.breaditnow.owner.domain.bakery.controller.req.BakeryUpdateRequest;
+import com.breaditnow.owner.domain.bakery.controller.req.OperatingStatusRequest;
 import com.breaditnow.owner.domain.bakery.controller.res.BakeryResponse;
 import com.breaditnow.owner.global.exception.OwnerException;
 
@@ -143,9 +144,10 @@ public class BakeryService {
 	}
 
 	@Transactional
-	public Long updateOperatingStatus(Long ownerId, Long bakeryId, String type) {
+	public Long updateOperatingStatus(Long ownerId, Long bakeryId, OperatingStatusRequest operatingStatusRequest) {
 		Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
-		bakery.updateOperatingStatus(OperatingStatus.from(type));
+		OperatingStatus operatingStatus = OperatingStatus.from(operatingStatusRequest.operatingStatus());
+		bakery.updateOperatingStatus(operatingStatus);
 		return bakery.getId();
 	}
 

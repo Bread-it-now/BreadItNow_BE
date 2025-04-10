@@ -61,8 +61,8 @@ public class BakeryController implements BakeryControllerDocs {
 	@PatchMapping("/{bakeryId}/operating-status")
 	public ApiSuccessResponse<Map<String, Long>> updateOperatingBakery(@AuthOwner Long ownerId,
 		@PathVariable("bakeryId") Long bakeryId,
-		@RequestBody @Valid OperatingStatusRequest request) {
-		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, request.operatingStatus());
+		@RequestBody @Valid OperatingStatusRequest operatingStatusRequest) {
+		Long savedBakeryId = bakeryService.updateOperatingStatus(ownerId, bakeryId, operatingStatusRequest);
 		return ApiSuccessResponse.of("bakeryId", savedBakeryId);
 	}
 
