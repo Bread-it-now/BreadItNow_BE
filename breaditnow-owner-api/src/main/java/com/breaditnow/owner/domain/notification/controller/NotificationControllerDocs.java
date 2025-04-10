@@ -14,7 +14,7 @@ import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Owner - 알림 API", description = "소유자용 알림 전송 및 관리 기능을 제공하는 API입니다.")
+@Tag(name = "Owner - 알림 API", description = "알림 전송 및 관리 기능을 제공하는 API입니다.")
 public interface NotificationControllerDocs {
 
 	@Operation(
