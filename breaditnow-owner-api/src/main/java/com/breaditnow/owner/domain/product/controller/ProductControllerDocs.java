@@ -20,110 +20,73 @@ import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
 import com.breaditnow.owner.global.swagger.annotation.ExternalErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Owner - 빵집 상품 API", description = "소유자가 빵집 상품을 생성, 수정, 삭제, 조회 및 재고/순서 업데이트하는 API입니다.")
+@Tag(name = "Owner - 빵집 상품 API", description = "소유자가 빵집의 상품을 생성, 수정, 삭제, 조회하는 API입니다.")
 public interface ProductControllerDocs {
 
-	@Operation(
-		summary = "상품 생성",
-		description = "소유자와 빵집 ID를 기반으로 신규 상품을 생성합니다. 요청 데이터와 프로필 이미지를 받아 상품을 등록하고, 등록된 상품의 식별 정보를 반환합니다."
-	)
+	@Operation(summary = "상품 등록", description = "특정 빵집(bakeryId)에 새 상품을 등록합니다.")
+	@Parameter(name = "bakeryId", description = "상품을 등록할 빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, BREAD_CATEGORY_NOT_FOUND})
 	@ExternalErrorCodeExamples({FILE_CREATION_FAILED})
-	ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
-		Long ownerId,
-		Long bakeryId,
-		ProductCreateRequest request,
+	ApiSuccessResponse<Map<String, Long>> createBakeryProduct(Long ownerId, Long bakeryId, ProductCreateRequest request,
 		MultipartFile productImage);
 
-	@Operation(
-		summary = "상품 수정",
-		description = "소유자, 빵집, 상품 ID를 기반으로 기존 상품의 정보를 수정합니다. 업데이트된 요청 데이터를 적용하여 수정된 상품의 상세 정보를 반환합니다."
-	)
+	@Operation(summary = "상품 수정", description = "특정 빵집(bakeryId)의 상품(productId)을 수정합니다.")
+	@Parameter(name = "bakeryId", description = "상품이 속한 빵집 ID", example = "1", required = true)
+	@Parameter(name = "productId", description = "수정할 상품 ID", example = "10", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
 	@ExternalErrorCodeExamples({FILE_CREATION_FAILED})
-	ApiSuccessResponse<ProductResponse> updateBakeryProduct(
-		Long ownerId,
-		Long bakeryId,
-		Long productId,
-		ProductUpdateRequest request,
-		MultipartFile productImage);
+	ApiSuccessResponse<ProductResponse> updateBakeryProduct(Long ownerId, Long bakeryId, Long productId,
+		ProductUpdateRequest request, MultipartFile productImage);
 
-	@Operation(
-		summary = "단일 상품 삭제",
-		description = "소유자, 빵집, 상품 ID를 기반으로 단일 상품을 삭제하고, 삭제된 상품의 식별 정보를 반환합니다."
-	)
+	@Operation(summary = "상품 단건 삭제", description = "특정 빵집(bakeryId)의 상품(productId)을 삭제합니다.")
+	@Parameter(name = "bakeryId", description = "상품이 속한 빵집 ID", example = "1", required = true)
+	@Parameter(name = "productId", description = "삭제할 상품 ID", example = "10", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
-	ApiSuccessResponse<Map<String, Long>> deleteBakeryProduct(
-		Long ownerId,
-		Long bakeryId,
-		Long productId);
+	ApiSuccessResponse<Map<String, Long>> deleteBakeryProduct(Long ownerId, Long bakeryId, Long productId);
 
-	@Operation(
-		summary = "여러 상품 삭제",
-		description = "소유자와 빵집 ID를 기반으로 여러 상품을 한 번에 삭제하고, 각 상품 삭제 결과를 반환합니다."
-	)
+	@Operation(summary = "상품 다건 삭제", description = "특정 빵집(bakeryId)의 복수의 상품을 한 번에 삭제합니다.")
+	@Parameter(name = "bakeryId", description = "상품이 속한 빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
-	ApiSuccessResponse<Map<String, Integer>> deleteBakeryProducts(
-		Long ownerId,
-		Long bakeryId,
+	ApiSuccessResponse<Map<String, Integer>> deleteBakeryProducts(Long ownerId, Long bakeryId,
 		ProductDeleteRequest productDeleteRequest);
 
-	@Operation(
-		summary = "상품 숨김 상태 업데이트",
-		description = "소유자와 빵집 ID를 기반으로 상품의 숨김(표시 여부) 상태를 업데이트하고, 업데이트 결과를 반환합니다."
-	)
+	@Operation(summary = "상품 숨김/공개 처리", description = "특정 빵집의 상품들을 숨김처리(또는 숨김 해제)합니다.")
+	@Parameter(name = "bakeryId", description = "상품이 속한 빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
-	ApiSuccessResponse<Map<String, Integer>> updateHiddenBakeryProducts(
-		Long ownerId,
-		Long bakeryId,
+	ApiSuccessResponse<Map<String, Integer>> updateHiddenBakeryProducts(Long ownerId, Long bakeryId,
 		ProductHiddenRequest productHiddenRequest);
 
-	@Operation(
-		summary = "상품 상세 조회",
-		description = "소유자, 빵집, 상품 ID를 기반으로 특정 상품의 상세 정보를 조회하여 반환합니다."
-	)
+	@Operation(summary = "상품 단건 조회", description = "특정 빵집의 단일 상품 정보를 조회합니다.")
+	@Parameter(name = "bakeryId", description = "상품이 속한 빵집 ID", example = "1", required = true)
+	@Parameter(name = "productId", description = "조회할 상품 ID", example = "10", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
-	ApiSuccessResponse<ProductResponse> getBakeryProduct(
-		Long ownerId,
-		Long bakeryId,
-		Long productId);
+	ApiSuccessResponse<ProductResponse> getBakeryProduct(Long ownerId, Long bakeryId, Long productId);
 
-	@Operation(
-		summary = "전체 상품 목록 조회",
-		description = "소유자와 빵집 ID를 기반으로 전체 상품 목록을 조회합니다."
-	)
+	@Operation(summary = "상품 목록 조회", description = "특정 빵집에 등록된 모든 상품 목록을 조회합니다.")
+	@Parameter(name = "bakeryId", description = "상품 목록을 조회할 빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH})
-	ApiSuccessResponse<ProductListResponse> getBakeryProducts(
-		Long ownerId,
-		Long bakeryId);
+	ApiSuccessResponse<ProductListResponse> getBakeryProducts(Long ownerId, Long bakeryId);
 
-	@Operation(
-		summary = "상품 순서 업데이트",
-		description = "소유자와 빵집 ID를 기반으로 상품의 순서를 업데이트하고, 업데이트 결과를 반환합니다."
-	)
+	@Operation(summary = "상품 정렬 순서 변경", description = "특정 빵집의 상품 노출 순서를 변경합니다.")
+	@Parameter(name = "bakeryId", description = "상품이 속한 빵집 ID", example = "1", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
-	ApiSuccessResponse<String> updateBakeryProductOrder(
-		Long ownerId,
-		Long bakeryId,
+	ApiSuccessResponse<String> updateBakeryProductOrder(Long ownerId, Long bakeryId,
 		ProductOrderUpdateRequest orderUpdateRequest);
 
-	@Operation(
-		summary = "상품 재고 업데이트",
-		description = "소유자, 빵집, 상품 ID를 기반으로 상품의 재고 정보를 업데이트하고, 업데이트 결과를 반환합니다."
-	)
+	@Operation(summary = "상품 재고 변경", description = "특정 상품의 재고 수량을 변경합니다.")
+	@Parameter(name = "bakery_id", description = "상품이 속한 빵집 ID", example = "1", required = true)
+	@Parameter(name = "product_id", description = "재고를 변경할 상품 ID", example = "10", required = true)
 	@DomainErrorCodeExamples({BAKERY_NOT_FOUND, BAKERY_INACTIVE, OWNER_MISMATCH, PRODUCT_NOT_FOUND, PRODUCT_INACTIVE,
 		PRODUCT_MISMATCH})
-	ApiSuccessResponse<Map<String, Integer>> updateProductStock(
-		Long ownerId,
-		Long bakeryId,
-		Long productId,
+	ApiSuccessResponse<Map<String, Integer>> updateProductStock(Long ownerId, Long bakeryId, Long productId,
 		ProductStockUpdateRequest request);
 }

@@ -41,16 +41,16 @@ public class NotificationController implements NotificationControllerDocs {
 		return ApiSuccessResponse.of();
 	}
 
-	@PatchMapping("/{notification_id}/read")
+	@PatchMapping("/{notificationId}/read")
 	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthOwner Long ownerId,
-		@PathVariable("notification_id") Long notificationId) {
+		@PathVariable("notificationId") Long notificationId) {
 		Long savedNotificationId = notificationService.readAlertNotification(ownerId, notificationId);
 		return ApiSuccessResponse.of("notificationId", savedNotificationId);
 	}
 
-	@DeleteMapping("/{notification_id}")
+	@DeleteMapping("/{notificationId}")
 	public ApiSuccessResponse<Map<String, Long>> deleteNotification(@AuthOwner Long ownerId,
-		@PathVariable("notification_id") Long notificationId) {
+		@PathVariable("notificationId") Long notificationId) {
 		Long deletedNotificationId = notificationService.deleteNotification(ownerId, notificationId);
 		return ApiSuccessResponse.of("notificationId", deletedNotificationId);
 	}
