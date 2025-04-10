@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.region.controller.res.DongResponse;
 import com.breaditnow.customer.domain.region.controller.res.GugunResponse;
 import com.breaditnow.customer.domain.region.controller.res.SidoResponse;
 import com.breaditnow.customer.domain.region.service.RegionService;
@@ -34,9 +33,9 @@ public class RegionController implements RegionControllerDocs {
 		return ApiSuccessResponse.of(regionService.getGugunListBySido(sidoCode));
 	}
 
-	@GetMapping("/gugun/{gugunCode}/dong")
+	/*@GetMapping("/gugun/{gugunCode}/dong")
 	public ApiSuccessResponse<List<DongResponse>> getDongListByGugun(
 		@PathVariable("gugunCode") String gugunCode) {
 		return ApiSuccessResponse.of(regionService.getDongListByGugun(gugunCode));
-	}
+	}*/
 }

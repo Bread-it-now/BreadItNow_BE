@@ -31,16 +31,16 @@ public class NotificationController implements NotificationControllerDocs {
 	private final NotificationService notificationService;
 	private final NotificationPageService notificationPageService;
 
-	@PatchMapping("/{notification_id}/read")
+	@PatchMapping("/{notificationId}/read")
 	public ApiSuccessResponse<Map<String, Long>> readAlertNotification(@AuthCustomer Long customerId,
-		@PathVariable("notification_id") Long notificationId) {
+		@PathVariable("notificationId") Long notificationId) {
 		Long savedNotificationId = notificationService.readAlertNotification(customerId, notificationId);
 		return ApiSuccessResponse.of("notificationId", savedNotificationId);
 	}
 
-	@DeleteMapping("/{notification_id}")
+	@DeleteMapping("/{notificationId}")
 	public ApiSuccessResponse<Map<String, Long>> deleteNotification(@AuthCustomer Long customerId,
-		@PathVariable("notification_id") Long notificationId) {
+		@PathVariable("notificationId") Long notificationId) {
 		Long deletedNotificationId = notificationService.deleteNotification(customerId, notificationId);
 		return ApiSuccessResponse.of("notificationId", deletedNotificationId);
 	}

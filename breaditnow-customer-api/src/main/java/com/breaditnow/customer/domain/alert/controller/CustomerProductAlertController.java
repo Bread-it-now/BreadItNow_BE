@@ -27,25 +27,25 @@ public class CustomerProductAlertController implements CustomerProductAlertContr
 
 	private final CustomerProductAlertService customerProductAlertService;
 
-	@PostMapping("/product/{product_id}")
+	@PostMapping("/product/{productId}")
 	public ApiSuccessResponse<Map<String, Long>> registerProductAlert(
 		@AuthCustomer Long customerId,
-		@PathVariable("product_id") Long productId) {
+		@PathVariable("productId") Long productId) {
 		return customerProductAlertService.registerProductAlert(customerId, productId);
 	}
 
-	@DeleteMapping("/product/{product_id}")
+	@DeleteMapping("/product/{productId}")
 	public ApiSuccessResponse<Void> deleteProductAlert(
 		@AuthCustomer Long customerId,
-		@PathVariable("product_id") Long productId) {
+		@PathVariable("productId") Long productId) {
 		customerProductAlertService.deactivateProductAlert(customerId, productId);
 		return ApiSuccessResponse.of(null);
 	}
 
-	@PatchMapping("/product/{product_id}/toggle")
+	@PatchMapping("/product/{productId}/toggle")
 	public ApiSuccessResponse<Map<String, Boolean>> toggleProductAlert(
 		@AuthCustomer Long customerId,
-		@PathVariable("product_id") Long productId) {
+		@PathVariable("productId") Long productId) {
 		boolean newStatus = customerProductAlertService.toggleProductAlert(customerId, productId);
 		return ApiSuccessResponse.of("active", newStatus);
 	}
