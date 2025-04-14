@@ -14,7 +14,6 @@ import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
 import com.breaditnow.domain.global.dto.QBakeryDistanceDto;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -33,10 +32,11 @@ public class SearchBakeryRepository {
 		String keyword, GeoPoint geoPoint) {
 
 		BooleanExpression baseCondition = bakery.isActive.eq(true);
+		BooleanExpression keywordCondition = bakery.name.containsIgnoreCase(keyword);
+
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
-		BooleanExpression keywordCondition = bakery.name.containsIgnoreCase(keyword);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
 			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression,
@@ -45,8 +45,9 @@ public class SearchBakeryRepository {
 			.leftJoin(customerBakeryFavorite).on(customerBakeryFavorite.bakery.eq(bakery))
 			.where(baseCondition.and(keywordCondition))
 			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.orderBy(buildOrderSpecifier(sort, distanceExpression));
+			.limit(pageable.getPageSize());
+
+		applySortCondition(sort, distanceExpression, query);
 
 		Long totalCount = queryFactory.select(bakery.count())
 			.from(bakery)
@@ -56,15 +57,18 @@ public class SearchBakeryRepository {
 		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
 	}
 
-	private OrderSpecifier<?> buildOrderSpecifier(SortType sort, NumberExpression<Double> distanceExpression) {
+	private void applySortCondition(SortType sort, NumberExpression<Double> distanceExpression,
+		JPAQuery<BakeryDistanceDto> query) {
 		if (sort == LATEST) {
-			return bakery.modifiedAt.desc();
+			query.orderBy(bakery.modifiedAt.desc(), bakery.id.asc());
 		} else if (sort == POPULAR) {
-			customerBakeryFavorite.count().desc();
+			query.groupBy(bakery.id)
+				.orderBy(customerBakeryFavorite.count().desc(), bakery.id.asc());
 		} else if (sort == DISTANCE) {
-			distanceExpression.asc();
+			query.orderBy(distanceExpression.asc(), bakery.id.asc());
+		} else {
+			query.orderBy(bakery.modifiedAt.desc(), bakery.id.asc());
 		}
-		return bakery.modifiedAt.desc();
 	}
 
 	private static BooleanExpression buildIsFavoriteExpression(Long customerId) {
