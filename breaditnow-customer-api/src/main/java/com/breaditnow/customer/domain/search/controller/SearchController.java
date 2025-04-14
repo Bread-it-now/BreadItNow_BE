@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
-import com.breaditnow.customer.domain.search.controller.request.SearchRequest;
+import com.breaditnow.customer.domain.search.controller.req.SearchRequest;
+import com.breaditnow.customer.domain.search.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.customer.domain.search.service.SearchService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 

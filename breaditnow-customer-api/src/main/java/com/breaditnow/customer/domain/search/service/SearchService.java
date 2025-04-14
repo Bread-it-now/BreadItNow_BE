@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
-import com.breaditnow.customer.domain.search.controller.request.SearchRequest;
+import com.breaditnow.customer.domain.search.controller.req.SearchRequest;
+import com.breaditnow.customer.domain.search.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoPoint;
@@ -24,10 +24,10 @@ public class SearchService {
 		Pageable pageable = PageRequest.of(searchRequest.page(), searchRequest.size());
 		GeoPoint geoPoint = GeoPoint.of(searchRequest.latitude(), searchRequest.longitude());
 
-		Page<BakeryDistanceDto> bakeryDistanceDtos = bakeryRepository.searchBakeriesWithKeyword(customerId, pageable,
+		Page<BakeryDistanceDto> bakeryPage = bakeryRepository.searchBakeriesWithKeyword(customerId, pageable,
 			searchRequest.sort(), searchRequest.keyword(),
 			geoPoint);
 
-		return null;
+		return SearchBakeryPageResponse.of(bakeryPage);
 	}
 }

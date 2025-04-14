@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.search.controller.request;
+package com.breaditnow.customer.domain.search.controller.req;
 
 import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 

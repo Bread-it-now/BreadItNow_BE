@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
-import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
+import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoPoint;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class BakeryPageService {
 	private final BakeryRepository bakeryRepository;
 
-	public SearchBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort,
+	public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort,
 		GeoPointRequest geoPointRequest) {
 		GeoPoint currentGeoPoint = geoPointRequest.toEntity();
 		Pageable pageable = PageRequest.of(page, size);
@@ -29,6 +29,6 @@ public class BakeryPageService {
 		Page<BakeryDistanceDto> bakeryDistances = bakerySortStrategy.search(customerId, pageable, currentGeoPoint,
 			bakeryRepository);
 
-		return SearchBakeryPageResponse.of(bakeryDistances);
+		return HotBakeryPageResponse.of(bakeryDistances);
 	}
 }
