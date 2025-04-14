@@ -31,7 +31,7 @@ public interface BakeryControllerDocs {
 		@Parameter(name = "size", description = "한 페이지당 데이터 개수", example = "10", in = QUERY),
 		@Parameter(name = "sort", description = "정렬 기준", example = "reservation", in = QUERY)
 	})
-	@DomainErrorCodeExamples({BAKERY_SORT_CONDITION_NOT_FOUND})
+	@DomainErrorCodeExamples({SORT_CONDITION_NOT_FOUND})
 	ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
 		Long customerId, int page, int size, String sort, GeoPointRequest geoPointRequest);
 }

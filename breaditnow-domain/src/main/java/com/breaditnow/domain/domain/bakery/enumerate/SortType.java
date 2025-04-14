@@ -15,7 +15,7 @@ public enum SortType {
 		try {
 			return SortType.valueOf(type.toUpperCase());
 		} catch (IllegalArgumentException ex) {
-			throw new DomainException(BAKERY_SORT_CONDITION_NOT_FOUND);
+			throw new DomainException(SORT_CONDITION_NOT_FOUND);
 		}
 	}
 }

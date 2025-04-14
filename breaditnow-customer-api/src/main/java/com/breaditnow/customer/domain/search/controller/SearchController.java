@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.search.controller.req.SearchRequest;
 import com.breaditnow.customer.domain.search.controller.res.SearchBakeryPageResponse;
+import com.breaditnow.customer.domain.search.controller.res.SearchProductPageResponse;
 import com.breaditnow.customer.domain.search.service.SearchService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
@@ -29,5 +30,17 @@ public class SearchController {
 		@RequestParam(name = "longitude", required = false) Double longitude) {
 		return ApiSuccessResponse.of(
 			searchService.searchBakeries(customerId, SearchRequest.of(page, size, sort, keyword, latitude, longitude)));
+	}
+
+	@GetMapping("/product")
+	public ApiSuccessResponse<SearchProductPageResponse> searchProducts(@AuthCustomer Long customerId,
+		@RequestParam(name = "page", defaultValue = "0") int page,
+		@RequestParam(name = "size", defaultValue = "10") int size,
+		@RequestParam(name = "sort", defaultValue = "latest") String sort,
+		@RequestParam(name = "keyword", defaultValue = "") String keyword,
+		@RequestParam(name = "latitude", required = false) Double latitude,
+		@RequestParam(name = "longitude", required = false) Double longitude) {
+		return ApiSuccessResponse.of(
+			searchService.searchProducts(customerId, SearchRequest.of(page, size, sort, keyword, latitude, longitude)));
 	}
 }

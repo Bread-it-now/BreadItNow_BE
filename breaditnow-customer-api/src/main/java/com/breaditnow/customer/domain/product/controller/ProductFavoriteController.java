@@ -27,21 +27,21 @@ public class ProductFavoriteController implements ProductFavoriteControllerDocs 
 	private final ProductFavoriteService productFavoriteService;
 	private final ProductFavoritePageService productFavoritePageService;
 
-	@PostMapping("/{productId}/like")
+	@PostMapping("/{productId}/favorite")
 	public ApiSuccessResponse<Map<String, Long>> likeProduct(@AuthCustomer Long customerId,
 		@PathVariable("productId") Long productId) {
 		Long savedProductId = productFavoriteService.likeProduct(customerId, productId);
 		return ApiSuccessResponse.of("productId", savedProductId);
 	}
 
-	@DeleteMapping("/{productId}/like")
+	@DeleteMapping("/{productId}/favorite")
 	public ApiSuccessResponse<Map<String, Long>> deleteProduct(@AuthCustomer Long customerId,
 		@PathVariable("productId") Long bakeryId) {
 		Long savedProductId = productFavoriteService.deleteProduct(customerId, bakeryId);
 		return ApiSuccessResponse.of("productId", savedProductId);
 	}
 
-	@GetMapping("/like")
+	@GetMapping("/favorite")
 	public ApiSuccessResponse<ProductFavoritePageResponse> getFavorites(@AuthCustomer Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,

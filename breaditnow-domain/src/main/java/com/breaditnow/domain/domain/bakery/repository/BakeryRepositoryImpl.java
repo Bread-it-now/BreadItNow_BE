@@ -118,18 +118,18 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression,
 				bakery.operatingStatus, isFavoriteExpr))
 			.from(bakery)
-			.where(baseCondition.and(keywordCondition))
 			.leftJoin(customerBakeryFavorite).on(customerBakeryFavorite.bakery.eq(bakery))
+			.where(baseCondition.and(keywordCondition))
 			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize());
-		query.orderBy(buildOrderSpecifier(sort, distanceExpression));
+			.limit(pageable.getPageSize())
+			.orderBy(buildOrderSpecifier(sort, distanceExpression));
 
 		Long totalCount = queryFactory.select(bakery.count())
 			.from(bakery)
-			.where(baseCondition)
+			.where(baseCondition.and(keywordCondition))
 			.fetchOne();
 
-		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
+		return new PageImpl<>(query.fetch(), pageable, totalCount);
 	}
 
 	private OrderSpecifier<?> buildOrderSpecifier(SortType sort, NumberExpression<Double> distanceExpression) {
