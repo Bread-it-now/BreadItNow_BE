@@ -6,7 +6,7 @@ import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import lombok.Builder;
 
 @Builder
-public record HotBakeryResponse(
+public record SearchBakeryResponse(
 	Long bakeryId,
 	String bakeryName,
 	String profileImage,
@@ -14,8 +14,8 @@ public record HotBakeryResponse(
 	Boolean isFavorite,
 	OperatingStatus operatingStatus
 ) {
-	public static HotBakeryResponse of(BakeryDistanceDto bakeryDistanceDto) {
-		return HotBakeryResponse.builder()
+	public static SearchBakeryResponse of(BakeryDistanceDto bakeryDistanceDto) {
+		return SearchBakeryResponse.builder()
 			.bakeryId(bakeryDistanceDto.bakeryId())
 			.bakeryName(bakeryDistanceDto.bakeryName())
 			.profileImage(bakeryDistanceDto.profileImage())

@@ -10,13 +10,13 @@ import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import lombok.Builder;
 
 @Builder
-public record HotBakeryPageResponse(
-	List<HotBakeryResponse> hotBakeries,
+public record SearchBakeryPageResponse(
+	List<SearchBakeryResponse> hotBakeries,
 	PageInfo pageInfo
 ) {
-	public static HotBakeryPageResponse of(Page<BakeryDistanceDto> bakeryPage) {
-		List<HotBakeryResponse> hotBakeries = bakeryPage
-			.map(HotBakeryResponse::of)
+	public static SearchBakeryPageResponse of(Page<BakeryDistanceDto> bakeryPage) {
+		List<SearchBakeryResponse> hotBakeries = bakeryPage
+			.map(SearchBakeryResponse::of)
 			.getContent();
 
 		PageInfo pageInfo = PageInfo.builder()
@@ -26,7 +26,7 @@ public record HotBakeryPageResponse(
 			.currPage(bakeryPage.getPageable().getPageNumber())
 			.build();
 
-		return HotBakeryPageResponse.builder()
+		return SearchBakeryPageResponse.builder()
 			.hotBakeries(hotBakeries)
 			.pageInfo(pageInfo)
 			.build();

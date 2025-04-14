@@ -6,7 +6,7 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
-import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
+import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.customer.global.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +32,6 @@ public interface BakeryControllerDocs {
 		@Parameter(name = "sort", description = "정렬 기준", example = "reservation", in = QUERY)
 	})
 	@DomainErrorCodeExamples({BAKERY_SORT_CONDITION_NOT_FOUND})
-	ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
+	ApiSuccessResponse<SearchBakeryPageResponse> searchHotBakeries(
 		Long customerId, int page, int size, String sort, GeoPointRequest geoPointRequest);
 }

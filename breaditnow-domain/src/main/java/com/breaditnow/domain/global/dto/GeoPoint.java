@@ -9,5 +9,7 @@ public record GeoPoint(
 
 	Double longitude
 ) {
-
+	public static GeoPoint of(Double latitude, Double longitude) {
+		return new GeoPoint(latitude, longitude);
+	}
 }

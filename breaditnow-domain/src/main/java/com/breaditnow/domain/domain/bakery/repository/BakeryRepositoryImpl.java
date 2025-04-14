@@ -1,6 +1,7 @@
 package com.breaditnow.domain.domain.bakery.repository;
 
 import static com.breaditnow.domain.domain.bakery.entity.QBakery.*;
+import static com.breaditnow.domain.domain.bakery.enumerate.SortType.*;
 import static com.breaditnow.domain.domain.customer.entity.QCustomerRegionPreference.*;
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
@@ -16,10 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
 import com.breaditnow.domain.global.dto.QBakeryDistanceDto;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -31,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
-	private final GeoDistanceExpressionProvider provider;
+	private final GeoDistanceExpressionProvider distanceExpressionProvider;
 
 	@Override
 	public Page<BakeryDistanceDto> searchHotBakeriesByFavorite(Long customerId, Pageable pageable, GeoPoint geoPoint) {
@@ -41,7 +44,8 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			return new PageImpl<>(Collections.emptyList(), pageable, 0);
 		}
 
-		NumberExpression<Double> distanceExpression = provider.buildDistanceExpression(geoPoint, bakery);
+		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
+			bakery);
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
@@ -69,7 +73,8 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			return new PageImpl<>(Collections.emptyList(), pageable, 0);
 		}
 
-		NumberExpression<Double> distanceExpression = provider.buildDistanceExpression(geoPoint, bakery);
+		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
+			bakery);
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
@@ -99,10 +104,46 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		return new PageImpl<>(fetch, pageable, totalCount);
 	}
 
+	@Override
+	public Page<BakeryDistanceDto> searchBakeriesWithKeyword(Long customerId, Pageable pageable, SortType sort,
+		String keyword, GeoPoint geoPoint) {
+
+		BooleanExpression baseCondition = bakery.isActive.eq(true);
+		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
+			bakery);
+		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
+		BooleanExpression keywordCondition = bakery.name.containsIgnoreCase(keyword);
+
+		JPAQuery<BakeryDistanceDto> query = queryFactory
+			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression,
+				bakery.operatingStatus, isFavoriteExpr))
+			.from(bakery)
+			.where(baseCondition.and(keywordCondition))
+			.leftJoin(customerBakeryFavorite).on(customerBakeryFavorite.bakery.eq(bakery))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize());
+		query.orderBy(buildOrderSpecifier(sort, distanceExpression));
+
+		Long totalCount = queryFactory.select(bakery.count())
+			.from(bakery)
+			.where(baseCondition)
+			.fetchOne();
+
+		return new PageImpl<>(query.fetch(), pageable, totalCount == null ? 0 : totalCount);
+	}
+
+	private OrderSpecifier<?> buildOrderSpecifier(SortType sort, NumberExpression<Double> distanceExpression) {
+		if (sort == LATEST) {
+			return bakery.modifiedAt.desc();
+		} else if (sort == POPULAR) {
+			customerBakeryFavorite.count().desc();
+		} else if (sort == DISTANCE) {
+			distanceExpression.asc();
+		}
+		return bakery.modifiedAt.desc();
+	}
+
 	private static BooleanExpression buildIsFavoriteExpression(Long customerId) {
-		if (customerId == null)
-			return FALSE;
-		
 		return JPAExpressions
 			.selectOne()
 			.from(customerBakeryFavorite)
@@ -127,10 +168,6 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	}
 
 	private BooleanExpression buildInterestAreaCondition(Long customerId) {
-		if (customerId == null) {
-			return TRUE;
-		}
-
 		Long preferenceCount = queryFactory
 			.select(customerRegionPreference.count())
 			.from(customerRegionPreference)

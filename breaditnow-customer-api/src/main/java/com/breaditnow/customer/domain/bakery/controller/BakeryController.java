@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
-import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
+import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.customer.domain.bakery.service.BakeryPageService;
 import com.breaditnow.customer.domain.bakery.service.BakeryService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
@@ -25,13 +25,14 @@ public class BakeryController implements BakeryControllerDocs {
 	private final BakeryPageService bakeryPageService;
 
 	@GetMapping("/{bakeryId}/detail")
-	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer(required = false) Long customerId,
+	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer Long customerId,
 		@PathVariable("bakery_id") Long bakeryId) {
 		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}
 
 	@GetMapping("/hot")
-	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer(required = false) Long customerId,
+	public ApiSuccessResponse<SearchBakeryPageResponse> searchHotBakeries(
+		@AuthCustomer Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "reservation") String sort,
