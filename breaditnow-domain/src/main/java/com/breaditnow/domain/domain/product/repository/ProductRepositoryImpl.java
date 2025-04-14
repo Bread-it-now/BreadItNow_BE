@@ -25,7 +25,6 @@ import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -106,20 +105,31 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 	@Override
 	public Page<Product> searchProductsWithKeyword(Long customerId, Pageable pageable, SortType sort, String keyword,
 		GeoPoint geoPoint) {
+
 		BooleanExpression baseCondition = product.isActive.eq(true)
-			.and(bakery.name.containsIgnoreCase(keyword));
-		
-		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
-			bakery);
+			.and(product.isHidden.eq(false))
+			.and(product.name.containsIgnoreCase(keyword));
 
 		JPAQuery<Product> query = queryFactory
 			.selectFrom(product)
-			.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product))
-			.where(baseCondition)
-			.groupBy(product.id)
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
-			.orderBy(buildOrderSpecifier(sort, distanceExpression));
+			.leftJoin(bakery).on(product.bakery.eq(bakery))
+			.where(baseCondition);
+
+		if (sort == POPULAR) {
+			query.leftJoin(customerProductFavorite).on(customerProductFavorite.product.eq(product))
+				.groupBy(product.id)
+				.orderBy(customerProductFavorite.count().desc(), product.id.asc());
+		} else {
+			if (sort == LATEST) {
+				query.orderBy(product.modifiedAt.desc());
+			} else if (sort == DISTANCE) {
+				NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(
+					geoPoint, bakery);
+				query.orderBy(distanceExpression.asc());
+			} else {
+				query.orderBy(product.modifiedAt.desc());
+			}
+		}
 
 		Long totalCount = queryFactory.select(product.count())
 			.from(product)
@@ -194,16 +204,5 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
 	private BooleanExpression recentReservationCondition() {
 		return reservationProduct.createdAt.goe(LocalDateTime.now().minusMonths(1));
-	}
-
-	private OrderSpecifier<?> buildOrderSpecifier(SortType sort, NumberExpression<Double> distanceExpression) {
-		if (sort == LATEST) {
-			return product.modifiedAt.desc();
-		} else if (sort == POPULAR) {
-			return customerProductFavorite.count().desc();
-		} else if (sort == DISTANCE) {
-			return distanceExpression.asc();
-		}
-		return product.modifiedAt.desc();
 	}
 }
