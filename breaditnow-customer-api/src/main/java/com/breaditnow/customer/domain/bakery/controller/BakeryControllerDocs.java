@@ -43,8 +43,8 @@ public interface BakeryControllerDocs {
 	@Parameters({
 		@Parameter(name = "page", description = "페이지 번호 (0부터 시작)", example = "0", in = QUERY),
 		@Parameter(name = "size", description = "한 페이지당 데이터 개수", example = "10", in = QUERY),
-		@Parameter(name = "sort", description = "정렬 기준", example = "reservation", in = QUERY),
-		@Parameter(name = "keyword", description = "검색에 사용할 키워드", example = "바게트", in = QUERY),
+		@Parameter(name = "sort", description = "정렬 기준", example = "latest", in = QUERY),
+		@Parameter(name = "keyword", description = "검색에 사용할 키워드", example = "오븐", in = QUERY),
 		@Parameter(name = "latitude", description = "현재 위치의 위도 정보", example = "37.12345", in = QUERY),
 		@Parameter(name = "longitude", description = "현재 위치의 경도 정보", example = "127.12345", in = QUERY)
 	})

@@ -27,9 +27,9 @@ public interface ProductControllerDocs {
 		@Parameter(name = "page", description = "페이지 번호 (0부터 시작)", example = "0", in = QUERY),
 		@Parameter(name = "size", description = "한 페이지당 노출할 상품 개수", example = "10", in = QUERY),
 		@Parameter(name = "sort", description = "정렬 기준", example = "latest", in = QUERY),
-		@Parameter(name = "keyword", description = "검색할 상품 키워드", example = "커피", in = QUERY),
-		@Parameter(name = "latitude", description = "현재 위치의 위도", example = "37.12345", in = QUERY, required = false),
-		@Parameter(name = "longitude", description = "현재 위치의 경도", example = "127.12345", in = QUERY, required = false)
+		@Parameter(name = "keyword", description = "검색할 상품 키워드", example = "빵", in = QUERY),
+		@Parameter(name = "latitude", description = "현재 위치의 위도", example = "37.12345", in = QUERY),
+		@Parameter(name = "longitude", description = "현재 위치의 경도", example = "127.12345", in = QUERY)
 	})
 	ApiSuccessResponse<SearchProductPageResponse> searchProducts(Long customerId, int page, int size, String sort,
 		String keyword, Double latitude, Double longitude);
