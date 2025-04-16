@@ -1,6 +1,7 @@
 package com.breaditnow.domain.domain.search.entity;
 
 import static jakarta.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.domain.search.enumerate.SearchType;
 
@@ -13,11 +14,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "autocomplete", indexes = {
 	@Index(name = "ft_name_idx", columnList = "name")
 })
+@NoArgsConstructor(access = PROTECTED)
+@Getter
 public class AutoComplete {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -27,7 +32,7 @@ public class AutoComplete {
 	private String name;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(name = "type", nullable = false)
 	private SearchType searchType;
 
 	@Column(name = "search_count")

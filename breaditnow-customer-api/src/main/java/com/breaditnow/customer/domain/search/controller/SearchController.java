@@ -1,5 +1,7 @@
 package com.breaditnow.customer.domain.search.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +20,8 @@ public class SearchController {
 	private final AutoCompleteService searchService;
 
 	@GetMapping("/autocomplete")
-	public ApiSuccessResponse<SearchAutoCompleteResponse> searchAutoComplete(@RequestParam("keyword") String keyword) {
+	public ApiSuccessResponse<List<SearchAutoCompleteResponse>> searchAutoComplete(
+		@RequestParam("keyword") String keyword) {
 		return ApiSuccessResponse.of(searchService.searchAutoComplete(keyword));
 	}
 }

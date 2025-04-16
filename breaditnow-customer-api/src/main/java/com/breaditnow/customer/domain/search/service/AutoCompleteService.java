@@ -18,10 +18,13 @@ import lombok.RequiredArgsConstructor;
 public class AutoCompleteService {
 	private final AutoCompleteRepository autoCompleteRepository;
 
-	public SearchAutoCompleteResponse searchAutoComplete(String keyword) {
+	public List<SearchAutoCompleteResponse> searchAutoComplete(String keyword) {
 		SearchKeyword searchKeyword = new SearchKeyword(keyword);
 		List<AutoComplete> autoCompletes = autoCompleteRepository.findByKeywordMatch(
 			searchKeyword.toBooleanModeQuery());
-		
+
+		return autoCompletes.stream()
+			.map(SearchAutoCompleteResponse::of)
+			.toList();
 	}
 }
