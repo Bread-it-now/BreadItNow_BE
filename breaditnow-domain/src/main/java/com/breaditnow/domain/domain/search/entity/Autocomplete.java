@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "autocomplete")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-public class AutoComplete {
+public class Autocomplete {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
@@ -36,7 +36,7 @@ public class AutoComplete {
 	private Long searchCount;
 
 	@Builder
-	public AutoComplete(String name, SearchType searchType, Long searchCount) {
+	public Autocomplete(String name, SearchType searchType, Long searchCount) {
 		this.name = name;
 		this.searchType = searchType;
 		this.searchCount = searchCount;

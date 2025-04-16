@@ -1,7 +1,5 @@
 package com.breaditnow.customer.domain.search.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.product.controller.res.SearchProductPageResponse;
 import com.breaditnow.customer.domain.search.controller.req.SearchRequest;
-import com.breaditnow.customer.domain.search.controller.res.SearchAutoCompleteResponse;
+import com.breaditnow.customer.domain.search.controller.res.SearchAutocompleteResponses;
 import com.breaditnow.customer.domain.search.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.customer.domain.search.service.SearchService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
@@ -50,8 +48,8 @@ public class SearchController {
 	}
 
 	@GetMapping("/autocomplete")
-	public ApiSuccessResponse<List<SearchAutoCompleteResponse>> searchAutoComplete(
+	public ApiSuccessResponse<SearchAutocompleteResponses> searchAutoComplete(
 		@RequestParam("keyword") String keyword) {
-		return ApiSuccessResponse.of(searchService.searchAutoComplete(keyword));
+		return ApiSuccessResponse.of(searchService.searchAutocomplete(keyword));
 	}
 }

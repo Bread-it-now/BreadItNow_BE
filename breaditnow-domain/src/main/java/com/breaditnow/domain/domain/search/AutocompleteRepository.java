@@ -7,18 +7,18 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.breaditnow.domain.domain.search.entity.AutoComplete;
+import com.breaditnow.domain.domain.search.entity.Autocomplete;
 
-public interface AutoCompleteRepository extends JpaRepository<AutoComplete, Long> {
+public interface AutocompleteRepository extends JpaRepository<Autocomplete, Long> {
 	@Query(
 		value = "SELECT * FROM autocomplete WHERE MATCH(name) AGAINST(?1 IN BOOLEAN MODE) ORDER BY search_count DESC LIMIT 10",
 		nativeQuery = true)
-	List<AutoComplete> findByKeywordMatch(String keyword);
+	List<Autocomplete> findByKeywordMatch(String keyword);
 
 	/**
 	 * 정확한 검색어에 해당하는 AutoComplete 레코드의 search_count를 1 증가시킵니다.
 	 */
 	@Modifying(clearAutomatically = true)
-	@Query("UPDATE AutoComplete a SET a.searchCount = a.searchCount + 1 WHERE a.name = :keyword")
+	@Query("UPDATE Autocomplete a SET a.searchCount = a.searchCount + 1 WHERE a.name = :keyword")
 	void incrementSearchCount(@Param("keyword") String keyword);
 }

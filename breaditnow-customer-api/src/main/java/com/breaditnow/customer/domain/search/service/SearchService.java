@@ -11,14 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.breaditnow.customer.domain.product.controller.res.SearchProductPageResponse;
 import com.breaditnow.customer.domain.product.controller.res.SearchProductResponse;
 import com.breaditnow.customer.domain.search.controller.req.SearchRequest;
-import com.breaditnow.customer.domain.search.controller.res.SearchAutoCompleteResponse;
+import com.breaditnow.customer.domain.search.controller.res.SearchAutocompleteResponse;
+import com.breaditnow.customer.domain.search.controller.res.SearchAutocompleteResponses;
 import com.breaditnow.customer.domain.search.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.domain.domain.bakery.repository.SearchBakeryRepository;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.SearchProductRepository;
-import com.breaditnow.domain.domain.search.AutoCompleteRepository;
-import com.breaditnow.domain.domain.search.entity.AutoComplete;
+import com.breaditnow.domain.domain.search.AutocompleteRepository;
+import com.breaditnow.domain.domain.search.entity.Autocomplete;
 import com.breaditnow.domain.domain.search.entity.SearchKeyword;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoPoint;
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SearchService {
-	private final AutoCompleteRepository autoCompleteRepository;
+	private final AutocompleteRepository autoCompleteRepository;
 	private final SearchProductRepository searchProductRepository;
 	private final SearchBakeryRepository searchBakeryRepository;
 	private final CustomerProductFavoriteRepository favoriteRepository;
@@ -60,15 +61,17 @@ public class SearchService {
 	}
 
 	@Transactional
-	public List<SearchAutoCompleteResponse> searchAutoComplete(String keyword) {
+	public SearchAutocompleteResponses searchAutocomplete(String keyword) {
 		SearchKeyword searchKeyword = new SearchKeyword(keyword);
-		List<AutoComplete> autoCompletes = autoCompleteRepository.findByKeywordMatch(
+		List<Autocomplete> autocompletes = autoCompleteRepository.findByKeywordMatch(
 			searchKeyword.toBooleanModeQuery());
 
 		autoCompleteRepository.incrementSearchCount(searchKeyword.getKeyword());
 
-		return autoCompletes.stream()
-			.map(SearchAutoCompleteResponse::of)
+		List<SearchAutocompleteResponse> searchAutocompleteResponseList = autocompletes.stream()
+			.map(SearchAutocompleteResponse::of)
 			.toList();
+
+		return SearchAutocompleteResponses.of(searchAutocompleteResponseList);
 	}
 }
