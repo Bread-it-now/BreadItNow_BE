@@ -37,7 +37,8 @@ public class SearchController {
 	}
 
 	@GetMapping("/product")
-	public ApiSuccessResponse<SearchProductPageResponse> searchProducts(@AuthCustomer Long customerId,
+	public ApiSuccessResponse<SearchProductPageResponse> searchProducts(
+		@AuthCustomer Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "latest") String sort,

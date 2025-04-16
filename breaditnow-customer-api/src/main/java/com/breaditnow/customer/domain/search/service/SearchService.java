@@ -59,10 +59,13 @@ public class SearchService {
 		return SearchProductPageResponse.of(searchProductResponses);
 	}
 
+	@Transactional
 	public List<SearchAutoCompleteResponse> searchAutoComplete(String keyword) {
 		SearchKeyword searchKeyword = new SearchKeyword(keyword);
 		List<AutoComplete> autoCompletes = autoCompleteRepository.findByKeywordMatch(
 			searchKeyword.toBooleanModeQuery());
+
+		autoCompleteRepository.incrementSearchCount(searchKeyword.getKeyword());
 
 		return autoCompletes.stream()
 			.map(SearchAutoCompleteResponse::of)

@@ -11,16 +11,13 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "autocomplete", indexes = {
-	@Index(name = "ft_name_idx", columnList = "name")
-})
+@Table(name = "autocomplete")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 public class AutoComplete {
