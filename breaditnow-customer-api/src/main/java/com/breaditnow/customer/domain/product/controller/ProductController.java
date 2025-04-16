@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.product.controller.req.ProductSearchRequest;
 import com.breaditnow.customer.domain.product.controller.res.HotProductPageResponse;
-import com.breaditnow.customer.domain.product.controller.res.SearchProductPageResponse;
 import com.breaditnow.customer.domain.product.service.ProductPageService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
@@ -26,17 +24,5 @@ public class ProductController implements ProductControllerDocs {
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "reservation") String sort) {
 		return ApiSuccessResponse.of(productPageService.searchHotProducts(customerId, page, size, sort));
-	}
-
-	@GetMapping("/search")
-	public ApiSuccessResponse<SearchProductPageResponse> searchProducts(@AuthCustomer Long customerId,
-		@RequestParam(name = "page", defaultValue = "0") int page,
-		@RequestParam(name = "size", defaultValue = "10") int size,
-		@RequestParam(name = "sort", defaultValue = "latest") String sort,
-		@RequestParam(name = "keyword", defaultValue = "") String keyword,
-		@RequestParam(name = "latitude", required = false) Double latitude,
-		@RequestParam(name = "longitude", required = false) Double longitude) {
-		return ApiSuccessResponse.of(productPageService.searchProducts(customerId,
-			ProductSearchRequest.of(page, size, sort, keyword, latitude, longitude)));
 	}
 }

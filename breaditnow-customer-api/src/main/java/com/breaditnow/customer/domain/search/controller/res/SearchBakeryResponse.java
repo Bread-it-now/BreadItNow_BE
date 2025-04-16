@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.bakery.controller.res;
+package com.breaditnow.customer.domain.search.controller.res;
 
 import com.breaditnow.domain.domain.bakery.enumerate.OperatingStatus;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;

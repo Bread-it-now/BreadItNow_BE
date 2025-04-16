@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.domain.bakery.controller.req.BakerySearchRequest;
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.BakeryDetailResponse;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
-import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.customer.domain.bakery.service.BakeryPageService;
 import com.breaditnow.customer.domain.bakery.service.BakeryService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
@@ -41,18 +39,5 @@ public class BakeryController implements BakeryControllerDocs {
 		@Valid GeoPointRequest geoPointRequest) {
 		return ApiSuccessResponse.of(
 			bakeryPageService.searchHotBakeries(customerId, page, size, sort, geoPointRequest));
-	}
-
-	@GetMapping("/search")
-	public ApiSuccessResponse<SearchBakeryPageResponse> searchBakeries(
-		@AuthCustomer Long customerId,
-		@RequestParam(name = "page", defaultValue = "0") int page,
-		@RequestParam(name = "size", defaultValue = "10") int size,
-		@RequestParam(name = "sort", defaultValue = "latest") String sort,
-		@RequestParam(name = "keyword", defaultValue = "") String keyword,
-		@RequestParam(name = "latitude", required = false) Double latitude,
-		@RequestParam(name = "longitude", required = false) Double longitude) {
-		return ApiSuccessResponse.of(bakeryPageService.searchBakeries(customerId,
-			BakerySearchRequest.of(page, size, sort, keyword, latitude, longitude)));
 	}
 }

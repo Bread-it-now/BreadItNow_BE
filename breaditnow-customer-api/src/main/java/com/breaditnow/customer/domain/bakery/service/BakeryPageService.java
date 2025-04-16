@@ -6,12 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.breaditnow.customer.domain.bakery.controller.req.BakerySearchRequest;
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.bakery.controller.res.HotBakeryPageResponse;
-import com.breaditnow.customer.domain.bakery.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
-import com.breaditnow.domain.domain.bakery.repository.SearchBakeryRepository;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoPoint;
 
@@ -22,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BakeryPageService {
 	private final BakeryRepository bakeryRepository;
-	private final SearchBakeryRepository searchBakeryRepository;
 
 	public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort,
 		GeoPointRequest geoPointRequest) {
@@ -34,15 +30,5 @@ public class BakeryPageService {
 			bakeryRepository);
 
 		return HotBakeryPageResponse.of(bakeryDistances);
-	}
-
-	public SearchBakeryPageResponse searchBakeries(Long customerId, BakerySearchRequest searchRequest) {
-		Pageable pageable = PageRequest.of(searchRequest.page(), searchRequest.size());
-		GeoPoint geoPoint = GeoPoint.of(searchRequest.latitude(), searchRequest.longitude());
-
-		Page<BakeryDistanceDto> bakeryPage = searchBakeryRepository.searchBakeriesWithKeyword(customerId, pageable,
-			searchRequest.sort(), searchRequest.keyword(), geoPoint);
-
-		return SearchBakeryPageResponse.of(bakeryPage);
 	}
 }
