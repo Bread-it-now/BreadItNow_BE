@@ -9,6 +9,8 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports:
       - "3306:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
     networks:
       - bin-network
     healthcheck:
