@@ -81,7 +81,12 @@ public enum DomainErrorCode implements ErrorCode {
 	 */
 	NOTIFICATION_NOT_FOUND(NOT_FOUND, "BK001", "알림을 찾을 수 없습니다."),
 	INVALID_NOTIFICATION_TYPE(BAD_REQUEST, "BK002", "잘못된 알림 타입입니다."),
-	INVALID_RESERVATION_STATUS_TYPE(BAD_REQUEST, "BK002", "잘못된 예약 상태 타입입니다.");
+	INVALID_RESERVATION_STATUS_TYPE(BAD_REQUEST, "BK002", "잘못된 예약 상태 타입입니다."),
+
+	/**
+	 * Search(BL000)
+	 */
+	SEARCH_KEYWORD_TOO_SHORT(BAD_REQUEST, "BD007", "검색어는 최소 한 글자 이상이어야 합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

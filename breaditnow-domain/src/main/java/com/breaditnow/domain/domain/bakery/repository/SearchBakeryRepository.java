@@ -3,6 +3,7 @@ package com.breaditnow.domain.domain.bakery.repository;
 import static com.breaditnow.domain.domain.bakery.entity.QBakery.*;
 import static com.breaditnow.domain.domain.bakery.enumerate.SortType.*;
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
+import static com.querydsl.core.types.dsl.Expressions.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,7 +33,7 @@ public class SearchBakeryRepository {
 		String keyword, GeoPoint geoPoint) {
 
 		BooleanExpression baseCondition = bakery.isActive.eq(true);
-		BooleanExpression keywordCondition = bakery.name.containsIgnoreCase(keyword);
+		BooleanExpression keywordCondition = fullTextMatch(keyword);
 
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
@@ -71,7 +72,7 @@ public class SearchBakeryRepository {
 		}
 	}
 
-	private static BooleanExpression buildIsFavoriteExpression(Long customerId) {
+	private BooleanExpression buildIsFavoriteExpression(Long customerId) {
 		return JPAExpressions
 			.selectOne()
 			.from(customerBakeryFavorite)
@@ -81,5 +82,19 @@ public class SearchBakeryRepository {
 				customerBakeryFavorite.isActive.eq(true)
 			)
 			.exists();
+	}
+
+	private BooleanExpression fullTextMatch(String keyword) {
+		if (keyword == null || keyword.isEmpty()) {
+			return null;
+		}
+
+		NumberExpression<Double> score = numberTemplate(
+			Double.class,
+			"function('match_bm',{0},{1})",
+			bakery.name,
+			constant(keyword)
+		);
+		return score.gt(0);
 	}
 }

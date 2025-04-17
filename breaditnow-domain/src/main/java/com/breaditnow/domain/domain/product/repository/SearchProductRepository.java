@@ -20,7 +20,6 @@ import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -58,7 +57,7 @@ public class SearchProductRepository {
 	}
 
 	private BooleanExpression fullTextMatch(String keyword) {
-		if (StringUtils.isEmpty(keyword)) {
+		if (keyword == null || keyword.isEmpty()) {
 			return null;
 		}
 

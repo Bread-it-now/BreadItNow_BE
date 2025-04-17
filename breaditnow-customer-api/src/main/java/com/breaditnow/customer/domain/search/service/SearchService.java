@@ -38,9 +38,10 @@ public class SearchService {
 	public SearchBakeryPageResponse searchBakeries(Long customerId, SearchRequest searchRequest) {
 		Pageable pageable = PageRequest.of(searchRequest.page(), searchRequest.size());
 		GeoPoint geoPoint = GeoPoint.of(searchRequest.latitude(), searchRequest.longitude());
+		SearchKeyword searchKeyword = new SearchKeyword(searchRequest.keyword());
 
 		Page<BakeryDistanceDto> bakeryPage = searchBakeryRepository.searchBakeriesWithKeyword(customerId, pageable,
-			searchRequest.sort(), searchRequest.keyword(), geoPoint);
+			searchRequest.sort(), searchKeyword.toBooleanModeQuery(), geoPoint);
 
 		return SearchBakeryPageResponse.of(bakeryPage);
 	}
