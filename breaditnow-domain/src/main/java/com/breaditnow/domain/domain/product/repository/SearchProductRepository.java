@@ -1,7 +1,6 @@
 package com.breaditnow.domain.domain.product.repository;
 
 import static com.breaditnow.domain.domain.bakery.entity.QBakery.*;
-import static com.breaditnow.domain.domain.bakery.enumerate.SortType.*;
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerProductFavorite.*;
 import static com.breaditnow.domain.domain.product.entity.QProduct.*;
 import static com.querydsl.core.types.dsl.Expressions.*;
@@ -71,19 +70,16 @@ public class SearchProductRepository {
 	}
 
 	private void applySortCondition(SortType sort, GeoPoint geoPoint, JPAQuery<Product> query) {
-		if (sort == POPULAR) {
-			query.leftJoin(customerProductFavorite)
+		switch (sort) {
+			case POPULAR -> query
+				.leftJoin(customerProductFavorite)
 				.on(customerProductFavorite.product.eq(product))
 				.groupBy(product.id)
 				.orderBy(customerProductFavorite.count().desc(), product.id.asc());
-		} else if (sort == LATEST) {
-			query.orderBy(product.modifiedAt.desc(), product.id.asc());
-		} else if (sort == DISTANCE) {
-			query.orderBy(
-				distanceExpressionProvider.buildDistanceExpression(geoPoint, bakery).asc(),
-				product.id.asc());
-		} else {
-			query.orderBy(product.modifiedAt.desc(), product.id.asc());
+			case DISTANCE -> query
+				.orderBy(distanceExpressionProvider.buildDistanceExpression(geoPoint, bakery).asc(), product.id.asc());
+			default -> query.orderBy(product.modifiedAt.desc(), product.id.asc());
 		}
 	}
+
 }

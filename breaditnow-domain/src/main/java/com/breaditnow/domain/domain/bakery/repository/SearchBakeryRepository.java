@@ -1,7 +1,6 @@
 package com.breaditnow.domain.domain.bakery.repository;
 
 import static com.breaditnow.domain.domain.bakery.entity.QBakery.*;
-import static com.breaditnow.domain.domain.bakery.enumerate.SortType.*;
 import static com.breaditnow.domain.domain.favorite.entity.QCustomerBakeryFavorite.*;
 import static com.querydsl.core.types.dsl.Expressions.*;
 
@@ -60,15 +59,11 @@ public class SearchBakeryRepository {
 
 	private void applySortCondition(SortType sort, NumberExpression<Double> distanceExpression,
 		JPAQuery<BakeryDistanceDto> query) {
-		if (sort == LATEST) {
-			query.orderBy(bakery.modifiedAt.desc(), bakery.id.asc());
-		} else if (sort == POPULAR) {
-			query.groupBy(bakery.id)
-				.orderBy(customerBakeryFavorite.count().desc(), bakery.id.asc());
-		} else if (sort == DISTANCE) {
-			query.orderBy(distanceExpression.asc(), bakery.id.asc());
-		} else {
-			query.orderBy(bakery.modifiedAt.desc(), bakery.id.asc());
+		switch (sort) {
+			case LATEST -> query.orderBy(bakery.modifiedAt.desc(), bakery.id.asc());
+			case POPULAR -> query.groupBy(bakery.id).orderBy(customerBakeryFavorite.count().desc(), bakery.id.asc());
+			case DISTANCE -> query.orderBy(distanceExpression.asc(), bakery.id.asc());
+			default -> query.orderBy(bakery.modifiedAt.desc(), bakery.id.asc());
 		}
 	}
 
