@@ -21,18 +21,20 @@ public class AutocompleteJdbcDaoImpl implements AutocompleteJdbcDao {
 		             , 'BAKERY' AS type
 		             , MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE) AS score
 		          FROM bakery b
-		         WHERE MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
+		         WHERE b.is_active = TRUE
+		           AND MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
 		        UNION ALL
-		        SELECT p.name    AS name
-		             , 'PRODUCT' AS type
+		        SELECT p.name     AS name
+		             , 'PRODUCT'  AS type
 		             , MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE) AS score
 		          FROM product p
-		         WHERE MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
+		         WHERE p.is_active = TRUE
+		           AND p.is_hidden = FALSE
+		           AND MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
 		       ) AS combined
 		 ORDER BY combined.score DESC
 		 LIMIT 10
 		""";
-
 	private final NamedParameterJdbcTemplate jdbc;
 
 	@Override
