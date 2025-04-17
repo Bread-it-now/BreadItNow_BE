@@ -26,7 +26,7 @@ public class BakeryController implements BakeryControllerDocs {
 
 	@GetMapping("/{bakeryId}/detail")
 	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer Long customerId,
-		@PathVariable("bakery_id") Long bakeryId) {
+		@PathVariable("bakeryId") Long bakeryId) {
 		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}
 
