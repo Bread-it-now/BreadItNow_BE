@@ -35,7 +35,9 @@ public class SearchProductRepository {
 		JPAQuery<Product> query = queryFactory
 			.selectFrom(product)
 			.leftJoin(bakery).on(product.bakery.eq(bakery))
-			.where(baseCondition);
+			.where(baseCondition)
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize());
 
 		applySortCondition(sort, geoPoint, query);
 
@@ -71,6 +73,7 @@ public class SearchProductRepository {
 
 	private void applySortCondition(SortType sort, GeoPoint geoPoint, JPAQuery<Product> query) {
 		switch (sort) {
+			case LATEST -> query.orderBy(product.modifiedAt.desc(), product.id.asc());
 			case POPULAR -> query
 				.leftJoin(customerProductFavorite)
 				.on(customerProductFavorite.product.eq(product))
