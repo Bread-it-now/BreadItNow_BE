@@ -15,25 +15,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AutocompleteJdbcDaoImpl implements AutocompleteJdbcDao {
 	private static final String SQL = """
-		SELECT name, type
-		  FROM (
-		        SELECT b.name   AS name
-		             , 'BAKERY' AS type
-		             , MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE) AS score
-		          FROM bakery b
-		         WHERE b.is_active = TRUE
-		           AND MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
-		        UNION ALL
-		        SELECT p.name     AS name
-		             , 'PRODUCT'  AS type
-		             , MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE) AS score
-		          FROM product p
-		         WHERE p.is_active = TRUE
-		           AND p.is_hidden = FALSE
-		           AND MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
-		       ) AS combined
-		 ORDER BY combined.score DESC
-		 LIMIT 10
+		SELECT name, ANY_VALUE(type) AS type
+		        FROM (
+		              SELECT b.name   AS name
+		                   , 'BAKERY' AS type
+		                   , MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE) AS score
+		                FROM bakery b
+		               WHERE b.is_active = TRUE
+		                 AND MATCH(b.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
+		              UNION ALL
+		              SELECT p.name   AS name
+		                   , 'PRODUCT' AS type
+		                   , MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE) AS score
+		                FROM product p
+		               WHERE p.is_active = TRUE
+		                 AND p.is_hidden = FALSE
+		                 AND MATCH(p.name) AGAINST(:kw IN NATURAL LANGUAGE MODE)
+		             ) AS combined
+		       GROUP BY name
+		       ORDER BY MAX(score) DESC
+		       LIMIT 10
 		""";
 	private final NamedParameterJdbcTemplate jdbc;
 
