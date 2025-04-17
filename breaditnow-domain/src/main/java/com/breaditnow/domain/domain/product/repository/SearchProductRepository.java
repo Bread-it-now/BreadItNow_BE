@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
+import com.breaditnow.domain.global.provider.GeoDistanceExpressionProvider;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

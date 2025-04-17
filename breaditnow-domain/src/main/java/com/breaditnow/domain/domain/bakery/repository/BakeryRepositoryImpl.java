@@ -17,9 +17,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
-import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
 import com.breaditnow.domain.global.dto.QBakeryDistanceDto;
+import com.breaditnow.domain.global.provider.GeoDistanceExpressionProvider;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;

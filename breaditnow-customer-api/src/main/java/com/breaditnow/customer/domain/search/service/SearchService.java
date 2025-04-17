@@ -18,9 +18,9 @@ import com.breaditnow.domain.domain.bakery.repository.SearchBakeryRepository;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.SearchProductRepository;
-import com.breaditnow.domain.domain.search.AutocompleteRepository;
-import com.breaditnow.domain.domain.search.entity.Autocomplete;
 import com.breaditnow.domain.domain.search.entity.SearchKeyword;
+import com.breaditnow.domain.domain.search.repository.AutocompleteJdbcDao;
+import com.breaditnow.domain.global.dto.AutoCompleteDto;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoPoint;
 
@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SearchService {
-	private final AutocompleteRepository autoCompleteRepository;
+	private final AutocompleteJdbcDao autocompleteJdbcDao;
 	private final SearchProductRepository searchProductRepository;
 	private final SearchBakeryRepository searchBakeryRepository;
 	private final CustomerProductFavoriteRepository favoriteRepository;
@@ -63,10 +63,8 @@ public class SearchService {
 	@Transactional
 	public SearchAutocompleteResponses searchAutocomplete(String keyword) {
 		SearchKeyword searchKeyword = new SearchKeyword(keyword);
-		List<Autocomplete> autocompletes = autoCompleteRepository.findByKeywordMatch(
+		List<AutoCompleteDto> autocompletes = autocompleteJdbcDao.findByKeywordMatch(
 			searchKeyword.toBooleanModeQuery());
-
-		autoCompleteRepository.incrementSearchCount(searchKeyword.getKeyword());
 
 		List<SearchAutocompleteResponse> searchAutocompleteResponseList = autocompletes.stream()
 			.map(SearchAutocompleteResponse::of)
