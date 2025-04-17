@@ -8,9 +8,9 @@ import lombok.Builder;
 public record SearchAutocompleteResponses(
 	List<SearchAutocompleteResponse> searchAutoCompletes
 ) {
-	public static SearchAutocompleteResponses of(List<SearchAutocompleteResponse> searchAutocompleteRespons) {
+	public static SearchAutocompleteResponses of(List<SearchAutocompleteResponse> searchAutocompleteResponse) {
 		return SearchAutocompleteResponses.builder()
-			.searchAutoCompletes(searchAutocompleteRespons)
+			.searchAutoCompletes(searchAutocompleteResponse)
 			.build();
 	}
 }

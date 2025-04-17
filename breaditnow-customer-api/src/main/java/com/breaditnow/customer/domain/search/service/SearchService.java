@@ -49,8 +49,10 @@ public class SearchService {
 		Pageable pageable = PageRequest.of(searchRequest.page(), searchRequest.size());
 		GeoPoint geoPoint = GeoPoint.of(searchRequest.latitude(), searchRequest.longitude());
 
+		SearchKeyword searchKeyword = new SearchKeyword(searchRequest.keyword());
+
 		Page<Product> productPage = searchProductRepository.searchProductsWithKeyword(pageable, searchRequest.sort(),
-			searchRequest.keyword(), geoPoint);
+			searchKeyword.toBooleanModeQuery(), geoPoint);
 
 		Page<SearchProductResponse> searchProductResponses = productPage.map(product -> {
 			boolean isFavorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());
@@ -60,7 +62,6 @@ public class SearchService {
 		return SearchProductPageResponse.of(searchProductResponses);
 	}
 
-	@Transactional
 	public SearchAutocompleteResponses searchAutocomplete(String keyword) {
 		SearchKeyword searchKeyword = new SearchKeyword(keyword);
 		List<AutoCompleteDto> autocompletes = autocompleteJdbcDao.findByKeywordMatch(
