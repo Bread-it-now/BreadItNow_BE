@@ -25,6 +25,7 @@ import com.breaditnow.common.swagger.ExampleHolder;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -38,6 +39,10 @@ public class SwaggerConfig {
 	@Bean
 	public OpenAPI openAPI(@Value("${openapi.service.url}") String url) {
 		return new OpenAPI()
+			.info(new Info()
+				.title("Auth API definition")
+				.description("Bread It Now")
+			)
 			.servers(List.of(new Server().url(url)));
 	}
 

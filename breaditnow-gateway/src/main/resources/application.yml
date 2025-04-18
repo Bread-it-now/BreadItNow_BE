@@ -67,7 +67,7 @@ springdoc:
       - url: /owner-api/v3/api-docs
         name: Owner API
       - url: /auth-api/v3/api-docs
-        name: Auth API
+        name: Autwh API
     urls-primary-name: Customer API
 
   token:
