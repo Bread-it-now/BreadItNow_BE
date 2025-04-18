@@ -14,6 +14,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,7 +26,7 @@ public class AuthController implements AuthControllerDocs {
 	private final AuthSignOutService authSignOutService;
 
 	@PostMapping("/sign-up")
-	public ApiSuccessResponse<Map<String, Long>> signup(@RequestBody SignupRequest signupRequest) {
+	public ApiSuccessResponse<Map<String, Long>> signup(@RequestBody @Valid SignupRequest signupRequest) {
 		Long userId = authSignInService.signup(signupRequest);
 		return ApiSuccessResponse.of("userId", userId);
 	}
