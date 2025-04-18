@@ -8,10 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.strategy.ProductFavoriteSortStrategyFactory;
 import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
+import com.breaditnow.domain.global.provider.GeoDistanceExpressionProvider;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CustomerProductFavoriteRepositoryImpl implements CustomerProductFavoriteRepositoryCustom {
-	private final ProductFavoriteSortStrategyFactory sortFactory;
 	private final JPAQueryFactory queryFactory;
 	private final GeoDistanceExpressionProvider distanceExpressionProvider;
 
@@ -34,7 +32,6 @@ public class CustomerProductFavoriteRepositoryImpl implements CustomerProductFav
 
 		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
 			bakery);
-		// ProductFavoriteSortStrategy strategy = sortFactory.getStrategy(pageable.getSort(), distanceExpression);
 
 		JPAQuery<Product> query = queryFactory
 			.select(product)

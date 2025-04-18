@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Customer - 지역 API", description = "지역 정보(시도, 구군) 조회 API입니다.\"")
+@Tag(name = "Customer - 지역 API", description = "지역 정보(시도, 구군) 조회 API입니다.")
 public interface RegionControllerDocs {
 
 	@Operation(summary = "전체 시도 목록 조회", description = "전체 시도의 목록을 조회하여 반환합니다.")

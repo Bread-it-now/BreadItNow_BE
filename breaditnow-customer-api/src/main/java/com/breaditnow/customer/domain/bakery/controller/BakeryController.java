@@ -25,13 +25,14 @@ public class BakeryController implements BakeryControllerDocs {
 	private final BakeryPageService bakeryPageService;
 
 	@GetMapping("/{bakeryId}/detail")
-	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer(required = false) Long customerId,
-		@PathVariable("bakery_id") Long bakeryId) {
+	public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer Long customerId,
+		@PathVariable("bakeryId") Long bakeryId) {
 		return ApiSuccessResponse.of(bakeryService.getBakeryDetail(customerId, bakeryId));
 	}
 
 	@GetMapping("/hot")
-	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(@AuthCustomer(required = false) Long customerId,
+	public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
+		@AuthCustomer Long customerId,
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size,
 		@RequestParam(name = "sort", defaultValue = "reservation") String sort,

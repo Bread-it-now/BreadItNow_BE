@@ -24,14 +24,15 @@ public interface BakeryControllerDocs {
 
 	@Operation(
 		summary = "인기 빵집 목록 조회",
-		description = "고객 ID, 페이지, 정렬, 위치 정보를 기반으로 인기 빵집 목록을 조회합니다."
+		description = "고객 ID, 페이지, 정렬, 위치 정보를 기반으로 인기 빵집 목록을 페이지네이션 형태로 조회합니다."
 	)
 	@Parameters({
 		@Parameter(name = "page", description = "페이지 번호 (0부터 시작)", example = "0", in = QUERY),
 		@Parameter(name = "size", description = "한 페이지당 데이터 개수", example = "10", in = QUERY),
 		@Parameter(name = "sort", description = "정렬 기준", example = "reservation", in = QUERY)
 	})
-	@DomainErrorCodeExamples({BAKERY_SORT_CONDITION_NOT_FOUND})
+	@DomainErrorCodeExamples({SORT_CONDITION_NOT_FOUND})
 	ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
 		Long customerId, int page, int size, String sort, GeoPointRequest geoPointRequest);
+	
 }

@@ -9,5 +9,5 @@ import com.breaditnow.domain.global.dto.GeoPoint;
 public interface BakeryRepositoryCustom {
 	Page<BakeryDistanceDto> searchHotBakeriesByFavorite(Long customerId, Pageable pageable, GeoPoint geoPoint);
 
-	Page<BakeryDistanceDto> searchHotBakeriesByReservation(Long customerId, Pageable pageable, GeoPoint geoPoint);
+	Page<BakeryDistanceDto> searchHotBakeriesByReservation(Long cuwstomerId, Pageable pageable, GeoPoint geoPoint);
 }

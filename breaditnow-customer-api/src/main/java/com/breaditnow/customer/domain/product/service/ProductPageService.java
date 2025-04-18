@@ -33,4 +33,5 @@ public class ProductPageService {
 
 		return HotProductPageResponse.of(hotProductResponses);
 	}
+
 }

@@ -32,6 +32,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -58,6 +59,10 @@ public class SwaggerConfig {
 		SecurityRequirement securityRequirement = new SecurityRequirement().addList("Bearer Token");
 
 		return new OpenAPI()
+			.info(new Info()
+				.title("Customer API definition")
+				.description("Bread It Now")
+			)
 			.servers(List.of(new Server().url(url)))
 			.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
 			.addSecurityItem(securityRequirement);

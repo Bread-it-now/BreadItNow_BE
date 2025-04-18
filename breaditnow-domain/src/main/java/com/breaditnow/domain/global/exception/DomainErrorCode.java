@@ -41,7 +41,6 @@ public enum DomainErrorCode implements ErrorCode {
 	 */
 	BAKERY_FAVORITE_NOT_FOUND(NOT_FOUND, "BF001", "좋아요한 빵집이 아닙니다."),
 	BAKERY_FAVORITE_IS_DUPLICATED(CONFLICT, "BF002", "이미 좋아요한 빵집입니다."),
-	BAKERY_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵집에서 존재하지 않는 정렬 조건입니다."),
 
 	BREAD_FAVORITE_NOT_FOUND(NOT_FOUND, "BF003", "좋아요한 빵이 아닙니다."),
 	BREAD_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "빵에서 존재하지 않는 정렬 조건입니다."),
@@ -57,7 +56,7 @@ public enum DomainErrorCode implements ErrorCode {
 	INVALID_HOT_PRODUCT_SORT_TYPE(BAD_REQUEST, "BG005", "잘못된 빵집 Type입니다."),
 	PRODUCT_SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BG006", "메뉴에서 존재하지 않는 정렬 조건입니다."),
 	PRODUCT_CANNOT_ORDER(BAD_REQUEST, "BG007", "해당 상품은 예약할 수 없는 상태입니다,."),
-
+	SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "BF004", "존재하지 않는 정렬 조건입니다."),
 	/**
 	 * BreadCategory(BH000)
 	 */
@@ -82,7 +81,12 @@ public enum DomainErrorCode implements ErrorCode {
 	 */
 	NOTIFICATION_NOT_FOUND(NOT_FOUND, "BK001", "알림을 찾을 수 없습니다."),
 	INVALID_NOTIFICATION_TYPE(BAD_REQUEST, "BK002", "잘못된 알림 타입입니다."),
-	INVALID_RESERVATION_STATUS_TYPE(BAD_REQUEST, "BK002", "잘못된 예약 상태 타입입니다.");
+	INVALID_RESERVATION_STATUS_TYPE(BAD_REQUEST, "BK002", "잘못된 예약 상태 타입입니다."),
+
+	/**
+	 * Search(BL000)
+	 */
+	SEARCH_KEYWORD_TOO_SHORT(BAD_REQUEST, "BD007", "검색어는 최소 한 글자 이상이어야 합니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

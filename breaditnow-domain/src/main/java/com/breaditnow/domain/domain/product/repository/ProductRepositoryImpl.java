@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
-
 	private final JPAQueryFactory queryFactory;
 
 	@Override

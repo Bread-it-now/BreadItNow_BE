@@ -17,9 +17,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
-import com.breaditnow.domain.global.dto.GeoDistanceExpressionProvider;
 import com.breaditnow.domain.global.dto.GeoPoint;
 import com.breaditnow.domain.global.dto.QBakeryDistanceDto;
+import com.breaditnow.domain.global.provider.GeoDistanceExpressionProvider;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
-	private final GeoDistanceExpressionProvider provider;
+	private final GeoDistanceExpressionProvider distanceExpressionProvider;
 
 	@Override
 	public Page<BakeryDistanceDto> searchHotBakeriesByFavorite(Long customerId, Pageable pageable, GeoPoint geoPoint) {
@@ -41,7 +41,8 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			return new PageImpl<>(Collections.emptyList(), pageable, 0);
 		}
 
-		NumberExpression<Double> distanceExpression = provider.buildDistanceExpression(geoPoint, bakery);
+		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
+			bakery);
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
@@ -69,7 +70,8 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 			return new PageImpl<>(Collections.emptyList(), pageable, 0);
 		}
 
-		NumberExpression<Double> distanceExpression = provider.buildDistanceExpression(geoPoint, bakery);
+		NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(geoPoint,
+			bakery);
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
@@ -100,9 +102,6 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	}
 
 	private static BooleanExpression buildIsFavoriteExpression(Long customerId) {
-		if (customerId == null)
-			return FALSE;
-		
 		return JPAExpressions
 			.selectOne()
 			.from(customerBakeryFavorite)
@@ -127,10 +126,6 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	}
 
 	private BooleanExpression buildInterestAreaCondition(Long customerId) {
-		if (customerId == null) {
-			return TRUE;
-		}
-
 		Long preferenceCount = queryFactory
 			.select(customerRegionPreference.count())
 			.from(customerRegionPreference)
