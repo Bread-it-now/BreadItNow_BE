@@ -18,10 +18,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui/index.html
 
-openapi:
-  service:
-    url: ${BREADITNOW_HTTP_HOST}/customer-api
-
 logging:
   config: classpath:logging/logback-spring.xml
   file:

@@ -3,3 +3,7 @@ spring:
     activate:
       on-profile: prod
     import: application-mysql-prod.yml
+
+openapi:
+  service:
+    url: ${BREADITNOW_API_HTTPS_HOST}/customer-api

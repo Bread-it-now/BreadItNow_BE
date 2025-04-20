@@ -1,7 +1,6 @@
 package com.breaditnow.auth.global.config;
 
 import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.http.HttpMethod.*;
 
 import java.util.List;
 import java.util.Map;
@@ -81,9 +80,10 @@ public class SecurityConfig {
 
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("https://localhost:3000"));
-		config.setAllowedMethods(
-			List.of(GET.name(), POST.name(), DELETE.name(), PUT.name(), PATCH.name(), OPTIONS.name()));
+		config.setAllowedOrigins(
+			List.of("http://localhost:3000", "https://localhost:3000",
+				"http://www.breaditnow.com", "https://www.breaditnow.com"));
+		config.setAllowedHeaders(List.of("*"));
 		config.setAllowedHeaders(List.of(AUTHORIZATION, SET_COOKIE, CONTENT_TYPE));
 		config.setExposedHeaders(List.of(AUTHORIZATION, SET_COOKIE));
 		config.setAllowCredentials(true);

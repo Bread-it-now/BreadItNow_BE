@@ -4,3 +4,6 @@ spring:
       on-profile: prod
     import: application-mysql-prod.yml
 
+openapi:
+  service:
+    url: ${BREADITNOW_API_HTTPS_HOST}/owner-api
