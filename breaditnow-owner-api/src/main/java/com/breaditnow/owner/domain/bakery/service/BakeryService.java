@@ -60,8 +60,8 @@ public class BakeryService {
 		if (addressCoordinate == null) {
 			throw new OwnerException(COORDINATE_NOT_FOUND);
 		}
-		address.setLatitude(Double.valueOf(addressCoordinate.x()));
-		address.setLongitude(Double.valueOf(addressCoordinate.y()));
+		address.setLatitude(Double.valueOf(addressCoordinate.y()));
+		address.setLongitude(Double.valueOf(addressCoordinate.x()));
 
 		Bakery bakery = Bakery.builder()
 			.owner(owner)
