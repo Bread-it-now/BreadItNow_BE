@@ -1,7 +1,6 @@
 package com.breaditnow.auth.global.config;
 
 import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.http.HttpMethod.*;
 
 import java.util.List;
 import java.util.Map;
@@ -84,8 +83,7 @@ public class SecurityConfig {
 		config.setAllowedOrigins(
 			List.of("http://localhost:3000", "https://localhost:3000",
 				"http://www.breaditnow.com", "https://www.breaditnow.com"));
-		config.setAllowedMethods(
-			List.of(GET.name(), POST.name(), DELETE.name(), PUT.name(), PATCH.name(), OPTIONS.name()));
+		config.setAllowedHeaders(List.of("*"));
 		config.setAllowedHeaders(List.of(AUTHORIZATION, SET_COOKIE, CONTENT_TYPE));
 		config.setExposedHeaders(List.of(AUTHORIZATION, SET_COOKIE));
 		config.setAllowCredentials(true);
