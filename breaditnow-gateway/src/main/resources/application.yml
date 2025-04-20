@@ -34,13 +34,7 @@ spring:
               - ${BREADITNOW_API_HTTP_HOST:http://localhost:8080}
               - ${BREADITNOW_API_HTTPS_HOST:https://localhost:8080}
             allow-credentials: true
-            allowedHeaders:
-              - x-requested-with
-              - Authorization
-              - content-type
-              - credential
-              - X-AUTH-TOKEN
-              - X-CSRF-TOKEN
+            allowedHeaders: '*'
             exposedHeaders:
               - x-requested-with
               - Authorization
@@ -52,6 +46,7 @@ spring:
               - PUT
               - GET
               - POST
+              - PATCH
               - DELETE
               - OPTIONS
 
