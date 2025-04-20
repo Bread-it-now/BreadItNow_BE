@@ -81,7 +81,9 @@ public class SecurityConfig {
 
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000"));
+		config.setAllowedOrigins(
+			List.of("http://localhost:3000", "https://localhost:3000",
+				"http://www.breaditnow.com", "https://www.breaditnow.com"));
 		config.setAllowedMethods(
 			List.of(GET.name(), POST.name(), DELETE.name(), PUT.name(), PATCH.name(), OPTIONS.name()));
 		config.setAllowedHeaders(List.of(AUTHORIZATION, SET_COOKIE, CONTENT_TYPE));
