@@ -22,10 +22,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui/index.html
 
-openapi:
-  service:
-    url: ${BREADITNOW_HTTP_HOST}/owner-api
-
 logging:
   config: classpath:logging/logback-spring.xml
   file:

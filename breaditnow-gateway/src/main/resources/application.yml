@@ -27,10 +27,12 @@ spring:
         cors-configurations:
           "[/**]":
             allowedOrigins:
-              - "http://localhost:8080"
-              - "https://localhost:8080"
-              - ${BREADITNOW_HTTP_HOST}
-              - ${BREADITNOW_HTTPS_HOST}
+              - "http://localhost:3000"
+              - "https://localhost:3000"
+              - ${BREADITNOW_WEB_HTTP_HOST:http://localhost:3000}
+              - ${BREADITNOW_WEB_HTTPS_HOST:https://localhost:3000}
+              - ${BREADITNOW_API_HTTP_HOST:http://localhost:8080}
+              - ${BREADITNOW_API_HTTPS_HOST:https://localhost:8080}
             allow-credentials: true
             allowedHeaders:
               - x-requested-with
