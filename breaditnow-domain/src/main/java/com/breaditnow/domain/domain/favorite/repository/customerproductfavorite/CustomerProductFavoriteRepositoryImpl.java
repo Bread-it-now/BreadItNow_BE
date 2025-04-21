@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.domain.domain.bakery.enumerate.SortType;
+import com.breaditnow.domain.domain.favorite.entity.QCustomerProductFavorite;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.dto.GeoPoint;
 import com.breaditnow.domain.global.provider.GeoDistanceExpressionProvider;
@@ -54,11 +55,14 @@ public class CustomerProductFavoriteRepositoryImpl implements CustomerProductFav
 	private void applySortCondition(SortType sort, GeoPoint geoPoint, JPAQuery<Product> query) {
 		switch (sort) {
 			case LATEST -> query.orderBy(product.modifiedAt.desc(), product.id.asc());
-			case POPULAR -> query
-				.leftJoin(customerProductFavorite)
-				.on(customerProductFavorite.product.eq(product))
-				.groupBy(product.id)
-				.orderBy(customerProductFavorite.count().desc(), product.id.asc());
+			case POPULAR -> {
+				QCustomerProductFavorite cpfAll = new QCustomerProductFavorite("cpfAll");
+				query.leftJoin(cpfAll)
+					.on(cpfAll.product.eq(product)
+						.and(cpfAll.isActive.eq(true)))
+					.groupBy(product.id)
+					.orderBy(cpfAll.count().desc(), product.id.asc());
+			}
 			case DISTANCE -> query
 				.orderBy(distanceExpressionProvider.buildDistanceExpression(geoPoint, bakery).asc(), product.id.asc());
 			default -> query.orderBy(product.modifiedAt.desc(), product.id.asc());
