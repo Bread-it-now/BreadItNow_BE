@@ -5,6 +5,7 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.product.controller.res.SearchProductPageResponse;
+import com.breaditnow.customer.domain.search.controller.res.SearchAutocompleteResponses;
 import com.breaditnow.customer.domain.search.controller.res.SearchBakeryPageResponse;
 import com.breaditnow.customer.global.swagger.annotation.DomainErrorCodeExamples;
 
@@ -40,4 +41,9 @@ public interface SearchControllerDocs {
 	})
 	ApiSuccessResponse<SearchProductPageResponse> searchProducts(Long customerId, int page, int size, String sort,
 		String keyword, Double latitude, Double longitude);
+
+	@Operation(summary = "자동완성 검색", description = "입력한 키워드를 기반으로 빵집 및 상품에 대한 상위 10개의 자동완성 추천 목록을 조회한다")
+	@Parameter(name = "keyword", description = "자동완성에 사용할 검색어", example = "크림", in = QUERY)
+	ApiSuccessResponse<SearchAutocompleteResponses> searchAutoComplete(String keyword);
+
 }
