@@ -1,5 +1,6 @@
 package com.breaditnow.domain.domain.favorite.entity;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -8,7 +9,6 @@ import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -25,11 +25,11 @@ public class CustomerProductFavorite extends BaseEntity {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "customer_id", nullable = false)
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 

@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/search")
-public class SearchController {
+public class SearchController implements SearchControllerDocs {
 	private final SearchService searchService;
 
 	@GetMapping("/bakery")

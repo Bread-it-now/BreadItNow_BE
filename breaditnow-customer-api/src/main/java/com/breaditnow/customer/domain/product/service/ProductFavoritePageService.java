@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.breaditnow.customer.domain.bakery.controller.req.GeoPointRequest;
 import com.breaditnow.customer.domain.product.controller.res.ProductFavoritePageResponse;
+import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;
 import com.breaditnow.domain.global.dto.GeoPoint;
 
@@ -22,9 +23,10 @@ public class ProductFavoritePageService {
 		GeoPointRequest geoPointRequest) {
 		GeoPoint currentGeoPoint = geoPointRequest.toEntity();
 		Pageable pageable = PageRequest.of(page, size);
+		SortType sortType = SortType.from(sort);
 
 		return ProductFavoritePageResponse.of(
-			customerProductFavoriteRepository.findProductFavorites(customerId, pageable, sort, currentGeoPoint));
+			customerProductFavoriteRepository.findProductFavorites(customerId, pageable, sortType, currentGeoPoint));
 	}
 }
 

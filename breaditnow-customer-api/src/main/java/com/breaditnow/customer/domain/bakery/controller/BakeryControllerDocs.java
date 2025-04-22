@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface BakeryControllerDocs {
 
 	@Operation(summary = "빵집 상세 정보 조회", description = "특정 bakery_id에 대한 빵집 상세 정보를 조회합니다.")
-	@Parameter(name = "bakery_id", description = "조회할 빵집 ID", example = "100", required = true)
+	@Parameter(name = "bakeryId", description = "조회할 빵집 ID", example = "100", required = true)
 	@DomainErrorCodeExamples({BAKERY_INACTIVE, BAKERY_NOT_FOUND})
 	ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(Long customerId, Long bakeryId);
 
@@ -34,5 +34,5 @@ public interface BakeryControllerDocs {
 	@DomainErrorCodeExamples({SORT_CONDITION_NOT_FOUND})
 	ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
 		Long customerId, int page, int size, String sort, GeoPointRequest geoPointRequest);
-	
+
 }
