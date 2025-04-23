@@ -1,11 +1,13 @@
 package com.breaditnow.auth.domain.email.controller;
 
+import com.breaditnow.auth.domain.email.controller.req.SendCodeRequest;
+import com.breaditnow.auth.domain.email.controller.req.VerifyCodeRequest;
+import com.breaditnow.auth.domain.email.service.EmailAuthService;
 import com.breaditnow.auth.domain.email.service.EmailDuplicationService;
 import com.breaditnow.common.response.ApiSuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -15,10 +17,27 @@ import java.util.Map;
 public class EmailController implements EmailControllerDocs {
 
     private final EmailDuplicationService emailDuplicationService;
+    private final EmailAuthService emailAuthService;
 
     @GetMapping("/duplicate-check")
     public ApiSuccessResponse<Map<String, Boolean>> checkDuplicate(String email) {
         boolean duplicated = emailDuplicationService.isDuplicated(email);
         return ApiSuccessResponse.of("duplicated", duplicated);
+    }
+
+    @PostMapping("/send-code")
+    public ApiSuccessResponse<Map<String, Void>> sendCode(
+            @RequestBody @Valid SendCodeRequest request) {
+
+        emailAuthService.sendAuthCode(request.email(), request.role());
+        return ApiSuccessResponse.of();
+    }
+
+    @PostMapping("/verify-code")
+    public ApiSuccessResponse<Map<String, Boolean>> verifyCode(
+            @RequestBody @Valid VerifyCodeRequest req) {
+
+        emailAuthService.verifyCode(req.email(), req.code());
+        return ApiSuccessResponse.of("verified", true);
     }
 }

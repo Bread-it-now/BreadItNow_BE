@@ -1,5 +1,7 @@
 package com.breaditnow.auth.domain.email.controller;
 
+import com.breaditnow.auth.domain.email.controller.req.SendCodeRequest;
+import com.breaditnow.auth.domain.email.controller.req.VerifyCodeRequest;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,4 +22,13 @@ public interface EmailControllerDocs {
             @NotBlank(message = "이메일은 필수 항목입니다.")
             String email
     );
+
+    @Operation(
+            summary = "이메일 인증 코드 발송",
+            description = "중복되지 않은 이메일 주소로 6자리 인증 코드를 전송합니다."
+    )
+    ApiSuccessResponse<Map<String, Void>> sendCode(SendCodeRequest request);
+
+    @Operation(summary = "이메일 인증 코드 검증")
+    ApiSuccessResponse<Map<String, Boolean>> verifyCode(VerifyCodeRequest request);
 }
