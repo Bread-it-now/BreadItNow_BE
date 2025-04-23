@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.auth.controller;
+package com.breaditnow.auth.domain.email.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;

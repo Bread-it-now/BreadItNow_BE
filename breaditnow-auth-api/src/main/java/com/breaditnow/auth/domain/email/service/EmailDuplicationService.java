@@ -1,4 +1,4 @@
-package com.breaditnow.auth.domain.auth.service;
+package com.breaditnow.auth.domain.email.service;
 
 import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;

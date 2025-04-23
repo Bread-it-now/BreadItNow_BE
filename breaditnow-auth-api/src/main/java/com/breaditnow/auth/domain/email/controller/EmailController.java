@@ -1,6 +1,6 @@
-package com.breaditnow.auth.domain.auth.controller;
+package com.breaditnow.auth.domain.email.controller;
 
-import com.breaditnow.auth.domain.auth.service.EmailDuplicationService;
+import com.breaditnow.auth.domain.email.service.EmailDuplicationService;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
