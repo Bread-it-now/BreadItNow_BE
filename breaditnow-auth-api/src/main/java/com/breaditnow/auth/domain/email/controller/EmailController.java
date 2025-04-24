@@ -6,6 +6,7 @@ import com.breaditnow.auth.domain.email.service.EmailAuthService;
 import com.breaditnow.auth.domain.email.service.EmailDuplicationService;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,10 @@ public class EmailController implements EmailControllerDocs {
     private final EmailAuthService emailAuthService;
 
     @GetMapping("/duplicate-check")
-    public ApiSuccessResponse<Map<String, Boolean>> checkDuplicate(String email) {
+    public ApiSuccessResponse<Map<String, Boolean>> checkDuplicate(
+            @RequestParam("email")
+            @NotBlank(message = "이메일은 필수 항목입니다.")
+            String email) {
         boolean duplicated = emailDuplicationService.isDuplicated(email);
         return ApiSuccessResponse.of("duplicated", duplicated);
     }
