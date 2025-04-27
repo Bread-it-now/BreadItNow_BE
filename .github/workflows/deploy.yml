@@ -33,10 +33,10 @@ jobs:
 
       - name: Copy jar files to EC2
         run: |
-          scp -o StrictHostKeyChecking=no service/auth-api/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/auth-api/
-          scp -o StrictHostKeyChecking=no service/customer-api/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/customer-api/
-          scp -o StrictHostKeyChecking=no service/owner-api/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/owner-api/
-          scp -o StrictHostKeyChecking=no service/gateway/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/gateway/
+          scp -o StrictHostKeyChecking=no breaditnow-gateway/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/gateway/
+          scp -o StrictHostKeyChecking=no breaditnow-auth-api/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/auth-api/
+          scp -o StrictHostKeyChecking=no breaditnow-customer-api/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/customer-api/
+          scp -o StrictHostKeyChecking=no breaditnow-owner-api/build/libs/*.jar ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/service/owner-api/
 
       - name: SSH into EC2 and deploy
         run: |
