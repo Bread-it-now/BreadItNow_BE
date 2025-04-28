@@ -17,6 +17,9 @@ dependencies {
     // discord webhook
     implementation 'com.github.napstr:logback-discord-appender:1.0.0'
 
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 test {
