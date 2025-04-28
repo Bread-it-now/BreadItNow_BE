@@ -26,23 +26,23 @@
         </filter>
     </appender>
 
-    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder>
-            <charset>${FILE_LOG_CHARSET}</charset>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <file>${BASE_LOG_DIR}/${MODULE_NAME}/warn/warn.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${BASE_LOG_DIR}/${MODULE_NAME}/warn/warn-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
-            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
-        </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
+    <!--    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--        <encoder>-->
+    <!--            <charset>${FILE_LOG_CHARSET}</charset>-->
+    <!--            <pattern>${FILE_LOG_PATTERN}</pattern>-->
+    <!--        </encoder>-->
+    <!--        <file>${BASE_LOG_DIR}/${MODULE_NAME}/warn/warn.log</file>-->
+    <!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+    <!--            <fileNamePattern>${BASE_LOG_DIR}/${MODULE_NAME}/warn/warn-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
+    <!--            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>-->
+    <!--            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>-->
+    <!--        </rollingPolicy>-->
+    <!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+    <!--            <level>WARN</level>-->
+    <!--            <onMatch>ACCEPT</onMatch>-->
+    <!--            <onMismatch>DENY</onMismatch>-->
+    <!--        </filter>-->
+    <!--    </appender>-->
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
@@ -62,21 +62,21 @@
         </filter>
     </appender>
 
-    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder>
-            <charset>${FILE_LOG_CHARSET}</charset>
-            <pattern>${FILE_LOG_PATTERN}</pattern>
-        </encoder>
-        <file>${BASE_LOG_DIR}/${MODULE_NAME}/debug/debug.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${BASE_LOG_DIR}/${MODULE_NAME}/debug/debug-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
-            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
-        </rollingPolicy>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>DEBUG</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
+    <!--    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--        <encoder>-->
+    <!--            <charset>${FILE_LOG_CHARSET}</charset>-->
+    <!--            <pattern>${FILE_LOG_PATTERN}</pattern>-->
+    <!--        </encoder>-->
+    <!--        <file>${BASE_LOG_DIR}/${MODULE_NAME}/debug/debug.log</file>-->
+    <!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+    <!--            <fileNamePattern>${BASE_LOG_DIR}/${MODULE_NAME}/debug/debug-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>-->
+    <!--            <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>-->
+    <!--            <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>-->
+    <!--        </rollingPolicy>-->
+    <!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+    <!--            <level>DEBUG</level>-->
+    <!--            <onMatch>ACCEPT</onMatch>-->
+    <!--            <onMismatch>DENY</onMismatch>-->
+    <!--        </filter>-->
+    <!--    </appender>-->
 </included>
