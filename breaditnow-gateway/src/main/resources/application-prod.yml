@@ -7,19 +7,19 @@ spring:
     gateway:
       routes:
         - id: oauth2
-          uri: http://auth-api:9000/
+          uri: http://breaditnow-auth-api:9000/
           predicates:
             - Path=/oauth2/authorization/**, /oauth/callback/**
 
         - id: auth-api
-          uri: http://auth-api:9000/
+          uri: http://breaditnow-auth-api:9000/
           predicates:
             - Path=/auth-api/**
           filters:
             - RewritePath=/auth-api/(?<segment>.*), /$\{segment}
 
         - id: customer-api
-          uri: http://customer-api:9001/
+          uri: http://breaditnow-customer-api:9001/
           predicates:
             - Path=/customer-api/**
           filters:
@@ -27,7 +27,7 @@ spring:
             - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
 
         - id: owner-api
-          uri: http://owner-api:9002/
+          uri: http://breaditnow-owner-api:9002/
           predicates:
             - Path=/owner-api/**
           filters:
