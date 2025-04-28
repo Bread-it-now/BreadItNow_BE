@@ -2,9 +2,7 @@ version: '3.9'
 
 services:
   gateway:
-    build:
-      context: ../breaditnow-gateway
-    image: breaditnow-gateway:latest
+    image: ${DOCKER_USERNAME}/breaditnow-gateway:latest
     container_name: breaditnow-gateway
     ports:
       - "8080:8080"
@@ -25,9 +23,7 @@ services:
       - bin-network
 
   auth-api:
-    build:
-      context: ../breaditnow-auth-api
-    image: breaditnow-auth-api:latest
+    image: ${DOCKER_USERNAME}/breaditnow-auth-api:latest
     container_name: breaditnow-auth-api
     ports:
       - "9000:9000"
@@ -57,9 +53,7 @@ services:
       - bin-network
 
   customer-api:
-    build:
-      context: ../breaditnow-customer-api
-    image: breaditnow-customer-api:latest
+    image: ${DOCKER_USERNAME}/breaditnow-customer-api:latest
     container_name: breaditnow-customer-api
     ports:
       - "9001:9001"
@@ -83,9 +77,7 @@ services:
       - bin-network
 
   owner-api:
-    build:
-      context: ../breaditnow-owner-api
-    image: breaditnow-owner-api:latest
+    image: ${DOCKER_USERNAME}/breaditnow-owner-api:latest
     container_name: breaditnow-owner-api
     ports:
       - "9002:9002"
