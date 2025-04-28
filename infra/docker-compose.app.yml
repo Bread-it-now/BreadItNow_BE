@@ -55,6 +55,8 @@ services:
       DISCORD_AVATAR_URL: ${DISCORD_AVATAR_URL}
       DISCORD_ERROR_URL: ${DISCORD_ERROR_URL}
       BREADITNOW_API_HTTPS_HOST: ${BREADITNOW_API_HTTPS_HOST}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
     volumes:
       - ${LOG_VOLUME_PATH}/auth-api:/app/logs/auth-api
     networks:
