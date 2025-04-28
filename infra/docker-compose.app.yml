@@ -6,6 +6,7 @@ services:
     container_name: breaditnow-gateway
     ports:
       - "8080:8080"
+    restart: always
     environment:
       TZ: Asia/Seoul
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
@@ -21,12 +22,19 @@ services:
       - ${LOG_VOLUME_PATH}/gateway:/app/logs/gateway
     networks:
       - bin-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   auth-api:
     image: ${DOCKER_USERNAME}/breaditnow-auth-api:latest
     container_name: breaditnow-auth-api
     ports:
       - "9000:9000"
+    restart: always
     environment:
       TZ: Asia/Seoul
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
@@ -51,12 +59,19 @@ services:
       - ${LOG_VOLUME_PATH}/auth-api:/app/logs/auth-api
     networks:
       - bin-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   customer-api:
     image: ${DOCKER_USERNAME}/breaditnow-customer-api:latest
     container_name: breaditnow-customer-api
     ports:
       - "9001:9001"
+    restart: always
     environment:
       TZ: Asia/Seoul
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
@@ -75,12 +90,19 @@ services:
       - ${LOG_VOLUME_PATH}/customer-api:/app/logs/customer-api
     networks:
       - bin-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9001/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   owner-api:
     image: ${DOCKER_USERNAME}/breaditnow-owner-api:latest
     container_name: breaditnow-owner-api
     ports:
       - "9002:9002"
+    restart: always
     environment:
       TZ: Asia/Seoul
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
@@ -100,6 +122,12 @@ services:
       - ${LOG_VOLUME_PATH}/owner-api:/app/logs/owner-api
     networks:
       - bin-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9002/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 networks:
   bin-network:
