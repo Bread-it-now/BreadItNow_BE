@@ -27,12 +27,12 @@ services:
         limits:
           cpus: "0.3"
           memory: 300M
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+  #    healthcheck:
+  #      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 3
+  #      start_period: 30s
 
   auth-api:
     image: ${DOCKER_USERNAME}/breaditnow-auth-api:latest
@@ -71,12 +71,12 @@ services:
         limits:
           cpus: "0.2"
           memory: 300M
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9000/actuator/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+  #    healthcheck:
+  #      test: [ "CMD", "curl", "-f", "http://localhost:9000/actuator/health" ]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 3
+  #      start_period: 30s
 
   customer-api:
     image: ${DOCKER_USERNAME}/breaditnow-customer-api:latest
@@ -107,12 +107,12 @@ services:
         limits:
           cpus: "0.2"
           memory: 300M
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9001/actuator/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+  #    healthcheck:
+  #      test: [ "CMD", "curl", "-f", "http://localhost:9001/actuator/health" ]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 3
+  #      start_period: 30s
 
   owner-api:
     image: ${DOCKER_USERNAME}/breaditnow-owner-api:latest
@@ -144,12 +144,12 @@ services:
         limits:
           cpus: "0.2"
           memory: 300M
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9002/actuator/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:9002/actuator/health" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 30s
 
 networks:
   bin-network:
