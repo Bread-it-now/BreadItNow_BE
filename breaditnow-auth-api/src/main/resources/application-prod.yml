@@ -4,6 +4,12 @@ spring:
       on-profile: prod
     import: application-mysql-prod.yml, application-redis-prod.yml
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USER}
+    password: ${SMTP_PASS}
+
 openapi:
   service:
     url: ${BREADITNOW_API_HTTPS_HOST}/auth-api
