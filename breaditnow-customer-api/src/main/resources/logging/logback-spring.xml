@@ -18,12 +18,12 @@
     </springProfile>
 
     <springProfile name="prod">
-        <include resource="logging/console-appender.xml"/>
+        <!--        <include resource="logging/console-appender.xml"/>-->
         <include resource="logging/file-appender.xml"/>
         <include resource="logging/discord-appender.xml"/>
 
         <root level="${LOG_LEVEL}">
-            <appender-ref ref="CONSOLE"/>
+            <!--            <appender-ref ref="CONSOLE"/>-->
             <appender-ref ref="FILE_INFO"/>
             <!--            <appender-ref ref="FILE_WARN"/>-->
             <appender-ref ref="FILE_ERROR"/>
