@@ -30,19 +30,15 @@ jobs:
           mkdir -p owner-api/src/main/resources/firebase
           echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY }}" | base64 -d > owner-api/src/main/resources/firebase/firebase-service-key.json
 
-      - name: Create firebase breaditnow-fcm.json for customer-api
-        uses: jsdaniell/create-json@v1.2.2
-        with:
-          name: "breaditnow-fcm.json"
-          json: ${{ secrets.FIREBASE_FCM_SERVICE_KEY }}
-          dir: 'breaditnow-customer-api/src/main/resources/firebase/'
+      - name: Create firebase-service-key.json for customer-api
+        run: |
+          mkdir -p breaditnow-customer-api/src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY_BASE64 }}" | base64 -d > breaditnow-customer-api/src/main/resources/firebase/breaditnow-fcm.json
 
-      - name: Create firebase breaditnow-fcm.json for owner-api
-        uses: jsdaniell/create-json@v1.2.2
-        with:
-          name: "breaditnow-fcm.json"
-          json: ${{ secrets.FIREBASE_FCM_SERVICE_KEY }}
-          dir: 'breaditnow-owner-api/src/main/resources/firebase/'
+      - name: Create firebase-service-key.json for owner-api
+        run: |
+          mkdir -p breaditnow-owner-api/src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY_BASE64 }}" | base64 -d > breaditnow-owner-api/src/main/resources/firebase/breaditnow-fcm.json
 
       - name: Build All Modules
         run: |
