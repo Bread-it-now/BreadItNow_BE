@@ -55,7 +55,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
             cd /home/ubuntu/breaditnow/docker
-            docker-compose -f docker-compose.app.yml down --rmi local --remove-orphans
+            docker-compose -f docker-compose.app.yml down
             docker-compose -f docker-compose.app.yml pull
             docker-compose -f docker-compose.app.yml up -d
           EOF
