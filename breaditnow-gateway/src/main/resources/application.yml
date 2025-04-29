@@ -83,3 +83,9 @@ webhook:
     username: ${DISCORD_USERNAME}
     avatar-url: ${DISCORD_AVATAR_URL}
     error-url: ${DISCORD_ERROR_URL}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
