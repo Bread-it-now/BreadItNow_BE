@@ -15,6 +15,7 @@ import lombok.Builder;
 @Builder
 public record OAuth2UserInfo(
 	String oauth2Id,
+	String email,
 	Provider provider
 ) {
 
@@ -29,9 +30,13 @@ public record OAuth2UserInfo(
 	}
 
 	private static OAuth2UserInfo ofKakao(Map<String, Object> attributes) {
+		Map<String,Object> account = (Map<String,Object>) attributes.get("kakao_account");
 		String oauth2Id = Objects.toString(attributes.get("id"));
+		String email = account != null ? Objects.toString(account.get("email"), null) : null;
+
 		return OAuth2UserInfo.builder()
 			.oauth2Id(oauth2Id)
+			.email(email)
 			.provider(KAKAO)
 			.build();
 	}
@@ -39,8 +44,10 @@ public record OAuth2UserInfo(
 	private static OAuth2UserInfo ofNaver(Map<String, Object> attributes) {
 		Map<String, Object> response = (Map<String, Object>)attributes.get("response");
 		String oauth2Id = Objects.toString(response.get("id"));
+		String email    = Objects.toString(response.get("email"), null);
 		return OAuth2UserInfo.builder()
 			.oauth2Id(oauth2Id)
+			.email(email)
 			.provider(NAVER)
 			.build();
 	}

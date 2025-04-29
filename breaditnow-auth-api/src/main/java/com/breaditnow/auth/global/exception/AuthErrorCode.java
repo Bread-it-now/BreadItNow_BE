@@ -38,7 +38,13 @@ public enum AuthErrorCode implements ErrorCode {
 	EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST, "BE001", "이메일이 존재하지 않습니다."),
 	EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "BE002", "이미 가입된 이메일입니다."),
 	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "BE003", "비밀번호가 일치하지 않습니다."),
-	LOGIN_FAILED(HttpStatus.BAD_REQUEST, "BE004", "로그인에 실패하였습니다.");
+	LOGIN_FAILED(HttpStatus.BAD_REQUEST, "BE004", "로그인에 실패하였습니다."),
+
+	/**
+	 * 이메일 인증 관련(BF000)
+	 */
+	CODE_EXPIRED  (HttpStatus.BAD_REQUEST, "BF001", "인증 코드가 만료되었습니다."),
+	CODE_MISMATCH (HttpStatus.BAD_REQUEST, "BF002", "인증 코드가 일치하지 않습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
