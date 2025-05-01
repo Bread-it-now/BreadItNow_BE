@@ -1,0 +1,30 @@
+package com.breaditnow.customer.domain.product.controller.res;
+
+import com.breaditnow.domain.domain.product.entity.Product;
+
+import lombok.Builder;
+
+@Builder
+public record HotProductResponse(
+	Long productId,
+	Long bakeryId,
+	String bakeryName,
+	String productName,
+	String image,
+	Integer price,
+	Boolean isFavorite,
+	Integer stock
+) {
+	public static HotProductResponse of(Product product, Boolean isFavorite) {
+		return HotProductResponse.builder()
+			.productId(product.getId())
+			.bakeryId(product.getBakery().getId())
+			.bakeryName(product.getBakery().getName())
+			.productName(product.getName())
+			.image(product.getImage())
+			.price(product.getPrice())
+			.isFavorite(isFavorite)
+			.stock(product.getStock())
+			.build();
+	}
+}

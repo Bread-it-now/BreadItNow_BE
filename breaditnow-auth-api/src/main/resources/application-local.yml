@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: application-mysql-local.yml, application-redis-local.yml
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USER}
+    password: ${SMTP_PASS}
+
+openapi:
+  service:
+    url: http://localhost:8080/auth-api

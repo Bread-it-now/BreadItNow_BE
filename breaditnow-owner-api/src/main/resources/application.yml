@@ -1,0 +1,59 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: owner-api
+
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
+geolocation:
+  kakao:
+    client-id: ${OAUTH2_KAKAO_CLIENT_ID}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+
+aws:
+  s3:
+    bucket: bread-it-now-server
+  credentials:
+    access-key: ${AWS_S3_CREDENTIALS_ACCESS_KEY}
+    secret-key: ${AWS_S3_CREDENTIALS_SECRET_KEY}
+  region:
+    static: ap-northeast-2
+    auto: false
+    stack:
+      auto: false
+
+fcm:
+  file_path: firebase/breaditnow-fcm.json
+  project_id: ${FCM_PROJECT_ID}
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

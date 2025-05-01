@@ -1,0 +1,79 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Give permissions to gradlew
+        run: chmod +x gradlew
+
+      - name: Setup Firebase service keys for customer and owner
+        run: |
+          mkdir -p customer-api/src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY }}" | base64 -d > customer-api/src/main/resources/firebase/firebase-service-key.json
+
+          mkdir -p owner-api/src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY }}" | base64 -d > owner-api/src/main/resources/firebase/firebase-service-key.json
+
+      - name: Create firebase-service-key.json for customer-api
+        run: |
+          mkdir -p breaditnow-customer-api/src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY_BASE64 }}" | base64 -d > breaditnow-customer-api/src/main/resources/firebase/breaditnow-fcm.json
+
+      - name: Create firebase-service-key.json for owner-api
+        run: |
+          mkdir -p breaditnow-owner-api/src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY_BASE64 }}" | base64 -d > breaditnow-owner-api/src/main/resources/firebase/breaditnow-fcm.json
+
+      - name: Build All Modules
+        run: |
+          ./gradlew clean buildAll
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Images
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-gateway ./breaditnow-gateway
+          docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-gateway
+
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-auth-api ./breaditnow-auth-api
+          docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-auth-api
+
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-customer-api ./breaditnow-customer-api
+          docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-customer-api
+
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-owner-api ./breaditnow-owner-api
+          docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-owner-api
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
+
+      - name: SSH into EC2 and Deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/breaditnow/docker
+            docker-compose -f docker-compose.app.yml down
+            docker-compose -f docker-compose.app.yml pull
+            docker-compose -f docker-compose.app.yml up -d
+          EOF

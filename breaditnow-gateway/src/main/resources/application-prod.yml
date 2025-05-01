@@ -1,0 +1,35 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  cloud:
+    gateway:
+      routes:
+        - id: oauth2
+          uri: http://breaditnow-auth-api:9000/
+          predicates:
+            - Path=/oauth2/authorization/**, /oauth/callback/**
+
+        - id: auth-api
+          uri: http://breaditnow-auth-api:9000/
+          predicates:
+            - Path=/auth-api/**
+          filters:
+            - RewritePath=/auth-api/(?<segment>.*), /$\{segment}
+
+        - id: customer-api
+          uri: http://breaditnow-customer-api:9001/
+          predicates:
+            - Path=/customer-api/**
+          filters:
+            - JwtAuthentication=ROLE_CUSTOMER
+            - RewritePath=/customer-api/(?<segment>.*), /$\{segment}
+
+        - id: owner-api
+          uri: http://breaditnow-owner-api:9002/
+          predicates:
+            - Path=/owner-api/**
+          filters:
+            - JwtAuthentication=ROLE_OWNER
+            - RewritePath=/owner-api/(?<segment>.*), /$\{segment}

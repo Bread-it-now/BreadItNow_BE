@@ -1,0 +1,91 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+
+  banner:
+    location: static/banner/banner.txt
+    charset: UTF-8
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
+  webflux:
+    static-path-pattern: "/static/**"
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+        - name: LoggingFilter
+          args:
+            preLogger: true
+            postLogger: true
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins:
+              - "http://localhost:3000"
+              - "https://localhost:3000"
+              - ${BREADITNOW_WEB_HTTP_HOST:http://localhost:3000}
+              - ${BREADITNOW_WEB_HTTPS_HOST:https://localhost:3000}
+              - ${BREADITNOW_API_HTTP_HOST:http://localhost:8080}
+              - ${BREADITNOW_API_HTTPS_HOST:https://localhost:8080}
+            allow-credentials: true
+            allowedHeaders: '*'
+            exposedHeaders:
+              - x-requested-with
+              - Authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - PATCH
+              - DELETE
+              - OPTIONS
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /customer-api/v3/api-docs
+        name: Customer API
+      - url: /owner-api/v3/api-docs
+        name: Owner API
+      - url: /auth-api/v3/api-docs
+        name: Auth API
+    urls-primary-name: Customer API
+
+  token:
+    secret-key: ${AUTH_TOKEN_SECRET_KEY}
+
+logging:
+  config: classpath:logging/logback-spring.xml
+  file:
+    path: logs
+  level:
+    root: INFO
+    com.breaditnow.gateway.filter: DEBUG
+
+webhook:
+  discord:
+    username: ${DISCORD_USERNAME}
+    avatar-url: ${DISCORD_AVATAR_URL}
+    error-url: ${DISCORD_ERROR_URL}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

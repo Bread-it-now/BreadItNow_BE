@@ -1,0 +1,148 @@
+-- Customer
+INSERT INTO customer (email, password, nickname, phone, provider, created_at, modified_at)
+VALUES ('user1@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '빵마니아', '01012345678', 'EMAIL', '2025-03-07 09:00:00', '2025-03-07 09:00:00'),
+       ('user2@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '크림러버', '01087654321', 'EMAIL', '2025-03-07 09:01:00', '2025-03-07 09:01:00'),
+       ('user3@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '모닝맨', '01098765432', 'EMAIL', '2025-03-07 09:02:00', '2025-03-07 09:02:00');
+
+-- Owner
+INSERT INTO owner (email, password, created_at, modified_at)
+VALUES ('owner1@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:03:00', '2025-03-07 09:03:00'),
+       ('owner2@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:04:00', '2025-03-07 09:04:00'),
+       ('owner3@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:05:00', '2025-03-07 09:05:00'),
+       ('owner4@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:05:00', '2025-03-07 09:05:00'),
+       ('owner5@example.com', '{bcrypt}$2a$10$GWTiJ7nzv5O/3XciGRrTVuDDj1TAl9SbP.pWgZSNAlgQE66TritqK',
+        '2025-03-07 09:05:00', '2025-03-07 09:05:00');
+
+-- Bakery
+INSERT INTO bakery (owner_id, name, phone, introduction, profile_image, open_time,
+                    sido_code, gugun_code, dong_code, latitude, longitude,
+                    address_description, operating_status, is_active,
+                    created_at, modified_at)
+VALUES (1, '오븐 아틀리에', '010-1111-2222', '신선한 빵을 매일 제공합니다.', 'profile.jpg', '08:00-20:00',
+        '11', '110', '101', 37.579617, 126.977041, '청운동', 'OPEN', 1,
+        '2025-03-07 09:06:00', '2025-03-07 09:06:00'),
+       (2, '브레드 크래프트', '010-2222-3333', '매일 신선한 빵을 제공합니다.', 'profile2.jpg', '09:00-21:00',
+        '11', '110', '102', 37.551169, 126.988227, '신교동', 'OPEN', 0,
+        '2025-03-07 09:07:00', '2025-03-07 09:07:00'),
+       (3, '오븐 라운지', '010-3333-4444', '매일 맛있는 빵을 제공합니다.', 'profile3.jpg', '07:00-19:00',
+        '11', '110', '103', 37.513100, 127.102800, '궁정동', 'OPEN', 0,
+        '2025-03-07 09:08:00', '2025-03-07 09:08:00'),
+       (3, '빵 갤러리', '010-4444-5555', '신선한 재료로 만든 빵을 제공합니다.', 'profile4.jpg', '08:30-20:30',
+        '11', '110', '104', 37.566500, 127.009000, '효자동', 'OPEN', 1,
+        '2025-03-07 09:09:00', '2025-03-07 09:09:00'),
+       (2, '브레드 팩토리', '010-5555-6666', '건강한 빵을 만드는 전통의 맛.', 'profile5.jpg', '08:00-20:00',
+        '11', '110', '105', 37.512000, 127.059000, '창성동', 'OPEN', 1,
+        '2025-03-07 09:10:00', '2025-03-07 09:10:00');
+
+-- Product
+INSERT INTO product (bakery_id, type, name, price, image, description, stock, release_time, is_active, is_hidden, display_order,
+                     created_at, modified_at)
+VALUES (1, 'BREAD', '식빵', 3000, 'bread1.jpg', '신선한 식빵입니다.', 100, '08:00;12:00;16:00', true, false, 0, '2025-03-07 09:11:00',
+        '2025-03-07 09:11:00'),
+       (1, 'BREAD', '바게트', 3500, 'bread2.jpg', '겉은 바삭, 속은 부드러운 바게트입니다.', 80, '09:00;13:00;17:00', true, false, 1,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (1, 'BREAD', '크림빵', 3200, 'bread3.jpg', '부드러운 크림이 듬뿍 들어간 크림빵입니다.', 60, '09:00;14:00;18:00', true, false, 2,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (1, 'OTHER', '딸기잼', 3400, 'bread4.jpg', '딸기 가득한 딸기잼입니다.', 32, null, true, false, 3, '2025-03-07 09:11:00',
+        '2025-03-07 09:11:00'),
+       (1, 'OTHER', '사과잼', 3400, 'bread4.jpg', '맛있는 사과잼입니다.', 22, null, true, false, 4, '2025-03-07 09:11:00',
+        '2025-03-07 09:11:00'),
+       (2, 'BREAD', '단팥빵', 3100, 'bread5.jpg', '달콤한 팥이 듬뿍 들어간 단팥빵입니다.', 70, '09:30;13:30;17:30', false, false, 0,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (2, 'BREAD', '치아바타', 3600, 'bread6.jpg', '이탈리아 스타일의 치아바타입니다.', 50, '10:30;14:30;18:30', false, false, 1,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (3, 'BREAD', '머핀', 2800, 'bread7.jpg', '촉촉한 머핀입니다.', 120, '07:00;11:00;15:00', false, false, 0, '2025-03-07 09:11:00',
+        '2025-03-07 09:11:00'),
+       (3, 'BREAD', '브리오슈', 3300, 'bread8.jpg', '풍미 가득한 브리오슈입니다.', 110, '08:00;12:00;16:00', false, false, 1,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (3, 'BREAD', '베이글', 2900, 'bread9.jpg', '쫄깃한 식감의 베이글입니다.', 130, '09:00;13:00;17:00', false, false, 2,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (4, 'BREAD', '치즈빵', 3000, 'bread10.jpg', '고소한 치즈가 듬뿍 들어간 치즈빵입니다.', 75, '08:15;12:15;16:15', true, false, 0,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (4, 'BREAD', '감자빵', 3100, 'bread11.jpg', '부드러운 감자빵입니다.', 85, '09:15;13:15;17:15', true, false, 1, '2025-03-07 09:11:00',
+        '2025-03-07 09:11:00'),
+       (4, 'BREAD', '호두빵', 3200, 'bread12.jpg', '바삭한 호두가 들어간 호두빵입니다.', 65, '10:15;14:15;18:15', true, false, 2,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (4, 'BREAD', '바나나빵', 3300, 'bread13.jpg', '달콤한 바나나향의 바나나빵입니다.', 95, '08:45;12:45;16:45', true, false, 3,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (5, 'BREAD', '크루아상', 3500, 'bread14.jpg', '겹겹이 쌓인 바삭한 크루아상입니다.', 55, '09:45;13:45;17:45', true, false, 0,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (5, 'BREAD', '파네토네', 4000, 'bread15.jpg', '부드럽고 달콤한 파네토네입니다.', 45, '10:45;14:45;18:45', true, true, 1,
+        '2025-03-07 09:11:00', '2025-03-07 09:11:00'),
+       (1, 'BREAD', '삭제된 빵', 3500, 'bread2.jpg', '삭제된 빵입니다.', 80, '09:00;13:00;17:00', false, true, -1,
+        '2025-03-07 09:11:00','2025-03-07 09:11:00');
+
+
+-- ProductBreadCategory
+INSERT INTO product_bread_category (product_id, bread_category_id)
+VALUES (1, 1),   -- 식빵
+       (2, 1),   -- 식빵
+       (2, 8),   -- 바게트
+       (3, 1),   -- 식빵
+       (3, 8),   -- 바게트
+       (3, 5),   -- 크림빵
+       (6, 6),   -- 단팥빵
+       (7, 7),   -- 치아바타
+       (8, 11),  -- 머핀
+       (9, 12),  -- 브리오슈
+       (10, 13), -- 베이글
+       (11, 14), -- 치즈빵
+       (12, 15), -- 감자빵
+       (13, 16), -- 호두빵
+       (14, 17), -- 바나나빵
+       (15, 18), -- 크루아상
+       (16, 19); -- 파네토네
+
+---- CustomerProductAlert
+INSERT INTO customer_product_alert (customer_id, product_id, is_active, created_at, modified_at)
+VALUES
+    -- user1
+    (1, 4,  true,  '2025-03-08 09:01:00', '2025-03-08 09:01:00'),  -- 딸기잼 (product_id=4)
+    (1, 5,  false, '2025-03-08 09:02:00', '2025-03-08 09:02:00'),  -- 사과잼 (product_id=5)
+    (1, 6,  true,  '2025-03-08 09:03:00', '2025-03-08 09:03:00'),  -- 단팥빵 (product_id=6)
+    (1, 7,  false, '2025-03-08 09:04:00', '2025-03-08 09:04:00'),  -- 치아바타 (product_id=7)
+    (1, 9,  true,  '2025-03-08 09:05:00', '2025-03-08 09:05:00'),  -- 브리오슈 (product_id=9)
+    (1, 12, true,  '2025-03-08 09:06:00', '2025-03-08 09:06:00'),  -- 감자빵 (product_id=12)
+    (1, 16, false, '2025-03-08 09:07:00', '2025-03-08 09:07:00'),  -- 파네토네 (product_id=16)
+
+    -- user2
+    (2, 1,  true,  '2025-03-08 09:08:00', '2025-03-08 09:08:00'),  -- 식빵 (product_id=1)
+    (2, 4,  true,  '2025-03-08 09:09:00', '2025-03-08 09:09:00'),  -- 딸기잼 (product_id=4)
+    (2, 8,  false, '2025-03-08 09:10:00', '2025-03-08 09:10:00'),  -- 머핀 (product_id=8)
+    (2, 11, true,  '2025-03-08 09:11:00', '2025-03-08 09:11:00'),  -- 치즈빵 (product_id=11)
+    (2, 12, true,  '2025-03-08 09:12:00', '2025-03-08 09:12:00'),  -- 감자빵 (product_id=12)
+    (2, 13, false, '2025-03-08 09:13:00', '2025-03-08 09:13:00'),  -- 호두빵 (product_id=13)
+
+    -- user3
+    (3, 1,  false, '2025-03-08 09:15:00', '2025-03-08 09:15:00'),  -- 식빵 (product_id=1)
+    (3, 9,  true,  '2025-03-08 09:16:00', '2025-03-08 09:16:00'),  -- 브리오슈 (product_id=9)
+    (3, 11, false, '2025-03-08 09:17:00', '2025-03-08 09:17:00'),  -- 치즈빵 (product_id=11)
+    (3, 14, true,  '2025-03-08 09:18:00', '2025-03-08 09:18:00');  -- 바나나빵 (product_id=14)
+
+-- Reservation 데이터 (3명의 Customer가 Bakery(1)에 예약)
+INSERT INTO reservation (id, customer_id, bakery_id, status, total_price, pickup_deadline, reservation_number, created_at, modified_at)
+VALUES
+  (1, 1, 1, 'WAITING', 6000, '2025-03-08 10:00:00', '1', '2025-03-07 09:20:00', '2025-03-07 09:20:00'),
+  (2, 2, 1, 'APPROVED', 9000, '2025-03-08 10:30:00', '2', '2025-03-07 09:21:00', '2025-03-07 09:21:00'),
+  (3, 3, 1, 'CANCELLED', 3000, '2025-03-08 11:00:00', '3', '2025-03-07 09:22:00', '2025-03-07 09:22:00');
+
+-- ReservationProduct 데이터 (각 Reservation에 대한 주문 상품)
+INSERT INTO reservation_product (id, reservation_id, product_id, quantity, unit_price, product_name, product_image, created_at, modified_at)
+VALUES
+  (1, 1, 1, 2, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:23:00', '2025-03-07 09:23:00'),
+  (2, 2, 1, 3, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:24:00', '2025-03-07 09:24:00'),
+  (3, 3, 1, 1, 3000, '식빵', 'bread1.jpg', '2025-03-07 09:25:00', '2025-03-07 09:25:00');
+
+-- OwnerReservationNotification 데이터 (Bakery 소유자에게 온 예약 알림)
+INSERT INTO owner_reservation_notification (id, owner_id, reservation_id, is_read, is_active, created_at, modified_at)
+VALUES
+  (1, 1, 1, false, true, '2025-03-07 09:26:00', '2025-03-07 09:26:00'),
+  (2, 1, 2, true, true, '2025-03-07 09:27:00', '2025-03-07 09:27:00'),
+  (3, 1, 3, false, true, '2025-03-07 09:28:00', '2025-03-07 09:28:00');

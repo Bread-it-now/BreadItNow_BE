@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
+
+    <springProfile name="local">
+        <include resource="logging/console-appender.xml"/>
+        <include resource="logging/file-appender.xml"/>
+        <include resource="logging/res-res-appender.xml"/>
+
+        <root level="${LOG_LEVEL}">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE_INFO"/>
+            <!--            <appender-ref ref="FILE_WARN"/>-->
+            <appender-ref ref="FILE_ERROR"/>
+            <!--            <appender-ref ref="FILE_DEBUG"/>-->
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <include resource="logging/console-appender.xml"/>
+        <include resource="logging/file-appender.xml"/>
+        <include resource="logging/res-res-appender.xml"/>
+
+        <root level="${LOG_LEVEL}">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE_INFO"/>
+            <!--            <appender-ref ref="FILE_WARN"/>-->
+            <appender-ref ref="FILE_ERROR"/>
+            <!--            <appender-ref ref="FILE_DEBUG"/>-->
+        </root>
+    </springProfile>
+</configuration>

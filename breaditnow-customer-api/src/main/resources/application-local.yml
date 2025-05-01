@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+    import: application-mysql-local.yml
+
+
+openapi:
+  service:
+    url: http://localhost:8080/customer-api

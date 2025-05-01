@@ -1,0 +1,30 @@
+dependencies {
+    implementation project(':breaditnow-domain')
+    implementation project(':breaditnow-common')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // s3
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
+    // fcm
+    implementation 'com.google.firebase:firebase-admin:9.4.3'
+
+    // firebase
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
