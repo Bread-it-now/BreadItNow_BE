@@ -83,7 +83,7 @@ public class SecurityConfig {
 		config.setAllowedOrigins(
 			List.of("http://localhost:3000", "https://localhost:3000",
 				"http://www.breaditnow.com", "https://www.breaditnow.com"));
-		config.setAllowedHeaders(List.of("*"));
+		config.setAllowedMethods(List.of("*"));
 		config.setAllowedHeaders(List.of(AUTHORIZATION, SET_COOKIE, CONTENT_TYPE));
 		config.setExposedHeaders(List.of(AUTHORIZATION, SET_COOKIE));
 		config.setAllowCredentials(true);
