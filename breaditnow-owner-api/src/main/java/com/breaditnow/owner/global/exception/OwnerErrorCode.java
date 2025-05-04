@@ -6,13 +6,14 @@ import com.breaditnow.common.exception.ErrorCode;
 
 public enum OwnerErrorCode implements ErrorCode {
 	/**
+	 * DA000 Owner
+	 */
+	PASSWORD_SAME_AS_CURRENT(HttpStatus.BAD_REQUEST, "DA001", "현재 비밀번호와 일치합니다. 다른 비밀번호를 입력해주세요."),
+
+	/**
 	 * DB000 Bakery
 	 */
 	COORDINATE_NOT_FOUND(HttpStatus.NOT_FOUND, "DB001", "주어진 주소에서 위도, 경도를 찾을 수 없습니다."),
-
-	/**
-	 * DC000
-	 */
 
 	/**
 	 * DY000 인증
