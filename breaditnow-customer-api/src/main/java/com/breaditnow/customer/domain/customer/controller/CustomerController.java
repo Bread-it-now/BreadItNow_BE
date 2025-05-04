@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.customer.controller.req.CustomerInitRequest;
+import com.breaditnow.customer.domain.customer.controller.req.PasswordVerifyRequest;
 import com.breaditnow.customer.domain.customer.controller.req.RegionUpdateRequest;
 import com.breaditnow.customer.domain.customer.controller.res.CustomerInfoResponse;
 import com.breaditnow.customer.domain.customer.controller.res.NicknameDuplicateResponse;
+import com.breaditnow.customer.domain.customer.controller.res.PasswordVerifyResponse;
 import com.breaditnow.customer.domain.customer.service.CustomerService;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
 
@@ -41,6 +43,13 @@ public class CustomerController implements CustomerControllerDocs {
 	public ApiSuccessResponse<CustomerInfoResponse> getMyInfo(
 		@AuthCustomer Long customerId) {
 		return ApiSuccessResponse.of(customerService.getCustomerInfo(customerId));
+	}
+
+	@PostMapping("/me/verify-password")
+	public ApiSuccessResponse<PasswordVerifyResponse> verifyPassword(
+		@AuthCustomer Long customerId,
+		@RequestBody @Valid PasswordVerifyRequest request) {
+		return ApiSuccessResponse.of(customerService.verifyPassword(customerId, request));
 	}
 
 	@GetMapping("/duplicate-nickname")
