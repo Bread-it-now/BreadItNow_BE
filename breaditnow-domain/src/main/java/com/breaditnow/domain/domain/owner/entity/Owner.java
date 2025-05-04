@@ -38,4 +38,8 @@ public class Owner extends BaseEntity {
 	public void changeFcmToken(String token) {
 		this.fcmToken = token;
 	}
+
+	public void changePassword(String newPassword) {
+		this.password = newPassword;
+	}
 }
