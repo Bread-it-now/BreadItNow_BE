@@ -1,7 +1,10 @@
 package com.breaditnow.common.client.kakao;
 
-import com.breaditnow.common.client.kakao.dto.res.AddressCoordinate;
+import com.breaditnow.common.client.kakao.dto.AddressCoordinateDto;
+import com.breaditnow.common.client.kakao.dto.AddressNameDto;
 
 public interface GeoLocationClient {
-	AddressCoordinate lookupCoordinates(String address);
+    AddressCoordinateDto lookupCoordinates(String address);
+
+    AddressNameDto lookupAddress(double latitude, double longitude);
 }

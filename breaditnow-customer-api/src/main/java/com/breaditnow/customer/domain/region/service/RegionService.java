@@ -1,7 +1,11 @@
 package com.breaditnow.customer.domain.region.service;
 
+import com.breaditnow.common.client.kakao.GeoLocationClient;
+import com.breaditnow.common.client.kakao.dto.AddressNameDto;
+import com.breaditnow.customer.domain.region.controller.req.LocationRequest;
 import com.breaditnow.customer.domain.region.controller.res.GugunResponse;
 import com.breaditnow.customer.domain.region.controller.res.SidoResponse;
+import com.breaditnow.domain.domain.region.entity.Region;
 import com.breaditnow.domain.domain.region.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RegionService {
     private final RegionRepository regionRepository;
+    private final GeoLocationClient geoLocationClient;
 
     public List<SidoResponse> getSidoList() {
         List<Object[]> results = regionRepository.findSidoList();
@@ -30,5 +35,11 @@ public class RegionService {
         return results.stream()
                 .map(result -> new GugunResponse((String) result[0], (String) result[1], (String) result[2]))
                 .toList();
+    }
+
+    public GugunResponse getGugunByCoordinates(LocationRequest locationRequest) {
+        AddressNameDto addressNameDto = geoLocationClient.lookupAddress(locationRequest.latitude(), locationRequest.longitude());
+        Region region = regionRepository.getRegionByAddress(addressNameDto);
+        return GugunResponse.of(region);
     }
 }

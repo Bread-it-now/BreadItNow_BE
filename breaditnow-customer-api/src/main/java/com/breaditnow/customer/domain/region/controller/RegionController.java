@@ -1,6 +1,7 @@
 package com.breaditnow.customer.domain.region.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.domain.region.controller.req.LocationRequest;
 import com.breaditnow.customer.domain.region.controller.res.GugunResponse;
 import com.breaditnow.customer.domain.region.controller.res.SidoResponse;
 import com.breaditnow.customer.domain.region.service.RegionService;
@@ -29,5 +30,11 @@ public class RegionController implements RegionControllerDocs {
     public ApiSuccessResponse<List<GugunResponse>> getGugunListBySido(
             @PathVariable("sidoCode") String sidoCode) {
         return ApiSuccessResponse.of(regionService.getGugunListBySido(sidoCode));
+    }
+
+    @GetMapping("/location")
+    public ApiSuccessResponse<GugunResponse> getGugunByCoordinates(LocationRequest locationRequest) {
+        GugunResponse gugunResponse = regionService.getGugunByCoordinates(locationRequest);
+        return ApiSuccessResponse.of(gugunResponse);
     }
 }
