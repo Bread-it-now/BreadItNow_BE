@@ -2,7 +2,7 @@ package com.breaditnow.customer.domain.region.service;
 
 import com.breaditnow.common.client.kakao.GeoLocationClient;
 import com.breaditnow.common.client.kakao.dto.AddressNameDto;
-import com.breaditnow.customer.domain.region.controller.req.LocationRequest;
+import com.breaditnow.customer.domain.common.req.GeoPointRequest;
 import com.breaditnow.customer.domain.region.controller.res.GugunResponse;
 import com.breaditnow.customer.domain.region.controller.res.SidoResponse;
 import com.breaditnow.domain.domain.region.entity.Region;
@@ -37,8 +37,8 @@ public class RegionService {
                 .toList();
     }
 
-    public GugunResponse getGugunByCoordinates(LocationRequest locationRequest) {
-        AddressNameDto addressNameDto = geoLocationClient.lookupAddress(locationRequest.latitude(), locationRequest.longitude());
+    public GugunResponse getGugunByCoordinates(GeoPointRequest geoPointRequest) {
+        AddressNameDto addressNameDto = geoLocationClient.lookupAddress(geoPointRequest.latitude(), geoPointRequest.longitude());
         Region region = regionRepository.getRegionByAddress(addressNameDto);
         return GugunResponse.of(region);
     }
