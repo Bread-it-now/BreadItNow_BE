@@ -16,16 +16,16 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/owner")
-public class OwnerController {
+public class OwnerController implements OwnerControllerDocs {
 
 	private final OwnerService ownerService;
 
 	@PatchMapping("/me/password")
 	public ApiSuccessResponse<Void> updateOwnerPassword(
 		@AuthOwner Long ownerId,
-		@RequestBody @Valid OwnerPasswordUpdateRequest ownerPasswordUpdateRequest
+		@RequestBody @Valid OwnerPasswordUpdateRequest request
 	) {
-		ownerService.updateOwnerPassword(ownerId, ownerPasswordUpdateRequest);
+		ownerService.updateOwnerPassword(ownerId, request);
 		return ApiSuccessResponse.of();
 	}
 }
