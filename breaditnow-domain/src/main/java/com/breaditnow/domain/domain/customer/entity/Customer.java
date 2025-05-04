@@ -99,4 +99,16 @@ public class Customer extends BaseEntity {
 			this.breadCategoryPreferences.add(new CustomerBreadCategoryPreference(this, category))
 		);
 	}
+
+	public void updatePhone(String phone) {
+		this.phone = phone;
+	}
+
+	public void updateProfileImage(String profileImageUrl) {
+		this.profileImage = profileImageUrl;
+	}
+
+	public void changePassword(String encodedPassword) {
+		this.password = encodedPassword;
+	}
 }
