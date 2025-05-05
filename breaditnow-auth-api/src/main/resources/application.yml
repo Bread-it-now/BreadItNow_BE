@@ -52,6 +52,17 @@ sms:
   auth-code:
     ttl-seconds: 180
 
+mail:
+  auth-code:
+    ttl-seconds: 300
+    subject: "[빵잇나우] 이메일 인증 코드"
+    body-template: |
+      안녕하세요!
+      빵잇나우 회원가입 인증 코드입니다.
+
+      인증 코드: {code}
+      (유효 시간: {ttl}분)
+
 springdoc:
   api-docs:
     path: /v3/api-docs
