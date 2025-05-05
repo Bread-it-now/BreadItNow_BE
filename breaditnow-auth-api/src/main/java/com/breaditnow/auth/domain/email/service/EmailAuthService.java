@@ -48,14 +48,12 @@ public class EmailAuthService {
         String body = bodyTemplate
                 .replace("{code}", code)
                 .replace("{ttl}", String.valueOf(ttlSeconds / 60));
-        
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject(subject);
         message.setText(body);
         mailSender.send(message);
-
-        log.info("Sent auth code {} to {} (TTL {}s)", code, email, ttlSeconds);
     }
 
     public void verifyCode(String email, String code) {
@@ -65,6 +63,5 @@ public class EmailAuthService {
             throw new AuthException(CODE_MISMATCH);
         }
         repo.delete(email);
-        log.info("✅ email {} verified", email);
     }
 }
