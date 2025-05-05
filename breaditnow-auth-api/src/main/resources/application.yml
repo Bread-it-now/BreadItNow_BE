@@ -47,6 +47,11 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
 
+sms:
+  sender: ${SMS_SENDER}
+  auth-code:
+    ttl-seconds: 180
+
 springdoc:
   api-docs:
     path: /v3/api-docs
