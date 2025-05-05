@@ -29,6 +29,12 @@ public class EmailAuthService {
     @Value("${mail.auth-code.ttl-seconds:300}")
     private long ttlSeconds;
 
+    @Value("${mail.auth-code.subject}")
+    private String subject;
+
+    @Value("${mail.auth-code.body-template}")
+    private String bodyTemplate;
+
     @Transactional
     public void sendAuthCode(String email, String role) {
 
@@ -37,22 +43,17 @@ public class EmailAuthService {
         }
 
         String code = "%06d".formatted(ThreadLocalRandom.current().nextInt(1_000_000));
-
         repo.save(email, code, Duration.ofSeconds(ttlSeconds));
+
+        String body = bodyTemplate
+                .replace("{code}", code)
+                .replace("{ttl}", String.valueOf(ttlSeconds / 60));
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setSubject("[빵잇나우] 이메일 인증 코드");
-        message.setText("""
-                안녕하세요!
-                빵잇나우 회원가입 인증 코드입니다.
-
-                인증 코드: %s
-                (유효 시간: %d분)
-                """.formatted(code, ttlSeconds / 60));
+        message.setSubject(subject);
+        message.setText(body);
         mailSender.send(message);
-
-        log.info("Sent auth code {} to {} (TTL {}s)", code, email, ttlSeconds);
     }
 
     public void verifyCode(String email, String code) {
@@ -62,6 +63,5 @@ public class EmailAuthService {
             throw new AuthException(CODE_MISMATCH);
         }
         repo.delete(email);
-        log.info("✅ email {} verified", email);
     }
 }
