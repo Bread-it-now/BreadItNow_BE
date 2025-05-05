@@ -104,12 +104,12 @@ public class Product extends BaseEntity {
         updateDisplayOrder(-1);
     }
 
-    public void unhide(int productLastSize) {
+    public void unhide(int nextDisplayOrder) {
         if (!this.isHidden) {
             throw new DomainException(PRODUCT_ALREADY_UNHIDDEN);
         }
 
         this.isHidden = false;
-        updateDisplayOrder(productLastSize + 1);
+        updateDisplayOrder(nextDisplayOrder);
     }
 }

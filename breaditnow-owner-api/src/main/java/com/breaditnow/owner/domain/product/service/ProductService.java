@@ -39,7 +39,7 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
 
         int nextDisplayOrder = productRepository.findMaxDisplayOrderByBakeryId(bakery.getId()) + 1;
-        savedProduct.updateDisplayOrder(nextDisplayOrder);
+        product.updateDisplayOrder(nextDisplayOrder);
 
         Long[] breadCategoryIds = request.breadCategoryIds();
         if (breadCategoryIds != null) {
@@ -72,7 +72,10 @@ public class ProductService {
         Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
         Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
         product.updateActive(false);
+
+        productRepository.updateDisplayOrderAfterModification(bakery.getId(), product.getDisplayOrder());
         product.updateDisplayOrder(-1);
+
         return product.getId();
     }
 
@@ -84,6 +87,7 @@ public class ProductService {
         for (Long productId : productIds) {
             Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
             product.updateActive(false);
+            productRepository.updateDisplayOrderAfterModification(bakery.getId(), product.getDisplayOrder());
             product.updateDisplayOrder(-1);
             deletedCount++;
         }
@@ -98,6 +102,7 @@ public class ProductService {
         for (Long productId : productIds) {
             Product product = productRepository.getByBakeryIdAndId(bakery.getId(), productId);
             if (isHidden) {
+                productRepository.updateDisplayOrderAfterModification(bakery.getId(), product.getDisplayOrder());
                 product.hide();
             } else {
                 product.unhide(nextDisplayOrder++);
@@ -123,6 +128,11 @@ public class ProductService {
 
         for (ProductOrderItemRequest item : orderItems) {
             Product product = productRepository.getByBakeryIdAndId(bakery.getId(), item.productId());
+            if (product.getDisplayOrder() < item.order()) {
+                productRepository.shiftDisplayOrderBeforeMove(bakeryId, product.getDisplayOrder(), item.order());
+            } else {
+                productRepository.shiftDisplayOrderAfterMove(bakeryId, product.getDisplayOrder(), item.order());
+            }
             product.updateDisplayOrder(item.order());
         }
     }
