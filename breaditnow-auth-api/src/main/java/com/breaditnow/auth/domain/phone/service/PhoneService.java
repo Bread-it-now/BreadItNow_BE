@@ -30,15 +30,23 @@ public class PhoneService {
     @Value("${sms.auth-code.ttl-seconds:180}")
     private long ttl;
 
+    @Value("${sms.auth-code.body-template}")
+    private String bodyTemplate;
+
     public SingleMessageSentResponse sendCode(String phone) {
 
         String code = "%06d".formatted(ThreadLocalRandom.current().nextInt(1_000_000));
         redis.save(key(phone), code, ttl * 1000);
 
+        String body = bodyTemplate
+                .replace("{code}", code)
+                .replace("{ttl}", String.valueOf(ttl / 60));
+
         Message msg = new Message();
         msg.setFrom(sender);
         msg.setTo(phone);
-        msg.setText("[빵잇나우] 인증코드 " + code + " (유효 " + ttl/60 + "분)");
+        msg.setText(body);
+
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(msg));
         return response;
     }
