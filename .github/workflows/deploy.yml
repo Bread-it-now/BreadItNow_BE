@@ -22,14 +22,6 @@ jobs:
       - name: Give permissions to gradlew
         run: chmod +x gradlew
 
-      - name: Setup Firebase service keys for customer and owner
-        run: |
-          mkdir -p customer-api/src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY }}" | base64 -d > customer-api/src/main/resources/firebase/firebase-service-key.json
-
-          mkdir -p owner-api/src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY }}" | base64 -d > owner-api/src/main/resources/firebase/firebase-service-key.json
-
       - name: Create firebase-service-key.json for customer-api
         run: |
           mkdir -p breaditnow-customer-api/src/main/resources/firebase
