@@ -23,7 +23,7 @@ spring:
     init:
       mode: never
       defer-datasource-initialization: true
-      data-locations: classpath:db/seoul-code.sql, classpath:db/bread-category.sql, classpath:db/test-data.sql
+      data-locations: classpath:db/address.sql, classpath:db/bread-category.sql, classpath:db/test-data.sql
 
 geolocation:
   kakao:

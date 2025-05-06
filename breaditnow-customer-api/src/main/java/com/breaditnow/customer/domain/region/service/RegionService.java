@@ -1,6 +1,8 @@
 package com.breaditnow.customer.domain.region.service;
 
-import com.breaditnow.customer.domain.region.controller.res.DongResponse;
+import com.breaditnow.common.client.kakao.GeoLocationClient;
+import com.breaditnow.common.client.kakao.dto.AddressNameDto;
+import com.breaditnow.customer.domain.common.req.GeoPointRequest;
 import com.breaditnow.customer.domain.region.controller.res.GugunResponse;
 import com.breaditnow.customer.domain.region.controller.res.SidoResponse;
 import com.breaditnow.domain.domain.region.entity.Region;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RegionService {
     private final RegionRepository regionRepository;
+    private final GeoLocationClient geoLocationClient;
 
     public List<SidoResponse> getSidoList() {
         List<Object[]> results = regionRepository.findSidoList();
@@ -28,12 +31,15 @@ public class RegionService {
     }
 
     public List<GugunResponse> getGugunListBySido(String sidoCode) {
-        List<Region> regions = regionRepository.findDistinctById_SidoCodeOrderById_GugunCode(sidoCode);
-        return regions.stream().map(GugunResponse::of).collect(Collectors.toList());
+        List<Object[]> results = regionRepository.getGugunListBySido(sidoCode);
+        return results.stream()
+                .map(result -> new GugunResponse((String) result[0], (String) result[1], (String) result[2]))
+                .toList();
     }
 
-    public List<DongResponse> getDongListByGugun(String gugunCode) {
-        List<Region> regions = regionRepository.findById_GugunCodeOrderById_DongCode(gugunCode);
-        return regions.stream().map(DongResponse::of).collect(Collectors.toList());
+    public GugunResponse getGugunByCoordinates(GeoPointRequest geoPointRequest) {
+        AddressNameDto addressNameDto = geoLocationClient.lookupAddress(geoPointRequest.latitude(), geoPointRequest.longitude());
+        Region region = regionRepository.getRegionByAddress(addressNameDto);
+        return GugunResponse.of(region);
     }
 }
