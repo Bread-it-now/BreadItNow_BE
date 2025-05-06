@@ -64,7 +64,7 @@ jobs:
       - name: Copy docker-compose file and .env.prod to EC2
         run: |
           scp -o StrictHostKeyChecking=no ./infra/docker-compose.app.yml ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/docker/docker-compose.app.yml
-          scp -o StrictHostKeyChecking=no ./config/.env.prod ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/docker/.env.prod
+          scp -o StrictHostKeyChecking=no ./config/.env.prod ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/ubuntu/breaditnow/docker/.env
 
       - name: SSH into EC2 and Deploy
         run: |
