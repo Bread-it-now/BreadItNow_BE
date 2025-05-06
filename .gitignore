@@ -41,9 +41,6 @@ out/
 
 /node_modules
 
-### env ###
-.env
-
 ### queryDsl ###
 breaditnow-domain/src/main/generated/
 
