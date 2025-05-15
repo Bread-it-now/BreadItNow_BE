@@ -42,7 +42,7 @@ aws:
       auto: false
 
 fcm:
-  file_path: firebase/breaditnow-fcm.json
+  file_path: file:config/breaditnow-fcm.json
   project_id: ${FCM_PROJECT_ID}
 
 webhook:

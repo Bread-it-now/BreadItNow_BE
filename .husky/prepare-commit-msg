@@ -5,7 +5,7 @@ BRANCH_NAME=$(git branch --show-current)
 COMMIT_MSG_FILE=$1
 
 # master 및 develop 브랜치에서는 작업을 스킵
-if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]; then
+if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]|| [[ "$BRANCH_NAME" == releases/* ]]; then
   exit 0
 fi
 
