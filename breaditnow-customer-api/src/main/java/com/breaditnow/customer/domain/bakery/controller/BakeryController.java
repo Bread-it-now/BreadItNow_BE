@@ -26,12 +26,11 @@ public class BakeryController implements BakeryControllerDocs {
 
     @GetMapping("/hot")
     public ApiSuccessResponse<HotBakeryPageResponse> searchHotBakeries(
-            @AuthCustomer Long customerId,
+            @AuthCustomer(required = false) Long customerId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "sort", defaultValue = "reservation") String sort,
             @Valid GeoPointRequest geoPointRequest) {
-        return ApiSuccessResponse.of(
-                bakeryPageService.searchHotBakeries(customerId, page, size, sort, geoPointRequest));
+        return ApiSuccessResponse.of(bakeryPageService.searchHotBakeries(customerId, page, size, sort, geoPointRequest));
     }
 }

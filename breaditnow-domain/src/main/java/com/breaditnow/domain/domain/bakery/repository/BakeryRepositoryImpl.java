@@ -47,7 +47,7 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
 			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression,
-				bakery.operatingStatus, isFavoriteExpr))
+				bakery.operatingStatus, isFavoriteExpr == null ? FALSE : isFavoriteExpr))
 			.from(bakery)
 			.leftJoin(customerBakeryFavorite).on(
 				customerBakeryFavorite.bakery.eq(bakery)
@@ -75,8 +75,7 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
-			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression,
-				bakery.operatingStatus, isFavoriteExpr))
+			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression, bakery.operatingStatus, isFavoriteExpr))
 			.from(bakery)
 			.leftJoin(product).on(
 				product.bakery.eq(bakery)
@@ -102,6 +101,10 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	}
 
 	private static BooleanExpression buildIsFavoriteExpression(Long customerId) {
+		if(customerId == null) {
+			return null;
+		}
+
 		return JPAExpressions
 			.selectOne()
 			.from(customerBakeryFavorite)
@@ -126,6 +129,8 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 	}
 
 	private BooleanExpression buildInterestAreaCondition(Long customerId) {
+		if(customerId == null) return null;
+
 		Long preferenceCount = queryFactory
 			.select(customerRegionPreference.count())
 			.from(customerRegionPreference)

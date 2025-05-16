@@ -18,14 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class BakeryPageService {
     private final BakeryRepository bakeryRepository;
 
-    public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort,
-                                                   GeoPointRequest geoPointRequest) {
+    public HotBakeryPageResponse searchHotBakeries(Long customerId, int page, int size, String sort, GeoPointRequest geoPointRequest) {
         GeoPoint currentGeoPoint = geoPointRequest.toEntity();
         Pageable pageable = PageRequest.of(page, size);
 
         BakerySortStrategy bakerySortStrategy = BakerySortStrategy.from(sort);
-        Page<BakeryDistanceDto> bakeryDistances = bakerySortStrategy.search(customerId, pageable, currentGeoPoint,
-                bakeryRepository);
+        Page<BakeryDistanceDto> bakeryDistances = bakerySortStrategy.search(customerId, pageable, currentGeoPoint, bakeryRepository);
 
         return HotBakeryPageResponse.of(bakeryDistances);
     }
