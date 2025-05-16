@@ -27,11 +27,9 @@ public class ProductPageService {
 		Page<Product> productPage = productSortStrategy.search(customerId, pageable, productRepository);
 
 		Page<HotProductResponse> hotProductResponses = productPage.map(product -> {
-			boolean isFavorite = favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());
+			boolean isFavorite = customerId != null && favoriteRepository.existsByCustomerIdAndProductId(customerId, product.getId());
 			return HotProductResponse.of(product, isFavorite);
 		});
-
 		return HotProductPageResponse.of(hotProductResponses);
 	}
-
 }
