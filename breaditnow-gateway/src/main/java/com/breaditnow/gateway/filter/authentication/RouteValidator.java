@@ -16,7 +16,9 @@ public class RouteValidator {
 		// health check
 		"/actuator/health", "/auth-api/api/check", "/customer-api/api/check", "/owner-api/api/check",
 
-		"/owner-api/api/v1/bread-category/search"
+		"/owner-api/api/v1/bread-category/search",
+
+		"/customer-api/api/v1/bakery/hot", "/customer-api/api/v1/product/hot"
 	);
 
 	public Predicate<ServerHttpRequest> isPassed =

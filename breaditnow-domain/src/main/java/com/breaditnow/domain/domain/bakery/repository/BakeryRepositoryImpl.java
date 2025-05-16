@@ -75,7 +75,7 @@ public class BakeryRepositoryImpl implements BakeryRepositoryCustom {
 		BooleanExpression isFavoriteExpr = buildIsFavoriteExpression(customerId);
 
 		JPAQuery<BakeryDistanceDto> query = queryFactory
-			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression, bakery.operatingStatus, isFavoriteExpr))
+			.select(new QBakeryDistanceDto(bakery.id, bakery.name, bakery.profileImage, distanceExpression, bakery.operatingStatus, isFavoriteExpr == null ? FALSE : isFavoriteExpr))
 			.from(bakery)
 			.leftJoin(product).on(
 				product.bakery.eq(bakery)
