@@ -1,7 +1,7 @@
 package com.breaditnow.customer.domain.customer.application;
 
-import com.breaditnow.customer.domain.customer.application.port.CustomerPort;
-import com.breaditnow.customer.domain.customer.application.port.CustomerProductCategoryPort;
+import com.breaditnow.customer.domain.customer.core.port.CustomerPort;
+import com.breaditnow.customer.domain.customer.core.port.CustomerProductCategoryPort;
 import com.breaditnow.customer.domain.customer.application.request.CustomerInitRequest;
 import com.breaditnow.customer.domain.customer.core.Customer;
 import com.breaditnow.customer.domain.product.application.port.ProductCategoryPort;

@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.customer.application.port;
+package com.breaditnow.customer.domain.customer.core.port;
 
 import com.breaditnow.customer.domain.customer.core.Customer;
 

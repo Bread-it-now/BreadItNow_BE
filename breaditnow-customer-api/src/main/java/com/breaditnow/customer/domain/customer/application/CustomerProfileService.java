@@ -1,6 +1,6 @@
 package com.breaditnow.customer.domain.customer.application;
 
-import com.breaditnow.customer.domain.customer.application.port.CustomerPort;
+import com.breaditnow.customer.domain.customer.core.port.CustomerPort;
 import com.breaditnow.customer.domain.customer.application.request.CustomerInfoUpdateRequest;
 import com.breaditnow.customer.domain.customer.application.response.CustomerInfoResponse;
 import com.breaditnow.customer.domain.customer.core.Customer;

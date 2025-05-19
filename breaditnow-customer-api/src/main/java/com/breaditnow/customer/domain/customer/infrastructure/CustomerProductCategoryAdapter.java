@@ -1,6 +1,6 @@
 package com.breaditnow.customer.domain.customer.infrastructure;
 
-import com.breaditnow.customer.domain.customer.application.port.CustomerProductCategoryPort;
+import com.breaditnow.customer.domain.customer.core.port.CustomerProductCategoryPort;
 import com.breaditnow.customer.domain.customer.core.Customer;
 import com.breaditnow.customer.domain.customer.infrastructure.entity.CustomerProductCategoryEntity;
 import com.breaditnow.customer.domain.customer.infrastructure.jpa.JpaCustomerProductCategoryRepository;

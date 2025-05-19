@@ -3,8 +3,10 @@ package com.breaditnow.customer.domain.customer.presentation;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.domain.customer.application.CustomerInitializationService;
 import com.breaditnow.customer.domain.customer.application.CustomerProfileService;
+import com.breaditnow.customer.domain.customer.application.CustomerRegionService;
 import com.breaditnow.customer.domain.customer.application.request.CustomerInfoUpdateRequest;
 import com.breaditnow.customer.domain.customer.application.request.CustomerInitRequest;
+import com.breaditnow.customer.domain.customer.application.request.RegionUpdateRequest;
 import com.breaditnow.customer.domain.customer.application.response.CustomerInfoResponse;
 import com.breaditnow.customer.domain.customer.presentation.docs.CustomerControllerDocs;
 import com.breaditnow.customer.global.security.annotation.AuthCustomer;
@@ -21,7 +23,7 @@ public class CustomerController  {
     private final CustomerProfileService profileService;
 //    private final PasswordVerifyQueryService securityService;
 //    private final NicknameDuplicateQueryService nicknameService;
-//    private final CustomerRegionService regionService;
+    private final CustomerRegionService regionService;
 
     // 회원정보 초기 설정(첫 로그인)
     @PostMapping("/me/init")
@@ -58,11 +60,12 @@ public class CustomerController  {
     public ApiSuccessResponse<NicknameDuplicateResponse> checkNicknameDuplicate(NicknameDuplicateCheckRequest dto) {
         return ApiSuccessResponse.of(nicknameService.isDuplicate(dto));
     }
+    */
 
     // 관심 지역 설정
     @PatchMapping("/me/region")
     public ApiSuccessResponse<Void> updateRegion(@AuthCustomer Long customerId, @RequestBody RegionUpdateRequest dto) {
         regionService.updateRegion(customerId, dto);
         return ApiSuccessResponse.of();
-    }*/
+    }
 }
