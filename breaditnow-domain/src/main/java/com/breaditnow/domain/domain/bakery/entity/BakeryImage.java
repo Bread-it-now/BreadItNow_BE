@@ -5,13 +5,7 @@ import static lombok.AccessLevel.*;
 
 import com.breaditnow.domain.global.entity.BaseEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@Table(name = "P_BakeryImage")
 public class BakeryImage extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

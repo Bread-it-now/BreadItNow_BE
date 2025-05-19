@@ -24,6 +24,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString(exclude = {"bakery", "breadCategories"})
+@Table(name = "P_Product")
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)

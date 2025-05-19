@@ -9,14 +9,7 @@ import static lombok.AccessLevel.*;
 import com.breaditnow.domain.domain.customer.entity.Customer;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "notification_type", discriminatorType = STRING)
 @Getter
+@Table(name = "P_CustomerNotification")
 public class CustomerNotification extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

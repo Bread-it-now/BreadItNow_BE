@@ -8,6 +8,7 @@ import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString
+@Table(name = "P_Owner")
 public class Owner extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

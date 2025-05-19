@@ -17,6 +17,7 @@
 	@Entity
 	@Getter
 	@NoArgsConstructor(access = PROTECTED)
+	@Table(name = "P_CustomerAlertSetting")
 	public class CustomerAlertSetting extends BaseEntity {
 		@Id
 		@GeneratedValue(strategy = IDENTITY)
@@ -38,7 +39,7 @@
 		@Setter
 		@ElementCollection(fetch = FetchType.EAGER)
 		@CollectionTable(
-				name = "alert_dnd_days",
+				name = "P_alert_dnd_days",
 				joinColumns = @JoinColumn(name = "alert_setting_id")
 		)
 		@Column(name = "day")

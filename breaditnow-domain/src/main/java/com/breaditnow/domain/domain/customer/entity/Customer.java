@@ -12,15 +12,7 @@ import com.breaditnow.domain.domain.breadcategory.entity.BreadCategory;
 import com.breaditnow.domain.domain.customer.enumerate.Provider;
 import com.breaditnow.domain.global.entity.BaseEntity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +22,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString
+@Table(name = "P_Customer")
 public class Customer extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
