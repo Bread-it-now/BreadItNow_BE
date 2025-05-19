@@ -1,0 +1,45 @@
+package com.breaditnow.customer.region.service;
+
+import com.breaditnow.common.client.kakao.GeoLocationClient;
+import com.breaditnow.common.client.kakao.dto.AddressNameDto;
+import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.region.controller.res.GugunResponse;
+import com.breaditnow.customer.region.controller.res.SidoResponse;
+import com.breaditnow.domain.domain.region.entity.Region;
+import com.breaditnow.domain.domain.region.repository.RegionRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Slf4j
+public class RegionService {
+    private final RegionRepository regionRepository;
+    private final GeoLocationClient geoLocationClient;
+
+    public List<SidoResponse> getSidoList() {
+        List<Object[]> results = regionRepository.findSidoList();
+        return results.stream()
+                .map(result -> new SidoResponse((String) result[0], (String) result[1]))
+                .collect(Collectors.toList());
+    }
+
+    public List<GugunResponse> getGugunListBySido(String sidoCode) {
+        List<Object[]> results = regionRepository.getGugunListBySido(sidoCode);
+        return results.stream()
+                .map(result -> new GugunResponse((String) result[0], (String) result[1], (String) result[2]))
+                .toList();
+    }
+
+    public GugunResponse getGugunByCoordinates(GeoPointRequest geoPointRequest) {
+        AddressNameDto addressNameDto = geoLocationClient.lookupAddress(geoPointRequest.latitude(), geoPointRequest.longitude());
+        Region region = regionRepository.getRegionByAddress(addressNameDto);
+        return GugunResponse.of(region);
+    }
+}
