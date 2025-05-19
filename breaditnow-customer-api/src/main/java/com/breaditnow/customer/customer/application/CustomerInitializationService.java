@@ -41,7 +41,7 @@ public class CustomerInitializationService {
             customerProductCategoryPort.preference(customer, category);
         }
 
-        customer.initialize(dto.nickname());
+        customer.changeNickname(dto.nickname());
         customerPort.save(customer);
     }
 }

@@ -58,6 +58,19 @@ public class CustomerEntity extends BaseEntity {
     }
 
     public Customer toCustomer() {
+        return Customer.builder()
+                .id(this.id)
+                .nickname(this.nickname)
+                .phone(this.phone)
+                .profileImageUrl(this.profileImage)
+                .provider(this.provider)
+                .oauth2Id(this.oauth2Id)
+                .email(this.email)
+                .password(this.password)
+                .fcmToken(this.fcmToken)
+                .initialSetup(TRUE.equals(this.initialSetup))
+                .build();
+
         return new Customer(this.id, this.nickname, this.phone, this.profileImage, this.provider, this.oauth2Id, this.email, this.password, this.fcmToken, TRUE.equals(this.initialSetup));
     }
 }
