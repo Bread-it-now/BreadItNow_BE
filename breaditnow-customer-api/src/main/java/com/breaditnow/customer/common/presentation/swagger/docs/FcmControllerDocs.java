@@ -1,10 +1,10 @@
-package com.breaditnow.customer.fcm.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.fcm.controller.req.FcmSendRequest;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

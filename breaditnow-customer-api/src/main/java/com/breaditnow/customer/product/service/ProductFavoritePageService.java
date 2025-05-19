@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.service;
 
-import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
 import com.breaditnow.customer.product.controller.res.ProductFavoritePageResponse;
 import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 import com.breaditnow.domain.domain.favorite.repository.customerproductfavorite.CustomerProductFavoriteRepository;

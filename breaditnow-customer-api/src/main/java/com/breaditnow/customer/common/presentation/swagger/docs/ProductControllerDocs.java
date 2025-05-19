@@ -1,4 +1,4 @@
-package com.breaditnow.customer.product.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
 

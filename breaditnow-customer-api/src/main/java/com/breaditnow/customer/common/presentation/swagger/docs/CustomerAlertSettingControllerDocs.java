@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
@@ -7,7 +7,7 @@ import com.breaditnow.customer.alert.controller.req.CustomerDoNotDisturbUpdateRe
 import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbResponse;
 import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbToggleResponse;
 import com.breaditnow.customer.alert.controller.res.TodayAlertListResponse;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

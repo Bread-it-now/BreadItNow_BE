@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.alert.controller.res.CustomerProductAlertPageResponse;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

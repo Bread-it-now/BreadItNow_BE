@@ -1,15 +1,15 @@
-package com.breaditnow.customer.notification.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
 
 import java.util.Map;
 
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 import org.springframework.data.domain.Pageable;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.notification.controller.res.NotificationPageResponse;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

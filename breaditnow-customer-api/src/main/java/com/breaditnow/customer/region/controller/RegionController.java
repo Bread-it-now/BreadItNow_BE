@@ -1,7 +1,8 @@
 package com.breaditnow.customer.region.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
+import com.breaditnow.customer.common.presentation.swagger.docs.RegionControllerDocs;
 import com.breaditnow.customer.region.controller.res.GugunResponse;
 import com.breaditnow.customer.region.controller.res.SidoResponse;
 import com.breaditnow.customer.region.service.RegionService;

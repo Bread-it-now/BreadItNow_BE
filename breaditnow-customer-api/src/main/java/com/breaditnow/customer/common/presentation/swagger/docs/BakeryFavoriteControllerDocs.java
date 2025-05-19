@@ -1,9 +1,9 @@
-package com.breaditnow.customer.bakery.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.bakery.controller.res.BakeryFavoritePageResponse;
-import com.breaditnow.customer.common.req.GeoPointRequest;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

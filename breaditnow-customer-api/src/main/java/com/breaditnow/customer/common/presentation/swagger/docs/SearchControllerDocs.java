@@ -1,10 +1,10 @@
-package com.breaditnow.customer.search.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.product.controller.res.SearchProductPageResponse;
 import com.breaditnow.customer.search.controller.res.SearchAutocompleteResponses;
 import com.breaditnow.customer.search.controller.res.SearchBakeryPageResponse;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

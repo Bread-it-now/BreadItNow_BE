@@ -1,7 +1,7 @@
-package com.breaditnow.customer.region.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
 import com.breaditnow.customer.region.controller.res.GugunResponse;
 import com.breaditnow.customer.region.controller.res.SidoResponse;
 import io.swagger.v3.oas.annotations.Operation;

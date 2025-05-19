@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.core;
+package com.breaditnow.customer.common.domain;
 
 import com.breaditnow.common.exception.BreaditnowException;
 

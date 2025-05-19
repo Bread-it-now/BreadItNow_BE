@@ -1,7 +1,7 @@
-package com.breaditnow.customer.customer.presentation.docs;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 import com.breaditnow.customer.customer.application.request.*;
 import com.breaditnow.customer.customer.application.response.CustomerInfoResponse;
 import com.breaditnow.customer.customer.application.response.NicknameDuplicateResponse;

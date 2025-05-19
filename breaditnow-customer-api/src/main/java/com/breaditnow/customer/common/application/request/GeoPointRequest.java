@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.req;
+package com.breaditnow.customer.common.application.request;
 
 import com.breaditnow.domain.global.dto.GeoPoint;
 import io.swagger.v3.oas.annotations.media.Schema;

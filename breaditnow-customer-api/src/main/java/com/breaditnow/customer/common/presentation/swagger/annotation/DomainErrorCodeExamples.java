@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.swagger.annotation;
+package com.breaditnow.customer.common.presentation.swagger.annotation;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
@@ -6,10 +6,10 @@ import static java.lang.annotation.RetentionPolicy.*;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.breaditnow.common.exception.CommonErrorCode;
+import com.breaditnow.domain.global.exception.DomainErrorCode;
 
 @Target(METHOD)
 @Retention(RUNTIME)
-public @interface CommonErrorCodeExamples {
-	CommonErrorCode[] value();
+public @interface DomainErrorCodeExamples {
+	DomainErrorCode[] value();
 }

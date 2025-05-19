@@ -21,10 +21,10 @@ import org.springframework.web.method.HandlerMethod;
 import com.breaditnow.common.exception.ErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;
 import com.breaditnow.common.swagger.ExampleHolder;
-import com.breaditnow.customer.common.swagger.annotation.CommonErrorCodeExamples;
-import com.breaditnow.customer.common.swagger.annotation.CustomerApiErrorCodeExamples;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
-import com.breaditnow.customer.common.swagger.annotation.ExternalErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.CommonErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.CustomerApiErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.ExternalErrorCodeExamples;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.core.jackson.ModelResolver;

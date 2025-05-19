@@ -1,4 +1,4 @@
-package com.breaditnow.customer.reservation.controller;
+package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
@@ -10,7 +10,7 @@ import com.breaditnow.customer.reservation.controller.res.ReservationCancelRespo
 import com.breaditnow.customer.reservation.controller.res.ReservationDetailResponse;
 import com.breaditnow.customer.reservation.controller.res.ReservationPageResponse;
 import com.breaditnow.customer.reservation.controller.res.ReservationResponse;
-import com.breaditnow.customer.common.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 import com.breaditnow.domain.domain.reservation.enumerate.ReservationRequestStatus;
 
 import io.swagger.v3.oas.annotations.Operation;

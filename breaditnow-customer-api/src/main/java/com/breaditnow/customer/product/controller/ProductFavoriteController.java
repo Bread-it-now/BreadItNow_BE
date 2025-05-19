@@ -1,7 +1,8 @@
 package com.breaditnow.customer.product.controller;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
+import com.breaditnow.customer.common.presentation.swagger.docs.ProductFavoriteControllerDocs;
 import com.breaditnow.customer.product.controller.res.ProductFavoritePageResponse;
 import com.breaditnow.customer.product.service.ProductFavoritePageService;
 import com.breaditnow.customer.product.service.ProductFavoriteService;
