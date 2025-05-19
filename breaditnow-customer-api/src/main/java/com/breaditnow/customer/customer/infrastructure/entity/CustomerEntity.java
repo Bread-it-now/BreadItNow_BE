@@ -70,7 +70,5 @@ public class CustomerEntity extends BaseEntity {
                 .fcmToken(this.fcmToken)
                 .initialSetup(TRUE.equals(this.initialSetup))
                 .build();
-
-        return new Customer(this.id, this.nickname, this.phone, this.profileImage, this.provider, this.oauth2Id, this.email, this.password, this.fcmToken, TRUE.equals(this.initialSetup));
     }
 }
