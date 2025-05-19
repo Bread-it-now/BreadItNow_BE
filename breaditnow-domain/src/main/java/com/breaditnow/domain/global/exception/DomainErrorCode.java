@@ -34,6 +34,7 @@ public enum DomainErrorCode implements ErrorCode {
      * Customer(BE000)
      */
     CUSTOMER_NOT_FOUND(NOT_FOUND, "BE001", "고객을 찾을 수 없습니다"),
+    DUPLICATE_NICKNAME(CONFLICT, "CY005", "이미 사용 중인 닉네임입니다."),
 
     /**
      * Favorite(BF000)

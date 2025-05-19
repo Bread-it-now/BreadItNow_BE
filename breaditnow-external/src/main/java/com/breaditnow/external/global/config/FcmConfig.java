@@ -21,7 +21,7 @@ public class FcmConfig {
 	private final Resource firebaseResource;
 	private final String projectId;
 
-	public FcmConfig(ResourceLoader resourceLoader, @Value("${fcm.file_path}") String firebaseFilePath,  @Value("${fcm.project_id}") String projectId) {
+	public FcmConfig(ResourceLoader resourceLoader, @Value("${fcm.file_path}") String firebaseFilePath, @Value("${fcm.project_id}") String projectId) {
 		Resource res = resourceLoader.getResource(firebaseFilePath);
 		if (!res.exists()) {
 			throw new IllegalStateException("FCM credential not found at: " + firebaseFilePath);

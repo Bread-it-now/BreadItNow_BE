@@ -54,6 +54,8 @@ public class Customer extends BaseEntity {
 
 	private String profileImage;
 
+	private boolean initialSetup;
+
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private CustomerAlertSetting alertSetting;
 

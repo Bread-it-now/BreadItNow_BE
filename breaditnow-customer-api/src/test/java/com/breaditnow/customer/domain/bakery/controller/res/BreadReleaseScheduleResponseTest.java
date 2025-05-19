@@ -1,6 +1,6 @@
 package com.breaditnow.customer.domain.bakery.controller.res;
 
-import static com.breaditnow.customer.domain.bakery.controller.res.BreadReleaseScheduleResponse.*;
+import static com.breaditnow.customer.bakery.controller.res.BreadReleaseScheduleResponse.*;
 import static com.breaditnow.domain.domain.product.enumerate.ProductType.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.breaditnow.customer.bakery.controller.res.BreadReleaseScheduleResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
