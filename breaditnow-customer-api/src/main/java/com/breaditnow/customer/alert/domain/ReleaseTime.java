@@ -27,6 +27,13 @@ public class ReleaseTime implements Comparable<ReleaseTime> {
         }
     }
 
+    public static ReleaseTime fromLocalTime(LocalTime localTime) {
+        if (localTime == null) {
+            throw new CustomerException(INVALID_TIME_FORMAT);
+        }
+        return new ReleaseTime(localTime);
+    }
+
     public LocalTime toLocalTime() {
         return time;
     }

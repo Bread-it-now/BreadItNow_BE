@@ -1,8 +1,10 @@
 package com.breaditnow.customer.alert.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -23,7 +25,7 @@ public class DoNotDisturb {
         requireValid(startTime, t -> false, () -> new CustomerException(INVALID_START_TIME));
         requireValid(endTime, t -> false, () -> new CustomerException(INVALID_END_TIME));
         requireValid(startTime, t -> t.compareTo(endTime) > 0, () -> new CustomerException(INVALID_TIME_RANGE));
-        requireValid(days, d -> d.getDays().isEmpty(), () -> new CustomerException(INVALID_DND_DAYS));
+        requireValid(days, d -> d.days().isEmpty(), () -> new CustomerException(INVALID_DND_DAYS));
         this.days = days;
         this.startTime = startTime;
         this.endTime = endTime;
