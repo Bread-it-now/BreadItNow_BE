@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.controller.res;
+package com.breaditnow.customer.alert.application.response;
 
 import com.breaditnow.domain.domain.alert.entity.CustomerAlertSetting;
 

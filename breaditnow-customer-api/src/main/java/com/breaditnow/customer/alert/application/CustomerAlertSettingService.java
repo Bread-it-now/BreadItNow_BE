@@ -1,7 +1,7 @@
-package com.breaditnow.customer.alert.service;
+package com.breaditnow.customer.alert.application;
 
-import com.breaditnow.customer.alert.controller.req.CustomerDoNotDisturbUpdateRequest;
-import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbResponse;
+import com.breaditnow.customer.alert.application.request.CustomerDoNotDisturbUpdateRequest;
+import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbResponse;
 import com.breaditnow.domain.domain.alert.entity.CustomerAlertSetting;
 import com.breaditnow.domain.domain.alert.repository.CustomerAlertSettingRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;

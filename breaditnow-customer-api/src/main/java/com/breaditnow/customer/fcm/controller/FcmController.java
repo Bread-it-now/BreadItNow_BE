@@ -1,5 +1,6 @@
 package com.breaditnow.customer.fcm.controller;
 
+import com.breaditnow.customer.common.presentation.swagger.docs.FcmControllerDocs;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

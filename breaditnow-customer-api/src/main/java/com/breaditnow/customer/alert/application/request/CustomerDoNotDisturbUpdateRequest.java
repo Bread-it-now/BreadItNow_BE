@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.controller.req;
+package com.breaditnow.customer.alert.application.request;
 
 import java.util.List;
 

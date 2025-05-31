@@ -58,6 +58,4 @@ public class Customer {
         requireValid(password, String::isEmpty, () -> new CustomerException(INVALID_PASSWORD));
         return passwordEncoder.matches(password, this.password);
     }
-
-
 }

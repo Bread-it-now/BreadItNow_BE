@@ -3,10 +3,10 @@ package com.breaditnow.customer.common.presentation.swagger.docs;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.controller.req.CustomerDoNotDisturbUpdateRequest;
-import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbResponse;
-import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbToggleResponse;
-import com.breaditnow.customer.alert.controller.res.TodayAlertListResponse;
+import com.breaditnow.customer.alert.application.request.CustomerDoNotDisturbUpdateRequest;
+import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbResponse;
+import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbToggleResponse;
+import com.breaditnow.customer.alert.application.response.TodayAlertListResponse;
 import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,7 +1,8 @@
-package com.breaditnow.customer.alert.controller;
+package com.breaditnow.customer.alert.presentation;
 
 import java.util.Map;
 
+import com.breaditnow.customer.common.presentation.swagger.docs.CustomerProductAlertControllerDocs;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.controller.res.CustomerProductAlertPageResponse;
-import com.breaditnow.customer.alert.service.CustomerProductAlertService;
+import com.breaditnow.customer.alert.application.response.CustomerProductAlertPageResponse;
+import com.breaditnow.customer.alert.application.CustomerProductAlertService;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 
 import lombok.RequiredArgsConstructor;

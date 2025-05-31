@@ -1,10 +1,10 @@
-package com.breaditnow.customer.alert.service;
+package com.breaditnow.customer.alert.application;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.controller.res.CustomerProductAlertPageResponse;
-import com.breaditnow.customer.alert.controller.res.CustomerProductAlertResponse;
-import com.breaditnow.customer.alert.controller.res.TodayAlertListResponse;
-import com.breaditnow.customer.alert.controller.res.TodayAlertResponse;
+import com.breaditnow.customer.alert.application.response.CustomerProductAlertPageResponse;
+import com.breaditnow.customer.alert.application.response.CustomerProductAlertResponse;
+import com.breaditnow.customer.alert.application.response.TodayAlertListResponse;
+import com.breaditnow.customer.alert.application.response.TodayAlertResponse;
 import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
 import com.breaditnow.domain.domain.bakery.entity.Bakery;

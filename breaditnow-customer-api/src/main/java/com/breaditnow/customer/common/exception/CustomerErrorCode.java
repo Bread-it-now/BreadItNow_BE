@@ -1,6 +1,10 @@
 package com.breaditnow.customer.common.exception;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import org.springframework.http.HttpStatus;
 
@@ -23,11 +27,24 @@ public enum CustomerErrorCode implements ErrorCode {
 	INVALID_REGION_PREFERENCE(BAD_REQUEST, "CA006", "관심 지역은 하나 이상 선택해야 합니다."),
 	ALREADY_INITIALIZED(BAD_REQUEST, "CA007", "이미 회원가입 초기화가 완료된 회원입니다"),
 
+
 	/**
-	 * CA001 FILE
+	 * CB000 FILE
 	 */
-	FILE_CREATION_FAILED(INTERNAL_SERVER_ERROR, "CA001", "파일 생성에 실패했습니다."),
-	FILE_UPLOAD_FAILED(INTERNAL_SERVER_ERROR, "CA002", "S3 파일 업로드에 실패했습니다.");
+	FILE_CREATION_FAILED(INTERNAL_SERVER_ERROR, "CB001", "파일 생성에 실패했습니다."),
+	FILE_UPLOAD_FAILED(INTERNAL_SERVER_ERROR, "CB002", "S3 파일 업로드에 실패했습니다."),
+
+	/**
+	 * CC000 Alert
+	 */
+	INVALID_TIME_RANGE(BAD_REQUEST, "CC001", "시작 시간이 종료 시간보다 이후입니다."),
+	INVALID_START_TIME(BAD_REQUEST, "CC002", "시작 시간은 null일 수 없습니다."),
+	INVALID_END_TIME(BAD_REQUEST, "CC003", "종료 시간은 null일 수 없습니다."),
+	INVALID_DND_DAYS(BAD_REQUEST, "CC004", "방해금지 모드의 요일 정보는 null이거나 빈 집합일 수 없습니다."),
+	ALREADY_ACTIVE(BAD_REQUEST, "CC005", "이미 활성화된 방해금지 모드입니다."),
+	ALREADY_INACTIVE(BAD_REQUEST, "CC006", "이미 비활성화된 방해금지 모드입니다."),
+	INVALID_TIME_FORMAT(BAD_REQUEST, "CC007", "시간 형식이 잘못되었습니다. 'HH:mm' 형식이어야 합니다.");
+
 
 	private final HttpStatus httpStatus;
 	private final String code;

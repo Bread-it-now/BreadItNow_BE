@@ -1,5 +1,6 @@
 package com.breaditnow.customer.search.controller;
 
+import com.breaditnow.customer.common.presentation.swagger.docs.SearchControllerDocs;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.controller;
+package com.breaditnow.customer.alert.presentation;
 
 import com.breaditnow.customer.common.presentation.swagger.docs.CustomerAlertSettingControllerDocs;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.controller.req.CustomerDoNotDisturbUpdateRequest;
-import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbResponse;
-import com.breaditnow.customer.alert.controller.res.CustomerDoNotDisturbToggleResponse;
-import com.breaditnow.customer.alert.controller.res.TodayAlertListResponse;
-import com.breaditnow.customer.alert.service.CustomerAlertSettingService;
-import com.breaditnow.customer.alert.service.CustomerProductAlertService;
+import com.breaditnow.customer.alert.application.request.CustomerDoNotDisturbUpdateRequest;
+import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbResponse;
+import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbToggleResponse;
+import com.breaditnow.customer.alert.application.response.TodayAlertListResponse;
+import com.breaditnow.customer.alert.application.CustomerAlertSettingService;
+import com.breaditnow.customer.alert.application.CustomerProductAlertService;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 
 import lombok.RequiredArgsConstructor;
