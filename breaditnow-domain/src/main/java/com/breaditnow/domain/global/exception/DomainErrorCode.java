@@ -77,7 +77,10 @@ public enum DomainErrorCode implements ErrorCode {
      */
     ALERT_NOT_FOUND(NOT_FOUND, "BJ001", "등록된 알람이 없습니다."),
     ALERT_ALREADY_INACTIVE(BAD_REQUEST, "BJ002", "이미 비활성화된 알림입니다."),
-    ALERT_ALREADY_EXISTS(CONFLICT, "BI003", "이미 등록된 알림입니다."),
+    ALERT_ALREADY_EXISTS(CONFLICT, "BJ003", "이미 등록된 알림입니다."),
+    ALERT_DND_SETTING_NOT_FOUND(NOT_FOUND, "BJ004", "방해금지 모드 설정을 찾을 수 없습니다."),
+
+
 
     /**
      * Notification(BK000)

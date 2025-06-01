@@ -36,10 +36,10 @@ public interface CustomerAlertSettingControllerDocs {
 	@DomainErrorCodeExamples({ALERT_NOT_FOUND})
 	ApiSuccessResponse<CustomerDoNotDisturbToggleResponse> toggleDoNotDisturb(Long customerId);
 
-	@Operation(
-		summary = "오늘의 알림 목록 조회",
-		description = "고객의 오늘자 알림 목록을 조회합니다."
-	)
-	ApiSuccessResponse<TodayAlertListResponse> getTodayAlerts(Long customerId);
+//	@Operation(
+//		summary = "오늘의 알림 목록 조회",
+//		description = "고객의 오늘자 알림 목록을 조회합니다."
+//	)
+//	ApiSuccessResponse<TodayAlertListResponse> getTodayAlerts(Long customerId);
 }
 

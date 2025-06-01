@@ -1,23 +1,19 @@
-package com.breaditnow.customer.alert.infrastructure.jpa;
+package com.breaditnow.customer.alert.infrastructure.entity;
 
 import com.breaditnow.customer.alert.domain.DayOfWeekSet;
 import com.breaditnow.customer.alert.domain.DoNotDisturb;
 import com.breaditnow.customer.alert.domain.ReleaseTime;
-import com.breaditnow.customer.common.exception.CustomerErrorCode;
-import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.customer.common.infrastructure.converter.DayOfWeekSetConverter;
-import com.breaditnow.customer.customer.domain.Customer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalTime;
+
+import static lombok.AccessLevel.PROTECTED;
 
 
 @Entity
 @Table(name = "customer_alert_setting")
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 public class CustomerAlertSettingEntity {
     @Id
@@ -32,26 +28,37 @@ public class CustomerAlertSettingEntity {
     private DayOfWeekSet days;
 
     @Column(name = "dnd_start_time", columnDefinition = "TIME", nullable = false)
-    private LocalTime startTime;
+    @Convert(converter = ReleaseTimeConverter.class)
+    private ReleaseTime startTime;
 
     @Column(name = "dnd_end_time", columnDefinition = "TIME", nullable = false)
-    private LocalTime endTime;
+    @Convert(converter = ReleaseTimeConverter.class)
+    private ReleaseTime endTime;
+
+    @Builder
+    private CustomerAlertSettingEntity(Long customerId, boolean active, DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime) {
+        this.customerId = customerId;
+        this.active = active;
+        this.days = days;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public static CustomerAlertSettingEntity fromDomain(Long customerId, DoNotDisturb dnd) {
-        CustomerAlertSettingEntity entity = new CustomerAlertSettingEntity();
-        entity.customerId = customerId;
-        entity.active = dnd.isActive();
-        entity.days = dnd.getDays();
-        entity.startTime = dnd.getStartTime().toLocalTime();
-        entity.endTime = dnd.getEndTime().toLocalTime();
-        return entity;
+        return CustomerAlertSettingEntity.builder()
+                .customerId(customerId)
+                .active(dnd.isActive())
+                .days(dnd.getDays())
+                .startTime(dnd.getStartTime())
+                .endTime(dnd.getEndTime())
+                .build();
     }
 
     public DoNotDisturb toDomain() {
         return DoNotDisturb.builder()
                 .days(days)
-                .startTime(ReleaseTime.fromLocalTime(startTime))
-                .endTime(ReleaseTime.fromLocalTime(endTime))
+                .startTime(startTime)
+                .endTime(endTime)
                 .active(active)
                 .build();
     }

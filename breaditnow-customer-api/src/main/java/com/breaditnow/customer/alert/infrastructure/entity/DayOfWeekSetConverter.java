@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.infrastructure.converter;
+package com.breaditnow.customer.alert.infrastructure.entity;
 
 import com.breaditnow.customer.alert.domain.DayOfWeekSet;
 import jakarta.persistence.AttributeConverter;
@@ -34,6 +34,8 @@ public class DayOfWeekSetConverter implements AttributeConverter<DayOfWeekSet, S
                 .map(DayOfWeek::valueOf)
                 .collect(Collectors.toCollection(() -> EnumSet.noneOf(DayOfWeek.class)));
 
-        return DayOfWeekSet.of(days);
+        return DayOfWeekSet.builder()
+                .days(days)
+                .build();
     }
 }

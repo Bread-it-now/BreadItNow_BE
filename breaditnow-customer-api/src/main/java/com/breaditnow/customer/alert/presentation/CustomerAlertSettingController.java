@@ -21,42 +21,31 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/alert")
-@Slf4j
+@RequiredArgsConstructor
 public class CustomerAlertSettingController implements CustomerAlertSettingControllerDocs {
-
 	private final CustomerAlertSettingService customerAlertSettingService;
-	private final CustomerProductAlertService customerProductAlertService;
+//	private final CustomerProductAlertService customerProductAlertService;
 
 	@GetMapping("/do-not-disturb")
-	public ApiSuccessResponse<CustomerDoNotDisturbResponse> getDoNotDisturbSetting(
-		@AuthCustomer Long customerId
-	) {
+	public ApiSuccessResponse<CustomerDoNotDisturbResponse> getDoNotDisturbSetting(@AuthCustomer Long customerId) {
 		return ApiSuccessResponse.of(customerAlertSettingService.getDoNotDisturbSetting(customerId));
 	}
 
 	@PutMapping("/do-not-disturb")
-	public ApiSuccessResponse<Void> updateDoNotDisturbSetting(
-		@AuthCustomer Long customerId,
-		@RequestBody CustomerDoNotDisturbUpdateRequest request
-	) {
-		customerAlertSettingService.updateDoNotDisturbSetting(customerId, request);
+	public ApiSuccessResponse<Void> updateDoNotDisturbSetting(@AuthCustomer Long customerId, @RequestBody CustomerDoNotDisturbUpdateRequest dto) {
+		customerAlertSettingService.updateDoNotDisturbSetting(customerId, dto);
 		return ApiSuccessResponse.of();
 	}
 
 	@PatchMapping("/do-not-disturb/toggle")
-	public ApiSuccessResponse<CustomerDoNotDisturbToggleResponse> toggleDoNotDisturb(
-		@AuthCustomer Long customerId
-	) {
-		boolean isActive = customerAlertSettingService.toggleDoNotDisturb(customerId);
-		return ApiSuccessResponse.of(CustomerDoNotDisturbToggleResponse.of(isActive));
+	public ApiSuccessResponse<CustomerDoNotDisturbToggleResponse> toggleDoNotDisturb(@AuthCustomer Long customerId) {
+		return ApiSuccessResponse.of(customerAlertSettingService.toggleSettings(customerId));
 	}
 
-	@GetMapping("/today")
-	public ApiSuccessResponse<TodayAlertListResponse> getTodayAlerts(
-		@AuthCustomer Long customerId) {
-		TodayAlertListResponse response = customerProductAlertService.getTodayAlerts(customerId);
-		return ApiSuccessResponse.of(response);
-	}
+//	@GetMapping("/today")
+//	public ApiSuccessResponse<TodayAlertListResponse> getTodayAlerts(@AuthCustomer Long customerId) {
+//		TodayAlertListResponse response = customerProductAlertService.getTodayAlerts(customerId);
+//		return ApiSuccessResponse.of(response);
+//	}
 }

@@ -2,6 +2,11 @@ package com.breaditnow.customer.alert.application;
 
 import com.breaditnow.customer.alert.application.request.CustomerDoNotDisturbUpdateRequest;
 import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbResponse;
+import com.breaditnow.customer.alert.application.response.CustomerDoNotDisturbToggleResponse;
+import com.breaditnow.customer.alert.domain.DayOfWeekSet;
+import com.breaditnow.customer.alert.domain.DoNotDisturb;
+import com.breaditnow.customer.alert.domain.ReleaseTime;
+import com.breaditnow.customer.alert.domain.port.CustomerAlertSettingPort;
 import com.breaditnow.domain.domain.alert.entity.CustomerAlertSetting;
 import com.breaditnow.domain.domain.alert.repository.CustomerAlertSettingRepository;
 import com.breaditnow.domain.domain.customer.entity.Customer;
@@ -17,48 +22,30 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_F
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CustomerAlertSettingService {
-
-    private final CustomerAlertSettingRepository alertSettingRepository;
-    private final CustomerRepository customerRepository;
+    private final CustomerAlertSettingPort alertSettingPort;
 
     public CustomerDoNotDisturbResponse getDoNotDisturbSetting(Long customerId) {
-        CustomerAlertSetting setting = alertSettingRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new DomainException(ALERT_NOT_FOUND));
-
-        return CustomerDoNotDisturbResponse.of(setting);
+        DoNotDisturb doNotDisturb = alertSettingPort.findByCustomerId(customerId);
+        return CustomerDoNotDisturbResponse.of(doNotDisturb);
     }
 
     @Transactional
-    public void updateDoNotDisturbSetting(Long customerId, CustomerDoNotDisturbUpdateRequest request) {
-        Customer customer = customerRepository.getById(customerId);
+    public void updateDoNotDisturbSetting(Long customerId, CustomerDoNotDisturbUpdateRequest dto) {
+        DoNotDisturb dnd = DoNotDisturb.of(dto.days(), dto.startTime(), dto.endTime(), true);
+        alertSettingPort.save(customerId, dnd);
+    }
 
-        CustomerAlertSetting setting = alertSettingRepository.findByCustomerId(customerId)
-                .orElseGet(() -> CustomerAlertSetting.builder()
-                        .customer(customer)
-                        .isActive(true)
-                        .doNotDisturbDays(request.days())
-                        .doNotDisturbStartTime(request.startTime())
-                        .doNotDisturbEndTime(request.endTime())
-                        .build()
-                );
+    @Transactional
+    public CustomerDoNotDisturbToggleResponse toggleSettings(Long customerId) {
+        DoNotDisturb dnd = alertSettingPort.findByCustomerId(customerId);
 
-        if (setting.getId() != null) {
-            setting.setDoNotDisturbDays(request.days());
-            setting.setDoNotDisturbStartTime(request.startTime());
-            setting.setDoNotDisturbEndTime(request.endTime());
-            setting.setActive(true);
+        if (dnd.isActive()) {
+            dnd.deactivate();
+        } else {
+            dnd.activate();
         }
 
-        alertSettingRepository.save(setting);
-    }
-
-    @Transactional
-    public boolean toggleDoNotDisturb(Long customerId) {
-        CustomerAlertSetting setting = alertSettingRepository.getByCustomerId(customerId);
-
-        setting.setActive(!setting.isActive());
-        alertSettingRepository.save(setting);
-
-        return setting.isActive();
+        alertSettingPort.save(customerId, dnd);
+        return new CustomerDoNotDisturbToggleResponse(dnd.isActive());
     }
 }

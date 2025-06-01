@@ -10,121 +10,59 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.EnumSet;
+import java.util.Set;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayName("DoNotDisturb 도메인 테스트")
 class DoNotDisturbTest {
 
     @Nested
-    @DisplayName("방해금지 모드 생성 테스트")
-    class CreateTest {
+    @DisplayName("DoNotDisturb 생성")
+    class Creation {
+
         @Test
-        @DisplayName("정상적인 방해금지 모드를 생성할 수 있다")
+        @DisplayName("정상적인 파라미터로 DoNotDisturb를 생성한다")
         void createSuccess() {
             // given
-            DayOfWeekSet days = DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY));
-            ReleaseTime startTime = ReleaseTime.of("10:00");
-            ReleaseTime endTime = ReleaseTime.of("18:00");
+            Set<String> days = Set.of("MONDAY", "WEDNESDAY");
+            LocalTime startTime = LocalTime.of(10, 0);
+            LocalTime endTime = LocalTime.of(18, 0);
 
             // when
-            DoNotDisturb dnd = DoNotDisturb.builder()
-                    .days(days)
-                    .startTime(startTime)
-                    .endTime(endTime)
-                    .active(true)
-                    .build();
+            DoNotDisturb dnd = DoNotDisturb.of(days, startTime, endTime, true);
 
             // then
             assertThat(dnd.isActive()).isTrue();
-            assertThat(dnd.getDays()).isEqualTo(days);
-            assertThat(dnd.getStartTime()).isEqualTo(startTime);
-            assertThat(dnd.getEndTime()).isEqualTo(endTime);
+            assertThat(dnd.getDays().days()).containsExactlyInAnyOrder(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY);
+            assertThat(dnd.getStartTime().toLocalTime()).isEqualTo(startTime);
+            assertThat(dnd.getEndTime().toLocalTime()).isEqualTo(endTime);
         }
 
         @Test
-        @DisplayName("시작 시간이 null이면 예외가 발생한다")
-        void createFailWithNullStartTime() {
+        @DisplayName("시작 시간이 종료 시간보다 늦으면 예외가 발생한다")
+        void throwExceptionWhenStartTimeAfterEndTime() {
             // given
-            DayOfWeekSet days = DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY));
-            ReleaseTime endTime = ReleaseTime.of("18:00");
+            Set<String> days = Set.of("MONDAY");
+            LocalTime startTime = LocalTime.of(18, 0);
+            LocalTime endTime = LocalTime.of(10, 0);
 
             // when & then
-            assertThatThrownBy(() -> DoNotDisturb.builder()
-                    .days(days)
-                    .startTime(null)
-                    .endTime(endTime)
-                    .active(true)
-                    .build())
-                    .isInstanceOf(CustomerException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", INVALID_START_TIME);
-        }
-
-        @Test
-        @DisplayName("종료 시간이 null이면 예외가 발생한다")
-        void createFailWithNullEndTime() {
-            // given
-            DayOfWeekSet days = DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY));
-            ReleaseTime startTime = ReleaseTime.of("10:00");
-
-            // when & then
-            assertThatThrownBy(() -> DoNotDisturb.builder()
-                    .days(days)
-                    .startTime(startTime)
-                    .endTime(null)
-                    .active(true)
-                    .build())
-                    .isInstanceOf(CustomerException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", INVALID_END_TIME);
-        }
-
-        @Test
-        @DisplayName("시작 시간이 종료 시간보다 이후면 예외가 발생한다")
-        void createFailWithInvalidTimeRange() {
-            // given
-            DayOfWeekSet days = DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY));
-            ReleaseTime startTime = ReleaseTime.of("18:00");
-            ReleaseTime endTime = ReleaseTime.of("10:00");
-
-            // when & then
-            assertThatThrownBy(() -> DoNotDisturb.builder()
-                    .days(days)
-                    .startTime(startTime)
-                    .endTime(endTime)
-                    .active(true)
-                    .build())
+            assertThatThrownBy(() -> DoNotDisturb.of(days, startTime, endTime, true))
                     .isInstanceOf(CustomerException.class)
                     .hasFieldOrPropertyWithValue("errorCode", INVALID_TIME_RANGE);
-        }
-
-        @Test
-        @DisplayName("빈 요일 집합이면 예외가 발생한다")
-        void createFailWithEmptyDays() {
-            // given
-            DayOfWeekSet days = DayOfWeekSet.empty();
-            ReleaseTime startTime = ReleaseTime.of("10:00");
-            ReleaseTime endTime = ReleaseTime.of("18:00");
-
-            // when & then
-            assertThatThrownBy(() -> DoNotDisturb.builder()
-                    .days(days)
-                    .startTime(startTime)
-                    .endTime(endTime)
-                    .active(true)
-                    .build())
-                    .isInstanceOf(CustomerException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", INVALID_DND_DAYS);
         }
     }
 
     @Nested
-    @DisplayName("방해금지 모드 활성화/비활성화 테스트")
-    class ToggleTest {
+    @DisplayName("DoNotDisturb 상태 변경")
+    class StateChange {
+
         @Test
-        @DisplayName("비활성화된 방해금지 모드를 활성화할 수 있다")
-        void activateSuccess() {
+        @DisplayName("비활성화 상태에서 활성화할 수 있다")
+        void activate() {
             // given
             DoNotDisturb dnd = createInactiveDoNotDisturb();
 
@@ -137,7 +75,7 @@ class DoNotDisturbTest {
 
         @Test
         @DisplayName("이미 활성화된 상태에서 활성화하면 예외가 발생한다")
-        void activateFailWhenAlreadyActive() {
+        void throwExceptionWhenAlreadyActive() {
             // given
             DoNotDisturb dnd = createActiveDoNotDisturb();
 
@@ -148,8 +86,8 @@ class DoNotDisturbTest {
         }
 
         @Test
-        @DisplayName("활성화된 방해금지 모드를 비활성화할 수 있다")
-        void deactivateSuccess() {
+        @DisplayName("활성화 상태에서 비활성화할 수 있다")
+        void deactivate() {
             // given
             DoNotDisturb dnd = createActiveDoNotDisturb();
 
@@ -162,7 +100,7 @@ class DoNotDisturbTest {
 
         @Test
         @DisplayName("이미 비활성화된 상태에서 비활성화하면 예외가 발생한다")
-        void deactivateFailWhenAlreadyInactive() {
+        void throwExceptionWhenAlreadyInactive() {
             // given
             DoNotDisturb dnd = createInactiveDoNotDisturb();
 
@@ -174,41 +112,45 @@ class DoNotDisturbTest {
     }
 
     @Nested
-    @DisplayName("방해금지 시간 범위 체크 테스트")
-    class TimeRangeTest {
+    @DisplayName("시간 범위 확인")
+    class TimeRangeCheck {
+
         @ParameterizedTest
         @CsvSource({
-            "MONDAY,12:00,true",      // 범위 내 (활성화 상태)
-            "TUESDAY,12:00,false",    // 다른 요일
-            "MONDAY,09:59,false",     // 시작 시간 이전
-            "MONDAY,18:01,false",     // 종료 시간 이후
+                "MONDAY,12:00,true",     // 범위 내
+                "TUESDAY,12:00,false",   // 다른 요일
+                "MONDAY,09:59,false",    // 시작 시간 이전
+                "MONDAY,18:01,false",    // 종료 시간 이후
         })
-        @DisplayName("현재 시간이 방해금지 범위 내인지 확인한다")
-        void isWithinTest(DayOfWeek dayOfWeek, String time, boolean expected) {
+        @DisplayName("주어진 시간이 방해금지 범위 내에 있는지 확인한다")
+        void isWithinTimeRange(DayOfWeek dayOfWeek, String time, boolean expected) {
             // given
             DoNotDisturb dnd = createActiveDoNotDisturb();
-            LocalDateTime now = LocalDateTime.of(2024, 1, 1,
-                    Integer.parseInt(time.split(":")[0]),
-                    Integer.parseInt(time.split(":")[1]));
-            now = now.with(dayOfWeek);
+            String[] timeParts = time.split(":");
+            LocalDateTime dateTime = LocalDateTime.now()
+                    .withHour(Integer.parseInt(timeParts[0]))
+                    .withMinute(Integer.parseInt(timeParts[1]))
+                    .with(dayOfWeek);
 
             // when
-            boolean result = dnd.isWithin(now);
+            boolean result = dnd.isWithin(dateTime);
 
             // then
             assertThat(result).isEqualTo(expected);
         }
 
         @Test
-        @DisplayName("비활성화 상태에서는 항상 false를 반환한다")
-        void isWithinWhenInactive() {
+        @DisplayName("비활성화 상태에서는 항상 범위 밖으로 판단한다")
+        void alwaysOutOfRangeWhenInactive() {
             // given
             DoNotDisturb dnd = createInactiveDoNotDisturb();
-            LocalDateTime now = LocalDateTime.of(2024, 1, 1, 12, 0)
+            LocalDateTime dateTime = LocalDateTime.now()
+                    .withHour(12)
+                    .withMinute(0)
                     .with(DayOfWeek.MONDAY);
 
             // when
-            boolean result = dnd.isWithin(now);
+            boolean result = dnd.isWithin(dateTime);
 
             // then
             assertThat(result).isFalse();
@@ -216,20 +158,20 @@ class DoNotDisturbTest {
     }
 
     private DoNotDisturb createActiveDoNotDisturb() {
-        return DoNotDisturb.builder()
-                .days(DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY)))
-                .startTime(ReleaseTime.of("10:00"))
-                .endTime(ReleaseTime.of("18:00"))
-                .active(true)
-                .build();
+        return DoNotDisturb.of(
+                Set.of("MONDAY"),
+                LocalTime.of(10, 0),
+                LocalTime.of(18, 0),
+                true
+        );
     }
 
     private DoNotDisturb createInactiveDoNotDisturb() {
-        return DoNotDisturb.builder()
-                .days(DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY)))
-                .startTime(ReleaseTime.of("10:00"))
-                .endTime(ReleaseTime.of("18:00"))
-                .active(false)
-                .build();
+        return DoNotDisturb.of(
+                Set.of("MONDAY"),
+                LocalTime.of(10, 0),
+                LocalTime.of(18, 0),
+                false
+        );
     }
 }

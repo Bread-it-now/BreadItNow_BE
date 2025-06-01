@@ -1,88 +1,71 @@
 package com.breaditnow.customer.alert.domain;
 
+import com.breaditnow.customer.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
-import java.util.EnumSet;
 import java.util.Set;
 
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.EMPTY_DND_DAYS;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_DND_DAY_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@DisplayName("DayOfWeekSet 도메인 테스트")
 class DayOfWeekSetTest {
 
     @Nested
-    @DisplayName("DayOfWeekSet 생성 테스트")
-    class CreateTest {
-        @Test
-        @DisplayName("유효한 요일 집합으로 DayOfWeekSet을 생성할 수 있다")
-        void createWithValidDays() {
-            // given
-            Set<DayOfWeek> days = EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY);
-
-            // when & then
-            assertDoesNotThrow(() -> new DayOfWeekSet(days));
-        }
+    @DisplayName("DayOfWeekSet 생성")
+    class Creation {
 
         @Test
-        @DisplayName("정적 팩토리 메서드로 DayOfWeekSet을 생성할 수 있다")
-        void createWithFactoryMethod() {
+        @DisplayName("문자열 요일 집합으로 DayOfWeekSet을 생성한다")
+        void createFromStringSet() {
             // given
-            Set<DayOfWeek> days = EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY);
+            Set<String> dayStrings = Set.of("MONDAY", "WEDNESDAY", "FRIDAY");
 
             // when
-            DayOfWeekSet dayOfWeekSet = DayOfWeekSet.of(days);
+            DayOfWeekSet dayOfWeekSet = DayOfWeekSet.of(dayStrings);
 
             // then
-            assertThat(dayOfWeekSet.days()).containsExactlyInAnyOrderElementsOf(days);
+            assertThat(dayOfWeekSet.days())
+                    .containsExactlyInAnyOrder(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY);
         }
 
         @Test
-        @DisplayName("빈 요일 집합으로도 DayOfWeekSet을 생성할 수 있다")
-        void createWithEmptyDays() {
+        @DisplayName("빈 요일 집합으로 생성 시 예외가 발생한다")
+        void throwExceptionWhenEmptySet() {
             // given
-            Set<DayOfWeek> emptyDays = EnumSet.noneOf(DayOfWeek.class);
+            Set<String> emptyDays = Set.of();
 
             // when & then
-            assertDoesNotThrow(() -> new DayOfWeekSet(emptyDays));
-        }
-    }
-
-    @Nested
-    @DisplayName("DayOfWeekSet 조회 테스트")
-    class QueryTest {
-        @Test
-        @DisplayName("특정 요일이 포함되어 있는지 확인할 수 있다")
-        void containsTest() {
-            // given
-            DayOfWeekSet dayOfWeekSet = DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.FRIDAY));
-
-            // when & then
-            assertThat(dayOfWeekSet.contains(DayOfWeek.MONDAY)).isTrue();
-            assertThat(dayOfWeekSet.contains(DayOfWeek.FRIDAY)).isTrue();
-            assertThat(dayOfWeekSet.contains(DayOfWeek.TUESDAY)).isFalse();
+            assertThatThrownBy(() -> DayOfWeekSet.of(emptyDays))
+                    .isInstanceOf(CustomerException.class)
+                    .hasFieldOrPropertyWithValue("errorCode", EMPTY_DND_DAYS);
         }
 
         @Test
-        @DisplayName("요일 집합을 수정할 수 없다")
-        void daysAreImmutable() {
-            // given
-            DayOfWeekSet dayOfWeekSet = DayOfWeekSet.of(EnumSet.of(DayOfWeek.MONDAY));
-            Set<DayOfWeek> days = dayOfWeekSet.days();
-
-            // when & then
-            assertThatThrownBy(() -> days.add(DayOfWeek.TUESDAY))
-                    .isInstanceOf(UnsupportedOperationException.class);
+        @DisplayName("null 요일 집합으로 생성 시 예외가 발생한다")
+        void throwExceptionWhenNullSet() {
+            assertThatThrownBy(() -> DayOfWeekSet.of(null))
+                    .isInstanceOf(CustomerException.class)
+                    .hasFieldOrPropertyWithValue("errorCode", EMPTY_DND_DAYS);
         }
 
-    }
+        @Test
+        @DisplayName("잘못된 요일 문자열로 생성 시 예외가 발생한다")
+        void throwExceptionWhenInvalidDayString() {
+            // given
+            Set<String> invalidDays = Set.of("MONDAY", "INVALID_DAY");
 
-    @Nested
-    @DisplayName("빈 DayOfWeekSet 테스트")
-    class EmptySetTest {
+            // when & then
+            assertThatThrownBy(() -> DayOfWeekSet.of(invalidDays))
+                    .isInstanceOf(CustomerException.class)
+                    .hasFieldOrPropertyWithValue("errorCode", INVALID_DND_DAY_VALUE);
+        }
+
         @Test
         @DisplayName("empty() 메서드로 빈 DayOfWeekSet을 생성할 수 있다")
         void createEmptySet() {
@@ -92,17 +75,63 @@ class DayOfWeekSetTest {
             // then
             assertThat(emptySet.days()).isEmpty();
         }
+    }
+
+    @Nested
+    @DisplayName("DayOfWeekSet 조회")
+    class Query {
 
         @Test
-        @DisplayName("빈 DayOfWeekSet은 어떤 요일도 포함하지 않는다")
-        void emptySetContainsNoDays() {
+        @DisplayName("특정 요일이 포함되어 있는지 확인한다")
+        void containsDay() {
             // given
-            DayOfWeekSet emptySet = DayOfWeekSet.empty();
+            DayOfWeekSet dayOfWeekSet = DayOfWeekSet.of(Set.of("MONDAY", "WEDNESDAY"));
+
+            // then
+            assertThat(dayOfWeekSet.contains(DayOfWeek.MONDAY)).isTrue();
+            assertThat(dayOfWeekSet.contains(DayOfWeek.WEDNESDAY)).isTrue();
+            assertThat(dayOfWeekSet.contains(DayOfWeek.FRIDAY)).isFalse();
+        }
+
+        @Test
+        @DisplayName("days() 메서드는 수정 불가능한 Set을 반환한다")
+        void daysReturnsUnmodifiableSet() {
+            // given
+            DayOfWeekSet dayOfWeekSet = DayOfWeekSet.of(Set.of("MONDAY"));
+            Set<DayOfWeek> days = dayOfWeekSet.days();
 
             // when & then
-            for (DayOfWeek day : DayOfWeek.values()) {
-                assertThat(emptySet.contains(day)).isFalse();
-            }
+            assertThatThrownBy(() -> days.add(DayOfWeek.TUESDAY))
+                    .isInstanceOf(UnsupportedOperationException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("DayOfWeekSet 동등성 비교")
+    class Equality {
+
+        @Test
+        @DisplayName("같은 요일들을 가진 DayOfWeekSet은 동등하다")
+        void equalWhenSameDays() {
+            // given
+            DayOfWeekSet set1 = DayOfWeekSet.of(Set.of("MONDAY", "WEDNESDAY"));
+            DayOfWeekSet set2 = DayOfWeekSet.of(Set.of("MONDAY", "WEDNESDAY"));
+
+            // then
+            assertThat(set1)
+                    .isEqualTo(set2)
+                    .hasSameHashCodeAs(set2);
+        }
+
+        @Test
+        @DisplayName("다른 요일들을 가진 DayOfWeekSet은 동등하지 않다")
+        void notEqualWhenDifferentDays() {
+            // given
+            DayOfWeekSet set1 = DayOfWeekSet.of(Set.of("MONDAY", "WEDNESDAY"));
+            DayOfWeekSet set2 = DayOfWeekSet.of(Set.of("MONDAY", "FRIDAY"));
+
+            // then
+            assertThat(set1).isNotEqualTo(set2);
         }
     }
 }

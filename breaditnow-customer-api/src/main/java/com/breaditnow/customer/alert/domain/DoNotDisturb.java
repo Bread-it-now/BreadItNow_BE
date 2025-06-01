@@ -4,12 +4,11 @@ import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Objects;
+import java.util.Set;
 
 import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
@@ -24,16 +23,21 @@ public class DoNotDisturb {
 
     @Builder
     private DoNotDisturb(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
-        requireValid(startTime, Objects::isNull, () -> new CustomerException(INVALID_START_TIME));
-        requireValid(endTime, Objects::isNull, () -> new CustomerException(INVALID_END_TIME));
-        requireValid(startTime, t -> t.compareTo(endTime) > 0, () -> new CustomerException(INVALID_TIME_RANGE));
-        requireValid(days, d -> d.days().isEmpty(), () -> new CustomerException(INVALID_DND_DAYS));
         this.days = days;
         this.startTime = startTime;
         this.endTime = endTime;
         this.active = active;
     }
 
+    public static DoNotDisturb of(Set<String> days, LocalTime startTime, LocalTime endTime, boolean active) {
+        requireValid(startTime, t -> t.isAfter(endTime), () -> new CustomerException(INVALID_TIME_RANGE));
+        return builder()
+                .days(DayOfWeekSet.of(days))
+                .startTime(ReleaseTime.of(startTime))
+                .endTime(ReleaseTime.of(endTime))
+                .active(active)
+                .build();
+    }
 
     public void activate() {
         if (active) throw new CustomerException(ALREADY_ACTIVE);

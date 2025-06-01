@@ -1,6 +1,7 @@
 package com.breaditnow.customer.alert.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalTime;
@@ -14,6 +15,7 @@ public class ReleaseTime implements Comparable<ReleaseTime> {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private final LocalTime time;
 
+    @Builder
     private ReleaseTime(LocalTime time) {
         this.time = time;
     }
@@ -27,7 +29,7 @@ public class ReleaseTime implements Comparable<ReleaseTime> {
         }
     }
 
-    public static ReleaseTime fromLocalTime(LocalTime localTime) {
+    public static ReleaseTime of(LocalTime localTime) {
         if (localTime == null) {
             throw new CustomerException(INVALID_TIME_FORMAT);
         }

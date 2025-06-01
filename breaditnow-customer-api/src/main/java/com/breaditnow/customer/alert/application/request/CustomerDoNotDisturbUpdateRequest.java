@@ -1,10 +1,10 @@
 package com.breaditnow.customer.alert.application.request;
 
-import java.util.List;
+import org.springframework.cglib.core.Local;
 
-public record CustomerDoNotDisturbUpdateRequest(
-        List<String> days,
-        String startTime,
-        String endTime
-) {
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.Set;
+
+public record CustomerDoNotDisturbUpdateRequest(Set<String> days, LocalTime startTime, LocalTime endTime) {
 }

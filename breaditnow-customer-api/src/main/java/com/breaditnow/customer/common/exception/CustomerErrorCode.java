@@ -40,7 +40,8 @@ public enum CustomerErrorCode implements ErrorCode {
 	INVALID_TIME_RANGE(BAD_REQUEST, "CC001", "시작 시간이 종료 시간보다 이후입니다."),
 	INVALID_START_TIME(BAD_REQUEST, "CC002", "시작 시간은 null일 수 없습니다."),
 	INVALID_END_TIME(BAD_REQUEST, "CC003", "종료 시간은 null일 수 없습니다."),
-	INVALID_DND_DAYS(BAD_REQUEST, "CC004", "방해금지 모드의 요일 정보는 null이거나 빈 집합일 수 없습니다."),
+	EMPTY_DND_DAYS(BAD_REQUEST, "CC004", "방해금지 모드의 요일은 비어있을 수 없습니다."),
+	INVALID_DND_DAY_VALUE(BAD_REQUEST, "CC005", "방해금지 모드의 요일은 MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY 중에서 선택해야 합니다."),
 	ALREADY_ACTIVE(BAD_REQUEST, "CC005", "이미 활성화된 방해금지 모드입니다."),
 	ALREADY_INACTIVE(BAD_REQUEST, "CC006", "이미 비활성화된 방해금지 모드입니다."),
 	INVALID_TIME_FORMAT(BAD_REQUEST, "CC007", "시간 형식이 잘못되었습니다. 'HH:mm' 형식이어야 합니다.");
