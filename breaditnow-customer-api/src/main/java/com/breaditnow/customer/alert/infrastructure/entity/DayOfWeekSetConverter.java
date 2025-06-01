@@ -28,14 +28,11 @@ public class DayOfWeekSetConverter implements AttributeConverter<DayOfWeekSet, S
             return DayOfWeekSet.empty();
         }
 
-        Set<DayOfWeek> days = Arrays.stream(dbData.split(","))
+        Set<String> dayStrings = Arrays.stream(dbData.split(","))
                 .map(String::trim)
                 .filter(token -> !token.isEmpty())
-                .map(DayOfWeek::valueOf)
-                .collect(Collectors.toCollection(() -> EnumSet.noneOf(DayOfWeek.class)));
+                .collect(Collectors.toSet());
 
-        return DayOfWeekSet.builder()
-                .days(days)
-                .build();
+        return DayOfWeekSet.of(dayStrings);
     }
 }
