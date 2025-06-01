@@ -1,18 +1,12 @@
 package com.breaditnow.customer.alert.domain;
 
-import com.breaditnow.customer.common.domain.ValidationUtils;
-import com.breaditnow.customer.common.exception.CustomerException;
-
 import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_DND_DAYS;
-
 public record DayOfWeekSet(Set<DayOfWeek> days) {
     public DayOfWeekSet(Set<DayOfWeek> days) {
-        ValidationUtils.requireValid(days, Set::isEmpty, () -> new CustomerException(INVALID_DND_DAYS));
         this.days = EnumSet.copyOf(days);
     }
 

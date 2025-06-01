@@ -48,13 +48,11 @@ public class CustomerAlertSettingEntity {
     }
 
     public DoNotDisturb toDomain() {
-        ReleaseTime startReleaseTime = ReleaseTime.fromLocalTime(startTime);
-        ReleaseTime endReleaseTime   = ReleaseTime.fromLocalTime(endTime);
-
-        DoNotDisturb dnd = new DoNotDisturb(days, startReleaseTime, endReleaseTime);
-        if (!active) {
-            dnd.deactivate();
-        }
-        return dnd;
+        return DoNotDisturb.builder()
+                .days(days)
+                .startTime(ReleaseTime.fromLocalTime(startTime))
+                .endTime(ReleaseTime.fromLocalTime(endTime))
+                .active(active)
+                .build();
     }
 }

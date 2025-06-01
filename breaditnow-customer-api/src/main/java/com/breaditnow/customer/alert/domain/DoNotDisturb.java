@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
@@ -21,16 +22,18 @@ public class DoNotDisturb {
     private ReleaseTime startTime;
     private ReleaseTime endTime;
 
-    public DoNotDisturb(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime) {
-        requireValid(startTime, t -> false, () -> new CustomerException(INVALID_START_TIME));
-        requireValid(endTime, t -> false, () -> new CustomerException(INVALID_END_TIME));
+    @Builder
+    private DoNotDisturb(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
+        requireValid(startTime, Objects::isNull, () -> new CustomerException(INVALID_START_TIME));
+        requireValid(endTime, Objects::isNull, () -> new CustomerException(INVALID_END_TIME));
         requireValid(startTime, t -> t.compareTo(endTime) > 0, () -> new CustomerException(INVALID_TIME_RANGE));
         requireValid(days, d -> d.days().isEmpty(), () -> new CustomerException(INVALID_DND_DAYS));
         this.days = days;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.active = true;
+        this.active = active;
     }
+
 
     public void activate() {
         if (active) throw new CustomerException(ALREADY_ACTIVE);
