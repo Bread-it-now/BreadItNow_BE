@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.infrastructure.entity;
 
-import com.breaditnow.customer.product.core.ProductCategory;
+import com.breaditnow.customer.product.domain.ProductCategory;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

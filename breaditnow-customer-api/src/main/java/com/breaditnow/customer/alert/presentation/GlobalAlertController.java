@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.application.request.GlobalAlertSettingUpdateRequest;
-import com.breaditnow.customer.alert.application.response.GlobalAlertSettingResponse;
-import com.breaditnow.customer.alert.application.response.GlobalAlertSettingToggleResponse;
-import com.breaditnow.customer.alert.application.GlobalAlertSettingService;
+import com.breaditnow.customer.alert.application.request.GlobalAlertUpdateRequest;
+import com.breaditnow.customer.alert.application.response.GlobalAlertResponse;
+import com.breaditnow.customer.alert.application.response.GlobalAlertToggleResponse;
+import com.breaditnow.customer.alert.application.GlobalAlertService;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 
 import lombok.RequiredArgsConstructor;
@@ -20,24 +20,24 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/alert")
 @RequiredArgsConstructor
-public class GlobalAlertSettingController implements CustomerAlertSettingControllerDocs {
-	private final GlobalAlertSettingService globalAlertSettingService;
+public class GlobalAlertController implements CustomerAlertSettingControllerDocs {
+	private final GlobalAlertService globalAlertService;
 //	private final CustomerProductAlertService customerProductAlertService;
 
 	@GetMapping("/do-not-disturb")
-	public ApiSuccessResponse<GlobalAlertSettingResponse> getDoNotDisturbSetting(@AuthCustomer Long customerId) {
-		return ApiSuccessResponse.of(globalAlertSettingService.getDoNotDisturbSetting(customerId));
+	public ApiSuccessResponse<GlobalAlertResponse> getDoNotDisturbSetting(@AuthCustomer Long customerId) {
+		return ApiSuccessResponse.of(globalAlertService.getDoNotDisturbSetting(customerId));
 	}
 
 	@PutMapping("/do-not-disturb")
-	public ApiSuccessResponse<Void> updateDoNotDisturbSetting(@AuthCustomer Long customerId, @RequestBody GlobalAlertSettingUpdateRequest dto) {
-		globalAlertSettingService.updateDoNotDisturbSetting(customerId, dto);
+	public ApiSuccessResponse<Void> updateDoNotDisturbSetting(@AuthCustomer Long customerId, @RequestBody GlobalAlertUpdateRequest dto) {
+		globalAlertService.updateDoNotDisturbSetting(customerId, dto);
 		return ApiSuccessResponse.of();
 	}
 
 	@PatchMapping("/do-not-disturb/toggle")
-	public ApiSuccessResponse<GlobalAlertSettingToggleResponse> toggleDoNotDisturb(@AuthCustomer Long customerId) {
-		return ApiSuccessResponse.of(globalAlertSettingService.toggleSettings(customerId));
+	public ApiSuccessResponse<GlobalAlertToggleResponse> toggleDoNotDisturb(@AuthCustomer Long customerId) {
+		return ApiSuccessResponse.of(globalAlertService.toggleSettings(customerId));
 	}
 
 //	@GetMapping("/today")

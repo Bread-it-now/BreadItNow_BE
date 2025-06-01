@@ -39,14 +39,8 @@ public class GlobalAlertSetting {
                 .build();
     }
 
-    public void activate() {
-        if (active) throw new CustomerException(ALREADY_ACTIVE);
-        this.active = true;
-    }
-
-    public void deactivate() {
-        if (!active) throw new CustomerException(ALREADY_INACTIVE);
-        this.active = false;
+    public void toggle() {
+        this.active = !this.active;
     }
 
     public boolean isWithin(LocalDateTime now) {

@@ -1,7 +1,7 @@
 package com.breaditnow.customer.product.infrastructure;
 
 import com.breaditnow.customer.product.application.port.ProductCategoryPort;
-import com.breaditnow.customer.product.core.ProductCategory;
+import com.breaditnow.customer.product.domain.ProductCategory;
 import com.breaditnow.customer.product.infrastructure.entity.ProductCategoryEntity;
 import com.breaditnow.customer.product.infrastructure.jpa.JpaProductCategory;
 import lombok.RequiredArgsConstructor;

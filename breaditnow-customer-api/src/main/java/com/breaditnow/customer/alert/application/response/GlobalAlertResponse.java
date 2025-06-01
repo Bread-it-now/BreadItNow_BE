@@ -7,7 +7,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Set;
 
-public record GlobalAlertSettingResponse(
+public record GlobalAlertResponse(
         boolean active,
         Set<DayOfWeek> days,
         @JsonFormat(pattern = "HH:mm")
@@ -15,8 +15,8 @@ public record GlobalAlertSettingResponse(
         @JsonFormat(pattern = "HH:mm")
         LocalTime endTime
 ) {
-    public static GlobalAlertSettingResponse of(GlobalAlertSetting globalAlertSetting) {
-        return new GlobalAlertSettingResponse(
+    public static GlobalAlertResponse of(GlobalAlertSetting globalAlertSetting) {
+        return new GlobalAlertResponse(
                 globalAlertSetting.isActive(),
                 globalAlertSetting.getDays().days(),
                 globalAlertSetting.getStartTime().toLocalTime(),

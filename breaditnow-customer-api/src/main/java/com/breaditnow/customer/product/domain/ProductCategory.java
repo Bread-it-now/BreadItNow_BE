@@ -1,4 +1,4 @@
-package com.breaditnow.customer.product.core;
+package com.breaditnow.customer.product.domain;
 
 import lombok.Getter;
 

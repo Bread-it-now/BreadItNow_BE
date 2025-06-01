@@ -81,7 +81,6 @@ public enum DomainErrorCode implements ErrorCode {
     ALERT_DND_SETTING_NOT_FOUND(NOT_FOUND, "BJ004", "방해금지 모드 설정을 찾을 수 없습니다."),
 
 
-
     /**
      * Notification(BK000)
      */

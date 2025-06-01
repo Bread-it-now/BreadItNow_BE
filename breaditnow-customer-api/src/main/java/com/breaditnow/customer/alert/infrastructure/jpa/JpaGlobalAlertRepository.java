@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface JpaGlobalAlertSettingRepository extends JpaRepository<GlobalAlertSettingEntity, Long> {
+public interface JpaGlobalAlertRepository extends JpaRepository<GlobalAlertSettingEntity, Long> {
     Optional<GlobalAlertSettingEntity> findByCustomerId(Long customerId);
 }
 

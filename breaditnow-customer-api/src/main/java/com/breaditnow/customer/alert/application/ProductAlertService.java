@@ -1,113 +1,52 @@
 package com.breaditnow.customer.alert.application;
 
-import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.application.response.CustomerProductAlertPageResponse;
-import com.breaditnow.customer.alert.application.response.CustomerProductAlertResponse;
-import com.breaditnow.customer.alert.application.response.TodayAlertListResponse;
-import com.breaditnow.customer.alert.application.response.TodayAlertResponse;
-import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
-import com.breaditnow.domain.domain.alert.repository.CustomerProductAlertRepository;
-import com.breaditnow.domain.domain.bakery.entity.Bakery;
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
-import com.breaditnow.domain.domain.product.entity.Product;
-import com.breaditnow.domain.domain.product.repository.ProductRepository;
+import com.breaditnow.customer.alert.application.response.ProductAlertToggleResponse;
+import com.breaditnow.customer.alert.domain.ProductAlert;
+import com.breaditnow.customer.alert.domain.port.ProductAlertPort;
+import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.customer.product.domain.Product;
+import com.breaditnow.customer.product.domain.port.ProductPort;
+import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALERT_ALREADY_ACTIVE;
+import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_FOUND;
+
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProductAlertService {
-
-    private final CustomerProductAlertRepository alertRepository;
-    private final CustomerRepository customerRepository;
-    private final ProductRepository productRepository;
+    private final ProductAlertPort productAlertPort;
+    private final ProductPort productPort;
 
     @Transactional
-    public ApiSuccessResponse<Map<String, Long>> registerProductAlert(Long customerId, Long productId) {
-        Customer customer = customerRepository.getById(customerId);
-        Product product = productRepository.getById(productId);
-
-        alertRepository.validateAlertNotExists(customerId, productId);
-
-        CustomerProductAlert alert = new CustomerProductAlert(customer, product, true);
-        alertRepository.save(alert);
-
-        return ApiSuccessResponse.of("alertId", alert.getId());
-    }
-
-    @Transactional
-    public void deactivateProductAlert(Long customerId, Long productId) {
-        Customer customer = customerRepository.getById(customerId);
-        Product product = productRepository.getById(productId);
-        CustomerProductAlert alert = alertRepository.getActiveByCustomerAndProduct(customer, product);
-
-        alert.setActive(false);
-        alertRepository.save(alert);
-    }
-
-    @Transactional
-    public boolean toggleProductAlert(Long customerId, Long productId) {
-
-        Customer customer = customerRepository.getById(customerId);
-        Product product = productRepository.getById(productId);
-        CustomerProductAlert alert = alertRepository.getByCustomerAndProduct(customer, product);
-
-
-        boolean newStatus = !alert.isActive();
-        alert.setActive(newStatus);
-
-        return newStatus;
-    }
-
-    public CustomerProductAlertPageResponse getProductAlerts(Long customerId, int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<CustomerProductAlert> alertsPage = alertRepository.findByCustomerId(customerId, pageable);
-
-        List<CustomerProductAlertResponse> alertResponses = alertsPage.getContent().stream()
-                .map(CustomerProductAlertResponse::of)
-                .toList();
-
-        return CustomerProductAlertPageResponse.of(alertResponses, alertsPage);
-    }
-
-    public TodayAlertListResponse getTodayAlerts(Long customerId) {
-        List<CustomerProductAlert> alerts = alertRepository.findByCustomerId(customerId);
-        List<TodayAlertResponse> alertResponses = alerts.stream()
-                .map(alert -> {
-                    Product product = alert.getProduct();
-                    Bakery bakery = product.getBakery();
-                    return TodayAlertResponse.of(
-                            bakery.getId(),
-                            bakery.getName(),
-                            product.getId(),
-                            product.getName(),
-                            parseReleaseTimes(product.getReleaseTime())
-                    );
-                })
-                .collect(Collectors.toList());
-
-        return TodayAlertListResponse.of(alertResponses);
-    }
-
-    private static List<String> parseReleaseTimes(String releaseTimeStr) {
-        if (releaseTimeStr == null || releaseTimeStr.isBlank()) {
-            return List.of();
+    public void registerProductAlert(Long customerId, Long productId) {
+        Product product = productPort.findById(productId);
+        ProductAlert productAlert = ProductAlert.create(customerId, product.getId());
+        if (productAlertPort.isAlerted(productAlert)) {
+            throw new CustomerException(ALERT_ALREADY_ACTIVE);
         }
-        return Arrays.stream(releaseTimeStr.split(";"))
-                .map(String::trim)
-                .collect(Collectors.toList());
+        productAlertPort.save(productAlert);
+    }
+
+    @Transactional
+    public void deleteProductAlert(Long customerId, Long productId) {
+        Product product = productPort.findById(productId);
+        ProductAlert productAlert = ProductAlert.create(customerId, product.getId());
+        if (!productAlertPort.isAlerted(productAlert)) {
+            throw new DomainException(ALERT_NOT_FOUND);
+        }
+        productAlertPort.delete(productAlert);
+    }
+
+    @Transactional
+    public ProductAlertToggleResponse toggleProductAlert(Long customerId, Long productId) {
+        ProductAlert productAlert = ProductAlert.create(customerId, productId);
+        ProductAlert alert = productAlertPort.findById(productAlert);
+        alert.toggle();
+        productAlertPort.save(alert);
+        return new ProductAlertToggleResponse(alert.isActive());
     }
 }
