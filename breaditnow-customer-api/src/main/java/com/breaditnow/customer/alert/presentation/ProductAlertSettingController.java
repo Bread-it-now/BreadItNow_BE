@@ -14,32 +14,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.alert.application.response.CustomerProductAlertPageResponse;
-import com.breaditnow.customer.alert.application.CustomerProductAlertService;
+import com.breaditnow.customer.alert.application.ProductAlertService;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/alert")
-@Slf4j
-public class CustomerProductAlertController implements CustomerProductAlertControllerDocs {
+public class ProductAlertSettingController implements CustomerProductAlertControllerDocs {
 
-	private final CustomerProductAlertService customerProductAlertService;
+	private final ProductAlertService productAlertService;
 
 	@PostMapping("/product/{productId}")
 	public ApiSuccessResponse<Map<String, Long>> registerProductAlert(
 		@AuthCustomer Long customerId,
 		@PathVariable("productId") Long productId) {
-		return customerProductAlertService.registerProductAlert(customerId, productId);
+		return productAlertService.registerProductAlert(customerId, productId);
 	}
 
 	@DeleteMapping("/product/{productId}")
 	public ApiSuccessResponse<Void> deleteProductAlert(
 		@AuthCustomer Long customerId,
 		@PathVariable("productId") Long productId) {
-		customerProductAlertService.deactivateProductAlert(customerId, productId);
+		productAlertService.deactivateProductAlert(customerId, productId);
 		return ApiSuccessResponse.of(null);
 	}
 
@@ -47,7 +45,7 @@ public class CustomerProductAlertController implements CustomerProductAlertContr
 	public ApiSuccessResponse<Map<String, Boolean>> toggleProductAlert(
 		@AuthCustomer Long customerId,
 		@PathVariable("productId") Long productId) {
-		boolean newStatus = customerProductAlertService.toggleProductAlert(customerId, productId);
+		boolean newStatus = productAlertService.toggleProductAlert(customerId, productId);
 		return ApiSuccessResponse.of("active", newStatus);
 	}
 
@@ -57,6 +55,6 @@ public class CustomerProductAlertController implements CustomerProductAlertContr
 		@RequestParam(name = "page", defaultValue = "0") int page,
 		@RequestParam(name = "size", defaultValue = "10") int size
 	) {
-		return ApiSuccessResponse.of(customerProductAlertService.getProductAlerts(customerId, page, size));
+		return ApiSuccessResponse.of(productAlertService.getProductAlerts(customerId, page, size));
 	}
 }

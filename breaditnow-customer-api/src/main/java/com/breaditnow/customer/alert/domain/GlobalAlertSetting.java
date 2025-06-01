@@ -15,21 +15,21 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
 
 @Getter
 @EqualsAndHashCode
-public class DoNotDisturb {
+public class GlobalAlertSetting {
     private boolean active;
     private DayOfWeekSet days;
     private ReleaseTime startTime;
     private ReleaseTime endTime;
 
     @Builder
-    private DoNotDisturb(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
+    private GlobalAlertSetting(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
         this.days = days;
         this.startTime = startTime;
         this.endTime = endTime;
         this.active = active;
     }
 
-    public static DoNotDisturb of(Set<String> days, LocalTime startTime, LocalTime endTime, boolean active) {
+    public static GlobalAlertSetting of(Set<String> days, LocalTime startTime, LocalTime endTime, boolean active) {
         requireValid(startTime, t -> t.isAfter(endTime), () -> new CustomerException(INVALID_TIME_RANGE));
         return builder()
                 .days(DayOfWeekSet.of(days))

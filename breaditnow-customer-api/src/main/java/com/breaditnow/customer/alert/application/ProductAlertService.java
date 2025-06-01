@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CustomerProductAlertService {
+public class ProductAlertService {
 
     private final CustomerProductAlertRepository alertRepository;
     private final CustomerRepository customerRepository;

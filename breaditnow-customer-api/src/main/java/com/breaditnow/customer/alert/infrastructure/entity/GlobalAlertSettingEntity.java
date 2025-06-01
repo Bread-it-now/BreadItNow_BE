@@ -1,12 +1,10 @@
 package com.breaditnow.customer.alert.infrastructure.entity;
 
 import com.breaditnow.customer.alert.domain.DayOfWeekSet;
-import com.breaditnow.customer.alert.domain.DoNotDisturb;
+import com.breaditnow.customer.alert.domain.GlobalAlertSetting;
 import com.breaditnow.customer.alert.domain.ReleaseTime;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalTime;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -15,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "customer_alert_setting")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-public class CustomerAlertSettingEntity {
+public class GlobalAlertSettingEntity {
     @Id
     @Column(name = "customer_id")
     private Long customerId;
@@ -36,7 +34,7 @@ public class CustomerAlertSettingEntity {
     private ReleaseTime endTime;
 
     @Builder
-    private CustomerAlertSettingEntity(Long customerId, boolean active, DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime) {
+    private GlobalAlertSettingEntity(Long customerId, boolean active, DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime) {
         this.customerId = customerId;
         this.active = active;
         this.days = days;
@@ -44,8 +42,8 @@ public class CustomerAlertSettingEntity {
         this.endTime = endTime;
     }
 
-    public static CustomerAlertSettingEntity fromDomain(Long customerId, DoNotDisturb dnd) {
-        return CustomerAlertSettingEntity.builder()
+    public static GlobalAlertSettingEntity fromDomain(Long customerId, GlobalAlertSetting dnd) {
+        return GlobalAlertSettingEntity.builder()
                 .customerId(customerId)
                 .active(dnd.isActive())
                 .days(dnd.getDays())
@@ -54,8 +52,8 @@ public class CustomerAlertSettingEntity {
                 .build();
     }
 
-    public DoNotDisturb toDomain() {
-        return DoNotDisturb.builder()
+    public GlobalAlertSetting toDomain() {
+        return GlobalAlertSetting.builder()
                 .days(days)
                 .startTime(startTime)
                 .endTime(endTime)

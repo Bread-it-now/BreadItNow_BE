@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("DoNotDisturb 도메인 테스트")
-class DoNotDisturbTest {
+class GlobalAlertSettingTest {
 
     @Nested
     @DisplayName("DoNotDisturb 생성")
@@ -32,7 +32,7 @@ class DoNotDisturbTest {
             LocalTime endTime = LocalTime.of(18, 0);
 
             // when
-            DoNotDisturb dnd = DoNotDisturb.of(days, startTime, endTime, true);
+            GlobalAlertSetting dnd = GlobalAlertSetting.of(days, startTime, endTime, true);
 
             // then
             assertThat(dnd.isActive()).isTrue();
@@ -50,7 +50,7 @@ class DoNotDisturbTest {
             LocalTime endTime = LocalTime.of(10, 0);
 
             // when & then
-            assertThatThrownBy(() -> DoNotDisturb.of(days, startTime, endTime, true))
+            assertThatThrownBy(() -> GlobalAlertSetting.of(days, startTime, endTime, true))
                     .isInstanceOf(CustomerException.class)
                     .hasFieldOrPropertyWithValue("errorCode", INVALID_TIME_RANGE);
         }
@@ -64,7 +64,7 @@ class DoNotDisturbTest {
         @DisplayName("비활성화 상태에서 활성화할 수 있다")
         void activate() {
             // given
-            DoNotDisturb dnd = createInactiveDoNotDisturb();
+            GlobalAlertSetting dnd = createInactiveDoNotDisturb();
 
             // when
             dnd.activate();
@@ -77,7 +77,7 @@ class DoNotDisturbTest {
         @DisplayName("이미 활성화된 상태에서 활성화하면 예외가 발생한다")
         void throwExceptionWhenAlreadyActive() {
             // given
-            DoNotDisturb dnd = createActiveDoNotDisturb();
+            GlobalAlertSetting dnd = createActiveDoNotDisturb();
 
             // when & then
             assertThatThrownBy(dnd::activate)
@@ -89,7 +89,7 @@ class DoNotDisturbTest {
         @DisplayName("활성화 상태에서 비활성화할 수 있다")
         void deactivate() {
             // given
-            DoNotDisturb dnd = createActiveDoNotDisturb();
+            GlobalAlertSetting dnd = createActiveDoNotDisturb();
 
             // when
             dnd.deactivate();
@@ -102,7 +102,7 @@ class DoNotDisturbTest {
         @DisplayName("이미 비활성화된 상태에서 비활성화하면 예외가 발생한다")
         void throwExceptionWhenAlreadyInactive() {
             // given
-            DoNotDisturb dnd = createInactiveDoNotDisturb();
+            GlobalAlertSetting dnd = createInactiveDoNotDisturb();
 
             // when & then
             assertThatThrownBy(dnd::deactivate)
@@ -125,7 +125,7 @@ class DoNotDisturbTest {
         @DisplayName("주어진 시간이 방해금지 범위 내에 있는지 확인한다")
         void isWithinTimeRange(DayOfWeek dayOfWeek, String time, boolean expected) {
             // given
-            DoNotDisturb dnd = createActiveDoNotDisturb();
+            GlobalAlertSetting dnd = createActiveDoNotDisturb();
             String[] timeParts = time.split(":");
             LocalDateTime dateTime = LocalDateTime.now()
                     .withHour(Integer.parseInt(timeParts[0]))
@@ -143,7 +143,7 @@ class DoNotDisturbTest {
         @DisplayName("비활성화 상태에서는 항상 범위 밖으로 판단한다")
         void alwaysOutOfRangeWhenInactive() {
             // given
-            DoNotDisturb dnd = createInactiveDoNotDisturb();
+            GlobalAlertSetting dnd = createInactiveDoNotDisturb();
             LocalDateTime dateTime = LocalDateTime.now()
                     .withHour(12)
                     .withMinute(0)
@@ -157,8 +157,8 @@ class DoNotDisturbTest {
         }
     }
 
-    private DoNotDisturb createActiveDoNotDisturb() {
-        return DoNotDisturb.of(
+    private GlobalAlertSetting createActiveDoNotDisturb() {
+        return GlobalAlertSetting.of(
                 Set.of("MONDAY"),
                 LocalTime.of(10, 0),
                 LocalTime.of(18, 0),
@@ -166,8 +166,8 @@ class DoNotDisturbTest {
         );
     }
 
-    private DoNotDisturb createInactiveDoNotDisturb() {
-        return DoNotDisturb.of(
+    private GlobalAlertSetting createInactiveDoNotDisturb() {
+        return GlobalAlertSetting.of(
                 Set.of("MONDAY"),
                 LocalTime.of(10, 0),
                 LocalTime.of(18, 0),

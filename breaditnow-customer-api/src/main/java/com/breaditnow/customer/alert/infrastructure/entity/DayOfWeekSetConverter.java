@@ -6,7 +6,6 @@ import jakarta.persistence.Converter;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,7 @@ public class DayOfWeekSetConverter implements AttributeConverter<DayOfWeekSet, S
         if (attribute == null || attribute.days().isEmpty()) {
             return "";
         }
+
         return attribute.days().stream()
                 .map(DayOfWeek::name)
                 .collect(Collectors.joining(","));
