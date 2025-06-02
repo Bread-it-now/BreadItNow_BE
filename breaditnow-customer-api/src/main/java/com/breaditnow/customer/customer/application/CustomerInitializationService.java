@@ -1,7 +1,8 @@
 package com.breaditnow.customer.customer.application;
 
-import com.breaditnow.customer.customer.domain.port.CustomerPort;
-import com.breaditnow.customer.customer.domain.port.CustomerProductCategoryPort;
+import com.breaditnow.customer.customer.domain.port.LoadCustomerPort;
+import com.breaditnow.customer.customer.domain.port.SaveCustomerPort;
+import com.breaditnow.customer.customer.domain.port.SaveCustomerProductCategoryPort;
 import com.breaditnow.customer.customer.application.request.CustomerInitRequest;
 import com.breaditnow.customer.customer.domain.Customer;
 import com.breaditnow.customer.product.application.port.ProductCategoryPort;
@@ -21,14 +22,15 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.DUPLICATE_N
 @Service
 @RequiredArgsConstructor
 public class CustomerInitializationService {
-    private final CustomerPort customerPort;
+    private final LoadCustomerPort loadCustomerPort;
+    private final SaveCustomerPort saveCustomerPort;
     private final ProductCategoryPort productCategoryPort;
-    private final CustomerProductCategoryPort customerProductCategoryPort;
+    private final SaveCustomerProductCategoryPort saveCustomerProductCategoryPort;
 
     @Transactional
     public void initCustomerInfo(Long customerId, CustomerInitRequest dto) {
-        Customer customer = customerPort.findById(customerId);
-        if (customerPort.isExistNickName(dto.nickname())) {
+        Customer customer = loadCustomerPort.findById(customerId);
+        if (loadCustomerPort.isExistNickName(dto.nickname())) {
             throw new DomainException(DUPLICATE_NICKNAME);
         }
 
@@ -38,10 +40,10 @@ public class CustomerInitializationService {
         }
 
         for (ProductCategory category : validCats) {
-            customerProductCategoryPort.preference(customer, category);
+            saveCustomerProductCategoryPort.preference(customer, category);
         }
 
         customer.changeNickname(dto.nickname());
-        customerPort.save(customer);
+        saveCustomerPort.save(customer);
     }
 }

@@ -1,9 +1,10 @@
 package com.breaditnow.customer.alert.infrastructure;
 
 import com.breaditnow.customer.alert.domain.ProductAlert;
-import com.breaditnow.customer.alert.domain.port.ProductAlertPort;
-import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
+import com.breaditnow.customer.alert.domain.port.LoadProductAlertPort;
+import com.breaditnow.customer.alert.domain.port.SaveProductAlertPort;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepository;
+import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_F
 
 @Repository
 @RequiredArgsConstructor
-public class ProductAlertAdapter implements ProductAlertPort {
+public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAlertPort {
     private final JpaProductAlertRepository jpaProductAlertRepository;
 
     @Override

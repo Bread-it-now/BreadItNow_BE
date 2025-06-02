@@ -1,7 +1,7 @@
 package com.breaditnow.customer.customer.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.customer.customer.domain.port.ImageStoragePort;
+import com.breaditnow.customer.customer.domain.port.SaveImageStoragePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class CustomerTest {
-    private ImageStoragePort imageStoragePort;
+    private SaveImageStoragePort saveImageStoragePort;
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
-        imageStoragePort = mock(ImageStoragePort.class);
+        saveImageStoragePort = mock(SaveImageStoragePort.class);
         passwordEncoder = mock(PasswordEncoder.class);
     }
 

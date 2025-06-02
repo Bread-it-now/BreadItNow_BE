@@ -1,7 +1,8 @@
 package com.breaditnow.customer.customer.infrastructure;
 
-import com.breaditnow.customer.customer.domain.port.CustomerPort;
 import com.breaditnow.customer.customer.domain.Customer;
+import com.breaditnow.customer.customer.domain.port.LoadCustomerPort;
+import com.breaditnow.customer.customer.domain.port.SaveCustomerPort;
 import com.breaditnow.customer.customer.infrastructure.jpa.CustomerEntity;
 import com.breaditnow.customer.customer.infrastructure.jpa.JpaCustomerRepository;
 import com.breaditnow.domain.global.exception.DomainException;
@@ -12,7 +13,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.CUSTOMER_NO
 
 @Repository
 @RequiredArgsConstructor
-public class CustomerAdapter implements CustomerPort {
+public class CustomerAdapter implements LoadCustomerPort, SaveCustomerPort {
     private final JpaCustomerRepository jpaCustomerRepository;
 
     @Override

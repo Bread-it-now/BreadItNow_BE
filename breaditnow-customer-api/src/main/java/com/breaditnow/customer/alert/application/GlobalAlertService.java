@@ -4,7 +4,8 @@ import com.breaditnow.customer.alert.application.request.GlobalAlertUpdateReques
 import com.breaditnow.customer.alert.application.response.GlobalAlertResponse;
 import com.breaditnow.customer.alert.application.response.GlobalAlertToggleResponse;
 import com.breaditnow.customer.alert.domain.GlobalAlertSetting;
-import com.breaditnow.customer.alert.domain.port.GlobalAlertPort;
+import com.breaditnow.customer.alert.domain.port.LoadGlobalAlertPort;
+import com.breaditnow.customer.alert.domain.port.SaveGlobalAlertPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,24 +14,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GlobalAlertService {
-    private final GlobalAlertPort globalAlertPort;
-
+    private final SaveGlobalAlertPort saveGlobalAlertPort;
+    private final LoadGlobalAlertPort loadGlobalAlertPort;
     public GlobalAlertResponse getDoNotDisturbSetting(Long customerId) {
-        GlobalAlertSetting globalAlertSetting = globalAlertPort.findByCustomerId(customerId);
+        GlobalAlertSetting globalAlertSetting = loadGlobalAlertPort.findByCustomerId(customerId);
         return GlobalAlertResponse.of(globalAlertSetting);
     }
 
     @Transactional
     public void updateDoNotDisturbSetting(Long customerId, GlobalAlertUpdateRequest dto) {
         GlobalAlertSetting dnd = GlobalAlertSetting.of(dto.days(), dto.startTime(), dto.endTime(), true);
-        globalAlertPort.save(customerId, dnd);
+        saveGlobalAlertPort.save(customerId, dnd);
     }
 
     @Transactional
     public GlobalAlertToggleResponse toggleSettings(Long customerId) {
-        GlobalAlertSetting globalAlertSetting = globalAlertPort.findByCustomerId(customerId);
+        GlobalAlertSetting globalAlertSetting = loadGlobalAlertPort.findByCustomerId(customerId);
         globalAlertSetting.toggle();
-        globalAlertPort.save(customerId, globalAlertSetting);
+        saveGlobalAlertPort.save(customerId, globalAlertSetting);
         return new GlobalAlertToggleResponse(globalAlertSetting.isActive());
     }
 }

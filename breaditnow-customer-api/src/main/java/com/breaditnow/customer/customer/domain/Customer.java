@@ -1,6 +1,6 @@
 package com.breaditnow.customer.customer.domain;
 
-import com.breaditnow.customer.customer.domain.port.ImageStoragePort;
+import com.breaditnow.customer.customer.domain.port.SaveImageStoragePort;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,8 +47,8 @@ public class Customer {
         this.initialSetup = true;
     }
 
-    public void updateInfo(String nickname, String phone, String password, MultipartFile profileImage, ImageStoragePort imageStoragePort) {
-        setIfNotNull(profileImage, pi -> this.profileImageUrl = imageStoragePort.upload(pi, "image/customer/" + getId() + "/profile"));
+    public void updateInfo(String nickname, String phone, String password, MultipartFile profileImage, SaveImageStoragePort saveImageStoragePort) {
+        setIfNotNull(profileImage, pi -> this.profileImageUrl = saveImageStoragePort.upload(pi, "image/customer/" + getId() + "/profile"));
         setIfNotNull(password, pwd -> this.password = pwd);
         setIfNotNull(nickname, nn -> this.nickname = nn);
         setIfNotNull(phone, ph -> this.phone = ph);

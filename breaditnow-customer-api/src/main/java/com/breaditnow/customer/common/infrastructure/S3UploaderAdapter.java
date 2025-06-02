@@ -2,7 +2,7 @@ package com.breaditnow.customer.common.infrastructure;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.breaditnow.customer.customer.domain.port.ImageStoragePort;
+import com.breaditnow.customer.customer.domain.port.SaveImageStoragePort;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.FILE_UP
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class S3UploaderAdapter implements ImageStoragePort {
+public class S3UploaderAdapter implements SaveImageStoragePort {
     private final AmazonS3 amazonS3Client;
 
     @Value("${aws.s3.bucket}")
