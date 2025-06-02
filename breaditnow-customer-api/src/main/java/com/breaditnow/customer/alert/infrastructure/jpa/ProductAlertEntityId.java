@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.infrastructure.entity;
+package com.breaditnow.customer.alert.infrastructure.jpa;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

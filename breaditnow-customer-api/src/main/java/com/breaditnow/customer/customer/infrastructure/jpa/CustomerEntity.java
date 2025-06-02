@@ -1,4 +1,4 @@
-package com.breaditnow.customer.customer.infrastructure.entity;
+package com.breaditnow.customer.customer.infrastructure.jpa;
 
 import com.breaditnow.customer.customer.domain.Customer;
 import com.breaditnow.customer.customer.domain.Provider;

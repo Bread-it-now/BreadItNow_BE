@@ -1,7 +1,7 @@
 package com.breaditnow.customer.alert.domain;
 
+import com.breaditnow.customer.common.domain.ReleaseTime;
 import com.breaditnow.customer.common.exception.CustomerException;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

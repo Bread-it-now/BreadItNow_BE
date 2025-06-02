@@ -2,7 +2,7 @@ package com.breaditnow.customer.customer.infrastructure;
 
 import com.breaditnow.customer.customer.domain.Customer;
 import com.breaditnow.customer.customer.domain.port.CustomerRegionPort;
-import com.breaditnow.customer.customer.infrastructure.entity.CustomerRegionEntity;
+import com.breaditnow.customer.customer.infrastructure.jpa.CustomerRegionEntity;
 import com.breaditnow.customer.customer.infrastructure.jpa.JpaCustomerRegionRepository;
 import com.breaditnow.customer.region.core.Region;
 import lombok.RequiredArgsConstructor;

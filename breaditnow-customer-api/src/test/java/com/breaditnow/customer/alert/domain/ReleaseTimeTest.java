@@ -1,5 +1,6 @@
 package com.breaditnow.customer.alert.domain;
 
+import com.breaditnow.customer.common.domain.ReleaseTime;
 import com.breaditnow.customer.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

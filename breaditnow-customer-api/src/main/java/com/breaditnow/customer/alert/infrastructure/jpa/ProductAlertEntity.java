@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.infrastructure.entity;
+package com.breaditnow.customer.alert.infrastructure.jpa;
 
 import com.breaditnow.customer.alert.domain.ProductAlert;
 import com.breaditnow.domain.global.entity.BaseEntity;

@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.infrastructure.entity;
+package com.breaditnow.customer.alert.infrastructure.jpa;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QGlobalAlertSettingEntity extends EntityPathBase<GlobalAlertSettingEntity> {
 
-    private static final long serialVersionUID = -748144978L;
+    private static final long serialVersionUID = 745986884L;
 
     public static final QGlobalAlertSettingEntity globalAlertSettingEntity = new QGlobalAlertSettingEntity("globalAlertSettingEntity");
 
@@ -25,9 +25,9 @@ public class QGlobalAlertSettingEntity extends EntityPathBase<GlobalAlertSetting
 
     public final SimplePath<com.breaditnow.customer.alert.domain.DayOfWeekSet> days = createSimple("days", com.breaditnow.customer.alert.domain.DayOfWeekSet.class);
 
-    public final ComparablePath<com.breaditnow.customer.alert.domain.ReleaseTime> endTime = createComparable("endTime", com.breaditnow.customer.alert.domain.ReleaseTime.class);
+    public final ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime> endTime = createComparable("endTime", com.breaditnow.customer.common.domain.ReleaseTime.class);
 
-    public final ComparablePath<com.breaditnow.customer.alert.domain.ReleaseTime> startTime = createComparable("startTime", com.breaditnow.customer.alert.domain.ReleaseTime.class);
+    public final ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime> startTime = createComparable("startTime", com.breaditnow.customer.common.domain.ReleaseTime.class);
 
     public QGlobalAlertSettingEntity(String variable) {
         super(GlobalAlertSettingEntity.class, forVariable(variable));

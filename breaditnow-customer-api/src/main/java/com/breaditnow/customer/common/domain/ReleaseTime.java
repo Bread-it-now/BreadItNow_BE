@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.domain;
+package com.breaditnow.customer.common.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
@@ -15,7 +15,6 @@ public class ReleaseTime implements Comparable<ReleaseTime> {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private final LocalTime time;
 
-    @Builder
     private ReleaseTime(LocalTime time) {
         this.time = time;
     }

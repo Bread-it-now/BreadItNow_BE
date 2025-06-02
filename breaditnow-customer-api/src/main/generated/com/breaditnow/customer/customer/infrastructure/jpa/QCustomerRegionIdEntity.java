@@ -1,4 +1,4 @@
-package com.breaditnow.customer.customer.infrastructure.entity;
+package com.breaditnow.customer.customer.infrastructure.jpa;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QCustomerRegionIdEntity extends BeanPath<CustomerRegionIdEntity> {
 
-    private static final long serialVersionUID = -83538370L;
+    private static final long serialVersionUID = -385340000L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

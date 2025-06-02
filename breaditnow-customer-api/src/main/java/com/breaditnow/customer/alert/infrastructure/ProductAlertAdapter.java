@@ -2,8 +2,7 @@ package com.breaditnow.customer.alert.infrastructure;
 
 import com.breaditnow.customer.alert.domain.ProductAlert;
 import com.breaditnow.customer.alert.domain.port.ProductAlertPort;
-import com.breaditnow.customer.alert.infrastructure.entity.ProductAlertEntity;
-import com.breaditnow.customer.alert.infrastructure.entity.ProductAlertEntityId;
+import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepository;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;

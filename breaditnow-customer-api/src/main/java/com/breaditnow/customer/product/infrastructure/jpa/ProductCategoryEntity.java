@@ -1,4 +1,4 @@
-package com.breaditnow.customer.product.infrastructure.entity;
+package com.breaditnow.customer.product.infrastructure.jpa;
 
 import com.breaditnow.customer.product.domain.ProductCategory;
 import jakarta.persistence.Entity;

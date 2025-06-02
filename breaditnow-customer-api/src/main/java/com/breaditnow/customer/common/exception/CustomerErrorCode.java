@@ -50,7 +50,12 @@ public enum CustomerErrorCode implements ErrorCode {
 	/**
 	 * CD000 Product
 	 */
-	PRODUCT_NOT_ACTIVE(BAD_REQUEST, "CD001", "비활성화된 상품입니다.");
+	PRODUCT_NOT_ACTIVE(BAD_REQUEST, "CD001", "비활성화된 상품입니다."),
+	INVALID_AMOUNT(BAD_REQUEST, "CD002", "금액은 0보다 작을 수 없습니다."),
+	AMOUNT_REQUIRED(BAD_REQUEST, "CD003", "금액은 필수 값입니다."),
+	INVALID_STOCK(BAD_REQUEST, "CD004", "재고는 0보다 작을 수 없습니다."),
+	PRODUCT_ALREADY_HIDDEN(CONFLICT, "BG009", "상품은 이미 숨김 상태입니다."),
+	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "BG010", "상품은 이미 숨김 해제 상태입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

@@ -1,4 +1,4 @@
-package com.breaditnow.customer.alert.infrastructure.entity;
+package com.breaditnow.customer.alert.infrastructure.jpa;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QProductAlertEntityId extends BeanPath<ProductAlertEntityId> {
 
-    private static final long serialVersionUID = -373975425L;
+    private static final long serialVersionUID = 701101589L;
 
     public static final QProductAlertEntityId productAlertEntityId = new QProductAlertEntityId("productAlertEntityId");
 
