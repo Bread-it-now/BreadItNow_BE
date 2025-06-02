@@ -6,7 +6,7 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
 import java.util.Map;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.alert.application.response.CustomerProductAlertPageResponse;
+import com.breaditnow.customer.alert.application.response.ProductAlertPageResponse;
 import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,5 +37,5 @@ public interface CustomerProductAlertControllerDocs {
 		@Parameter(name = "page", description = "페이지 번호 (0부터 시작)", example = "0", in = QUERY),
 		@Parameter(name = "size", description = "한 페이지당 최대 데이터 개수", example = "10", in = QUERY)
 	})
-	ApiSuccessResponse<CustomerProductAlertPageResponse> getProductAlerts(Long customerId, int page, int size);
+	ApiSuccessResponse<ProductAlertPageResponse> getProductAlerts(Long customerId, int page, int size);
 }

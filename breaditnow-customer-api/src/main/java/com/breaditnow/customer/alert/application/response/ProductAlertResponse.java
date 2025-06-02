@@ -4,7 +4,7 @@ import com.breaditnow.domain.domain.alert.entity.CustomerProductAlert;
 import java.util.Arrays;
 import java.util.List;
 
-public record CustomerProductAlertResponse(
+public record ProductAlertResponse(
         Long alertId,
         Long productId,
         String productName,
@@ -14,8 +14,8 @@ public record CustomerProductAlertResponse(
         String bakeryName,
         boolean alertActive
 ) {
-    public static CustomerProductAlertResponse of(CustomerProductAlert alert) {
-        return new CustomerProductAlertResponse(
+    public static ProductAlertResponse of(CustomerProductAlert alert) {
+        return new ProductAlertResponse(
                 alert.getId(),
                 alert.getProduct().getId(),
                 alert.getProduct().getName(),

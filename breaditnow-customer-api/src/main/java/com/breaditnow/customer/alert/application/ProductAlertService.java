@@ -4,8 +4,6 @@ import com.breaditnow.customer.alert.application.response.ProductAlertToggleResp
 import com.breaditnow.customer.alert.domain.ProductAlert;
 import com.breaditnow.customer.alert.domain.port.ProductAlertPort;
 import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.customer.product.domain.Product;
-import com.breaditnow.customer.product.domain.port.ProductPort;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,12 +17,10 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_F
 @RequiredArgsConstructor
 public class ProductAlertService {
     private final ProductAlertPort productAlertPort;
-    private final ProductPort productPort;
 
     @Transactional
     public void registerProductAlert(Long customerId, Long productId) {
-        Product product = productPort.findById(productId);
-        ProductAlert productAlert = ProductAlert.create(customerId, product.getId());
+        ProductAlert productAlert = ProductAlert.create(customerId, productId);
         if (productAlertPort.isAlerted(productAlert)) {
             throw new CustomerException(ALERT_ALREADY_ACTIVE);
         }
@@ -33,8 +29,7 @@ public class ProductAlertService {
 
     @Transactional
     public void deleteProductAlert(Long customerId, Long productId) {
-        Product product = productPort.findById(productId);
-        ProductAlert productAlert = ProductAlert.create(customerId, product.getId());
+        ProductAlert productAlert = ProductAlert.create(customerId, productId);
         if (!productAlertPort.isAlerted(productAlert)) {
             throw new DomainException(ALERT_NOT_FOUND);
         }

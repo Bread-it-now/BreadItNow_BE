@@ -57,61 +57,6 @@ class GlobalAlertSettingTest {
     }
 
     @Nested
-    @DisplayName("DoNotDisturb 상태 변경")
-    class StateChange {
-
-        @Test
-        @DisplayName("비활성화 상태에서 활성화할 수 있다")
-        void activate() {
-            // given
-            GlobalAlertSetting dnd = createInactiveDoNotDisturb();
-
-            // when
-            dnd.activate();
-
-            // then
-            assertThat(dnd.isActive()).isTrue();
-        }
-
-        @Test
-        @DisplayName("이미 활성화된 상태에서 활성화하면 예외가 발생한다")
-        void throwExceptionWhenAlreadyActive() {
-            // given
-            GlobalAlertSetting dnd = createActiveDoNotDisturb();
-
-            // when & then
-            assertThatThrownBy(dnd::activate)
-                    .isInstanceOf(CustomerException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", ALREADY_ACTIVE);
-        }
-
-        @Test
-        @DisplayName("활성화 상태에서 비활성화할 수 있다")
-        void deactivate() {
-            // given
-            GlobalAlertSetting dnd = createActiveDoNotDisturb();
-
-            // when
-            dnd.deactivate();
-
-            // then
-            assertThat(dnd.isActive()).isFalse();
-        }
-
-        @Test
-        @DisplayName("이미 비활성화된 상태에서 비활성화하면 예외가 발생한다")
-        void throwExceptionWhenAlreadyInactive() {
-            // given
-            GlobalAlertSetting dnd = createInactiveDoNotDisturb();
-
-            // when & then
-            assertThatThrownBy(dnd::deactivate)
-                    .isInstanceOf(CustomerException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", ALREADY_INACTIVE);
-        }
-    }
-
-    @Nested
     @DisplayName("시간 범위 확인")
     class TimeRangeCheck {
 

@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Builder
-public record CustomerProductAlertPageResponse(
-        List<CustomerProductAlertResponse> alerts,
+public record ProductAlertPageResponse(
+        List<ProductAlertResponse> alerts,
         PageInfo pageInfo
 ) {
-    public static CustomerProductAlertPageResponse of(List<CustomerProductAlertResponse> alerts, Page<CustomerProductAlert> alertsPage) {
+    public static ProductAlertPageResponse of(List<ProductAlertResponse> alerts, Page<CustomerProductAlert> alertsPage) {
         PageInfo pageInfo = PageInfo.builder()
                 .totalElements(alertsPage.getTotalElements())
                 .totalPages(alertsPage.getTotalPages())
@@ -20,7 +20,7 @@ public record CustomerProductAlertPageResponse(
                 .currPage(alertsPage.getPageable().getPageNumber())
                 .build();
 
-        return CustomerProductAlertPageResponse.builder()
+        return ProductAlertPageResponse.builder()
                 .alerts(alerts)
                 .pageInfo(pageInfo)
                 .build();

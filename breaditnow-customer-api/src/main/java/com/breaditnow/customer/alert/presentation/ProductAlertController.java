@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/alert")
 public class ProductAlertController {
-
 	private final ProductAlertService productAlertService;
 
 	@PostMapping("/product/{productId}")

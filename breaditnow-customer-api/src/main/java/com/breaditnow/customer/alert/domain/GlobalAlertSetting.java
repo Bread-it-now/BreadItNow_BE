@@ -21,7 +21,6 @@ public class GlobalAlertSetting {
     private ReleaseTime startTime;
     private ReleaseTime endTime;
 
-    @Builder
     private GlobalAlertSetting(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
         this.days = days;
         this.startTime = startTime;
@@ -31,12 +30,11 @@ public class GlobalAlertSetting {
 
     public static GlobalAlertSetting of(Set<String> days, LocalTime startTime, LocalTime endTime, boolean active) {
         requireValid(startTime, t -> t.isAfter(endTime), () -> new CustomerException(INVALID_TIME_RANGE));
-        return builder()
-                .days(DayOfWeekSet.of(days))
-                .startTime(ReleaseTime.of(startTime))
-                .endTime(ReleaseTime.of(endTime))
-                .active(active)
-                .build();
+        return new GlobalAlertSetting(DayOfWeekSet.of(days), ReleaseTime.of(startTime), ReleaseTime.of(endTime), active);
+    }
+
+    public static GlobalAlertSetting from(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
+        return new GlobalAlertSetting(days, startTime, endTime, active);
     }
 
     public void toggle() {
