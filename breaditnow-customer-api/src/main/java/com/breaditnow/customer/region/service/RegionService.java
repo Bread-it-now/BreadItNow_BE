@@ -2,7 +2,7 @@ package com.breaditnow.customer.region.service;
 
 import com.breaditnow.common.client.kakao.GeoLocationClient;
 import com.breaditnow.common.client.kakao.dto.AddressNameDto;
-import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
 import com.breaditnow.customer.region.controller.res.GugunResponse;
 import com.breaditnow.customer.region.controller.res.SidoResponse;
 import com.breaditnow.domain.domain.region.entity.Region;

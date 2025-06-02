@@ -1,5 +1,6 @@
 package com.breaditnow.customer.reservation.controller;
 
+import com.breaditnow.customer.common.presentation.swagger.docs.ReservationControllerDocs;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;

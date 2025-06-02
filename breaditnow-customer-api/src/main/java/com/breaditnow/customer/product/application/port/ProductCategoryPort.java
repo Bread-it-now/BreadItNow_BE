@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.application.port;
 
-import com.breaditnow.customer.product.core.ProductCategory;
+import com.breaditnow.customer.product.domain.ProductCategory;
 
 import java.util.List;
 

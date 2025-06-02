@@ -1,7 +1,7 @@
 package com.breaditnow.customer.bakery.service;
 
 import com.breaditnow.customer.bakery.controller.res.HotBakeryPageResponse;
-import com.breaditnow.customer.common.req.GeoPointRequest;
+import com.breaditnow.customer.common.application.request.GeoPointRequest;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.global.dto.BakeryDistanceDto;
 import com.breaditnow.domain.global.dto.GeoPoint;

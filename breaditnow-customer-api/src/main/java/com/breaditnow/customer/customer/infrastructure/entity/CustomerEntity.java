@@ -57,7 +57,7 @@ public class CustomerEntity extends BaseEntity {
         this.initialSetup = customer.isInitialSetup();
     }
 
-    public Customer toCustomer() {
+    public Customer toDomain() {
         return Customer.builder()
                 .id(this.id)
                 .nickname(this.nickname)

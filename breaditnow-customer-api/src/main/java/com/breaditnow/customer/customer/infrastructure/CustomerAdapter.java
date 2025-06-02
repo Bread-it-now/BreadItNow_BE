@@ -19,14 +19,14 @@ public class CustomerAdapter implements CustomerPort {
     public Customer save(Customer customer) {
         CustomerEntity entity = new CustomerEntity(customer);
         entity = jpaCustomerRepository.save(entity);
-        return entity.toCustomer();
+        return entity.toDomain();
     }
 
     @Override
     public Customer findById(Long id) {
         return jpaCustomerRepository.findById(id)
                 .orElseThrow(() -> new DomainException(CUSTOMER_NOT_FOUND))
-                .toCustomer();
+                .toDomain();
     }
 
     @Override

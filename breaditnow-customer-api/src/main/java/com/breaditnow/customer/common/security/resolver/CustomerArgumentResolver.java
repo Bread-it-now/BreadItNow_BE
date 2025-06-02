@@ -1,5 +1,12 @@
 package com.breaditnow.customer.common.security.resolver;
 
+import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.customer.common.security.annotation.AuthCustomer;
+import com.breaditnow.customer.customer.domain.Customer;
+import com.breaditnow.customer.customer.domain.port.CustomerPort;
+//import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.domain.domain.owner.entity.Owner;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -7,21 +14,13 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.customer.common.security.annotation.AuthCustomer;
-import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.customer.repository.CustomerRepository;
-import com.breaditnow.domain.domain.owner.entity.Owner;
-
-import lombok.RequiredArgsConstructor;
-
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.AUTHENTICATION_REQUIRED;
 
 @Component
 @RequiredArgsConstructor
 public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private final CustomerRepository customerRepository;
+	private final CustomerPort customerPort;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -46,7 +45,7 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 			}
 		}
 
-		Customer customer = customerRepository.getById(Long.valueOf(userIdHeader));
+		Customer customer = customerPort.findById(Long.valueOf(userIdHeader));
 
 		if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
 			return customer;
