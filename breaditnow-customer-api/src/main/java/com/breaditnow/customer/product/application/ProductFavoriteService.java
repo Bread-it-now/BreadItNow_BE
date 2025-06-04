@@ -1,14 +1,16 @@
 package com.breaditnow.customer.product.application;
 
+import com.breaditnow.customer.common.domain.DomainEventPublisher;
+import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
 import com.breaditnow.customer.product.application.port.LoadProductFavoritePort;
 import com.breaditnow.customer.product.application.port.SaveProductFavoritePort;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductFavorite;
+import com.breaditnow.customer.product.domain.event.ProductFavoriteRemovedEvent;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BREAD_FAVORITE_NOT_FOUND;
 
@@ -18,29 +20,37 @@ public class ProductFavoriteService {
     private final SaveProductFavoritePort saveProductFavoritePort;
     private final LoadProductFavoritePort loadProductFavoritePort;
     private final ProductService productService;
+    private final DomainEventPublisher domainEventPublisher;
 
+    @Transactional
     public void addFavoriteProduct(Long customerId, Long productId) {
-        Product product = productService.loadProduct(productId);
-        Optional<ProductFavorite> OptionalProductFavorite = loadProductFavoritePort.loadProductFavorite(customerId, product.getId());
-        if (OptionalProductFavorite.isEmpty()) {
-            ProductFavorite productFavorite = new ProductFavorite(customerId, productId, true);
-            saveProductFavoritePort.save(productFavorite);
-        }
-        else{
-            ProductFavorite productFavorite = OptionalProductFavorite.get();
-            productFavorite.activate();
-            saveProductFavoritePort.save(productFavorite);
-        }
+        Product product = productService.loadProductWithLock(productId);
+
+        ProductFavorite productFavorite = loadProductFavoritePort
+                .loadProductFavorite(customerId, productId)
+                .map(favorite -> {
+                    favorite.activate();
+                    return favorite;
+                })
+                .orElseGet(() -> ProductFavorite.create(customerId, productId));
+
+        saveProductFavoritePort.save(productFavorite);
+        domainEventPublisher.publish(new ProductFavoriteCreatedEvent(product.getId()));
     }
 
+
+    @Transactional
     public void removeFavoriteProduct(Long customerId, Long productId) {
-        Product product = productService.loadProduct(productId);
-        Optional<ProductFavorite> optionalProductFavorite = loadProductFavoritePort.loadProductFavorite(customerId, product.getId());
-        if(optionalProductFavorite.isEmpty()) {
-            throw new DomainException(BREAD_FAVORITE_NOT_FOUND);
-        }
-        ProductFavorite productFavorite = optionalProductFavorite.get();
+        Product product = productService.loadProductWithLock(productId);
+
+        ProductFavorite productFavorite = loadProductFavoritePort
+                .loadProductFavorite(customerId, productId)
+                .orElseThrow(() -> new DomainException(BREAD_FAVORITE_NOT_FOUND));
+
         productFavorite.deactivate();
-        saveProductFavoritePort.delete(productFavorite);
+
+
+        saveProductFavoritePort.save(productFavorite);
+        domainEventPublisher.publish(new ProductFavoriteRemovedEvent(product.getId()));
     }
 }

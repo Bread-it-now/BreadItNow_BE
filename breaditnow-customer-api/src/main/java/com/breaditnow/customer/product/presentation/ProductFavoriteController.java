@@ -13,13 +13,13 @@ public class ProductFavoriteController {
     private final ProductFavoriteService productFavoriteService;
 
     @PostMapping("/{productId}/favorite")
-    public ApiSuccessResponse<Void> likeProduct(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
+    public ApiSuccessResponse<Void> addFavoriteProduct(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
         productFavoriteService.addFavoriteProduct(customerId, productId);
         return ApiSuccessResponse.of();
     }
 
     @DeleteMapping("/{productId}/favorite")
-    public ApiSuccessResponse<Void> deleteProduct(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
+    public ApiSuccessResponse<Void> removeFavoriteProduct(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
         productFavoriteService.removeFavoriteProduct(customerId, productId);
         return ApiSuccessResponse.of();
     }

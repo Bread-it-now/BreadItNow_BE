@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface LoadProductPort {
     Optional<Product> loadProduct(Long productId);
+
+    Optional<Product> loadProductWithLock(Long productId);
 }

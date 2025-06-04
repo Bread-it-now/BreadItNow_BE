@@ -1,0 +1,37 @@
+package com.breaditnow.customer.product.application.event;
+
+import com.breaditnow.customer.product.application.port.LoadProductPort;
+import com.breaditnow.customer.product.application.port.SaveProductPort;
+import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
+import com.breaditnow.customer.product.domain.event.ProductFavoriteRemovedEvent;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+@RequiredArgsConstructor
+public class ProductFavoriteEventHandler {
+    private final SaveProductPort saveProductPort;
+    private final LoadProductPort loadProductPort;
+
+    @EventListener
+    @Transactional
+    public void handleProductFavoriteCreated(ProductFavoriteCreatedEvent event) {
+        loadProductPort.loadProduct(event.getProductId())
+                .ifPresent(product -> {
+                    product.favorite();
+                    saveProductPort.save(product);
+                });
+    }
+
+    @EventListener
+    @Transactional
+    public void handleProductFavoriteRemoved(ProductFavoriteRemovedEvent event) {
+        loadProductPort.loadProduct(event.getProductId())
+                .ifPresent(product -> {
+                    product.unfavorite();
+                    saveProductPort.save(product);
+                });
+    }
+}

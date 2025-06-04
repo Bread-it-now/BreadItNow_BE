@@ -57,6 +57,25 @@ public class ProductEntity extends BaseEntity {
     @Enumerated(STRING)
     private ProductType type;
 
+    public static ProductEntity from(Product product) {
+        return new ProductEntity(
+                product.getId(),
+                product.getBakeryId(),
+                product.getName(),
+                product.getStock(),
+                product.getPrice(),
+                product.getImageUrl(),
+                product.getDescription(),
+                product.getDisplayOrder(),
+                product.isActive(),
+                product.isHidden(),
+                product.getFavoriteCount(),
+                product.getReservationCount(),
+                product.getReleaseTimes(),
+                product.getType()
+        );
+    }
+
     public Product toDomain() {
         return Product.builder()
                 .id(this.id)
@@ -69,8 +88,8 @@ public class ProductEntity extends BaseEntity {
                 .displayOrder(this.displayOrder)
                 .isActive(this.isActive)
                 .isHidden(this.isHidden)
-                .favoriteCounter(this.favoriteCount)
-                .reservationCounter(this.reservationCount)
+                .favoriteCount(this.favoriteCount)
+                .reservationCount(this.reservationCount)
                 .releaseTimes(this.releaseTimes)
                 .type(this.type)
                 .build();

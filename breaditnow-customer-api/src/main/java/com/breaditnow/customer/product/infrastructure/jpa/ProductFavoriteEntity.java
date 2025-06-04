@@ -28,6 +28,10 @@ public class ProductFavoriteEntity extends BaseEntity {
     }
 
     public ProductFavorite toDomain() {
-        return new ProductFavorite(id.getCustomerId(), id.getProductId(), isActive);
+        return ProductFavorite.builder()
+                .customerId(id.getCustomerId())
+                .productId(id.getProductId())
+                .isActive(isActive)
+                .build();
     }
 }

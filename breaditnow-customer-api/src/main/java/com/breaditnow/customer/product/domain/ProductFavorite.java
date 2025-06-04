@@ -1,6 +1,7 @@
 package com.breaditnow.customer.product.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
+import lombok.Builder;
 import lombok.Getter;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALREADY_FAVORITED;
@@ -12,10 +13,15 @@ public class ProductFavorite {
     Long productId;
     boolean isActive;
 
-    public ProductFavorite(Long customerId, Long productId, boolean isActive) {
+    @Builder
+    private ProductFavorite(Long customerId, Long productId, boolean isActive) {
         this.customerId = customerId;
         this.productId = productId;
         this.isActive = isActive;
+    }
+
+    public static ProductFavorite create(Long customerId, Long productId) {
+        return new ProductFavorite(customerId, productId, true);
     }
 
     public void activate() {
