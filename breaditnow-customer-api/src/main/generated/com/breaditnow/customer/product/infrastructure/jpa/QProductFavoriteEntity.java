@@ -27,7 +27,7 @@ public class QProductFavoriteEntity extends EntityPathBase<ProductFavoriteEntity
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final com.breaditnow.customer.alert.infrastructure.jpa.QProductAlertEntityId id;
+    public final QProductFavoriteEntityId id;
 
     public final BooleanPath isActive = createBoolean("isActive");
 
@@ -52,7 +52,7 @@ public class QProductFavoriteEntity extends EntityPathBase<ProductFavoriteEntity
 
     public QProductFavoriteEntity(Class<? extends ProductFavoriteEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.id = inits.isInitialized("id") ? new com.breaditnow.customer.alert.infrastructure.jpa.QProductAlertEntityId(forProperty("id")) : null;
+        this.id = inits.isInitialized("id") ? new QProductFavoriteEntityId(forProperty("id")) : null;
     }
 
 }

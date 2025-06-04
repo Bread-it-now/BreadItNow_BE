@@ -12,9 +12,10 @@ public class ProductFavorite {
     Long productId;
     boolean isActive;
 
-    public ProductFavorite(Long customerId, Long productId) {
+    public ProductFavorite(Long customerId, Long productId, boolean isActive) {
         this.customerId = customerId;
         this.productId = productId;
+        this.isActive = isActive;
     }
 
     public void activate() {
