@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.infrastructure;
 
-import com.breaditnow.customer.product.application.port.ProductCategoryPort;
+import com.breaditnow.customer.product.application.port.LoadProductCategoryPort;
 import com.breaditnow.customer.product.domain.ProductCategory;
 import com.breaditnow.customer.product.infrastructure.jpa.ProductCategoryEntity;
 import com.breaditnow.customer.product.infrastructure.jpa.JpaProductCategory;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductCategoryAdapter implements ProductCategoryPort {
+public class ProductCategoryAdapter implements LoadProductCategoryPort {
     private final JpaProductCategory jpaProductCategory;
 
     @Override

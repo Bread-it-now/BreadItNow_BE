@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.product.controller;
 
 import com.breaditnow.customer.common.presentation.swagger.docs.ProductControllerDocs;
@@ -27,3 +28,4 @@ public class ProductController implements ProductControllerDocs {
 		return ApiSuccessResponse.of(productPageService.searchHotProducts(customerId, page, size, sort));
 	}
 }
+*/

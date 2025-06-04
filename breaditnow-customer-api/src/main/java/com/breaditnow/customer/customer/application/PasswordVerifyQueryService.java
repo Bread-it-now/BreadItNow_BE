@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PasswordVerifyQueryService {
-    private final LoadCustomerPort loadCustomerPort;
+    private final CustomerService customerService;
     private final PasswordEncoder passwordEncoder;
 
     public PasswordVerifyResponse verifyPassword(Long customerId, PasswordVerifyRequest dto) {
-        Customer customer = loadCustomerPort.findById(customerId);
+        Customer customer = customerService.loadCustomer(customerId);
         boolean verified = customer.isPasswordSame(passwordEncoder, dto.password());
         return new PasswordVerifyResponse(verified);
     }

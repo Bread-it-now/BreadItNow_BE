@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomerInfoQueryService {
-    private final LoadCustomerPort loadCustomerPort;
+    private final CustomerService customerService;
 
     public CustomerInfoResponse getCustomerInfo(Long customerId) {
-        Customer customer = loadCustomerPort.findById(customerId);
+        Customer customer = customerService.loadCustomer(customerId);
         return CustomerInfoResponse.of(customer);
     }
 }

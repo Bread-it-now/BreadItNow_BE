@@ -55,7 +55,13 @@ public enum CustomerErrorCode implements ErrorCode {
 	AMOUNT_REQUIRED(BAD_REQUEST, "CD003", "금액은 필수 값입니다."),
 	INVALID_STOCK(BAD_REQUEST, "CD004", "재고는 0보다 작을 수 없습니다."),
 	PRODUCT_ALREADY_HIDDEN(CONFLICT, "BG009", "상품은 이미 숨김 상태입니다."),
-	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "BG010", "상품은 이미 숨김 해제 상태입니다.");
+	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "BG010", "상품은 이미 숨김 해제 상태입니다."),
+
+	/**
+	 * CE 000 FAVORITE
+	 */
+	ALREADY_FAVORITED(CONFLICT, "CE001", "이미 즐겨찾기된 상품입니다."),
+	NOT_FAVORITED(BAD_REQUEST, "CE002", "즐겨찾기되지 않은 상품입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

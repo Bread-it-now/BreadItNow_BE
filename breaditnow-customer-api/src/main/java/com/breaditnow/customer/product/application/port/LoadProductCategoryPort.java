@@ -4,6 +4,6 @@ import com.breaditnow.customer.product.domain.ProductCategory;
 
 import java.util.List;
 
-public interface ProductCategoryPort {
+public interface LoadProductCategoryPort {
     List<ProductCategory> findAllByIds(List<Long> productCategoryIds);
 }

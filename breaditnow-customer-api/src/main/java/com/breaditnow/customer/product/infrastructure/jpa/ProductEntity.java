@@ -4,6 +4,7 @@ import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.common.domain.ReleaseTime;
 import com.breaditnow.customer.common.infrastructure.entity.MoneyConverter;
 import com.breaditnow.customer.common.infrastructure.entity.ReleaseTimeConverter;
+import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
 import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -17,9 +18,9 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "product")
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class ProductEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -45,14 +46,33 @@ public class ProductEntity extends BaseEntity {
     private boolean isHidden;
 
     @ColumnDefault("0")
-    private Integer favoriteCounter;
+    private Integer favoriteCount;
 
     @ColumnDefault("0")
-    private Integer reservationCounter;
+    private Integer reservationCount;
 
     @Convert(converter = ReleaseTimeConverter.class)
     private List<ReleaseTime> releaseTimes;
 
     @Enumerated(STRING)
     private ProductType type;
+
+    public Product toDomain() {
+        return Product.builder()
+                .id(this.id)
+                .bakeryId(this.bakeryId)
+                .name(this.name)
+                .stock(this.stock)
+                .price(this.price)
+                .imageUrl(this.imageUrl)
+                .description(this.description)
+                .displayOrder(this.displayOrder)
+                .isActive(this.isActive)
+                .isHidden(this.isHidden)
+                .favoriteCounter(this.favoriteCount)
+                .reservationCounter(this.reservationCount)
+                .releaseTimes(this.releaseTimes)
+                .type(this.type)
+                .build();
+    }
 }

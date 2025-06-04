@@ -13,10 +13,10 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(name = "product_category")
-@Getter
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
+@Getter
 public class ProductCategoryEntity {
     @Id
     private Long id;
@@ -27,3 +27,5 @@ public class ProductCategoryEntity {
         return new ProductCategory(id, name);
     }
 }
+
+

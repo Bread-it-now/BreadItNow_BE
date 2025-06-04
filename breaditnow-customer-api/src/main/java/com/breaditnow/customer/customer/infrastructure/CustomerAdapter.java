@@ -9,6 +9,8 @@ import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import static com.breaditnow.domain.global.exception.DomainErrorCode.CUSTOMER_NOT_FOUND;
 
 @Repository
@@ -24,10 +26,9 @@ public class CustomerAdapter implements LoadCustomerPort, SaveCustomerPort {
     }
 
     @Override
-    public Customer findById(Long id) {
+    public Optional<Customer> findById(Long id) {
         return jpaCustomerRepository.findById(id)
-                .orElseThrow(() -> new DomainException(CUSTOMER_NOT_FOUND))
-                .toDomain();
+                .map(CustomerEntity::toDomain);
     }
 
     @Override

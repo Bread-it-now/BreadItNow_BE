@@ -18,6 +18,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.DUPLICATE_N
 @Service
 @RequiredArgsConstructor
 public class CustomerProfileService {
+    private final CustomerService customerService;
     private final LoadCustomerPort loadCustomerPort;
     private final SaveCustomerPort saveCustomerPort;
     private final SaveImageStoragePort storagePort;
@@ -29,7 +30,7 @@ public class CustomerProfileService {
             throw new DomainException(DUPLICATE_NICKNAME);
         }
 
-        Customer customer = loadCustomerPort.findById(customerId);
+        Customer customer = customerService.loadCustomer(customerId);
 
         customer.updateInfo(dto.nickname(), dto.phone(), passwordEncoder.encode(dto.newPassword()), profileImage, storagePort);
         customer = saveCustomerPort.save(customer);

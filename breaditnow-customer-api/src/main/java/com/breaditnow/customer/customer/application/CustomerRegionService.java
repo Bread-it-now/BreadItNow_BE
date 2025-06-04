@@ -17,13 +17,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CustomerRegionService {
-    private final LoadCustomerPort loadCustomerPort;
+    private final CustomerService customerService;
     private final SaveCustomerRegionPort saveCustomerRegionPort;
     private final LoadRegionPort loadRegionPort;
 
     @Transactional
     public void updateRegion(Long customerId, RegionUpdateRequest dto) {
-        Customer customer = loadCustomerPort.findById(customerId);
+        Customer customer = customerService.loadCustomer(customerId);
 
         List<RegionId> regionIds = dto.gugunCodes().stream()
                 .map(gugun -> new RegionId(dto.sidoCode(), gugun, null))
