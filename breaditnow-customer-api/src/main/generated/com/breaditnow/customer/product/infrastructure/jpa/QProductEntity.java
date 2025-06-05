@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -46,9 +45,9 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final StringPath name = createString("name");
 
-    public final SimplePath<com.breaditnow.customer.common.domain.Money> price = createSimple("price", com.breaditnow.customer.common.domain.Money.class);
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final ListPath<com.breaditnow.customer.common.domain.ReleaseTime, ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime>> releaseTimes = this.<com.breaditnow.customer.common.domain.ReleaseTime, ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime>>createList("releaseTimes", com.breaditnow.customer.common.domain.ReleaseTime.class, ComparablePath.class, PathInits.DIRECT2);
+    public final StringPath releaseTimes = createString("releaseTimes");
 
     public final NumberPath<Integer> reservationCount = createNumber("reservationCount", Integer.class);
 

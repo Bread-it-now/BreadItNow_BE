@@ -21,12 +21,12 @@ public class Product {
     private final boolean isHidden;
     private Integer favoriteCount;
     private Integer reservationCount;
-    private final List<ReleaseTime> releaseTimes;
+    private final ReleaseTimes releaseTimes;
     private final ProductType type;
 
     @Builder
     private Product(Long id, Long bakeryId, String name, Integer stock, Money price, String imageUrl, String description,
-            Integer displayOrder, boolean isActive, boolean isHidden, Integer favoriteCount, Integer reservationCount, List<ReleaseTime> releaseTimes, ProductType type) {
+            Integer displayOrder, boolean isActive, boolean isHidden, Integer favoriteCount, Integer reservationCount, ReleaseTimes releaseTimes, ProductType type) {
         this.id = id;
         this.bakeryId = bakeryId;
         this.name = name;

@@ -3,6 +3,7 @@ package com.breaditnow.customer.common.domain;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -10,12 +11,13 @@ import java.time.format.DateTimeParseException;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_TIME_FORMAT;
 
+@Getter
 @EqualsAndHashCode
 public class ReleaseTime implements Comparable<ReleaseTime> {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private final LocalTime time;
 
-    private ReleaseTime(LocalTime time) {
+    public ReleaseTime(LocalTime time) {
         this.time = time;
     }
 

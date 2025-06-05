@@ -11,7 +11,7 @@ public enum SortType {
 	POPULAR;   // 인기순 정렬
 
 	@JsonCreator
-	public static SortType from(String type) {
+	public static SortType of(String type) {
 		try {
 			return SortType.valueOf(type.toUpperCase());
 		} catch (IllegalArgumentException ex) {

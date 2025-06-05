@@ -1,17 +1,13 @@
 package com.breaditnow.customer.product.infrastructure.jpa;
 
 import com.breaditnow.customer.common.domain.Money;
-import com.breaditnow.customer.common.domain.ReleaseTime;
-import com.breaditnow.customer.common.infrastructure.entity.MoneyConverter;
-import com.breaditnow.customer.common.infrastructure.entity.ReleaseTimeConverter;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
+import com.breaditnow.customer.product.domain.ReleaseTimes;
 import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -32,8 +28,7 @@ public class ProductEntity extends BaseEntity {
 
     private Integer stock;
 
-    @Convert(converter = MoneyConverter.class)
-    private Money price;
+    private Integer price;
 
     private String imageUrl;
 
@@ -51,8 +46,7 @@ public class ProductEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer reservationCount;
 
-    @Convert(converter = ReleaseTimeConverter.class)
-    private List<ReleaseTime> releaseTimes;
+    private String releaseTimes;
 
     @Enumerated(STRING)
     private ProductType type;
@@ -63,7 +57,7 @@ public class ProductEntity extends BaseEntity {
                 product.getBakeryId(),
                 product.getName(),
                 product.getStock(),
-                product.getPrice(),
+                product.getPrice().getAmount(),
                 product.getImageUrl(),
                 product.getDescription(),
                 product.getDisplayOrder(),
@@ -71,7 +65,7 @@ public class ProductEntity extends BaseEntity {
                 product.isHidden(),
                 product.getFavoriteCount(),
                 product.getReservationCount(),
-                product.getReleaseTimes(),
+                product.getReleaseTimes().toString(),
                 product.getType()
         );
     }
@@ -82,7 +76,7 @@ public class ProductEntity extends BaseEntity {
                 .bakeryId(this.bakeryId)
                 .name(this.name)
                 .stock(this.stock)
-                .price(this.price)
+                .price(new Money(this.price))
                 .imageUrl(this.imageUrl)
                 .description(this.description)
                 .displayOrder(this.displayOrder)
@@ -90,7 +84,7 @@ public class ProductEntity extends BaseEntity {
                 .isHidden(this.isHidden)
                 .favoriteCount(this.favoriteCount)
                 .reservationCount(this.reservationCount)
-                .releaseTimes(this.releaseTimes)
+                .releaseTimes(ReleaseTimes.of(this.releaseTimes))
                 .type(this.type)
                 .build();
     }

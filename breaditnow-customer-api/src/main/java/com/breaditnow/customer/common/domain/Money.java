@@ -9,7 +9,7 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID
 @Getter
 @EqualsAndHashCode
 public class Money {
-    Integer amount;
+    private final Integer amount;
 
     public Money(Integer amount) {
         ValidationUtils.requireValid(amount, o -> o < 0, () -> new CustomerException(INVALID_AMOUNT));

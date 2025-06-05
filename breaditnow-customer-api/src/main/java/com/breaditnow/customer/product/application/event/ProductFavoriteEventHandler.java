@@ -6,10 +6,10 @@ import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteRemovedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ProductFavoriteEventHandler {
     private final SaveProductPort saveProductPort;

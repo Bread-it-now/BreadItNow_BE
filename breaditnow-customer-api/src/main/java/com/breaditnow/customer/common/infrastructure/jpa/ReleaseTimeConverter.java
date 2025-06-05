@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.infrastructure.entity;
+package com.breaditnow.customer.common.infrastructure.jpa;
 
 import com.breaditnow.customer.common.domain.ReleaseTime;
 import jakarta.persistence.AttributeConverter;

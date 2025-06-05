@@ -58,10 +58,20 @@ public enum CustomerErrorCode implements ErrorCode {
 	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "BG010", "상품은 이미 숨김 해제 상태입니다."),
 
 	/**
-	 * CE 000 FAVORITE
+	 * CE000 FAVORITE
 	 */
 	ALREADY_FAVORITED(CONFLICT, "CE001", "이미 즐겨찾기된 상품입니다."),
-	NOT_FAVORITED(BAD_REQUEST, "CE002", "즐겨찾기되지 않은 상품입니다.");
+	NOT_FAVORITED(BAD_REQUEST, "CE002", "즐겨찾기되지 않은 상품입니다."),
+
+	/**
+	 * CZ000 이외
+	 */
+	INVALID_PAGE_NUMBER(BAD_REQUEST, "CZ001", "페이지 번호는 0 이상이어야 합니다."),
+	INVALID_PAGE_SIZE(BAD_REQUEST, "CZ002", "페이지 크기는 1에서 100 사이여야 합니다."),
+	COORDINATES_REQUIRED(BAD_REQUEST, "CZ003", "위도와 경도는 null일 수 없습니다."),
+	INVALID_LATITUDE_RANGE(BAD_REQUEST, "CZ004", "위도는 -90과 90 사이여야 합니다."),
+	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "CZ005", "경도는 -180과 180 사이여야 합니다.");
+
 
 	private final HttpStatus httpStatus;
 	private final String code;
