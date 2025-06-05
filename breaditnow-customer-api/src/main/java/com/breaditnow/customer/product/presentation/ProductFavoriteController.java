@@ -6,10 +6,8 @@ import com.breaditnow.customer.product.application.ProductFavoriteService;
 import com.breaditnow.customer.product.application.request.ProductFavoriteSearchCriteria;
 import com.breaditnow.customer.product.infrastructure.ProductFavoriteAdapter;
 import com.breaditnow.customer.product.presentation.request.ProductFavoriteSearchRequest;
-import com.breaditnow.customer.product.presentation.response.ProductFavoriteDetailsResponse;
 import com.breaditnow.customer.product.presentation.response.ProductFavoritePageDetailsResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

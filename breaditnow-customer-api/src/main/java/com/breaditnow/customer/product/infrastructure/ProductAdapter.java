@@ -23,6 +23,6 @@ public class ProductAdapter implements LoadProductPort, SaveProductPort {
 
     @Override
     public void save(Product product) {
-        jpaProductRepository.save(ProductEntity.from(product));
+        jpaProductRepository.save(ProductEntity.of(product));
     }
 }

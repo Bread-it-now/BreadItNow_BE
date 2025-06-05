@@ -1,6 +1,9 @@
 package com.breaditnow.customer.product.infrastructure.jpa;
 
 import com.breaditnow.customer.common.domain.Money;
+import com.breaditnow.customer.common.domain.ReleaseTime;
+import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimeConverter;
+import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimesConverter;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
 import com.breaditnow.customer.product.domain.ReleaseTimes;
@@ -8,6 +11,9 @@ import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -46,12 +52,13 @@ public class ProductEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer reservationCount;
 
-    private String releaseTimes;
+    @Convert(converter = ReleaseTimesConverter.class)
+    private List<ReleaseTime> releaseTimes;
 
     @Enumerated(STRING)
     private ProductType type;
 
-    public static ProductEntity from(Product product) {
+    public static ProductEntity of(Product product) {
         return new ProductEntity(
                 product.getId(),
                 product.getBakeryId(),
@@ -65,7 +72,7 @@ public class ProductEntity extends BaseEntity {
                 product.isHidden(),
                 product.getFavoriteCount(),
                 product.getReservationCount(),
-                product.getReleaseTimes().toString(),
+                product.getReleaseTimes(),
                 product.getType()
         );
     }
@@ -84,7 +91,7 @@ public class ProductEntity extends BaseEntity {
                 .isHidden(this.isHidden)
                 .favoriteCount(this.favoriteCount)
                 .reservationCount(this.reservationCount)
-                .releaseTimes(ReleaseTimes.of(this.releaseTimes))
+                .releaseTimes(this.releaseTimes)
                 .type(this.type)
                 .build();
     }

@@ -1,11 +1,9 @@
 package com.breaditnow.customer.product.domain;
 
 import com.breaditnow.customer.common.domain.ReleaseTime;
-import io.micrometer.common.util.StringUtils;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +15,9 @@ public class ReleaseTimes {
         this.releaseTimes = releaseTimes;
     }
 
-    public static ReleaseTimes of(String releaseTimesStr) {
-        if (StringUtils.isEmpty(releaseTimesStr)) return new ReleaseTimes(List.of());
-        List<ReleaseTime> releaseTimeList = Arrays.stream(releaseTimesStr.split(";"))
+    public static ReleaseTimes of(List<String> releaseTimes) {
+        if (releaseTimes.isEmpty()) return new ReleaseTimes(List.of());
+        List<ReleaseTime> releaseTimeList = releaseTimes.stream()
                 .map(ReleaseTime::of)
                 .toList();
         return new ReleaseTimes(releaseTimeList);

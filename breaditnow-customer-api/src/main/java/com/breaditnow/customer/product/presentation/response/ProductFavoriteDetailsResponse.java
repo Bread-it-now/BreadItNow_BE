@@ -1,12 +1,14 @@
 package com.breaditnow.customer.product.presentation.response;
 
+import com.breaditnow.customer.common.domain.ReleaseTime;
+import com.breaditnow.customer.common.presentation.ReleaseTimeList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductFavoriteDetailsResponse {
@@ -15,7 +17,8 @@ public class ProductFavoriteDetailsResponse {
     private String name;
     private String image;
     private Integer price;
-    private String releaseTimes;
+    @ReleaseTimeList
+    private List<ReleaseTime> releaseTimes;
     private boolean isBakeryActive;
     private boolean isProductActive;
 }

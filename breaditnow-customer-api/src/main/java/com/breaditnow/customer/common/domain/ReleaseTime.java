@@ -1,6 +1,8 @@
 package com.breaditnow.customer.common.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,6 +46,11 @@ public class ReleaseTime implements Comparable<ReleaseTime> {
     @Override
     public int compareTo(ReleaseTime other) {
         return this.time.compareTo(other.time);
+    }
+
+    @Override
+    public String toString() {
+        return time.format(FORMATTER);
     }
 }
 
