@@ -2,18 +2,15 @@ package com.breaditnow.customer.product.infrastructure.jpa;
 
 import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.common.domain.ReleaseTime;
-import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimeConverter;
 import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimesConverter;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
-import com.breaditnow.customer.product.domain.ReleaseTimes;
 import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;

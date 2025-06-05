@@ -18,8 +18,12 @@ public record GeoPoint(
     }
 
     public static GeoPoint of(Double latitude, Double longitude) {
+        if ((latitude == null && longitude != null) || (latitude != null && longitude == null)){
+            return null;
+        }
         return new GeoPoint(latitude, longitude);
     }
+
 
     private static void validate(Double latitude, Double longitude) {
         if (latitude == null || longitude == null) {
@@ -41,6 +45,5 @@ public record GeoPoint(
         if (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
             throw new CustomerException(INVALID_LONGITUDE_RANGE);
         }
-
     }
 }

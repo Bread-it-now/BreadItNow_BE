@@ -45,9 +45,9 @@ public class QueryProductFavoriteRepository {
                         productFavoriteEntity.isActive.eq(true)
                 );
 
-        applySorting(query, criteria.getSortType(), criteria.getLocation());
+        applySorting(query, criteria.sortType(), criteria.location());
 
-        Pageable pageable = criteria.getPagination().toPageable();
+        Pageable pageable = criteria.pagination().toPageable();
         query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
