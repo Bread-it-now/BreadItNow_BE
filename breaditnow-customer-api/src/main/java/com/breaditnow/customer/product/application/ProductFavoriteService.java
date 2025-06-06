@@ -13,19 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BREAD_FAVORITE_NOT_FOUND;
-import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 public class ProductFavoriteService {
     private final SaveProductFavoritePort saveProductFavoritePort;
     private final LoadProductFavoritePort loadProductFavoritePort;
-    private final LoadProductPort loadProductPort;
+    private final ProductValidator productValidator;
     private final DomainEventPublisher domainEventPublisher;
 
     @Transactional
     public void addFavoriteProduct(Long customerId, Long productId) {
-        validateProduct(productId);
+        productValidator.validateProductExists(productId);
 
         ProductFavorite productFavorite = loadProductFavoritePort
                 .loadProductFavorite(customerId, productId)
@@ -42,7 +41,7 @@ public class ProductFavoriteService {
 
     @Transactional
     public void removeFavoriteProduct(Long customerId, Long productId) {
-        validateProduct(productId);
+        productValidator.validateProductExists(productId);
 
         ProductFavorite productFavorite = loadProductFavoritePort
                 .loadProductFavorite(customerId, productId)
@@ -52,11 +51,5 @@ public class ProductFavoriteService {
 
         saveProductFavoritePort.save(productFavorite);
         domainEventPublisher.publish(new ProductFavoriteRemovedEvent(productId));
-    }
-
-    private void validateProduct(Long productId) {
-        if (loadProductPort.loadProduct(productId).isEmpty()) {
-            throw new DomainException(PRODUCT_NOT_FOUND);
-        }
     }
 }
