@@ -26,7 +26,7 @@ public class QueryProductFavoriteRepository {
     private static final QBakeryEntity bakeryEntity = QBakeryEntity.bakeryEntity;
     private final DistanceExpressionProvider distanceExpressionProvider;
 
-    public Page<ProductFavoriteDetailsResponse> fetchProductFavoriteList(Long customerId, ProductFavoriteSearchCriteria criteria) {
+    public Page<ProductFavoriteDetailsResponse> fetchProductFavorites(Long customerId, ProductFavoriteSearchCriteria criteria) {
         DistanceExpressionProvider.Location bakeryLocation = DistanceExpressionProvider.Location.of(bakeryEntity.latitude, bakeryEntity.longitude);
         NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(criteria.location(), bakeryLocation);
 

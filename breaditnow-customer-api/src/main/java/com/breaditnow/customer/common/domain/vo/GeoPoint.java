@@ -18,7 +18,7 @@ public record GeoPoint(
     }
 
     public static GeoPoint of(Double latitude, Double longitude) {
-        if ((latitude == null && longitude != null) || (latitude != null && longitude == null)){
+        if (latitude == null || longitude == null){
             return null;
         }
         return new GeoPoint(latitude, longitude);

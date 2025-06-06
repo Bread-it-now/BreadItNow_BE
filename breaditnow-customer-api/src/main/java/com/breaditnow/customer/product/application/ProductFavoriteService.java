@@ -2,7 +2,6 @@ package com.breaditnow.customer.product.application;
 
 import com.breaditnow.customer.common.domain.DomainEventPublisher;
 import com.breaditnow.customer.product.application.port.LoadProductFavoritePort;
-import com.breaditnow.customer.product.application.port.LoadProductPort;
 import com.breaditnow.customer.product.application.port.SaveProductFavoritePort;
 import com.breaditnow.customer.product.domain.ProductFavorite;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;

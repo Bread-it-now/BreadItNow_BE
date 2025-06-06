@@ -35,7 +35,7 @@ public class ProductFavoriteAdapter implements SaveProductFavoritePort, LoadProd
     }
 
     public ProductFavoritePageDetailsResponse getFavoriteProducts(Long customerId, ProductFavoriteSearchCriteria productFavoriteSearchCriteria) {
-        Page<ProductFavoriteDetailsResponse> productFavoriteDetailsResponses = queryProductFavoriteRepository.fetchProductFavoriteList(customerId, productFavoriteSearchCriteria);
+        Page<ProductFavoriteDetailsResponse> productFavoriteDetailsResponses = queryProductFavoriteRepository.fetchProductFavorites(customerId, productFavoriteSearchCriteria);
         return ProductFavoritePageDetailsResponse.of(productFavoriteDetailsResponses);
     }
 }
