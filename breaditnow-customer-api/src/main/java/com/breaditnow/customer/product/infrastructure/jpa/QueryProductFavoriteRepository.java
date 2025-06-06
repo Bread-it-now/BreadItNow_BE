@@ -60,7 +60,6 @@ public class QueryProductFavoriteRepository {
 
         List<ProductFavoriteDetailsResponse> content = query.fetch();
 
-
         JPAQuery<Long> countQuery = queryFactory
                 .select(productFavoriteEntity.count())
                 .from(productFavoriteEntity)
@@ -73,11 +72,6 @@ public class QueryProductFavoriteRepository {
     }
 
     private void applySorting(JPAQuery<?> query, SortType sortType, NumberExpression<Double> distanceExpression) {
-        if (sortType == null) {
-            query.orderBy(productFavoriteEntity.createdAt.desc(), productEntity.id.asc());
-            return;
-        }
-
         switch (sortType) {
             case DISTANCE -> query.orderBy(distanceExpression.asc(), productEntity.id.asc());
             case POPULAR -> query.orderBy(productEntity.favoriteCount.desc(), productEntity.id.asc());
