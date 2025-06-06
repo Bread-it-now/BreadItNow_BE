@@ -14,11 +14,12 @@ import java.util.List;
 public class ProductFavoriteDetailsResponse {
     private Long productId;
     private Long bakeryId;
-    private String name;
-    private String image;
+    private String productName;
+    private String productImage;
     private Integer price;
     @ReleaseTimeList
     private List<ReleaseTime> releaseTimes;
     private boolean isBakeryActive;
     private boolean isProductActive;
+    private Double distance;
 }
