@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.presentation.response;
 
-import com.breaditnow.customer.common.domain.ReleaseTime;
+import com.breaditnow.customer.common.domain.DailyTime;
 import com.breaditnow.customer.common.presentation.ReleaseTimeList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class ProductFavoriteDetailsResponse {
     private String productImage;
     private Integer price;
     @ReleaseTimeList
-    private List<ReleaseTime> releaseTimes;
+    private List<DailyTime> dailyTimes;
     private boolean isBakeryActive;
     private boolean isProductActive;
     private Double distance;

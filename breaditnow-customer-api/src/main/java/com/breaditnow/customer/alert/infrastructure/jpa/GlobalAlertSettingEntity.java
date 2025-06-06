@@ -2,7 +2,7 @@ package com.breaditnow.customer.alert.infrastructure.jpa;
 
 import com.breaditnow.customer.alert.domain.DayOfWeekSet;
 import com.breaditnow.customer.alert.domain.GlobalAlertSetting;
-import com.breaditnow.customer.common.domain.ReleaseTime;
+import com.breaditnow.customer.common.domain.DailyTime;
 import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimeConverter;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,14 +28,14 @@ public class GlobalAlertSettingEntity {
 
     @Column(name = "dnd_start_time", columnDefinition = "TIME", nullable = false)
     @Convert(converter = ReleaseTimeConverter.class)
-    private ReleaseTime startTime;
+    private DailyTime startTime;
 
     @Column(name = "dnd_end_time", columnDefinition = "TIME", nullable = false)
     @Convert(converter = ReleaseTimeConverter.class)
-    private ReleaseTime endTime;
+    private DailyTime endTime;
 
     @Builder
-    private GlobalAlertSettingEntity(Long customerId, boolean active, DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime) {
+    private GlobalAlertSettingEntity(Long customerId, boolean active, DayOfWeekSet days, DailyTime startTime, DailyTime endTime) {
         this.customerId = customerId;
         this.active = active;
         this.days = days;

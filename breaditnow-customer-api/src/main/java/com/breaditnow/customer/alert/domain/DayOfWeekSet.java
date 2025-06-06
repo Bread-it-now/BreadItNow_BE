@@ -13,13 +13,9 @@ import java.util.stream.Collectors;
 import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
 
-@EqualsAndHashCode
-public class DayOfWeekSet {
-    private final Set<DayOfWeek> days;
-
+public record DayOfWeekSet(Set<DayOfWeek> days) {
     @Builder
-    public DayOfWeekSet(Set<DayOfWeek> days) {
-        this.days = days;
+    public DayOfWeekSet {
     }
 
     public static DayOfWeekSet of(Set<String> days) {
@@ -30,10 +26,10 @@ public class DayOfWeekSet {
                             .map(String::toUpperCase)
                             .map(DayOfWeek::valueOf)
                             .collect(Collectors.collectingAndThen(
-                                Collectors.toSet(),
-                                EnumSet::copyOf
+                                            Collectors.toSet(),
+                                            EnumSet::copyOf
+                                    )
                             )
-                        )
                     ).build();
         } catch (IllegalArgumentException e) {
             throw new CustomerException(INVALID_DND_DAY_VALUE);
@@ -48,6 +44,7 @@ public class DayOfWeekSet {
         return days.contains(day);
     }
 
+    @Override
     public Set<DayOfWeek> days() {
         return Collections.unmodifiableSet(days);
     }

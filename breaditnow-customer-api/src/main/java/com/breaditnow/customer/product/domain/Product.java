@@ -1,7 +1,7 @@
 package com.breaditnow.customer.product.domain;
 
 import com.breaditnow.customer.common.domain.Money;
-import com.breaditnow.customer.common.domain.ReleaseTime;
+import com.breaditnow.customer.common.domain.DailyTime;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,12 +21,12 @@ public class Product {
     private final boolean isHidden;
     private Integer favoriteCount;
     private Integer reservationCount;
-    private final List<ReleaseTime> releaseTimes;
+    private final List<DailyTime> dailyTimes;
     private final ProductType type;
 
     @Builder
     private Product(Long id, Long bakeryId, String name, Integer stock, Money price, String imageUrl, String description,
-            Integer displayOrder, boolean isActive, boolean isHidden, Integer favoriteCount, Integer reservationCount, List<ReleaseTime> releaseTimes, ProductType type) {
+                    Integer displayOrder, boolean isActive, boolean isHidden, Integer favoriteCount, Integer reservationCount, List<DailyTime> dailyTimes, ProductType type) {
         this.id = id;
         this.bakeryId = bakeryId;
         this.name = name;
@@ -39,7 +39,7 @@ public class Product {
         this.isHidden = isHidden;
         this.favoriteCount = favoriteCount;
         this.reservationCount = reservationCount;
-        this.releaseTimes = releaseTimes;
+        this.dailyTimes = dailyTimes;
         this.type = type;
     }
 

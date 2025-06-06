@@ -27,6 +27,8 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final ListPath<com.breaditnow.customer.common.domain.DailyTime, ComparablePath<com.breaditnow.customer.common.domain.DailyTime>> dailyTimes = this.<com.breaditnow.customer.common.domain.DailyTime, ComparablePath<com.breaditnow.customer.common.domain.DailyTime>>createList("dailyTimes", com.breaditnow.customer.common.domain.DailyTime.class, ComparablePath.class, PathInits.DIRECT2);
+
     public final StringPath description = createString("description");
 
     public final NumberPath<Integer> displayOrder = createNumber("displayOrder", Integer.class);
@@ -47,8 +49,6 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
     public final StringPath name = createString("name");
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
-
-    public final ListPath<com.breaditnow.customer.common.domain.ReleaseTime, ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime>> releaseTimes = this.<com.breaditnow.customer.common.domain.ReleaseTime, ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime>>createList("releaseTimes", com.breaditnow.customer.common.domain.ReleaseTime.class, ComparablePath.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> reservationCount = createNumber("reservationCount", Integer.class);
 

@@ -1,11 +1,6 @@
 package com.breaditnow.customer.common.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -13,30 +8,23 @@ import java.time.format.DateTimeParseException;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_TIME_FORMAT;
 
-@Getter
-@EqualsAndHashCode
-public class ReleaseTime implements Comparable<ReleaseTime> {
+public record DailyTime(LocalTime time) implements Comparable<DailyTime> {
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-    private final LocalTime time;
 
-    public ReleaseTime(LocalTime time) {
-        this.time = time;
-    }
-
-    public static ReleaseTime of(String hhmm) {
+    public static DailyTime of(String hm) {
         try {
-            LocalTime lt = LocalTime.parse(hhmm, FORMATTER);
-            return new ReleaseTime(lt);
+            LocalTime lt = LocalTime.parse(hm, FORMATTER);
+            return new DailyTime(lt);
         } catch (DateTimeParseException e) {
             throw new CustomerException(INVALID_TIME_FORMAT);
         }
     }
 
-    public static ReleaseTime of(LocalTime localTime) {
+    public static DailyTime of(LocalTime localTime) {
         if (localTime == null) {
             throw new CustomerException(INVALID_TIME_FORMAT);
         }
-        return new ReleaseTime(localTime);
+        return new DailyTime(localTime);
     }
 
     public LocalTime toLocalTime() {
@@ -44,7 +32,7 @@ public class ReleaseTime implements Comparable<ReleaseTime> {
     }
 
     @Override
-    public int compareTo(ReleaseTime other) {
+    public int compareTo(DailyTime other) {
         return this.time.compareTo(other.time);
     }
 

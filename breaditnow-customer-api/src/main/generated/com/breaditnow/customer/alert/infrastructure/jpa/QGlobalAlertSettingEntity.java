@@ -25,9 +25,9 @@ public class QGlobalAlertSettingEntity extends EntityPathBase<GlobalAlertSetting
 
     public final SimplePath<com.breaditnow.customer.alert.domain.DayOfWeekSet> days = createSimple("days", com.breaditnow.customer.alert.domain.DayOfWeekSet.class);
 
-    public final ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime> endTime = createComparable("endTime", com.breaditnow.customer.common.domain.ReleaseTime.class);
+    public final ComparablePath<com.breaditnow.customer.common.domain.DailyTime> endTime = createComparable("endTime", com.breaditnow.customer.common.domain.DailyTime.class);
 
-    public final ComparablePath<com.breaditnow.customer.common.domain.ReleaseTime> startTime = createComparable("startTime", com.breaditnow.customer.common.domain.ReleaseTime.class);
+    public final ComparablePath<com.breaditnow.customer.common.domain.DailyTime> startTime = createComparable("startTime", com.breaditnow.customer.common.domain.DailyTime.class);
 
     public QGlobalAlertSettingEntity(String variable) {
         super(GlobalAlertSettingEntity.class, forVariable(variable));

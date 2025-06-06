@@ -1,8 +1,8 @@
 package com.breaditnow.customer.product.infrastructure.jpa;
 
+import com.breaditnow.customer.common.domain.DailyTime;
 import com.breaditnow.customer.common.domain.Money;
-import com.breaditnow.customer.common.domain.ReleaseTime;
-import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimesConverter;
+import com.breaditnow.customer.common.infrastructure.jpa.DailyTimesConverter;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
 import com.breaditnow.domain.global.entity.BaseEntity;
@@ -49,8 +49,8 @@ public class ProductEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer reservationCount;
 
-    @Convert(converter = ReleaseTimesConverter.class)
-    private List<ReleaseTime> releaseTimes;
+    @Convert(converter = DailyTimesConverter.class)
+    private List<DailyTime> dailyTimes;
 
     @Enumerated(STRING)
     private ProductType type;
@@ -69,7 +69,7 @@ public class ProductEntity extends BaseEntity {
                 product.isHidden(),
                 product.getFavoriteCount(),
                 product.getReservationCount(),
-                product.getReleaseTimes(),
+                product.getDailyTimes(),
                 product.getType()
         );
     }
@@ -88,7 +88,7 @@ public class ProductEntity extends BaseEntity {
                 .isHidden(this.isHidden)
                 .favoriteCount(this.favoriteCount)
                 .reservationCount(this.reservationCount)
-                .releaseTimes(this.releaseTimes)
+                .dailyTimes(this.dailyTimes)
                 .type(this.type)
                 .build();
     }

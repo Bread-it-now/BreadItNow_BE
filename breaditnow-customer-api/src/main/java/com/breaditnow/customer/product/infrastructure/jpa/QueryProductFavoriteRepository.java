@@ -38,7 +38,7 @@ public class QueryProductFavoriteRepository {
                                 productEntity.name.as("productName"),
                                 productEntity.imageUrl.as("image"),
                                 productEntity.price.as("price"),
-                                productEntity.releaseTimes.as("releaseTimes"),
+                                productEntity.dailyTimes.as("releaseTimes"),
                                 bakeryEntity.isActive.as("isBakeryActive"),
                                 productEntity.isActive.as("isProductActive"),
                                 distanceExpression.as("distance")

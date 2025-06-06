@@ -1,15 +1,15 @@
 package com.breaditnow.customer.common.infrastructure.jpa;
 
-import com.breaditnow.customer.common.domain.ReleaseTime;
+import com.breaditnow.customer.common.domain.DailyTime;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 import java.time.LocalTime;
 
 @Converter
-public class ReleaseTimeConverter implements AttributeConverter<ReleaseTime, LocalTime> {
+public class ReleaseTimeConverter implements AttributeConverter<DailyTime, LocalTime> {
     @Override
-    public LocalTime convertToDatabaseColumn(ReleaseTime attribute) {
+    public LocalTime convertToDatabaseColumn(DailyTime attribute) {
         if (attribute == null) {
             return null;
         }
@@ -17,10 +17,10 @@ public class ReleaseTimeConverter implements AttributeConverter<ReleaseTime, Loc
     }
 
     @Override
-    public ReleaseTime convertToEntityAttribute(LocalTime dbData) {
+    public DailyTime convertToEntityAttribute(LocalTime dbData) {
         if (dbData == null) {
             return null;
         }
-        return ReleaseTime.of(dbData);
+        return DailyTime.of(dbData);
     }
 }
