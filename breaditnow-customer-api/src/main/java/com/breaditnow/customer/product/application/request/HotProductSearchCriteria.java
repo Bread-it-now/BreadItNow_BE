@@ -6,7 +6,7 @@ import com.breaditnow.customer.common.domain.vo.Period;
 import com.breaditnow.customer.common.domain.vo.PeriodRange;
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.product.domain.vo.HotSortType;
-import com.breaditnow.customer.product.presentation.HotProductSearchRequest;
+import com.breaditnow.customer.product.presentation.request.HotProductSearchRequest;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.PERIOD_REQUIRED_FOR_RESERVATION_SORT;
 import static com.breaditnow.customer.product.domain.vo.HotSortType.RESERVATION;

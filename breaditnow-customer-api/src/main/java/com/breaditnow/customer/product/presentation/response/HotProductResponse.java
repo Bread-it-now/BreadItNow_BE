@@ -1,12 +1,10 @@
 package com.breaditnow.customer.product.presentation.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class HotProductResponse {
     private Long productId;
     private Long bakeryId;

@@ -16,9 +16,7 @@ public class ProductCategoryAdapter implements LoadProductCategoryPort {
 
     @Override
     public List<ProductCategory> findAllByIds(List<Long> productCategoryIds) {
-        List<ProductCategoryEntity> entities = jpaProductCategoryRepository.findAllById(productCategoryIds);
-
-        return entities.stream()
+        return jpaProductCategoryRepository.findAllById(productCategoryIds).stream()
                 .map(ProductCategoryEntity::toProductCategory)
                 .toList();
     }

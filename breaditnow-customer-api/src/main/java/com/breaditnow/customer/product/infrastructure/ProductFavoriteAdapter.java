@@ -24,8 +24,8 @@ public class ProductFavoriteAdapter implements SaveProductFavoritePort, LoadProd
 
     @Override
     public void save(ProductFavorite productFavorite) {
-        ProductFavoriteEntity productFavoriteEntity = new ProductFavoriteEntity(productFavorite);
-        jpaProductFavoriteRepository.save(productFavoriteEntity);
+        ProductFavoriteEntity entity = new ProductFavoriteEntity(productFavorite);
+        jpaProductFavoriteRepository.save(entity);
     }
 
     @Override

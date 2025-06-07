@@ -4,6 +4,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import com.breaditnow.customer.product.application.request.HotProductSearchCriteria;
 import com.breaditnow.customer.product.infrastructure.ProductAdapter;
+import com.breaditnow.customer.product.presentation.request.HotProductSearchRequest;
 import com.breaditnow.customer.product.presentation.response.HotProductPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

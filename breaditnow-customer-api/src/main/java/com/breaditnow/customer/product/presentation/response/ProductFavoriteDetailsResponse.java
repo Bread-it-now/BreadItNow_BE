@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductFavoriteDetailsResponse {
     private Long productId;
     private Long bakeryId;

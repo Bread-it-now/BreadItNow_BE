@@ -1,4 +1,4 @@
-package com.breaditnow.customer.product.presentation;
+package com.breaditnow.customer.product.presentation.request;
 
 public record HotProductSearchRequest(
         Integer page,
