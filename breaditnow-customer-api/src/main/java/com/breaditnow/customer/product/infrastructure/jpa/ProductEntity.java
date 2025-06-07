@@ -46,9 +46,6 @@ public class ProductEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer favoriteCount;
 
-    @ColumnDefault("0")
-    private Integer reservationCount;
-
     @Convert(converter = DailyTimesConverter.class)
     private List<DailyTime> releaseTimes;
 
@@ -68,7 +65,6 @@ public class ProductEntity extends BaseEntity {
                 product.isActive(),
                 product.isHidden(),
                 product.getFavoriteCount(),
-                product.getReservationCount(),
                 product.getReleaseTimes(),
                 product.getType()
         );
@@ -87,7 +83,6 @@ public class ProductEntity extends BaseEntity {
                 .isActive(this.isActive)
                 .isHidden(this.isHidden)
                 .favoriteCount(this.favoriteCount)
-                .reservationCount(this.reservationCount)
                 .releaseTimes(this.releaseTimes)
                 .type(this.type)
                 .build();

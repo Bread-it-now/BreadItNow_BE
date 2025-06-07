@@ -50,8 +50,6 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final ListPath<com.breaditnow.customer.common.domain.DailyTime, ComparablePath<com.breaditnow.customer.common.domain.DailyTime>> releaseTimes = this.<com.breaditnow.customer.common.domain.DailyTime, ComparablePath<com.breaditnow.customer.common.domain.DailyTime>>createList("releaseTimes", com.breaditnow.customer.common.domain.DailyTime.class, ComparablePath.class, PathInits.DIRECT2);
 
-    public final NumberPath<Integer> reservationCount = createNumber("reservationCount", Integer.class);
-
     public final NumberPath<Integer> stock = createNumber("stock", Integer.class);
 
     public final EnumPath<com.breaditnow.customer.product.domain.ProductType> type = createEnum("type", com.breaditnow.customer.product.domain.ProductType.class);
