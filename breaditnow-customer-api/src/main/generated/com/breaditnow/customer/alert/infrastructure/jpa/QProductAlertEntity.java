@@ -24,12 +24,12 @@ public class QProductAlertEntity extends EntityPathBase<ProductAlertEntity> {
 
     public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
 
-    public final BooleanPath active = createBoolean("active");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final QProductAlertEntityId id;
+
+    public final BooleanPath isActive = createBoolean("isActive");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;

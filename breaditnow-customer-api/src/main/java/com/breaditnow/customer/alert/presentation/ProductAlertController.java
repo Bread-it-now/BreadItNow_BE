@@ -1,13 +1,11 @@
 package com.breaditnow.customer.alert.presentation;
 
-import com.breaditnow.customer.alert.application.response.ProductAlertToggleResponse;
-import org.springframework.web.bind.annotation.*;
-
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.alert.application.ProductAlertService;
+import com.breaditnow.customer.alert.application.response.ProductAlertToggleResponse;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,18 +26,7 @@ public class ProductAlertController {
 	}
 
 	@PatchMapping("/product/{productId}/toggle")
-	public ApiSuccessResponse<ProductAlertToggleResponse> toggleProductAlert(
-		@AuthCustomer Long customerId,
-		@PathVariable("productId") Long productId) {
+	public ApiSuccessResponse<ProductAlertToggleResponse> toggleProductAlert(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
 		return ApiSuccessResponse.of(productAlertService.toggleProductAlert(customerId, productId));
 	}
-//
-//	@GetMapping("/product")
-//	public ApiSuccessResponse<CustomerProductAlertPageResponse> getProductAlerts(
-//		@AuthCustomer Long customerId,
-//		@RequestParam(name = "page", defaultValue = "0") int page,
-//		@RequestParam(name = "size", defaultValue = "10") int size
-//	) {
-//		return ApiSuccessResponse.of(productAlertService.getProductAlerts(customerId, page, size));
-//	}
 }

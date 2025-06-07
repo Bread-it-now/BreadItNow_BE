@@ -16,14 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class GlobalAlertService {
     private final SaveGlobalAlertPort saveGlobalAlertPort;
     private final LoadGlobalAlertPort loadGlobalAlertPort;
+
     public GlobalAlertResponse getDoNotDisturbSetting(Long customerId) {
         GlobalAlertSetting globalAlertSetting = loadGlobalAlertPort.findByCustomerId(customerId);
         return GlobalAlertResponse.of(globalAlertSetting);
     }
 
     @Transactional
-    public void updateDoNotDisturbSetting(Long customerId, GlobalAlertUpdateRequest dto) {
-        GlobalAlertSetting dnd = GlobalAlertSetting.of(dto.days(), dto.startTime(), dto.endTime(), true);
+    public void updateDoNotDisturbSetting(Long customerId, GlobalAlertUpdateRequest request) {
+        GlobalAlertSetting dnd = GlobalAlertSetting.create(request.days(), request.startTime(), request.endTime(), true);
         saveGlobalAlertPort.save(customerId, dnd);
     }
 

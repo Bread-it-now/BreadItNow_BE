@@ -32,7 +32,7 @@ class GlobalAlertSettingTest {
             LocalTime endTime = LocalTime.of(18, 0);
 
             // when
-            GlobalAlertSetting dnd = GlobalAlertSetting.of(days, startTime, endTime, true);
+            GlobalAlertSetting dnd = GlobalAlertSetting.create(days, startTime, endTime, true);
 
             // then
             assertThat(dnd.isActive()).isTrue();
@@ -50,7 +50,7 @@ class GlobalAlertSettingTest {
             LocalTime endTime = LocalTime.of(10, 0);
 
             // when & then
-            assertThatThrownBy(() -> GlobalAlertSetting.of(days, startTime, endTime, true))
+            assertThatThrownBy(() -> GlobalAlertSetting.create(days, startTime, endTime, true))
                     .isInstanceOf(CustomerException.class)
                     .hasFieldOrPropertyWithValue("errorCode", INVALID_TIME_RANGE);
         }
@@ -103,7 +103,7 @@ class GlobalAlertSettingTest {
     }
 
     private GlobalAlertSetting createActiveDoNotDisturb() {
-        return GlobalAlertSetting.of(
+        return GlobalAlertSetting.create(
                 Set.of("MONDAY"),
                 LocalTime.of(10, 0),
                 LocalTime.of(18, 0),
@@ -112,7 +112,7 @@ class GlobalAlertSettingTest {
     }
 
     private GlobalAlertSetting createInactiveDoNotDisturb() {
-        return GlobalAlertSetting.of(
+        return GlobalAlertSetting.create(
                 Set.of("MONDAY"),
                 LocalTime.of(10, 0),
                 LocalTime.of(18, 0),

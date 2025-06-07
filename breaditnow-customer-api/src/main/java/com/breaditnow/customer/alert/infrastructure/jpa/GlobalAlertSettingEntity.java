@@ -54,6 +54,11 @@ public class GlobalAlertSettingEntity {
     }
 
     public GlobalAlertSetting toDomain() {
-        return GlobalAlertSetting.from(days, startTime, endTime, active);
+        return GlobalAlertSetting.builder()
+                .days(days)
+                .startTime(startTime)
+                .endTime(endTime)
+                .active(active)
+                .build();
     }
 }

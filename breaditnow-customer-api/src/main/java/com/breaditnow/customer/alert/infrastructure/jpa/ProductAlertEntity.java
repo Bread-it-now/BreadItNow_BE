@@ -17,15 +17,15 @@ import static lombok.AccessLevel.PROTECTED;
 public class ProductAlertEntity extends BaseEntity {
     @EmbeddedId
     private ProductAlertEntityId id;
-    private boolean active;
+    private boolean isActive;
 
     public ProductAlertEntity(ProductAlert productAlert) {
         this.id = new ProductAlertEntityId(productAlert.getCustomerId(), productAlert.getProductId());
-        this.active = productAlert.isActive();
+        this.isActive = productAlert.isActive();
     }
 
     public ProductAlert toDomain() {
-        return ProductAlert.from(id.getCustomerId(), id.getProductId(), active);
+        return ProductAlert.from(id.getCustomerId(), id.getProductId(), isActive);
     }
 }
 

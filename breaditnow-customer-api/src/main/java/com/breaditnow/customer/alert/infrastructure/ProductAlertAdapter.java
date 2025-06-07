@@ -5,11 +5,11 @@ import com.breaditnow.customer.alert.domain.port.LoadProductAlertPort;
 import com.breaditnow.customer.alert.domain.port.SaveProductAlertPort;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepository;
 import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
-import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntityId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_FOUND;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,20 +25,13 @@ public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAle
     @Override
     public void delete(ProductAlert productAlert) {
         ProductAlertEntity entity = new ProductAlertEntity(productAlert);
-        jpaProductAlertRepository.deleteById(entity.getId());
+        jpaProductAlertRepository.save(entity);
     }
 
     @Override
-    public boolean isAlerted(ProductAlert productAlert) {
-        ProductAlertEntity entity = new ProductAlertEntity(productAlert);
-        return jpaProductAlertRepository.existsById(entity.getId());
-    }
-
-    @Override
-    public ProductAlert findById(ProductAlert productAlert) {
-        ProductAlertEntity entity = new ProductAlertEntity(productAlert);
-        return  jpaProductAlertRepository.findById(entity.getId())
-                .map(ProductAlertEntity::toDomain)
-                .orElseThrow(() -> new DomainException(ALERT_NOT_FOUND));
+    public Optional<ProductAlert> loadProductAlert(Long customerId, Long productId) {
+        ProductAlertEntityId productAlertEntityId = new ProductAlertEntityId(customerId, productId);
+        return jpaProductAlertRepository.findById(productAlertEntityId)
+                .map(ProductAlertEntity::toDomain);
     }
 }

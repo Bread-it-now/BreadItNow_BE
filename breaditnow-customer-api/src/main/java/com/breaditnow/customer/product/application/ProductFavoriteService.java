@@ -23,10 +23,9 @@ public class ProductFavoriteService {
 
     @Transactional
     public void addFavoriteProduct(Long customerId, Long productId) {
-        productValidator.validateProductExists(productId);
+        productValidator.validateProductExist(productId);
 
-        ProductFavorite productFavorite = loadProductFavoritePort
-                .loadProductFavorite(customerId, productId)
+        ProductFavorite productFavorite = loadProductFavoritePort.loadProductFavorite(customerId, productId)
                 .map(favorite -> {
                     favorite.activate();
                     return favorite;
@@ -40,7 +39,7 @@ public class ProductFavoriteService {
 
     @Transactional
     public void removeFavoriteProduct(Long customerId, Long productId) {
-        productValidator.validateProductExists(productId);
+        productValidator.validateProductExist(productId);
 
         ProductFavorite productFavorite = loadProductFavoritePort
                 .loadProductFavorite(customerId, productId)

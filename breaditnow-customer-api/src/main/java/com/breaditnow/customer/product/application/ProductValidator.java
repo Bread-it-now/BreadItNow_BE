@@ -18,7 +18,7 @@ public class ProductValidator {
                 .orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
     }
 
-    public void validateProductExists(Long productId) {
+    public void validateProductExist(Long productId) {
         if (loadProductPort.loadProduct(productId).isEmpty()) {
             throw new DomainException(PRODUCT_NOT_FOUND);
         }
