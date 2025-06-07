@@ -50,7 +50,7 @@ public class ProductEntity extends BaseEntity {
     private Integer reservationCount;
 
     @Convert(converter = DailyTimesConverter.class)
-    private List<DailyTime> dailyTimes;
+    private List<DailyTime> releaseTimes;
 
     @Enumerated(STRING)
     private ProductType type;
@@ -69,7 +69,7 @@ public class ProductEntity extends BaseEntity {
                 product.isHidden(),
                 product.getFavoriteCount(),
                 product.getReservationCount(),
-                product.getDailyTimes(),
+                product.getReleaseTimes(),
                 product.getType()
         );
     }
@@ -88,7 +88,7 @@ public class ProductEntity extends BaseEntity {
                 .isHidden(this.isHidden)
                 .favoriteCount(this.favoriteCount)
                 .reservationCount(this.reservationCount)
-                .dailyTimes(this.dailyTimes)
+                .releaseTimes(this.releaseTimes)
                 .type(this.type)
                 .build();
     }

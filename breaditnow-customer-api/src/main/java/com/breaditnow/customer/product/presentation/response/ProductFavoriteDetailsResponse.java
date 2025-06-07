@@ -18,7 +18,7 @@ public class ProductFavoriteDetailsResponse {
     private String productImage;
     private Integer price;
     @ReleaseTimeList
-    private List<DailyTime> dailyTimes;
+    private List<DailyTime> releaseTimes;
     private boolean isBakeryActive;
     private boolean isProductActive;
     private Double distance;

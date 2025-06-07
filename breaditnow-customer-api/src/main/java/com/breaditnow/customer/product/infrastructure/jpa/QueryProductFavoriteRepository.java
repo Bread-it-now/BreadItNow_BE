@@ -5,6 +5,7 @@ import com.breaditnow.customer.common.infrastructure.jpa.DistanceExpressionProvi
 import com.breaditnow.customer.product.application.request.ProductFavoriteSearchCriteria;
 import com.breaditnow.customer.product.presentation.response.ProductFavoriteDetailsResponse;
 import com.breaditnow.domain.domain.bakery.enumerate.SortType;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -14,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,10 +26,19 @@ public class QueryProductFavoriteRepository {
     private final DistanceExpressionProvider distanceExpressionProvider;
 
     public Page<ProductFavoriteDetailsResponse> fetchProductFavorites(Long customerId, ProductFavoriteSearchCriteria criteria) {
-        DistanceExpressionProvider.Location bakeryLocation = DistanceExpressionProvider.Location.of(bakeryEntity.latitude, bakeryEntity.longitude);
-        NumberExpression<Double> distanceExpression = distanceExpressionProvider.buildDistanceExpression(criteria.location(), bakeryLocation);
+        NumberExpression<Double> distanceExpression = buildDistanceExpression(criteria);
+        JPAQuery<ProductFavoriteDetailsResponse> query = createQuery(customerId, criteria, distanceExpression);
 
-        JPAQuery<ProductFavoriteDetailsResponse> query = queryFactory.select(
+        Pageable pageable = criteria.pagination().toPageable();
+        query.offset(pageable.getOffset()).limit(pageable.getPageSize());
+
+        JPAQuery<Long> countQuery = createCountQuery(customerId);
+
+        return PageableExecutionUtils.getPage(query.fetch(), pageable, countQuery::fetchOne);
+    }
+
+    private JPAQuery<ProductFavoriteDetailsResponse> createQuery(Long customerId, ProductFavoriteSearchCriteria criteria, NumberExpression<Double> distanceExpression) {
+        return queryFactory.select(
                         Projections.fields(
                                 ProductFavoriteDetailsResponse.class,
                                 productEntity.id.as("productId"),
@@ -38,7 +46,7 @@ public class QueryProductFavoriteRepository {
                                 productEntity.name.as("productName"),
                                 productEntity.imageUrl.as("image"),
                                 productEntity.price.as("price"),
-                                productEntity.dailyTimes.as("releaseTimes"),
+                                productEntity.releaseTimes.as("releaseTimes"),
                                 bakeryEntity.isActive.as("isBakeryActive"),
                                 productEntity.isActive.as("isProductActive"),
                                 distanceExpression.as("distance")
@@ -50,32 +58,31 @@ public class QueryProductFavoriteRepository {
                 .where(
                         productFavoriteEntity.id.customerId.eq(customerId),
                         productFavoriteEntity.isActive.eq(true)
-                );
+                )
+                .orderBy(getOrderSpecifiers(criteria.sortType(), distanceExpression));
+    }
 
-        applySorting(query, criteria.sortType(), distanceExpression);
-
-        Pageable pageable = criteria.pagination().toPageable();
-        query.offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        List<ProductFavoriteDetailsResponse> content = query.fetch();
-
-        JPAQuery<Long> countQuery = queryFactory
+    private JPAQuery<Long> createCountQuery(Long customerId) {
+        return queryFactory
                 .select(productFavoriteEntity.count())
                 .from(productFavoriteEntity)
                 .where(
                         productFavoriteEntity.id.customerId.eq(customerId),
                         productFavoriteEntity.isActive.eq(true)
                 );
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private void applySorting(JPAQuery<?> query, SortType sortType, NumberExpression<Double> distanceExpression) {
-        switch (sortType) {
-            case DISTANCE -> query.orderBy(distanceExpression.asc(), productEntity.id.asc());
-            case POPULAR -> query.orderBy(productEntity.favoriteCount.desc(), productEntity.id.asc());
-            default -> query.orderBy(productFavoriteEntity.createdAt.desc(), productEntity.id.asc()); // latest
-        }
+
+    private NumberExpression<Double> buildDistanceExpression(ProductFavoriteSearchCriteria criteria) {
+        var bakeryLocation = DistanceExpressionProvider.Location.of(bakeryEntity.latitude, bakeryEntity.longitude);
+        return distanceExpressionProvider.buildDistanceExpression(criteria.location(), bakeryLocation);
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifiers(SortType sortType, NumberExpression<Double> distanceExpression) {
+        return switch (sortType) {
+            case DISTANCE -> new OrderSpecifier<?>[]{distanceExpression.asc(), productEntity.id.asc()};
+            case POPULAR -> new OrderSpecifier<?>[]{productEntity.favoriteCount.desc(), productEntity.id.asc()};
+            default -> new OrderSpecifier<?>[]{productFavoriteEntity.createdAt.desc(), productEntity.id.asc()}; // 최신순
+        };
     }
 }
