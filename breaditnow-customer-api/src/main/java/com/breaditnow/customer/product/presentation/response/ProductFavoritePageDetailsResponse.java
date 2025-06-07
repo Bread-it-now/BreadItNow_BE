@@ -7,9 +7,6 @@ import java.util.List;
 
 public record ProductFavoritePageDetailsResponse(List<ProductFavoriteDetailsResponse> favorites, PageInfo pageInfo) {
     public static ProductFavoritePageDetailsResponse of(Page<ProductFavoriteDetailsResponse> productFavoriteDetailsResponses) {
-        return new ProductFavoritePageDetailsResponse(
-                productFavoriteDetailsResponses.getContent(),
-                PageInfo.of(productFavoriteDetailsResponses)
-        );
+        return new ProductFavoritePageDetailsResponse(productFavoriteDetailsResponses.getContent(), PageInfo.of(productFavoriteDetailsResponses));
     }
 }

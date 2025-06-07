@@ -7,6 +7,7 @@ import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.infrastructure.jpa.JpaProductRepository;
 import com.breaditnow.customer.product.infrastructure.jpa.ProductEntity;
 import com.breaditnow.customer.product.infrastructure.jpa.QueryProductRepository;
+import com.breaditnow.customer.product.presentation.response.HotProductPageResponse;
 import com.breaditnow.customer.product.presentation.response.HotProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,8 +32,8 @@ public class ProductAdapter implements LoadProductPort, SaveProductPort {
         jpaProductRepository.save(ProductEntity.of(product));
     }
 
-    public Void getHotProducts(Long customerId, HotProductSearchCriteria hotProductSearchCriteria) {
+    public HotProductPageResponse getHotProducts(Long customerId, HotProductSearchCriteria hotProductSearchCriteria) {
         Page<HotProductResponse> hotProductResponses = queryProductRepository.fetchHotProducts(customerId, hotProductSearchCriteria);
-        return null;
+        return HotProductPageResponse.of(hotProductResponses);
     }
 }
