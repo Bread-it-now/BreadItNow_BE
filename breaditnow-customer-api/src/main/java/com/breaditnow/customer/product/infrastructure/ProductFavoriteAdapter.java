@@ -1,7 +1,7 @@
 package com.breaditnow.customer.product.infrastructure;
 
-import com.breaditnow.customer.product.application.port.LoadProductFavoritePort;
-import com.breaditnow.customer.product.application.port.SaveProductFavoritePort;
+import com.breaditnow.customer.product.domain.port.LoadProductFavoritePort;
+import com.breaditnow.customer.product.domain.port.SaveProductFavoritePort;
 import com.breaditnow.customer.product.application.request.ProductFavoriteSearchCriteria;
 import com.breaditnow.customer.product.domain.ProductFavorite;
 import com.breaditnow.customer.product.infrastructure.jpa.JpaProductFavoriteRepository;

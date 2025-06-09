@@ -1,8 +1,10 @@
 package com.breaditnow.customer.product.application;
 
 import com.breaditnow.customer.common.domain.DomainEventPublisher;
-import com.breaditnow.customer.product.application.port.LoadProductFavoritePort;
-import com.breaditnow.customer.product.application.port.SaveProductFavoritePort;
+import com.breaditnow.customer.product.domain.Product;
+import com.breaditnow.customer.product.domain.port.LoadProductFavoritePort;
+import com.breaditnow.customer.product.domain.port.LoadProductPort;
+import com.breaditnow.customer.product.domain.port.SaveProductFavoritePort;
 import com.breaditnow.customer.product.domain.ProductFavorite;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteRemovedEvent;
@@ -18,36 +20,36 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.BREAD_FAVOR
 public class ProductFavoriteService {
     private final SaveProductFavoritePort saveProductFavoritePort;
     private final LoadProductFavoritePort loadProductFavoritePort;
-    private final ProductValidator productValidator;
+    private final LoadProductPort productPort;
     private final DomainEventPublisher domainEventPublisher;
 
     @Transactional
     public void addFavoriteProduct(Long customerId, Long productId) {
-        productValidator.validateProductExist(productId);
+        Product product = productPort.getProduct(productId);
 
         ProductFavorite productFavorite = loadProductFavoritePort.loadProductFavorite(customerId, productId)
                 .map(favorite -> {
                     favorite.activate();
                     return favorite;
                 })
-                .orElseGet(() -> ProductFavorite.create(customerId, productId));
+                .orElseGet(() -> ProductFavorite.create(customerId, product.getId()));
 
         saveProductFavoritePort.save(productFavorite);
-        domainEventPublisher.publish(new ProductFavoriteCreatedEvent(productId));
+        domainEventPublisher.publish(new ProductFavoriteCreatedEvent(product.getId()));
     }
 
 
     @Transactional
     public void removeFavoriteProduct(Long customerId, Long productId) {
-        productValidator.validateProductExist(productId);
+        Product product = productPort.getProduct(productId);
 
         ProductFavorite productFavorite = loadProductFavoritePort
-                .loadProductFavorite(customerId, productId)
+                .loadProductFavorite(customerId, product.getId())
                 .orElseThrow(() -> new DomainException(BREAD_FAVORITE_NOT_FOUND));
 
         productFavorite.deactivate();
 
         saveProductFavoritePort.save(productFavorite);
-        domainEventPublisher.publish(new ProductFavoriteRemovedEvent(productId));
+        domainEventPublisher.publish(new ProductFavoriteRemovedEvent(product.getId()));
     }
 }

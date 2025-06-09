@@ -5,7 +5,7 @@ import com.breaditnow.customer.customer.domain.port.SaveCustomerPort;
 import com.breaditnow.customer.customer.domain.port.SaveCustomerProductCategoryPort;
 import com.breaditnow.customer.customer.application.request.CustomerInitRequest;
 import com.breaditnow.customer.customer.domain.Customer;
-import com.breaditnow.customer.product.application.port.LoadProductCategoryPort;
+import com.breaditnow.customer.product.domain.port.LoadProductCategoryPort;
 import com.breaditnow.customer.product.domain.ProductCategory;
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.domain.global.exception.DomainException;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_BREAD_CATEGORY_IDS;

@@ -1,7 +1,7 @@
 package com.breaditnow.customer.product.application.event;
 
-import com.breaditnow.customer.product.application.port.LoadProductPort;
-import com.breaditnow.customer.product.application.port.SaveProductPort;
+import com.breaditnow.customer.product.domain.port.LoadProductPort;
+import com.breaditnow.customer.product.domain.port.SaveProductPort;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteRemovedEvent;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class ProductFavoriteEventHandler {
     @EventListener
     @Transactional
     public void handleProductFavoriteCreated(ProductFavoriteCreatedEvent event) {
-        loadProductPort.loadProduct(event.getProductId())
+        loadProductPort.findProduct(event.getProductId())
                 .ifPresent(product -> {
                     product.favorite();
                     saveProductPort.save(product);
@@ -28,7 +28,7 @@ public class ProductFavoriteEventHandler {
     @EventListener
     @Transactional
     public void handleProductFavoriteRemoved(ProductFavoriteRemovedEvent event) {
-        loadProductPort.loadProduct(event.getProductId())
+        loadProductPort.findProduct(event.getProductId())
                 .ifPresent(product -> {
                     product.unfavorite();
                     saveProductPort.save(product);

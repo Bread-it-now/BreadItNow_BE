@@ -1,4 +1,4 @@
-package com.breaditnow.customer.product.application.port;
+package com.breaditnow.customer.product.domain.port;
 
 import com.breaditnow.customer.product.domain.ProductFavorite;
 
