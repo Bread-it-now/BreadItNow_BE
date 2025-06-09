@@ -7,8 +7,13 @@ import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepositor
 import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
 import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntityId;
 import com.breaditnow.customer.alert.infrastructure.jpa.QueryProductAlertRepository;
+import com.breaditnow.customer.alert.presentation.response.ProductAlertPageResponse;
+import com.breaditnow.customer.alert.presentation.response.ProductAlertResponse;
 import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
+import com.breaditnow.customer.common.domain.vo.Pagination;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -40,5 +45,9 @@ public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAle
 
     public TodayProductAlertListResponse getTodayProductAlert(Long customerId) {
         return TodayProductAlertListResponse.of(queryProductAlertRepository.getTodayProductAlert(customerId));
+    }
+
+    public ProductAlertPageResponse getProductAlerts(Long customerId, Pagination pagination) {
+        return ProductAlertPageResponse.of(queryProductAlertRepository.getProductAlerts(customerId, pagination));
     }
 }

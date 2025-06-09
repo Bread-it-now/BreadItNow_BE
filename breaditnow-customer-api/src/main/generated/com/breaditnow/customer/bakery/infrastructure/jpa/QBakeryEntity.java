@@ -35,6 +35,8 @@ public class QBakeryEntity extends EntityPathBase<BakeryEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
+    public final StringPath name = createString("name");
+
     public final NumberPath<Long> ownerId = createNumber("ownerId", Long.class);
 
     public QBakeryEntity(String variable) {

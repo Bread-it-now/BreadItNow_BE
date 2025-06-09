@@ -20,6 +20,7 @@ public class BakeryEntity extends BaseEntity {
     private Long id;
     private Long ownerId;
     private boolean isActive;
+    private String name;
 
     private Double latitude;
     private Double longitude;
