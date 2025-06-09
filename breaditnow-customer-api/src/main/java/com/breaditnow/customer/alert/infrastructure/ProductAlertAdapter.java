@@ -7,11 +7,10 @@ import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepositor
 import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
 import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntityId;
 import com.breaditnow.customer.alert.infrastructure.jpa.QueryProductAlertRepository;
-import com.breaditnow.customer.alert.presentation.response.TodayProductAlertResponse;
+import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,7 +38,7 @@ public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAle
                 .map(ProductAlertEntity::toDomain);
     }
 
-    public List<TodayProductAlertResponse> getTodayProductAlert(Long customerId) {
-        return queryProductAlertRepository.getTodayProductAlert(customerId);
+    public TodayProductAlertListResponse getTodayProductAlert(Long customerId) {
+        return TodayProductAlertListResponse.of(queryProductAlertRepository.getTodayProductAlert(customerId));
     }
 }

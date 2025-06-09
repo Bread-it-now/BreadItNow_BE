@@ -4,12 +4,10 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.alert.application.ProductAlertService;
 import com.breaditnow.customer.alert.application.response.ProductAlertToggleResponse;
 import com.breaditnow.customer.alert.infrastructure.ProductAlertAdapter;
-import com.breaditnow.customer.alert.presentation.response.TodayProductAlertResponse;
+import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +34,7 @@ public class ProductAlertController {
 	}
 
 	@GetMapping("/today")
-	public ApiSuccessResponse<List<TodayProductAlertResponse>> getTodayProductAlert(@AuthCustomer Long customerId) {
+	public ApiSuccessResponse<TodayProductAlertListResponse> getTodayProductAlert(@AuthCustomer Long customerId) {
 		return ApiSuccessResponse.of(productAlertAdapter.getTodayProductAlert(customerId));
 	}
 }
