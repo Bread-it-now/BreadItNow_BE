@@ -48,7 +48,7 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final ListPath<com.breaditnow.customer.common.domain.DailyTime, ComparablePath<com.breaditnow.customer.common.domain.DailyTime>> releaseTimes = this.<com.breaditnow.customer.common.domain.DailyTime, ComparablePath<com.breaditnow.customer.common.domain.DailyTime>>createList("releaseTimes", com.breaditnow.customer.common.domain.DailyTime.class, ComparablePath.class, PathInits.DIRECT2);
+    public final ListPath<String, StringPath> releaseTimes = this.<String, StringPath>createList("releaseTimes", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> stock = createNumber("stock", Integer.class);
 

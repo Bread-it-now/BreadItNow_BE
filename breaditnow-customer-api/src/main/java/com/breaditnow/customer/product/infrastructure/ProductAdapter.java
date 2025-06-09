@@ -29,7 +29,7 @@ public class ProductAdapter implements LoadProductPort, SaveProductPort {
 
     @Override
     public void save(Product product) {
-        jpaProductRepository.save(ProductEntity.of(product));
+        jpaProductRepository.save(ProductEntity.from(product));
     }
 
     public HotProductPageResponse getHotProducts(Long customerId, HotProductSearchCriteria hotProductSearchCriteria) {

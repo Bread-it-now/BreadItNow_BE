@@ -2,7 +2,6 @@ package com.breaditnow.customer.product.infrastructure.jpa;
 
 import com.breaditnow.customer.common.domain.DailyTime;
 import com.breaditnow.customer.common.domain.Money;
-import com.breaditnow.customer.common.infrastructure.jpa.DailyTimesConverter;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
 import com.breaditnow.domain.global.entity.BaseEntity;
@@ -46,13 +45,17 @@ public class ProductEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer favoriteCount;
 
-    @Convert(converter = DailyTimesConverter.class)
-    private List<DailyTime> releaseTimes;
+    @Convert(converter = ReleaseTimesConverter.class)
+    private List<String> releaseTimes;
 
     @Enumerated(STRING)
     private ProductType type;
 
-    public static ProductEntity of(Product product) {
+    public static ProductEntity from(Product product) {
+        List<String> releaseTimes = product.getReleaseTimes().stream().
+                map(DailyTime::toString)
+                .toList();
+
         return new ProductEntity(
                 product.getId(),
                 product.getBakeryId(),
@@ -65,12 +68,16 @@ public class ProductEntity extends BaseEntity {
                 product.isActive(),
                 product.isHidden(),
                 product.getFavoriteCount(),
-                product.getReleaseTimes(),
+                releaseTimes,
                 product.getType()
         );
     }
 
     public Product toDomain() {
+        List<DailyTime> dailyTimes = this.releaseTimes.stream()
+                .map(DailyTime::of)
+                .toList();
+
         return Product.builder()
                 .id(this.id)
                 .bakeryId(this.bakeryId)
@@ -83,7 +90,7 @@ public class ProductEntity extends BaseEntity {
                 .isActive(this.isActive)
                 .isHidden(this.isHidden)
                 .favoriteCount(this.favoriteCount)
-                .releaseTimes(this.releaseTimes)
+                .releaseTimes(dailyTimes)
                 .type(this.type)
                 .build();
     }

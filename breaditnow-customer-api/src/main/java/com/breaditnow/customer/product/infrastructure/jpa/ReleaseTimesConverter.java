@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.infrastructure.jpa;
+package com.breaditnow.customer.product.infrastructure.jpa;
 
 import com.breaditnow.customer.common.domain.DailyTime;
 import jakarta.persistence.AttributeConverter;
@@ -10,27 +10,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Converter
-public class DailyTimesConverter implements AttributeConverter<List<DailyTime>, String> {
+public class ReleaseTimesConverter implements AttributeConverter<List<String>, String> {
     private static final String DELIMITER = ";";
 
     @Override
-    public String convertToDatabaseColumn(List<DailyTime> attribute) {
+    public String convertToDatabaseColumn(List<String> attribute) {
         if (attribute == null || attribute.isEmpty()) {
             return null;
         }
-
-        return attribute.stream()
-                .map(releaseTime -> releaseTime.toLocalTime().format(DailyTime.FORMATTER))
-                .collect(Collectors.joining(DELIMITER));
+        return String.join(DELIMITER, attribute);
     }
 
     @Override
-    public List<DailyTime> convertToEntityAttribute(String dbData) {
+    public List<String> convertToEntityAttribute(String dbData) {
         if (dbData == null || dbData.trim().isEmpty()) {
             return new ArrayList<>();
         }
         return Arrays.stream(dbData.split(DELIMITER))
-                .map(DailyTime::of)
                 .toList();
     }
 }
