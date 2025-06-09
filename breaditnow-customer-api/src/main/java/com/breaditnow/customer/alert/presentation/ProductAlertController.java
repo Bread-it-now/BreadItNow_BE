@@ -3,15 +3,20 @@ package com.breaditnow.customer.alert.presentation;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.alert.application.ProductAlertService;
 import com.breaditnow.customer.alert.application.response.ProductAlertToggleResponse;
+import com.breaditnow.customer.alert.infrastructure.ProductAlertAdapter;
+import com.breaditnow.customer.alert.presentation.response.TodayProductAlertResponse;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/alert")
 public class ProductAlertController {
 	private final ProductAlertService productAlertService;
+	private final ProductAlertAdapter productAlertAdapter;
 
 	@PostMapping("/product/{productId}")
 	public ApiSuccessResponse<Void> registerProductAlert(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
@@ -28,5 +33,10 @@ public class ProductAlertController {
 	@PatchMapping("/product/{productId}/toggle")
 	public ApiSuccessResponse<ProductAlertToggleResponse> toggleProductAlert(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
 		return ApiSuccessResponse.of(productAlertService.toggleProductAlert(customerId, productId));
+	}
+
+	@GetMapping("/today")
+	public ApiSuccessResponse<List<TodayProductAlertResponse>> getTodayProductAlert(@AuthCustomer Long customerId) {
+		return ApiSuccessResponse.of(productAlertAdapter.getTodayProductAlert(customerId));
 	}
 }
