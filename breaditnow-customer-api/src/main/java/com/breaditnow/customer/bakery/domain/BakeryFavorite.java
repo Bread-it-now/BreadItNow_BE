@@ -1,6 +1,7 @@
 package com.breaditnow.customer.bakery.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
+import lombok.Builder;
 import lombok.Getter;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALREADY_FAVORITED;
@@ -12,6 +13,7 @@ public class BakeryFavorite {
     private Long bakeryId;
     private boolean isActive;
 
+    @Builder
     private BakeryFavorite(Long customerId, Long bakeryId, boolean isActive) {
         this.customerId = customerId;
         this.bakeryId = bakeryId;

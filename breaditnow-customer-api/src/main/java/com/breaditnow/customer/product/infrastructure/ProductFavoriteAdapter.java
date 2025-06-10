@@ -29,7 +29,7 @@ public class ProductFavoriteAdapter implements SaveProductFavoritePort, LoadProd
     }
 
     @Override
-    public Optional<ProductFavorite> loadProductFavorite(Long customerId, Long productId) {
+    public Optional<ProductFavorite> findProductFavorite(Long customerId, Long productId) {
         return jpaProductFavoriteRepository.findById(new ProductFavoriteEntityId(customerId, productId))
                 .map(ProductFavoriteEntity::toDomain);
     }
