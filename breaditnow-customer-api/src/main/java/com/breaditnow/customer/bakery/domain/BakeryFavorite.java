@@ -1,27 +1,25 @@
-package com.breaditnow.customer.product.domain;
+package com.breaditnow.customer.bakery.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
-import lombok.Builder;
 import lombok.Getter;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALREADY_FAVORITED;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.NOT_FAVORITED;
 
 @Getter
-public class ProductFavorite {
+public class BakeryFavorite {
     private Long customerId;
-    private Long productId;
+    private Long bakeryId;
     private boolean isActive;
 
-    @Builder
-    private ProductFavorite(Long customerId, Long productId, boolean isActive) {
+    private BakeryFavorite(Long customerId, Long bakeryId, boolean isActive) {
         this.customerId = customerId;
-        this.productId = productId;
+        this.bakeryId = bakeryId;
         this.isActive = isActive;
     }
 
-    public static ProductFavorite create(Long customerId, Long productId) {
-        return new ProductFavorite(customerId, productId, true);
+    public static BakeryFavorite create(Long customerId, Long bakeryId) {
+        return new BakeryFavorite(customerId, bakeryId, true);
     }
 
     public void activate() {
