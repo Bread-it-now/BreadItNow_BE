@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ProductFavoriteDetailsResponse {
+public class ProductFavoriteResponse {
     private Long productId;
     private Long bakeryId;
     private String productName;
