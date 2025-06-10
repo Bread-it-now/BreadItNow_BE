@@ -6,10 +6,12 @@ import com.breaditnow.customer.bakery.domain.port.SaveBakeryFavoritePort;
 import com.breaditnow.customer.bakery.infrastructure.jpa.BakeryFavoriteEntity;
 import com.breaditnow.customer.bakery.infrastructure.jpa.BakeryFavoriteEntityId;
 import com.breaditnow.customer.bakery.infrastructure.jpa.JpaBakeryFavoriteRepository;
+import com.breaditnow.customer.bakery.infrastructure.jpa.JpaBakeryRepository;
 import com.breaditnow.domain.global.exception.DomainErrorCode;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BakeryFavoriteAdapter implements LoadBakeryFavoritePort, SaveBakeryFavoritePort {
     private final JpaBakeryFavoriteRepository jpaBakeryFavoriteRepository;
-
+    private final BakeryAdapter bakeryAdapter;
 
     @Override
     public void save(BakeryFavorite bakeryFavorite) {
@@ -26,12 +28,15 @@ public class BakeryFavoriteAdapter implements LoadBakeryFavoritePort, SaveBakery
     }
 
     @Override
+    @Transactional
     public Optional<BakeryFavorite> findBakeryFavorite(Long customerId, Long bakeryId) {
+        bakeryAdapter.validateIsExistBakery(bakeryId);
         return jpaBakeryFavoriteRepository.findById(new BakeryFavoriteEntityId(customerId, bakeryId))
                 .map(BakeryFavoriteEntity::toDomain);
     }
 
     @Override
+    @Transactional
     public BakeryFavorite getBakeryFavorite(Long customerId, Long bakeryId) {
         return findBakeryFavorite(customerId, bakeryId)
                 .orElseThrow(() -> new DomainException(DomainErrorCode.BAKERY_FAVORITE_NOT_FOUND));
