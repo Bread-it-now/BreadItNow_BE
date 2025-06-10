@@ -1,9 +1,9 @@
 package com.breaditnow.customer.product.infrastructure;
 
-import com.breaditnow.customer.product.application.port.ProductCategoryPort;
+import com.breaditnow.customer.product.domain.port.LoadProductCategoryPort;
 import com.breaditnow.customer.product.domain.ProductCategory;
-import com.breaditnow.customer.product.infrastructure.entity.ProductCategoryEntity;
-import com.breaditnow.customer.product.infrastructure.jpa.JpaProductCategory;
+import com.breaditnow.customer.product.infrastructure.jpa.ProductCategoryEntity;
+import com.breaditnow.customer.product.infrastructure.jpa.JpaProductCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -11,14 +11,12 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductCategoryAdapter implements ProductCategoryPort {
-    private final JpaProductCategory jpaProductCategory;
+public class ProductCategoryAdapter implements LoadProductCategoryPort {
+    private final JpaProductCategoryRepository jpaProductCategoryRepository;
 
     @Override
     public List<ProductCategory> findAllByIds(List<Long> productCategoryIds) {
-        List<ProductCategoryEntity> entities = jpaProductCategory.findAllById(productCategoryIds);
-
-        return entities.stream()
+        return jpaProductCategoryRepository.findAllById(productCategoryIds).stream()
                 .map(ProductCategoryEntity::toProductCategory)
                 .toList();
     }

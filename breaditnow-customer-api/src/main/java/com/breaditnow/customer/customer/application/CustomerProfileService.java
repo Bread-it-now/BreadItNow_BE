@@ -1,10 +1,11 @@
 package com.breaditnow.customer.customer.application;
 
-import com.breaditnow.customer.customer.domain.port.CustomerPort;
 import com.breaditnow.customer.customer.application.request.CustomerInfoUpdateRequest;
 import com.breaditnow.customer.customer.application.response.CustomerInfoResponse;
 import com.breaditnow.customer.customer.domain.Customer;
-import com.breaditnow.customer.customer.domain.port.ImageStoragePort;
+import com.breaditnow.customer.customer.domain.port.SaveImageStoragePort;
+import com.breaditnow.customer.customer.domain.port.LoadCustomerPort;
+import com.breaditnow.customer.customer.domain.port.SaveCustomerPort;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,20 +18,22 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.DUPLICATE_N
 @Service
 @RequiredArgsConstructor
 public class CustomerProfileService {
-    private final CustomerPort customerPort;
-    private final ImageStoragePort storagePort;
+    private final CustomerService customerService;
+    private final LoadCustomerPort loadCustomerPort;
+    private final SaveCustomerPort saveCustomerPort;
+    private final SaveImageStoragePort storagePort;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public CustomerInfoResponse updateCustomerInfo(Long customerId, CustomerInfoUpdateRequest dto, MultipartFile profileImage) {
-        if (customerPort.isExistNickName(dto.nickname())) {
+        if (loadCustomerPort.isExistNickName(dto.nickname())) {
             throw new DomainException(DUPLICATE_NICKNAME);
         }
 
-        Customer customer = customerPort.findById(customerId);
+        Customer customer = customerService.loadCustomer(customerId);
 
         customer.updateInfo(dto.nickname(), dto.phone(), passwordEncoder.encode(dto.newPassword()), profileImage, storagePort);
-        customer = customerPort.save(customer);
+        customer = saveCustomerPort.save(customer);
 
         return CustomerInfoResponse.of(customer);
     }

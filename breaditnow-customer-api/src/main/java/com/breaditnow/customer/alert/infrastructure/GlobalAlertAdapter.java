@@ -1,8 +1,9 @@
 package com.breaditnow.customer.alert.infrastructure;
 
 import com.breaditnow.customer.alert.domain.GlobalAlertSetting;
-import com.breaditnow.customer.alert.domain.port.GlobalAlertPort;
-import com.breaditnow.customer.alert.infrastructure.entity.GlobalAlertSettingEntity;
+import com.breaditnow.customer.alert.domain.port.LoadGlobalAlertPort;
+import com.breaditnow.customer.alert.domain.port.SaveGlobalAlertPort;
+import com.breaditnow.customer.alert.infrastructure.jpa.GlobalAlertSettingEntity;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaGlobalAlertRepository;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_DND_S
 
 @Repository
 @RequiredArgsConstructor
-public class GlobalAlertAdapter implements GlobalAlertPort {
+public class GlobalAlertAdapter implements LoadGlobalAlertPort, SaveGlobalAlertPort {
     private final JpaGlobalAlertRepository jpaGlobalAlertRepository;
 
     @Override

@@ -1,53 +1,40 @@
 package com.breaditnow.customer.alert.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
 
 import java.time.DayOfWeek;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.EMPTY_DND_DAYS;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_DND_DAY_VALUE;
 
-@EqualsAndHashCode
-public class DayOfWeekSet {
-    private final Set<DayOfWeek> days;
-
-    @Builder
-    public DayOfWeekSet(Set<DayOfWeek> days) {
-        this.days = days;
-    }
-
+public record DayOfWeekSet(Set<DayOfWeek> days) {
     public static DayOfWeekSet of(Set<String> days) {
         requireValid(days, d -> d == null || d.isEmpty(), () -> new CustomerException(EMPTY_DND_DAYS));
-        try {
-            return builder().
-                    days(days.stream()
+
+        try{
+            return new DayOfWeekSet(days.stream()
                             .map(String::toUpperCase)
                             .map(DayOfWeek::valueOf)
-                            .collect(Collectors.collectingAndThen(
-                                Collectors.toSet(),
-                                EnumSet::copyOf
-                            )
-                        )
-                    ).build();
+                            .collect(Collectors.toSet()));
         } catch (IllegalArgumentException e) {
             throw new CustomerException(INVALID_DND_DAY_VALUE);
         }
+
     }
 
     public static DayOfWeekSet empty() {
-        return builder().days(Set.of()).build();
+        return new DayOfWeekSet(Collections.emptySet());
     }
 
     public boolean contains(DayOfWeek day) {
         return days.contains(day);
     }
 
+    @Override
     public Set<DayOfWeek> days() {
         return Collections.unmodifiableSet(days);
     }

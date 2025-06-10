@@ -2,9 +2,10 @@ package com.breaditnow.customer.common.security.resolver;
 
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
+import com.breaditnow.customer.customer.application.CustomerService;
 import com.breaditnow.customer.customer.domain.Customer;
-import com.breaditnow.customer.customer.domain.port.CustomerPort;
 //import com.breaditnow.domain.domain.customer.entity.Customer;
+import com.breaditnow.customer.customer.domain.port.LoadCustomerPort;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -19,8 +20,7 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.AUTHENT
 @Component
 @RequiredArgsConstructor
 public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
-
-	private final CustomerPort customerPort;
+	private final CustomerService customerService;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -45,7 +45,7 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 			}
 		}
 
-		Customer customer = customerPort.findById(Long.valueOf(userIdHeader));
+		Customer customer = customerService.loadCustomer(Long.valueOf(userIdHeader));
 
 		if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
 			return customer;

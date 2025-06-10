@@ -1,6 +1,6 @@
 package com.breaditnow.customer.region.infrastructure;
 
-import com.breaditnow.customer.region.application.port.RegionPort;
+import com.breaditnow.customer.region.application.port.LoadRegionPort;
 import com.breaditnow.customer.region.core.Region;
 import com.breaditnow.customer.region.core.RegionId;
 import com.breaditnow.customer.region.infrastructure.entity.RegionIdEntity;
@@ -13,7 +13,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.REGION_NOT_
 
 @Repository
 @RequiredArgsConstructor
-public class RegionAdapter implements RegionPort {
+public class RegionAdapter implements LoadRegionPort {
     private final JpaRegionRepository jpaRegionRepository;
 
     @Override

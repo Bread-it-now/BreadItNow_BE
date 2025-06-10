@@ -10,8 +10,7 @@ public record SearchRequest(
 	Double latitude,
 	Double longitude
 ) {
-	public static SearchRequest of(int page, int size, String sort, String keyword, Double latitude,
-		Double longitude) {
-		return new SearchRequest(page, size, SortType.from(sort), keyword, latitude, longitude);
+	public static SearchRequest of(int page, int size, String sort, String keyword, Double latitude, Double longitude) {
+		return new SearchRequest(page, size, SortType.of(sort), keyword, latitude, longitude);
 	}
 }

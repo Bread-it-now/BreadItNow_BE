@@ -1,5 +1,6 @@
 package com.breaditnow.customer.alert.domain;
 
+import com.breaditnow.customer.common.domain.DailyTime;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -16,25 +17,22 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
 @Getter
 @EqualsAndHashCode
 public class GlobalAlertSetting {
-    private boolean active;
     private DayOfWeekSet days;
-    private ReleaseTime startTime;
-    private ReleaseTime endTime;
+    private DailyTime startTime;
+    private DailyTime endTime;
+    private boolean active;
 
-    private GlobalAlertSetting(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
+    @Builder
+    private GlobalAlertSetting(DayOfWeekSet days, DailyTime startTime, DailyTime endTime, boolean active) {
         this.days = days;
         this.startTime = startTime;
         this.endTime = endTime;
         this.active = active;
     }
 
-    public static GlobalAlertSetting of(Set<String> days, LocalTime startTime, LocalTime endTime, boolean active) {
+    public static GlobalAlertSetting create(Set<String> days, LocalTime startTime, LocalTime endTime, boolean active) {
         requireValid(startTime, t -> t.isAfter(endTime), () -> new CustomerException(INVALID_TIME_RANGE));
-        return new GlobalAlertSetting(DayOfWeekSet.of(days), ReleaseTime.of(startTime), ReleaseTime.of(endTime), active);
-    }
-
-    public static GlobalAlertSetting from(DayOfWeekSet days, ReleaseTime startTime, ReleaseTime endTime, boolean active) {
-        return new GlobalAlertSetting(days, startTime, endTime, active);
+        return new GlobalAlertSetting(DayOfWeekSet.of(days), DailyTime.of(startTime), DailyTime.of(endTime), active);
     }
 
     public void toggle() {

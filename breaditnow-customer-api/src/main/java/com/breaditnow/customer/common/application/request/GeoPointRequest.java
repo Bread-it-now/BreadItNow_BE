@@ -23,7 +23,6 @@ public record GeoPointRequest(
         if (latitude == null || longitude == null) {
             return null;
         }
-
         return new GeoPoint(latitude, longitude);
     }
 }

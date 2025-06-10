@@ -2,46 +2,43 @@ package com.breaditnow.customer.alert.application;
 
 import com.breaditnow.customer.alert.application.response.ProductAlertToggleResponse;
 import com.breaditnow.customer.alert.domain.ProductAlert;
-import com.breaditnow.customer.alert.domain.port.ProductAlertPort;
-import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.customer.alert.domain.port.LoadProductAlertPort;
+import com.breaditnow.customer.alert.domain.port.SaveProductAlertPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALERT_ALREADY_ACTIVE;
-import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_FOUND;
-
-
 @Service
 @RequiredArgsConstructor
 public class ProductAlertService {
-    private final ProductAlertPort productAlertPort;
+    private final LoadProductAlertPort loadProductAlertPort;
+    private final SaveProductAlertPort saveProductAlertPort;
+    private final ProductAlertValidator productAlertValidator;
 
     @Transactional
     public void registerProductAlert(Long customerId, Long productId) {
-        ProductAlert productAlert = ProductAlert.create(customerId, productId);
-        if (productAlertPort.isAlerted(productAlert)) {
-            throw new CustomerException(ALERT_ALREADY_ACTIVE);
-        }
-        productAlertPort.save(productAlert);
+        ProductAlert productAlert = loadProductAlertPort.loadProductAlert(customerId, productId)
+                .map(alert -> {
+                    alert.activate();
+                    return alert;
+                })
+                .orElseGet(() -> ProductAlert.create(customerId, productId));
+
+        saveProductAlertPort.save(productAlert);
     }
 
     @Transactional
     public void deleteProductAlert(Long customerId, Long productId) {
-        ProductAlert productAlert = ProductAlert.create(customerId, productId);
-        if (!productAlertPort.isAlerted(productAlert)) {
-            throw new DomainException(ALERT_NOT_FOUND);
-        }
-        productAlertPort.delete(productAlert);
+        ProductAlert productAlert = productAlertValidator.validateProductAlertAndGet(customerId, productId);
+        productAlert.deactivate();
+        saveProductAlertPort.delete(productAlert);
     }
 
     @Transactional
     public ProductAlertToggleResponse toggleProductAlert(Long customerId, Long productId) {
-        ProductAlert productAlert = ProductAlert.create(customerId, productId);
-        ProductAlert alert = productAlertPort.findById(productAlert);
-        alert.toggle();
-        productAlertPort.save(alert);
-        return new ProductAlertToggleResponse(alert.isActive());
+        ProductAlert productAlert = productAlertValidator.validateProductAlertAndGet(customerId, productId);
+        productAlert.toggle();
+        saveProductAlertPort.save(productAlert);
+        return new ProductAlertToggleResponse(productAlert.isActive());
     }
 }

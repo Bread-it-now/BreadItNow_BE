@@ -1,20 +1,28 @@
 package com.breaditnow.customer.alert.infrastructure;
 
 import com.breaditnow.customer.alert.domain.ProductAlert;
-import com.breaditnow.customer.alert.domain.port.ProductAlertPort;
-import com.breaditnow.customer.alert.infrastructure.entity.ProductAlertEntity;
-import com.breaditnow.customer.alert.infrastructure.entity.ProductAlertEntityId;
+import com.breaditnow.customer.alert.domain.port.LoadProductAlertPort;
+import com.breaditnow.customer.alert.domain.port.SaveProductAlertPort;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepository;
-import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntity;
+import com.breaditnow.customer.alert.infrastructure.jpa.ProductAlertEntityId;
+import com.breaditnow.customer.alert.infrastructure.jpa.QueryProductAlertRepository;
+import com.breaditnow.customer.alert.presentation.response.ProductAlertPageResponse;
+import com.breaditnow.customer.alert.presentation.response.ProductAlertResponse;
+import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
+import com.breaditnow.customer.common.domain.vo.Pagination;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_FOUND;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductAlertAdapter implements ProductAlertPort {
+public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAlertPort {
     private final JpaProductAlertRepository jpaProductAlertRepository;
+    private final QueryProductAlertRepository queryProductAlertRepository;
 
     @Override
     public void save(ProductAlert productAlert) {
@@ -25,20 +33,21 @@ public class ProductAlertAdapter implements ProductAlertPort {
     @Override
     public void delete(ProductAlert productAlert) {
         ProductAlertEntity entity = new ProductAlertEntity(productAlert);
-        jpaProductAlertRepository.deleteById(entity.getId());
+        jpaProductAlertRepository.save(entity);
     }
 
     @Override
-    public boolean isAlerted(ProductAlert productAlert) {
-        ProductAlertEntity entity = new ProductAlertEntity(productAlert);
-        return jpaProductAlertRepository.existsById(entity.getId());
+    public Optional<ProductAlert> loadProductAlert(Long customerId, Long productId) {
+        ProductAlertEntityId productAlertEntityId = new ProductAlertEntityId(customerId, productId);
+        return jpaProductAlertRepository.findById(productAlertEntityId)
+                .map(ProductAlertEntity::toDomain);
     }
 
-    @Override
-    public ProductAlert findById(ProductAlert productAlert) {
-        ProductAlertEntity entity = new ProductAlertEntity(productAlert);
-        return  jpaProductAlertRepository.findById(entity.getId())
-                .map(ProductAlertEntity::toDomain)
-                .orElseThrow(() -> new DomainException(ALERT_NOT_FOUND));
+    public TodayProductAlertListResponse getTodayProductAlert(Long customerId) {
+        return TodayProductAlertListResponse.of(queryProductAlertRepository.getTodayProductAlert(customerId));
+    }
+
+    public ProductAlertPageResponse getProductAlerts(Long customerId, Pagination pagination) {
+        return ProductAlertPageResponse.of(queryProductAlertRepository.getProductAlerts(customerId, pagination));
     }
 }
