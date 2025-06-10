@@ -19,7 +19,6 @@ public class BakeryFavoriteService {
     private final SaveBakeryFavoritePort saveBakeryFavoritePort;
     private final DomainEventPublisher domainEventPublisher;
 
-    @Transactional
     public void addFavoriteBakery(Long customerId, Long bakeryId) {
         BakeryFavorite bakeryFavorite = loadBakeryFavoritePort.findBakeryFavorite(customerId, bakeryId)
                 .map(favorite -> {
@@ -32,11 +31,8 @@ public class BakeryFavoriteService {
         domainEventPublisher.publish(new BakeryFavoriteCreatedEvent(bakeryId));
     }
 
-    @Transactional
     public void removeFavoriteBakery(Long customerId, Long bakeryId) {
-        BakeryFavorite bakeryFavorite = loadBakeryFavoritePort.findBakeryFavorite(customerId, bakeryId)
-                .orElseThrow(() -> new DomainException(DomainErrorCode.BAKERY_FAVORITE_NOT_FOUND));
-
+        BakeryFavorite bakeryFavorite = loadBakeryFavoritePort.getBakeryFavorite(customerId, bakeryId);
         bakeryFavorite.deactivate();
 
         saveBakeryFavoritePort.save(bakeryFavorite);

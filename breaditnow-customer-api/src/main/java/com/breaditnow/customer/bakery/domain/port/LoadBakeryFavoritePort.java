@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface LoadBakeryFavoritePort {
     Optional<BakeryFavorite> findBakeryFavorite(Long customerId, Long bakeryId);
+    BakeryFavorite getBakeryFavorite(Long customerId, Long bakeryId);
 }
