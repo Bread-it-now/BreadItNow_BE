@@ -45,59 +45,6 @@ public class QueryProductRepository {
         return PageableExecutionUtils.getPage(query.fetch(), pageable, countQuery::fetchOne);
     }
 
-    private JPAQuery<HotProductResponse> createQuery(Long customerId, HotProductSearchCriteria criteria, NumberExpression<Double> distanceExpression) {
-        return queryFactory.select(
-                Projections.fields(
-                        HotProductResponse.class,
-                        productEntity.id.as("productId"),
-                        productEntity.bakeryId.as("bakeryId"),
-                        productEntity.name.as("productName"),
-                        productEntity.imageUrl.as("productImage"),
-                        productEntity.favoriteCount.as("favoriteCount"),
-                        productEntity.price.as("price"),
-                        productEntity.stock.as("stock"),
-                        Expressions.asBoolean(
-                            queryFactory.select(productFavoriteEntity.count())
-                                    .from(productFavoriteEntity)
-                                    .where(productFavoriteEntity.id.productId.eq(productEntity.id)
-                                            .and(productFavoriteEntity.id.customerId.eq(customerId))
-                                            .and(productFavoriteEntity.isActive.eq(true))
-                                    )
-                                    .gt(0L)
-                        ).as("isFavorite"),
-                        distanceExpression.as("distance")
-                )
-        )
-        .from(productEntity)
-        .innerJoin(bakeryEntity).on(bakeryEntity.id.eq(productEntity.bakeryId))
-        .where(
-                productEntity.isActive.eq(true),
-                productEntity.isHidden.eq(false)
-        )
-        .orderBy(getSortExpression(criteria.hotSortType()));
-    }
-
-    private JPAQuery<Long> createCountQuery() {
-        return queryFactory.select(QProductEntity.productEntity.count())
-                .from(QProductEntity.productEntity)
-                .where(
-                        productEntity.isActive.eq(true),
-                        productEntity.isHidden.eq(false)
-                );
-    }
-
-    private NumberExpression<Double> buildDistanceExpression(HotProductSearchCriteria criteria) {
-        var bakeryLocation = DistanceExpressionProvider.Location.of(bakeryEntity.latitude, bakeryEntity.longitude);
-        return distanceExpressionProvider.buildDistanceExpression(criteria.location(), bakeryLocation);
-    }
-
-    private OrderSpecifier<?> getSortExpression(HotSortType sortType) {
-        return switch (sortType) {
-            case FAVORITE -> Expressions.numberPath(Integer.class, "favoriteCount").desc();
-            case RESERVATION -> Expressions.numberPath(Integer.class, "reservationCount").desc();
-        };
-    }
-
     public List<BreadProductResponse> getBreadProductsByBakeryId(Long bakeryId) {
         return queryFactory.select(
                         Projections.fields(
@@ -158,5 +105,58 @@ public class QueryProductRepository {
                         productEntity.isHidden.eq(false)
                 )
                 .fetch();
+    }
+
+    private JPAQuery<HotProductResponse> createQuery(Long customerId, HotProductSearchCriteria criteria, NumberExpression<Double> distanceExpression) {
+        return queryFactory.select(
+                        Projections.fields(
+                                HotProductResponse.class,
+                                productEntity.id.as("productId"),
+                                productEntity.bakeryId.as("bakeryId"),
+                                productEntity.name.as("productName"),
+                                productEntity.imageUrl.as("productImage"),
+                                productEntity.favoriteCount.as("favoriteCount"),
+                                productEntity.price.as("price"),
+                                productEntity.stock.as("stock"),
+                                Expressions.asBoolean(
+                                        queryFactory.select(productFavoriteEntity.count())
+                                                .from(productFavoriteEntity)
+                                                .where(productFavoriteEntity.id.productId.eq(productEntity.id)
+                                                        .and(productFavoriteEntity.id.customerId.eq(customerId))
+                                                        .and(productFavoriteEntity.isActive.eq(true))
+                                                )
+                                                .gt(0L)
+                                ).as("isFavorite"),
+                                distanceExpression.as("distance")
+                        )
+                )
+                .from(productEntity)
+                .innerJoin(bakeryEntity).on(bakeryEntity.id.eq(productEntity.bakeryId))
+                .where(
+                        productEntity.isActive.eq(true),
+                        productEntity.isHidden.eq(false)
+                )
+                .orderBy(getSortExpression(criteria.hotSortType()));
+    }
+
+    private JPAQuery<Long> createCountQuery() {
+        return queryFactory.select(QProductEntity.productEntity.count())
+                .from(QProductEntity.productEntity)
+                .where(
+                        productEntity.isActive.eq(true),
+                        productEntity.isHidden.eq(false)
+                );
+    }
+
+    private NumberExpression<Double> buildDistanceExpression(HotProductSearchCriteria criteria) {
+        var bakeryLocation = DistanceExpressionProvider.Location.of(bakeryEntity.latitude, bakeryEntity.longitude);
+        return distanceExpressionProvider.buildDistanceExpression(criteria.location(), bakeryLocation);
+    }
+
+    private OrderSpecifier<?> getSortExpression(HotSortType sortType) {
+        return switch (sortType) {
+            case FAVORITE -> Expressions.numberPath(Integer.class, "favoriteCount").desc();
+            case RESERVATION -> Expressions.numberPath(Integer.class, "reservationCount").desc();
+        };
     }
 }

@@ -1,6 +1,6 @@
-package com.breaditnow.customer.product.presentation.request;
+package com.breaditnow.customer.bakery.presentation.request;
 
-public record HotProductSearchRequest(
+public record HotBakerySearchRequest(
         Integer page,
         Integer size,
         String sort,
