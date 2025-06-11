@@ -3,18 +3,26 @@ package com.breaditnow.customer.bakery.infrastructure;
 import com.breaditnow.customer.bakery.domain.port.LoadBakeryPort;
 import com.breaditnow.customer.bakery.domain.port.SaveBakeryPort;
 import com.breaditnow.customer.bakery.infrastructure.jpa.JpaBakeryRepository;
-import com.breaditnow.domain.global.exception.DomainErrorCode;
+import com.breaditnow.customer.bakery.infrastructure.jpa.QueryBakeryRepository;
+import com.breaditnow.customer.bakery.presentation.response.BakeryDetailResponse;
+import com.breaditnow.customer.bakery.presentation.response.BakeryResponse;
+import com.breaditnow.customer.product.infrastructure.jpa.QueryProductRepository;
+import com.breaditnow.customer.product.presentation.response.BreadProductResponse;
+import com.breaditnow.customer.product.presentation.response.OtherProductResponse;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_MISMATCH;
+import java.util.List;
+
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
 public class BakeryAdapter implements SaveBakeryPort, LoadBakeryPort {
     private final JpaBakeryRepository jpaBakeryRepository;
+    private final QueryProductRepository queryProductRepository;
+    private final QueryBakeryRepository queryBakeryRepository;
 
     @Override
     public void increaseFavoriteCount(Long bakeryId) {
@@ -27,9 +35,15 @@ public class BakeryAdapter implements SaveBakeryPort, LoadBakeryPort {
     }
 
     public void validateIsExistBakery(Long bakeryId) {
-        boolean isExist = jpaBakeryRepository.existsById(bakeryId);
-        if(!isExist) {
+        if(!jpaBakeryRepository.existsById(bakeryId)) {
             throw new DomainException(BAKERY_NOT_FOUND);
         }
+    }
+
+    public BakeryDetailResponse getBakeryDetail(Long customerId, Long bakeryId) {
+        BakeryResponse bakeryResponse = queryBakeryRepository.getBakery(customerId, bakeryId);
+        List<BreadProductResponse> breadProductResponses = queryProductRepository.getBreadProductsByBakeryId(bakeryId);
+        List<OtherProductResponse> otherProductResponses = queryProductRepository.getOtherProductsByBakeryId(bakeryId);
+        return BakeryDetailResponse.of(bakeryResponse, breadProductResponses, otherProductResponses);
     }
 }
