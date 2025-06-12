@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.reservation.controller;
 
 import com.breaditnow.customer.common.presentation.swagger.docs.ReservationControllerDocs;
@@ -65,3 +66,4 @@ public class ReservationController implements ReservationControllerDocs {
 		return ApiSuccessResponse.of(reservationService.getReservationDetail(customerId, reservationId));
 	}
 }
+*/

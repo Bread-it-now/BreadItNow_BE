@@ -64,6 +64,11 @@ public enum CustomerErrorCode implements ErrorCode {
 	NOT_FAVORITED(NOT_FOUND, "CE002", "즐겨찾기되지 않은 상품입니다."),
 
 	/**
+	 * CF000 Reservation
+	 */
+	PRODUCT_NOT_BELONG_TO_BAKERY(HttpStatus.BAD_REQUEST, "CR001", "상품이 해당 빵집에 속하지 않습니다."),
+
+	/**
 	 * CZ000 이외
 	 */
 	INVALID_PAGE_NUMBER(BAD_REQUEST, "CZ001", "페이지 번호는 0 이상이어야 합니다."),
