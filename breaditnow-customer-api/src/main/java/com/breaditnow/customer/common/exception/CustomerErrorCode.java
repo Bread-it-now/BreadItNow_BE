@@ -61,7 +61,7 @@ public enum CustomerErrorCode implements ErrorCode {
 	 * CE000 FAVORITE
 	 */
 	ALREADY_FAVORITED(CONFLICT, "CE001", "이미 즐겨찾기된 상품입니다."),
-	NOT_FAVORITED(BAD_REQUEST, "CE002", "즐겨찾기되지 않은 상품입니다."),
+	NOT_FAVORITED(NOT_FOUND, "CE002", "즐겨찾기되지 않은 상품입니다."),
 
 	/**
 	 * CZ000 이외
