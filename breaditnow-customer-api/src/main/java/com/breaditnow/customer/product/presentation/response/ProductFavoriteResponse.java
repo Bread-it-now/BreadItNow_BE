@@ -13,6 +13,7 @@ public class ProductFavoriteResponse {
     private String productName;
     private String productImage;
     private Integer price;
+    private Integer favoriteCount;
     private List<String> releaseTimes;
     private boolean isBakeryActive;
     private boolean isProductActive;

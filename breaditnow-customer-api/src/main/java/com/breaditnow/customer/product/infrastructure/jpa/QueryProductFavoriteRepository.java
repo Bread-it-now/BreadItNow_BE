@@ -46,6 +46,7 @@ public class QueryProductFavoriteRepository {
                                 productEntity.name.as("productName"),
                                 productEntity.imageUrl.as("image"),
                                 productEntity.price.as("price"),
+                                productEntity.favoriteCount.as("favoriteCount"),
                                 productEntity.releaseTimes.as("releaseTimes"),
                                 bakeryEntity.isActive.as("isBakeryActive"),
                                 productEntity.isActive.as("isProductActive"),
