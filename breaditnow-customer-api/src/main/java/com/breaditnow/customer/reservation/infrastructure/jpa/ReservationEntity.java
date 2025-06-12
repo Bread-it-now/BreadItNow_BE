@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -28,7 +28,7 @@ public class ReservationEntity {
     private Long bakeryId;
     private Long reservationNumber;
 
-    @ElementCollection(fetch = LAZY)
+    @ElementCollection(fetch = EAGER)
     @CollectionTable(name = "reservation_products", joinColumns = @JoinColumn(name = "reservation_id"))
     @OrderColumn(name = "line_idx")
     private List<ReservationItemEmbeddable> reservationItems;
@@ -40,7 +40,6 @@ public class ReservationEntity {
     private ReservationStatus reservationStatus;
 
     private LocalDateTime reservationTime;
-    private LocalDateTime receivedTime;
 
     private Integer totalPrice;
 
@@ -55,7 +54,6 @@ public class ReservationEntity {
                 OrdererEmbeddable.from(reservation.getOrderer()),
                 reservation.getReservationStatus(),
                 reservation.getReservationTime(),
-                reservation.getReceivedTime(),
                 reservation.getTotalPrice().getAmount()
         );
     }

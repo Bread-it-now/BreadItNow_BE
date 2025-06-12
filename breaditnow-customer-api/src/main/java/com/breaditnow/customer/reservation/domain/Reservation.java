@@ -15,8 +15,7 @@ public class Reservation {
     private Orderer orderer;
     private ReservationStatus reservationStatus;
     private LocalDateTime reservationTime;
-    private LocalDateTime receivedTime;
-    private Money totalPrice;
+    private final Money totalPrice;
 
     public Reservation(Long reservationNumber, Orderer orderer, Long bakeryId, List<ReservationItem> reservationItems) {
         this.reservationNumber = reservationNumber;
