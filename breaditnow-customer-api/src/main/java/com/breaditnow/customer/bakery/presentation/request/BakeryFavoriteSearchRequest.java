@@ -1,6 +1,6 @@
-package com.breaditnow.customer.product.presentation.request;
+package com.breaditnow.customer.bakery.presentation.request;
 
-public record ProductFavoriteSearchRequest(
+public record BakeryFavoriteSearchRequest(
         Integer page,
         Integer size,
         String sort,

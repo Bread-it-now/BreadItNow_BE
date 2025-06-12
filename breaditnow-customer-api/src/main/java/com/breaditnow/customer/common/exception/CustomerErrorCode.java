@@ -1,14 +1,9 @@
 package com.breaditnow.customer.common.exception;
 
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
+import com.breaditnow.common.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
-import com.breaditnow.common.exception.ErrorCode;
+import static org.springframework.http.HttpStatus.*;
 
 public enum CustomerErrorCode implements ErrorCode {
 	/**
@@ -58,14 +53,15 @@ public enum CustomerErrorCode implements ErrorCode {
 	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "CD006", "상품은 이미 숨김 해제 상태입니다."),
 	INVALID_PERIOD_VALUE(BAD_REQUEST, "CD007", "기간은 DAILY, WEEKLY, MONTHLY 중에서 선택해야 합니다."),
 	PERIOD_REQUIRED_FOR_RESERVATION_SORT(BAD_REQUEST, "CD008", "예약순 정렬 시 기간 설정은 필수입니다."),
-	INVALID_HOT_SORT_TYPE(BAD_REQUEST, "CD009", "핫 상품은 ㄱRESERVATION, FAVORITE 중에서 선택해야 합니다."),
+	INVALID_HOT_SORT_TYPE(BAD_REQUEST, "CD009", "핫 상품은 RESERVATION, FAVORITE 중에서 선택해야 합니다."),
 	INVALID_PRODUCT_CATEGORY(BAD_REQUEST, "CD010", "상품 카테고리는 BREAD, OTHER 중에서 선택해야 합니다."),
+	ONLY_BREAD_CAN_BE_FAVORITED(BAD_REQUEST, "CD011", "빵 상품만 즐겨찾기할 수 있습니다."),
 
 	/**
 	 * CE000 FAVORITE
 	 */
 	ALREADY_FAVORITED(CONFLICT, "CE001", "이미 즐겨찾기된 상품입니다."),
-	NOT_FAVORITED(BAD_REQUEST, "CE002", "즐겨찾기되지 않은 상품입니다."),
+	NOT_FAVORITED(NOT_FOUND, "CE002", "즐겨찾기되지 않은 상품입니다."),
 
 	/**
 	 * CZ000 이외
@@ -75,8 +71,6 @@ public enum CustomerErrorCode implements ErrorCode {
 	COORDINATES_REQUIRED(BAD_REQUEST, "CZ003", "위도와 경도는 null일 수 없습니다."),
 	INVALID_LATITUDE_RANGE(BAD_REQUEST, "CZ004", "위도는 -90과 90 사이여야 합니다."),
 	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "CZ005", "경도는 -180과 180 사이여야 합니다.");
-
-
 
 	private final HttpStatus httpStatus;
 	private final String code;

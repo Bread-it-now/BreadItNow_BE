@@ -21,10 +21,16 @@ public class QBakeryEntity extends EntityPathBase<BakeryEntity> {
 
     public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
 
+    public final StringPath addressDescription = createString("addressDescription");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final NumberPath<Integer> favoriteCount = createNumber("favoriteCount", Integer.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath introduction = createString("introduction");
 
     public final BooleanPath isActive = createBoolean("isActive");
 
@@ -37,7 +43,13 @@ public class QBakeryEntity extends EntityPathBase<BakeryEntity> {
 
     public final StringPath name = createString("name");
 
+    public final EnumPath<com.breaditnow.customer.bakery.domain.OperatingStatus> operatingStatus = createEnum("operatingStatus", com.breaditnow.customer.bakery.domain.OperatingStatus.class);
+
     public final NumberPath<Long> ownerId = createNumber("ownerId", Long.class);
+
+    public final StringPath phone = createString("phone");
+
+    public final StringPath profileImage = createString("profileImage");
 
     public QBakeryEntity(String variable) {
         super(BakeryEntity.class, forVariable(variable));

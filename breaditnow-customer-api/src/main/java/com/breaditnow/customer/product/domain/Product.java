@@ -2,10 +2,13 @@ package com.breaditnow.customer.product.domain;
 
 import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.common.domain.DailyTime;
+import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.ONLY_BREAD_CAN_BE_FAVORITED;
 
 @Getter
 public class Product {
@@ -42,10 +45,17 @@ public class Product {
     }
 
     public void favorite() {
+        if(!isBread()){
+            throw new CustomerException(ONLY_BREAD_CAN_BE_FAVORITED);
+        }
         this.favoriteCount++;
     }
 
     public void unfavorite() {
         this.favoriteCount--;
+    }
+
+    public boolean isBread() {
+        return this.type == ProductType.BREAD;
     }
 }

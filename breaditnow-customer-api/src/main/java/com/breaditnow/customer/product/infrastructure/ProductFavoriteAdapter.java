@@ -8,8 +8,8 @@ import com.breaditnow.customer.product.infrastructure.jpa.JpaProductFavoriteRepo
 import com.breaditnow.customer.product.infrastructure.jpa.ProductFavoriteEntity;
 import com.breaditnow.customer.product.infrastructure.jpa.ProductFavoriteEntityId;
 import com.breaditnow.customer.product.infrastructure.jpa.QueryProductFavoriteRepository;
-import com.breaditnow.customer.product.presentation.response.ProductFavoriteDetailsResponse;
-import com.breaditnow.customer.product.presentation.response.ProductFavoritePageDetailsResponse;
+import com.breaditnow.customer.product.presentation.response.ProductFavoriteResponse;
+import com.breaditnow.customer.product.presentation.response.ProductFavoritePageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
@@ -29,13 +29,13 @@ public class ProductFavoriteAdapter implements SaveProductFavoritePort, LoadProd
     }
 
     @Override
-    public Optional<ProductFavorite> loadProductFavorite(Long customerId, Long productId) {
+    public Optional<ProductFavorite> findProductFavorite(Long customerId, Long productId) {
         return jpaProductFavoriteRepository.findById(new ProductFavoriteEntityId(customerId, productId))
                 .map(ProductFavoriteEntity::toDomain);
     }
 
-    public ProductFavoritePageDetailsResponse getFavoriteProducts(Long customerId, ProductFavoriteSearchCriteria productFavoriteSearchCriteria) {
-        Page<ProductFavoriteDetailsResponse> productFavoriteDetailsResponses = queryProductFavoriteRepository.fetchProductFavorites(customerId, productFavoriteSearchCriteria);
-        return ProductFavoritePageDetailsResponse.of(productFavoriteDetailsResponses);
+    public ProductFavoritePageResponse getFavoriteProducts(Long customerId, ProductFavoriteSearchCriteria productFavoriteSearchCriteria) {
+        Page<ProductFavoriteResponse> productFavoriteDetailsResponses = queryProductFavoriteRepository.fetchProductFavorites(customerId, productFavoriteSearchCriteria);
+        return ProductFavoritePageResponse.of(productFavoriteDetailsResponses);
     }
 }

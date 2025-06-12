@@ -5,5 +5,5 @@ import com.breaditnow.customer.product.domain.ProductFavorite;
 import java.util.Optional;
 
 public interface LoadProductFavoritePort {
-    Optional<ProductFavorite> loadProductFavorite(Long customerId, Long productId);
+    Optional<ProductFavorite> findProductFavorite(Long customerId, Long productId);
 }

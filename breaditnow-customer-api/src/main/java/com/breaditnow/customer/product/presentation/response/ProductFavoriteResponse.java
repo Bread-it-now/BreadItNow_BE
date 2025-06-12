@@ -7,12 +7,13 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ProductFavoriteDetailsResponse {
+public class ProductFavoriteResponse {
     private Long productId;
     private Long bakeryId;
     private String productName;
     private String productImage;
     private Integer price;
+    private Integer favoriteCount;
     private List<String> releaseTimes;
     private boolean isBakeryActive;
     private boolean isProductActive;

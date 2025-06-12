@@ -3,7 +3,7 @@ package com.breaditnow.customer.product.infrastructure.jpa;
 import com.breaditnow.customer.bakery.infrastructure.jpa.QBakeryEntity;
 import com.breaditnow.customer.common.infrastructure.jpa.DistanceExpressionProvider;
 import com.breaditnow.customer.product.application.request.ProductFavoriteSearchCriteria;
-import com.breaditnow.customer.product.presentation.response.ProductFavoriteDetailsResponse;
+import com.breaditnow.customer.product.presentation.response.ProductFavoriteResponse;
 import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -25,9 +25,9 @@ public class QueryProductFavoriteRepository {
     private static final QBakeryEntity bakeryEntity = QBakeryEntity.bakeryEntity;
     private final DistanceExpressionProvider distanceExpressionProvider;
 
-    public Page<ProductFavoriteDetailsResponse> fetchProductFavorites(Long customerId, ProductFavoriteSearchCriteria criteria) {
+    public Page<ProductFavoriteResponse> fetchProductFavorites(Long customerId, ProductFavoriteSearchCriteria criteria) {
         NumberExpression<Double> distanceExpression = buildDistanceExpression(criteria);
-        JPAQuery<ProductFavoriteDetailsResponse> query = createQuery(customerId, criteria, distanceExpression);
+        JPAQuery<ProductFavoriteResponse> query = createQuery(customerId, criteria, distanceExpression);
 
         Pageable pageable = criteria.pagination().toPageable();
         query.offset(pageable.getOffset()).limit(pageable.getPageSize());
@@ -37,15 +37,16 @@ public class QueryProductFavoriteRepository {
         return PageableExecutionUtils.getPage(query.fetch(), pageable, countQuery::fetchOne);
     }
 
-    private JPAQuery<ProductFavoriteDetailsResponse> createQuery(Long customerId, ProductFavoriteSearchCriteria criteria, NumberExpression<Double> distanceExpression) {
+    private JPAQuery<ProductFavoriteResponse> createQuery(Long customerId, ProductFavoriteSearchCriteria criteria, NumberExpression<Double> distanceExpression) {
         return queryFactory.select(
                         Projections.fields(
-                                ProductFavoriteDetailsResponse.class,
+                                ProductFavoriteResponse.class,
                                 productEntity.id.as("productId"),
                                 productEntity.bakeryId.as("bakeryId"),
                                 productEntity.name.as("productName"),
                                 productEntity.imageUrl.as("image"),
                                 productEntity.price.as("price"),
+                                productEntity.favoriteCount.as("favoriteCount"),
                                 productEntity.releaseTimes.as("releaseTimes"),
                                 bakeryEntity.isActive.as("isBakeryActive"),
                                 productEntity.isActive.as("isProductActive"),
@@ -63,15 +64,13 @@ public class QueryProductFavoriteRepository {
     }
 
     private JPAQuery<Long> createCountQuery(Long customerId) {
-        return queryFactory
-                .select(productFavoriteEntity.count())
+        return queryFactory.select(productFavoriteEntity.count())
                 .from(productFavoriteEntity)
                 .where(
                         productFavoriteEntity.id.customerId.eq(customerId),
                         productFavoriteEntity.isActive.eq(true)
                 );
     }
-
 
     private NumberExpression<Double> buildDistanceExpression(ProductFavoriteSearchCriteria criteria) {
         var bakeryLocation = DistanceExpressionProvider.Location.of(bakeryEntity.latitude, bakeryEntity.longitude);

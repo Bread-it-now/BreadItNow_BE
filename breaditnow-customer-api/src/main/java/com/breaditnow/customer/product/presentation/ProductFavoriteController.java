@@ -6,7 +6,7 @@ import com.breaditnow.customer.product.application.ProductFavoriteService;
 import com.breaditnow.customer.product.application.request.ProductFavoriteSearchCriteria;
 import com.breaditnow.customer.product.infrastructure.ProductFavoriteAdapter;
 import com.breaditnow.customer.product.presentation.request.ProductFavoriteSearchRequest;
-import com.breaditnow.customer.product.presentation.response.ProductFavoritePageDetailsResponse;
+import com.breaditnow.customer.product.presentation.response.ProductFavoritePageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ public class ProductFavoriteController {
     }
 
     @GetMapping("/favorite")
-    public ApiSuccessResponse<ProductFavoritePageDetailsResponse> getFavoriteProducts(@AuthCustomer Long customerId, ProductFavoriteSearchRequest request) {
+    public ApiSuccessResponse<ProductFavoritePageResponse> getFavoriteProducts(@AuthCustomer Long customerId, ProductFavoriteSearchRequest request) {
         ProductFavoriteSearchCriteria productFavoriteSearchCriteria = ProductFavoriteSearchCriteria.of(request);
         return ApiSuccessResponse.of(productFavoriteAdapter.getFavoriteProducts(customerId, productFavoriteSearchCriteria));
     }
