@@ -2,7 +2,7 @@ package com.breaditnow.customer.reservation.presentation.response;
 
 import com.breaditnow.customer.common.domain.vo.PageInfo;
 import com.breaditnow.customer.reservation.domain.ReservationStatus;
-import com.breaditnow.customer.reservation.infrastructure.jpa.dto.ReservationWithBakery;
+import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationWithBakery;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -25,13 +25,13 @@ public record ReservationSummaryPageResponse(List<ReservationSummaryResponse> re
     }
 
     public record ReservationSummaryResponse(
+            Long bakeryId,
+            String bakeryName,
+            String bakeryProfileImageUrl,
             Long reservationId,
             LocalDate reservationDate,
             Long reservationNumber,
             ReservationStatus reservationStatus,
-            Long bakeryId,
-            String bakeryName,
-            String bakeryProfileImageUrl,
             Integer reservationTotalPrice,
             LocalDateTime reservationPickupDeadline,
             String reservationCancellationReason,
@@ -40,13 +40,13 @@ public record ReservationSummaryPageResponse(List<ReservationSummaryResponse> re
     ) {
         public static ReservationSummaryResponse of(ReservationWithBakery reservationWithBakery) {
             return new ReservationSummaryResponse(
+                    reservationWithBakery.bakery().getId(),
+                    reservationWithBakery.bakery().getName(),
+                    reservationWithBakery.bakery().getProfileImage(),
                     reservationWithBakery.reservation().getId(),
                     reservationWithBakery.reservation().getReservationTime().toLocalDate(),
                     reservationWithBakery.reservation().getReservationNumber(),
                     reservationWithBakery.reservation().getReservationStatus(),
-                    reservationWithBakery.bakery().getId(),
-                    reservationWithBakery.bakery().getName(),
-                    reservationWithBakery.bakery().getProfileImage(),
                     reservationWithBakery.reservation().getTotalPrice(),
                     reservationWithBakery.reservation().getPickupDeadLine(),
                     reservationWithBakery.reservation().getCancellationReason(),

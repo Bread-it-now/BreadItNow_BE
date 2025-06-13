@@ -2,7 +2,7 @@ package com.breaditnow.customer.reservation.presentation.response;
 
 import com.breaditnow.customer.bakery.infrastructure.jpa.BakeryEntity;
 import com.breaditnow.customer.reservation.domain.ReservationStatus;
-import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationEntity;
+import com.breaditnow.customer.reservation.infrastructure.jpa.entity.ReservationEntity;
 
 import java.time.LocalDate;
 import java.util.List;

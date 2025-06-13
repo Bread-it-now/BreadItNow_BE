@@ -1,5 +1,6 @@
 package com.breaditnow.customer.reservation.infrastructure.jpa;
 
+import com.breaditnow.customer.reservation.infrastructure.jpa.entity.ReservationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
