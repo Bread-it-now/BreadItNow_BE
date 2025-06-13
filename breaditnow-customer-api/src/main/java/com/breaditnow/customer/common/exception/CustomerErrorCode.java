@@ -71,7 +71,7 @@ public enum CustomerErrorCode implements ErrorCode {
 	UNAUTHORIZED_RESERVATION_CANCEL(UNAUTHORIZED, "CR002", "예약 취소 권한이 없습니다."),
 	CANCELLATION_REASON_REQUIRED(BAD_REQUEST, "CR003", "예약 취소 사유는 필수입니다."),
 	ALREADY_CANCELLED(BAD_REQUEST, "CR004", "이미 취소된 예약입니다."),
-
+	QUANTITY_POSITIVE(BAD_REQUEST, "CR005", "예약 상품의 수량은 0보다 커야 합니다."),
 	/**
 	 * CZ000 이외
 	 */

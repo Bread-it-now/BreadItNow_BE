@@ -5,7 +5,7 @@ import com.breaditnow.customer.product.domain.port.LoadProductPort;
 import com.breaditnow.customer.reservation.application.request.CancelReasonRequest;
 import com.breaditnow.customer.reservation.application.request.ReservationRequest;
 import com.breaditnow.customer.reservation.domain.Reservation;
-import com.breaditnow.customer.reservation.domain.ReservationItem;
+import com.breaditnow.customer.reservation.domain.ReservationProducts;
 import com.breaditnow.customer.reservation.domain.port.LoadReservationPort;
 import com.breaditnow.customer.reservation.domain.port.SaveReservationPort;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +24,15 @@ public class ReservationService {
 
     @Transactional
     public Long createReservation(Long ordererId, ReservationRequest request) {
-        List<ReservationItem> reservationItems = new ArrayList<>();
+        List<ReservationProducts> reservationProducts = new ArrayList<>();
 
-        request.reservationProducts().forEach(orderProduct -> {
-            Product product = loadProductPort.getProduct(orderProduct.productId());
+        request.reservationProducts().forEach(reservationProduct -> {
+            Product product = loadProductPort.getProduct(reservationProduct.productId());
             product.validateBelongsToBakery(request.bakeryId());
-            reservationItems.add(new ReservationItem(product.getId(), product.getName(), product.getImageUrl(), product.getPrice(), orderProduct.quantity()));
+            reservationProducts.add(new ReservationProducts(product.getId(), product.getName(), product.getImageUrl(), product.getPrice(), reservationProduct.quantity()));
         });
 
-        Reservation reservation = new Reservation(ordererId, request.bakeryId(), reservationItems);
+        Reservation reservation = new Reservation(ordererId, request.bakeryId(), reservationProducts);
         return saveReservationPort.save(reservation);
     }
 

@@ -55,7 +55,7 @@ public class ReservationEntity {
                 .reservationNumber(reservation.getReservationNumber())
                 .reservationTime(reservation.getReservationTime())
                 .totalPrice(reservation.getTotalPrice().getAmount())
-                .reservationItems(reservation.getReservationItems().stream()
+                .reservationItems(reservation.getReservationProducts().stream()
                         .map(ReservationItemEmbeddable::from)
                         .toList())
                 .ordererId(reservation.getOrdererId())
@@ -66,7 +66,7 @@ public class ReservationEntity {
     public Reservation toDomain() {
         return Reservation.builder()
                 .reservationId(this.id)
-                .reservationItems(this.reservationItems.stream()
+                .reservationProducts(this.reservationItems.stream()
                         .map(ReservationItemEmbeddable::toDomain)
                         .toList()
                 )

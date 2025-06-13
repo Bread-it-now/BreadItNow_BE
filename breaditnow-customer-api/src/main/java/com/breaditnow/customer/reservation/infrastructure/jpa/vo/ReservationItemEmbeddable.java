@@ -1,7 +1,7 @@
 package com.breaditnow.customer.reservation.infrastructure.jpa.vo;
 
 import com.breaditnow.customer.common.domain.Money;
-import com.breaditnow.customer.reservation.domain.ReservationItem;
+import com.breaditnow.customer.reservation.domain.ReservationProducts;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,19 +19,19 @@ public class ReservationItemEmbeddable {
     private Integer quantity;
     private Integer totalPrice;
 
-    public static ReservationItemEmbeddable from(ReservationItem reservationItem) {
+    public static ReservationItemEmbeddable from(ReservationProducts reservationProducts) {
         return new ReservationItemEmbeddable(
-            reservationItem.getProductId(),
-            reservationItem.getProductName(),
-            reservationItem.getProductImage(),
-            reservationItem.getPrice().getAmount(),
-            reservationItem.getQuantity(),
-            reservationItem.getTotalPrice().getAmount()
+            reservationProducts.getProductId(),
+            reservationProducts.getProductName(),
+            reservationProducts.getProductImage(),
+            reservationProducts.getPrice().getAmount(),
+            reservationProducts.getQuantity(),
+            reservationProducts.getTotalPrice().getAmount()
         );
     }
 
-    public ReservationItem toDomain() {
-        return new ReservationItem(
+    public ReservationProducts toDomain() {
+        return new ReservationProducts(
             productId,
             productName,
             productImageUrl,

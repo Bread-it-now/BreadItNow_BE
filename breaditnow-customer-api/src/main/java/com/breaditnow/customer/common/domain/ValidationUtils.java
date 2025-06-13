@@ -13,12 +13,6 @@ public final class ValidationUtils {
         if (value != null) setter.accept(value);
     }
 
-    public static <T> void setIfValid(T value, Predicate<T> validator, Consumer<T> setter, Supplier<? extends BreaditnowException> exceptionSupplier) {
-        if (value == null) return;
-        if (validator.test(value)) throw exceptionSupplier.get();
-        setter.accept(value);
-    }
-
     public static <T> void requireValid(T value, Predicate<T> validator, Supplier<? extends BreaditnowException> exceptionSupplier) {
         if (value == null || validator.test(value)) {
             throw exceptionSupplier.get();

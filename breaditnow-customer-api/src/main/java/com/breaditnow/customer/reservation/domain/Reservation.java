@@ -16,28 +16,28 @@ public class Reservation {
     private Long reservationId;
     private Long bakeryId;
     private Long reservationNumber;
-    private List<ReservationItem> reservationItems;
+    private List<ReservationProducts> reservationProducts;
     private Long ordererId;
     private ReservationState reservationState;
     private LocalDateTime reservationTime;
     private Money totalPrice;
 
     @Builder
-    private Reservation(Long reservationId, Long reservationNumber, List<ReservationItem> reservationItems, Long bakeryId, Long ordererId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {
+    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProducts> reservationProducts, Long bakeryId, Long ordererId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
         this.reservationNumber = reservationNumber;
-        this.reservationItems = reservationItems;
+        this.reservationProducts = reservationProducts;
         this.ordererId = ordererId;
         this.reservationTime = reservationTime;
         this.totalPrice = totalPrice;
         this.reservationState = new ReservationState(reservationStatus, cancellationReason);
     }
 
-    public Reservation(Long ordererId, Long bakeryId, List<ReservationItem> reservationItems) {
+    public Reservation(Long ordererId, Long bakeryId, List<ReservationProducts> reservationProducts) {
         this.ordererId = ordererId;
         this.bakeryId = bakeryId;
-        this.reservationItems = reservationItems;
+        this.reservationProducts = reservationProducts;
         this.reservationState = ReservationState.waiting();
         this.reservationTime = LocalDateTime.now();
         this.totalPrice = calculateTotalPrice();
@@ -49,8 +49,8 @@ public class Reservation {
     }
 
     private Money calculateTotalPrice() {
-        return reservationItems.stream()
-                .map(ReservationItem::getTotalPrice)
+        return reservationProducts.stream()
+                .map(ReservationProducts::getTotalPrice)
                 .reduce(Money.ZERO, Money::add);
     }
 }
