@@ -9,7 +9,7 @@ import java.util.List;
 
 public record ReservationSimpleResponse(
         ReservationInfoResponse reservationInfo,
-        List<ReservationProductResponse> reservationProduct,
+        List<ReservationProductResponse> reservationProducts,
         ReservationSummaryResponse reservationSummary
 ) {
     public static ReservationSimpleResponse from(BakeryEntity bakeryEntity, ReservationEntity reservationEntity) {
@@ -39,32 +39,32 @@ public record ReservationSimpleResponse(
 
     public record ReservationInfoResponse(
             String bakeryName,
-            LocalDate reservationTime,
+            LocalDate reservationDate,
             ReservationStatus reservationStatus
     ) {
-        public static ReservationInfoResponse of(String bakeryName, LocalDate reservationTime, ReservationStatus reservationStatus) {
-            return new ReservationInfoResponse(bakeryName, reservationTime, reservationStatus);
+        public static ReservationInfoResponse of(String bakeryName, LocalDate reservationDate, ReservationStatus reservationStatus) {
+            return new ReservationInfoResponse(bakeryName, reservationDate, reservationStatus);
         }
     }
 
     public record ReservationProductResponse(
             String productImageUrl,
             String productName,
-            Integer quantity,
-            Integer unitPrice,
-            Integer totalPrice
+            Integer productQuantity,
+            Integer productUnitPrice,
+            Integer productTotalPrice
     ) {
-        public static ReservationProductResponse of(String productImageUrl, String productName, Integer quantity, Integer unitPrice, Integer totalPrice) {
-            return new ReservationProductResponse(productImageUrl, productName, quantity, unitPrice, totalPrice);
+        public static ReservationProductResponse of(String productImageUrl, String productName, Integer productQuantity, Integer productUnitPrice, Integer productTotalPrice) {
+            return new ReservationProductResponse(productImageUrl, productName, productQuantity, productUnitPrice, productTotalPrice);
         }
     }
 
     public record ReservationSummaryResponse(
-            Integer totalQuantity,
-            Integer totalPrice
+            Integer reservationTotalProducts,
+            Integer reservationTotalPrice
     ) {
-        public static ReservationSummaryResponse of(Integer totalQuantity, Integer totalPrice) {
-            return new ReservationSummaryResponse(totalQuantity, totalPrice);
+        public static ReservationSummaryResponse of(Integer reservationTotalProducts, Integer reservationTotalPrice) {
+            return new ReservationSummaryResponse(reservationTotalProducts, reservationTotalPrice);
         }
     }
 }

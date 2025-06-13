@@ -40,7 +40,7 @@ public class CustomerController  {
     public ApiSuccessResponse<CustomerInfoResponse> updateCustomerInfo(
             @AuthCustomer Long customerId,
             @RequestPart("data") CustomerInfoUpdateRequest dto,
-            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage) {
+            @RequestPart(value = "bakeryProfileImage", required = false) MultipartFile profileImage) {
         return ApiSuccessResponse.of(profileService.updateCustomerInfo(customerId, dto, profileImage));
     }
 

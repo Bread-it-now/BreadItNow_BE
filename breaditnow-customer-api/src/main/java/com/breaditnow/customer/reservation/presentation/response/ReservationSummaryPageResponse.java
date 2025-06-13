@@ -28,14 +28,14 @@ public record ReservationSummaryPageResponse(List<ReservationSummaryResponse> re
             Long reservationId,
             LocalDate reservationDate,
             Long reservationNumber,
-            ReservationStatus status,
+            ReservationStatus reservationStatus,
             Long bakeryId,
             String bakeryName,
-            Integer totalPrice,
-            LocalDateTime pickupDeadline,
-            String cancellationReason,
-            Integer totalReservationProducts,
-            String mainReservationProductName
+            Integer reservationTotalPrice,
+            LocalDateTime reservationPickupDeadline,
+            String reservationCancellationReason,
+            Integer reservationTotalProducts,
+            String reservationMainProductName
     ) {
         public static ReservationSummaryResponse of(ReservationWithBakery reservationWithBakery) {
             return new ReservationSummaryResponse(
@@ -49,7 +49,8 @@ public record ReservationSummaryPageResponse(List<ReservationSummaryResponse> re
                     reservationWithBakery.reservation().getPickupDeadLine(),
                     reservationWithBakery.reservation().getCancellationReason(),
                     reservationWithBakery.reservation().getReservationItems().size(),
-                    reservationWithBakery.reservation().getReservationItems().get(0).getProductName()
+                    reservationWithBakery.reservation().getReservationItems().isEmpty() ? null :
+                            reservationWithBakery.reservation().getReservationItems().get(0).getProductName()
             );
         }
     }

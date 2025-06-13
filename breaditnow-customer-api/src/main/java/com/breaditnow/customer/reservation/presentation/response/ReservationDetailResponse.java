@@ -23,10 +23,10 @@ public class ReservationDetailResponse {
 
     public record SimpleBakeryResponse(
             Long bakeryId,
-            String name,
-            String address,
-            String phone,
-            String profileImage
+            String bakeryName,
+            String bakeryAddress,
+            String bakeryPhone,
+            String bakeryProfileImage
     ) {
         public static SimpleBakeryResponse of(BakeryEntity bakeryEntity) {
             return new SimpleBakeryResponse(
@@ -43,8 +43,8 @@ public class ReservationDetailResponse {
         Long reservationId,
         Long reservationNumber,
         LocalDateTime reservationTime,
-        ReservationStatus status,
-        Integer totalPrice,
+        ReservationStatus reservationStatus,
+        Integer reservationTotalPrice,
         List<ReservationItemResponse> reservationItems
     ) {
         public static ReservationResponse of(ReservationEntity reservationEntity) {
@@ -71,18 +71,12 @@ public class ReservationDetailResponse {
     public record ReservationItemResponse(
         Long productId,
         String productName,
-        Integer quantity,
-        Integer price,
-        String productImage
+        Integer productQuantity,
+        Integer productTotalPrice,
+        String productImageUrl
     ) {
         public static ReservationItemResponse of(Long productId, String productName, Integer quantity, Integer price, String productImage) {
-            return new ReservationItemResponse(
-                    productId,
-                    productName,
-                    quantity,
-                    price,
-                    productImage
-            );
+            return new ReservationItemResponse(productId, productName, quantity, price, productImage);
         }
     }
 }
