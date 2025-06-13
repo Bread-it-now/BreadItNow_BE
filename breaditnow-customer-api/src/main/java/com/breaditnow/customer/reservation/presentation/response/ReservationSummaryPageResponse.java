@@ -2,7 +2,7 @@ package com.breaditnow.customer.reservation.presentation.response;
 
 import com.breaditnow.customer.common.domain.vo.PageInfo;
 import com.breaditnow.customer.reservation.domain.ReservationStatus;
-import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationWithBakery;
+import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationDto;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record ReservationSummaryPageResponse(List<ReservationSummaryResponse> reservations, PageInfo pageInfo) {
-    public static ReservationSummaryPageResponse of(Page<ReservationWithBakery> reservationWithBakeries) {
+    public static ReservationSummaryPageResponse of(Page<ReservationDto> reservationWithBakeries) {
         if(reservationWithBakeries.isEmpty()) {
             return new ReservationSummaryPageResponse(List.of(), PageInfo.empty());
         }
@@ -38,21 +38,21 @@ public record ReservationSummaryPageResponse(List<ReservationSummaryResponse> re
             Integer reservationTotalProducts,
             String reservationMainProductName
     ) {
-        public static ReservationSummaryResponse of(ReservationWithBakery reservationWithBakery) {
+        public static ReservationSummaryResponse of(ReservationDto reservationDto) {
             return new ReservationSummaryResponse(
-                    reservationWithBakery.bakery().getId(),
-                    reservationWithBakery.bakery().getName(),
-                    reservationWithBakery.bakery().getProfileImage(),
-                    reservationWithBakery.reservation().getId(),
-                    reservationWithBakery.reservation().getReservationTime().toLocalDate(),
-                    reservationWithBakery.reservation().getReservationNumber(),
-                    reservationWithBakery.reservation().getReservationStatus(),
-                    reservationWithBakery.reservation().getTotalPrice(),
-                    reservationWithBakery.reservation().getPickupDeadLine(),
-                    reservationWithBakery.reservation().getCancellationReason(),
-                    reservationWithBakery.reservation().getReservationItems().size(),
-                    reservationWithBakery.reservation().getReservationItems().isEmpty() ? null :
-                            reservationWithBakery.reservation().getReservationItems().get(0).getProductName()
+                    reservationDto.bakery().getId(),
+                    reservationDto.bakery().getName(),
+                    reservationDto.bakery().getProfileImage(),
+                    reservationDto.reservation().getId(),
+                    reservationDto.reservation().getReservationTime().toLocalDate(),
+                    reservationDto.reservation().getReservationNumber(),
+                    reservationDto.reservation().getReservationStatus(),
+                    reservationDto.reservation().getTotalPrice(),
+                    reservationDto.reservation().getPickupDeadLine(),
+                    reservationDto.reservation().getCancellationReason(),
+                    reservationDto.reservation().getReservationItems().size(),
+                    reservationDto.reservation().getReservationItems().isEmpty() ? null :
+                            reservationDto.reservation().getReservationItems().get(0).getProductName()
             );
         }
     }

@@ -4,10 +4,8 @@ import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.port.LoadProductPort;
 import com.breaditnow.customer.reservation.application.request.CancelReasonRequest;
 import com.breaditnow.customer.reservation.application.request.ReservationRequest;
-import com.breaditnow.customer.reservation.domain.Orderer;
 import com.breaditnow.customer.reservation.domain.Reservation;
 import com.breaditnow.customer.reservation.domain.ReservationItem;
-import com.breaditnow.customer.reservation.domain.port.LoadOrdererPort;
 import com.breaditnow.customer.reservation.domain.port.LoadReservationPort;
 import com.breaditnow.customer.reservation.domain.port.SaveReservationPort;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationService {
     private final LoadProductPort loadProductPort;
-    private final LoadOrdererPort loadOrdererPort;
     private final SaveReservationPort saveReservationPort;
     private final LoadReservationPort loadReservationPort;
 
@@ -35,8 +32,7 @@ public class ReservationService {
             reservationItems.add(new ReservationItem(product.getId(), product.getName(), product.getImageUrl(), product.getPrice(), orderProduct.quantity()));
         });
 
-        Orderer orderer = loadOrdererPort.getOrderer(ordererId);
-        Reservation reservation = new Reservation(orderer, request.bakeryId(), reservationItems);
+        Reservation reservation = new Reservation(ordererId, request.bakeryId(), reservationItems);
         return saveReservationPort.save(reservation);
     }
 

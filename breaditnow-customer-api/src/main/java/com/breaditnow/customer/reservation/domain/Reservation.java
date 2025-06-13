@@ -17,25 +17,25 @@ public class Reservation {
     private Long bakeryId;
     private Long reservationNumber;
     private List<ReservationItem> reservationItems;
-    private Orderer orderer;
+    private Long ordererId;
     private ReservationState reservationState;
     private LocalDateTime reservationTime;
     private Money totalPrice;
 
     @Builder
-    private Reservation(Long reservationId, Long reservationNumber, List<ReservationItem> reservationItems, Long bakeryId, Orderer orderer, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {
+    private Reservation(Long reservationId, Long reservationNumber, List<ReservationItem> reservationItems, Long bakeryId, Long ordererId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
         this.reservationNumber = reservationNumber;
         this.reservationItems = reservationItems;
-        this.orderer = orderer;
+        this.ordererId = ordererId;
         this.reservationTime = reservationTime;
         this.totalPrice = totalPrice;
         this.reservationState = new ReservationState(reservationStatus, cancellationReason);
     }
 
-    public Reservation(Orderer orderer, Long bakeryId, List<ReservationItem> reservationItems) {
-        this.orderer = orderer;
+    public Reservation(Long ordererId, Long bakeryId, List<ReservationItem> reservationItems) {
+        this.ordererId = ordererId;
         this.bakeryId = bakeryId;
         this.reservationItems = reservationItems;
         this.reservationState = ReservationState.waiting();
@@ -43,8 +43,8 @@ public class Reservation {
         this.totalPrice = calculateTotalPrice();
     }
 
-    public void cancel(Long customerId, String reason) {
-        requireValid(customerId, id -> !orderer.getOrdererId().equals(id), () -> new CustomerException(UNAUTHORIZED_RESERVATION_CANCEL));
+    public void cancel(Long ordererId, String reason) {
+        requireValid(ordererId, id -> !getOrdererId().equals(id), () -> new CustomerException(UNAUTHORIZED_RESERVATION_CANCEL));
         reservationState.cancelled(reason);
     }
 

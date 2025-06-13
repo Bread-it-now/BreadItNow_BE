@@ -4,7 +4,6 @@ import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.reservation.domain.Reservation;
 import com.breaditnow.customer.reservation.domain.ReservationStatus;
 import com.breaditnow.customer.reservation.infrastructure.jpa.vo.ReservationItemEmbeddable;
-import com.breaditnow.customer.reservation.infrastructure.jpa.vo.OrdererEmbeddable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,15 +30,13 @@ public class ReservationEntity {
     private Long id;
 
     private Long bakeryId;
+    private Long ordererId;
     private Long reservationNumber;
 
     @ElementCollection(fetch = EAGER)
     @CollectionTable(name = "reservation_products", joinColumns = @JoinColumn(name = "reservation_id"))
     @OrderColumn(name = "line_idx")
     private List<ReservationItemEmbeddable> reservationItems;
-
-    @Embedded
-    private OrdererEmbeddable orderer;
 
     @Enumerated(STRING)
     private ReservationStatus reservationStatus;
@@ -61,7 +58,7 @@ public class ReservationEntity {
                 .reservationItems(reservation.getReservationItems().stream()
                         .map(ReservationItemEmbeddable::from)
                         .toList())
-                .orderer(OrdererEmbeddable.from(reservation.getOrderer()))
+                .ordererId(reservation.getOrdererId())
                 .bakeryId(reservation.getBakeryId())
                 .build();
     }
@@ -75,7 +72,7 @@ public class ReservationEntity {
                 )
                 .reservationStatus(this.reservationStatus)
                 .bakeryId(this.bakeryId)
-                .orderer(this.orderer.toDomain())
+                .ordererId(this.ordererId)
                 .totalPrice(new Money(this.totalPrice))
                 .reservationTime(this.reservationTime)
                 .reservationNumber(this.reservationNumber)

@@ -2,7 +2,8 @@ package com.breaditnow.customer.reservation.infrastructure.jpa.query;
 
 import com.breaditnow.customer.bakery.infrastructure.jpa.QBakeryEntity;
 import com.breaditnow.customer.reservation.application.request.ReservationSearchCriteria;
-import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationWithBakery;
+import com.breaditnow.customer.reservation.domain.ReservationStatus;
+import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationDto;
 import com.breaditnow.customer.reservation.infrastructure.jpa.entity.QReservationEntity;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -24,50 +25,54 @@ public class QueryReservationRepository {
     private static final QReservationEntity reservationEntity = QReservationEntity.reservationEntity;
     private static final QBakeryEntity bakeryEntity = QBakeryEntity.bakeryEntity;
 
-    public Optional<ReservationWithBakery> getReservation(Long customerId, Long reservationId) {
+    public Optional<ReservationDto> getReservation(Long customerId, Long reservationId) {
         Tuple tuple = queryFactory
                 .select(bakeryEntity, reservationEntity)
                 .from(reservationEntity)
                 .innerJoin(bakeryEntity).on(bakeryEntity.id.eq(reservationEntity.bakeryId))
-                .where(reservationEntity.orderer.ordererId.eq(customerId)
-                        .and(reservationEntity.id.eq(reservationId)))
+                .where(reservationEntity.ordererId.eq(customerId)
+                        .and(reservationEntity.id.eq(reservationId))
+                )
                 .fetchOne();
 
         if (tuple == null) return Optional.empty();
-        return Optional.of(new ReservationWithBakery(tuple.get(bakeryEntity), tuple.get(reservationEntity)));
+        return Optional.of(new ReservationDto(tuple.get(bakeryEntity), tuple.get(reservationEntity)));
     }
 
-    public Page<ReservationWithBakery> fetchReservations(Long customerId, ReservationSearchCriteria criteria) {
+    public Page<ReservationDto> fetchReservations(Long customerId, ReservationSearchCriteria criteria) {
         Pageable pageable = criteria.pagination().toPageable();
-        BooleanExpression predicate = buildPredicate(customerId, criteria);
 
         List<Tuple> tuples = queryFactory
                 .select(bakeryEntity, reservationEntity)
                 .from(reservationEntity)
                 .innerJoin(bakeryEntity).on(bakeryEntity.id.eq(reservationEntity.bakeryId))
-                .where(predicate)
+                .where(reservationEntity.ordererId.eq(customerId)
+                        .and(reservationStatusExpression(criteria.status()))
+                )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(reservationEntity.reservationTime.desc())
                 .fetch();
 
-        List<ReservationWithBakery> content = tuples.stream()
-                .map(tuple -> new ReservationWithBakery(tuple.get(bakeryEntity), tuple.get(reservationEntity)))
+        List<ReservationDto> content = tuples.stream()
+                .map(tuple -> new ReservationDto(tuple.get(bakeryEntity), tuple.get(reservationEntity)))
                 .toList();
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(reservationEntity.count())
                 .from(reservationEntity)
-                .where(predicate);
+                .where(reservationEntity.ordererId.eq(customerId)
+                        .and(reservationStatusExpression(criteria.status()))
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression buildPredicate(Long customerId, ReservationSearchCriteria criteria) {
-        BooleanExpression predicate = reservationEntity.orderer.ordererId.eq(customerId);
-        if (criteria.status() != null) {
-            predicate = predicate.and(reservationEntity.reservationStatus.eq(criteria.status()));
+    private BooleanExpression reservationStatusExpression(ReservationStatus status) {
+        if (status != null) {
+            return reservationEntity.reservationStatus.eq(status);
         }
-        return predicate;
+
+        return null;
     }
 }

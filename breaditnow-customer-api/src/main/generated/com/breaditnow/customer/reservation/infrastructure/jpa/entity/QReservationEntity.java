@@ -18,8 +18,6 @@ public class QReservationEntity extends EntityPathBase<ReservationEntity> {
 
     private static final long serialVersionUID = -1033943778L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QReservationEntity reservationEntity = new QReservationEntity("reservationEntity");
 
     public final NumberPath<Long> bakeryId = createNumber("bakeryId", Long.class);
@@ -28,7 +26,7 @@ public class QReservationEntity extends EntityPathBase<ReservationEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.breaditnow.customer.reservation.infrastructure.jpa.vo.QOrdererEmbeddable orderer;
+    public final NumberPath<Long> ordererId = createNumber("ordererId", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> pickupDeadLine = createDateTime("pickupDeadLine", java.time.LocalDateTime.class);
 
@@ -43,24 +41,15 @@ public class QReservationEntity extends EntityPathBase<ReservationEntity> {
     public final NumberPath<Integer> totalPrice = createNumber("totalPrice", Integer.class);
 
     public QReservationEntity(String variable) {
-        this(ReservationEntity.class, forVariable(variable), INITS);
+        super(ReservationEntity.class, forVariable(variable));
     }
 
     public QReservationEntity(Path<? extends ReservationEntity> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QReservationEntity(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QReservationEntity(PathMetadata metadata, PathInits inits) {
-        this(ReservationEntity.class, metadata, inits);
-    }
-
-    public QReservationEntity(Class<? extends ReservationEntity> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.orderer = inits.isInitialized("orderer") ? new com.breaditnow.customer.reservation.infrastructure.jpa.vo.QOrdererEmbeddable(forProperty("orderer")) : null;
+        super(ReservationEntity.class, metadata);
     }
 
 }

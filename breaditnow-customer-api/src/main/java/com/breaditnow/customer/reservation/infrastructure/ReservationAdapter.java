@@ -7,7 +7,7 @@ import com.breaditnow.customer.reservation.domain.port.SaveReservationPort;
 import com.breaditnow.customer.reservation.infrastructure.jpa.JpaReservationRepository;
 import com.breaditnow.customer.reservation.infrastructure.jpa.query.QueryReservationRepository;
 import com.breaditnow.customer.reservation.infrastructure.jpa.entity.ReservationEntity;
-import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationWithBakery;
+import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationDto;
 import com.breaditnow.customer.reservation.presentation.response.ReservationDetailResponse;
 import com.breaditnow.customer.reservation.presentation.response.ReservationSimpleResponse;
 import com.breaditnow.customer.reservation.presentation.response.ReservationSummaryPageResponse;
@@ -31,17 +31,17 @@ public class ReservationAdapter implements LoadReservationPort, SaveReservationP
     }
 
     public ReservationDetailResponse getReservationDetail(Long customerId, Long reservationId) {
-        ReservationWithBakery reservationWithBakery = queryReservationRepository.getReservation(customerId, reservationId)
+        ReservationDto reservationDto = queryReservationRepository.getReservation(customerId, reservationId)
                 .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
 
-        return ReservationDetailResponse.from(reservationWithBakery.bakery(), reservationWithBakery.reservation());
+        return ReservationDetailResponse.from(reservationDto.bakery(), reservationDto.reservation());
     }
 
     public ReservationSimpleResponse getReservationSimple(Long customerId, Long reservationId) {
-        ReservationWithBakery reservationWithBakery = queryReservationRepository.getReservation(customerId, reservationId)
+        ReservationDto reservationDto = queryReservationRepository.getReservation(customerId, reservationId)
                 .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
 
-        return ReservationSimpleResponse.from(reservationWithBakery.bakery(), reservationWithBakery.reservation());
+        return ReservationSimpleResponse.from(reservationDto.bakery(), reservationDto.reservation());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ReservationAdapter implements LoadReservationPort, SaveReservationP
     }
 
     public ReservationSummaryPageResponse getReservations(Long customerId, ReservationSearchCriteria criteria) {
-        Page<ReservationWithBakery> reservationWithBakeries = queryReservationRepository.fetchReservations(customerId, criteria);
-        return ReservationSummaryPageResponse.of(reservationWithBakeries);
+        Page<ReservationDto> reservationPageDto = queryReservationRepository.fetchReservations(customerId, criteria);
+        return ReservationSummaryPageResponse.of(reservationPageDto);
     }
 }
