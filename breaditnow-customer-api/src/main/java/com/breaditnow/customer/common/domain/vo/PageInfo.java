@@ -11,4 +11,9 @@ public record PageInfo(long totalElements, int totalPages, boolean isLast, int c
                 page.getNumber()
         );
     }
+
+    public static PageInfo empty() {
+        return new PageInfo(0, 0, true, 0);
+    }
 }
+

@@ -15,12 +15,12 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.UNAUTHO
 public class Reservation {
     private Long reservationId;
     private Long bakeryId;
+    private Long reservationNumber;
     private List<ReservationItem> reservationItems;
     private Orderer orderer;
     private ReservationState reservationState;
     private LocalDateTime reservationTime;
     private Money totalPrice;
-    private Long reservationNumber;
 
     @Builder
     private Reservation(Long reservationId, Long reservationNumber, List<ReservationItem> reservationItems, Long bakeryId, Orderer orderer, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {

@@ -2,6 +2,7 @@ package com.breaditnow.customer.reservation.application;
 
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.port.LoadProductPort;
+import com.breaditnow.customer.reservation.application.request.CancelReasonRequest;
 import com.breaditnow.customer.reservation.application.request.ReservationRequest;
 import com.breaditnow.customer.reservation.domain.Orderer;
 import com.breaditnow.customer.reservation.domain.Reservation;
@@ -40,9 +41,9 @@ public class ReservationService {
     }
 
     @Transactional
-    public void cancelReservation(Long customerId, Long reservationId, String reason) {
+    public void cancelReservation(Long customerId, Long reservationId, CancelReasonRequest request) {
         Reservation reservation = loadReservationPort.getReservation(reservationId);
-        reservation.cancel(customerId, reason);
+        reservation.cancel(customerId, request.reason());
         saveReservationPort.save(reservation);
     }
 }
