@@ -40,4 +40,12 @@ public class ReservationAdapter implements LoadReservationPort, SaveReservationP
 
         return ReservationSimpleResponse.from(reservationWithBakery.bakery(), reservationWithBakery.reservation());
     }
+
+    @Override
+    public Reservation getReservation(Long reservationId) {
+        return jpaReservationRepository.findById(reservationId)
+                .map(ReservationEntity::toDomain)
+                .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
+
+    }
 }

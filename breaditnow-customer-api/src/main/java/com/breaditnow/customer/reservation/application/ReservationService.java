@@ -7,6 +7,7 @@ import com.breaditnow.customer.reservation.domain.Orderer;
 import com.breaditnow.customer.reservation.domain.Reservation;
 import com.breaditnow.customer.reservation.domain.ReservationItem;
 import com.breaditnow.customer.reservation.domain.port.LoadOrdererPort;
+import com.breaditnow.customer.reservation.domain.port.LoadReservationPort;
 import com.breaditnow.customer.reservation.domain.port.SaveReservationPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,17 +22,27 @@ public class ReservationService {
     private final LoadProductPort loadProductPort;
     private final LoadOrdererPort loadOrdererPort;
     private final SaveReservationPort saveReservationPort;
+    private final LoadReservationPort loadReservationPort;
 
     @Transactional
     public Long createReservation(Long ordererId, ReservationRequest request) {
         List<ReservationItem> reservationItems = new ArrayList<>();
+
         request.reservationProducts().forEach(orderProduct -> {
             Product product = loadProductPort.getProduct(orderProduct.productId());
             product.validateBelongsToBakery(request.bakeryId());
             reservationItems.add(new ReservationItem(product.getId(), product.getName(), product.getImageUrl(), product.getPrice(), orderProduct.quantity()));
         });
+
         Orderer orderer = loadOrdererPort.getOrderer(ordererId);
         Reservation reservation = new Reservation(orderer, request.bakeryId(), reservationItems);
         return saveReservationPort.save(reservation);
+    }
+
+    @Transactional
+    public void cancelReservation(Long customerId, Long reservationId, String reason) {
+        Reservation reservation = loadReservationPort.getReservation(reservationId);
+        reservation.cancel(customerId, reason);
+        saveReservationPort.save(reservation);
     }
 }

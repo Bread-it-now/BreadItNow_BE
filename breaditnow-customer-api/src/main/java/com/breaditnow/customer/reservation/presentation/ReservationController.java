@@ -25,13 +25,19 @@ public class ReservationController {
         return ApiSuccessResponse.of(Map.of("reservationId", reservationId));
     }
 
-    @GetMapping("/{reservationId}")
-    public ApiSuccessResponse<ReservationSimpleResponse> getReservationSimple(@AuthCustomer Long customerId, @PathVariable Long reservationId) {
+    @PatchMapping("/{reservation_id}/cancel")
+    public ApiSuccessResponse<Void> cancelReservation(@AuthCustomer Long customerId, @PathVariable("reservation_id") Long reservationId, @RequestBody Map<String, String> reason) {
+        reservationService.cancelReservation(customerId, reservationId, reason.get("reason"));
+        return ApiSuccessResponse.of();
+    }
+
+    @GetMapping("/{reservation_id}")
+    public ApiSuccessResponse<ReservationSimpleResponse> getReservationSimple(@AuthCustomer Long customerId, @PathVariable("reservation_id") Long reservationId) {
         return ApiSuccessResponse.of(reservationAdapter.getReservationSimple(customerId, reservationId));
     }
 
-    @GetMapping("/{reservationId}/detail")
-    public ApiSuccessResponse<ReservationDetailResponse> getReservationDetail(@AuthCustomer Long customerId, @PathVariable Long reservationId) {
+    @GetMapping("/{reservation_id}/detail")
+    public ApiSuccessResponse<ReservationDetailResponse> getReservationDetail(@AuthCustomer Long customerId, @PathVariable("reservation_id") Long reservationId) {
         return ApiSuccessResponse.of(reservationAdapter.getReservationDetail(customerId, reservationId));
     }
 }

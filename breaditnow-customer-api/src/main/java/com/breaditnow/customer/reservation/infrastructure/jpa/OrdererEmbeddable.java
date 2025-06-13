@@ -22,4 +22,8 @@ public class OrdererEmbeddable {
             orderer.getOrdererPhoneNumber()
         );
     }
+
+    public Orderer toDomain() {
+        return new Orderer(ordererId, nickname, phoneNumber);
+    }
 }

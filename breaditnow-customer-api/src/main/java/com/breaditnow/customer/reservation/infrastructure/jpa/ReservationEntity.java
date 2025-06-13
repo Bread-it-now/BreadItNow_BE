@@ -1,9 +1,11 @@
 package com.breaditnow.customer.reservation.infrastructure.jpa;
 
+import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.reservation.domain.Reservation;
 import com.breaditnow.customer.reservation.domain.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "reservations")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -38,6 +41,7 @@ public class ReservationEntity {
 
     @Enumerated(STRING)
     private ReservationStatus reservationStatus;
+    private String cancellationReason;
 
     private LocalDateTime reservationTime;
     private LocalDateTime pickupDeadLine;
@@ -45,18 +49,34 @@ public class ReservationEntity {
     private Integer totalPrice;
 
     public static ReservationEntity from(Reservation reservation) {
-        return new ReservationEntity(
-                null,
-                reservation.getBakeryId(),
-                reservation.getReservationNumber(),
-                reservation.getReservationItems().stream()
+        return ReservationEntity.builder()
+                .id(reservation.getReservationId())
+                .cancellationReason(reservation.getReservationState().getCancelReason())
+                .reservationStatus(reservation.getReservationState().getReservationStatus())
+                .reservationNumber(reservation.getReservationNumber())
+                .reservationTime(reservation.getReservationTime())
+                .totalPrice(reservation.getTotalPrice().getAmount())
+                .reservationItems(reservation.getReservationItems().stream()
                         .map(ReservationItemEmbeddable::from)
-                        .toList(),
-                OrdererEmbeddable.from(reservation.getOrderer()),
-                reservation.getReservationStatus(),
-                reservation.getReservationTime(),
-                null,
-                reservation.getTotalPrice().getAmount()
-        );
+                        .toList())
+                .orderer(OrdererEmbeddable.from(reservation.getOrderer()))
+                .bakeryId(reservation.getBakeryId())
+                .build();
+    }
+
+    public Reservation toDomain() {
+        return Reservation.builder()
+                .reservationId(this.id)
+                .reservationItems(this.reservationItems.stream()
+                        .map(ReservationItemEmbeddable::toDomain)
+                        .toList()
+                )
+                .reservationStatus(this.reservationStatus)
+                .bakeryId(this.bakeryId)
+                .orderer(this.orderer.toDomain())
+                .totalPrice(new Money(this.totalPrice))
+                .reservationTime(this.reservationTime)
+                .reservationNumber(this.reservationNumber)
+                .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.breaditnow.customer.reservation.infrastructure.jpa;
 
+import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.reservation.domain.ReservationItem;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,16 @@ public class ReservationItemEmbeddable {
             reservationItem.getPrice().getAmount(),
             reservationItem.getQuantity(),
             reservationItem.getTotalPrice().getAmount()
+        );
+    }
+
+    public ReservationItem toDomain() {
+        return new ReservationItem(
+            productId,
+            productName,
+            productImageUrl,
+            new Money(productPrice),
+            quantity
         );
     }
 }

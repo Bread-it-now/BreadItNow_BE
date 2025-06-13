@@ -24,6 +24,8 @@ public class QReservationEntity extends EntityPathBase<ReservationEntity> {
 
     public final NumberPath<Long> bakeryId = createNumber("bakeryId", Long.class);
 
+    public final StringPath cancellationReason = createString("cancellationReason");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final QOrdererEmbeddable orderer;
