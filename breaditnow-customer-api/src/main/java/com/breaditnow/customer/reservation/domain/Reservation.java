@@ -25,10 +25,10 @@ public class Reservation {
 
         this.reservationStatus = ReservationStatus.WAITING;
         this.reservationTime = LocalDateTime.now();
-        this.totalPrice = getTotalPrice();
+        this.totalPrice = calculateTotalPrice();
     }
 
-    public Money getTotalPrice() {
+    private Money calculateTotalPrice() {
         return reservationItems.stream()
                 .map(ReservationItem::getTotalPrice)
                 .reduce(Money.ZERO, Money::add);

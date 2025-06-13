@@ -26,7 +26,7 @@ public class ReservationService {
     private final LoadReservationPort loadReservationPort;
 
     @Transactional
-    public void createReservation(Long ordererId, ReservationRequest request) {
+    public Long createReservation(Long ordererId, ReservationRequest request) {
         List<ReservationItem> reservationItems = new ArrayList<>();
         request.reservationProducts().forEach(orderProduct -> {
             Product product = loadProductPort.getProduct(orderProduct.productId());
@@ -36,6 +36,6 @@ public class ReservationService {
         Orderer orderer = loadOrdererPort.getOrderer(ordererId);
         Long latest = loadReservationPort.findLatestReservationNumberForBakeryToday(request.bakeryId(), LocalDate.now());
         Reservation reservation = new Reservation(latest + 1, orderer, request.bakeryId(), reservationItems);
-        saveReservationPort.save(reservation);
+        return saveReservationPort.save(reservation);
     }
 }

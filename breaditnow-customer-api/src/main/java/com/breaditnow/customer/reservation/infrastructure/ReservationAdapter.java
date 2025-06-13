@@ -6,7 +6,9 @@ import com.breaditnow.customer.reservation.domain.port.SaveReservationPort;
 import com.breaditnow.customer.reservation.infrastructure.jpa.JpaReservationRepository;
 import com.breaditnow.customer.reservation.infrastructure.jpa.QueryReservationRepository;
 import com.breaditnow.customer.reservation.infrastructure.jpa.ReservationEntity;
+import com.breaditnow.customer.reservation.infrastructure.jpa.dto.ReservationWithBakery;
 import com.breaditnow.customer.reservation.presentation.response.ReservationDetailResponse;
+import com.breaditnow.customer.reservation.presentation.response.ReservationSimpleResponse;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,9 +25,9 @@ public class ReservationAdapter implements LoadReservationPort, SaveReservationP
     private final QueryReservationRepository queryReservationRepository;
 
     @Override
-    public void save(Reservation reservation) {
+    public Long save(Reservation reservation) {
         ReservationEntity entity = ReservationEntity.from(reservation);
-        jpaReservationRepository.save(entity);
+        return jpaReservationRepository.save(entity).getId();
     }
 
     @Override
@@ -37,7 +39,16 @@ public class ReservationAdapter implements LoadReservationPort, SaveReservationP
     }
 
     public ReservationDetailResponse getReservationDetail(Long customerId, Long reservationId) {
-        return queryReservationRepository.getReservationDetail(customerId, reservationId)
+        ReservationWithBakery reservationWithBakery = queryReservationRepository.getReservation(customerId, reservationId)
                 .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
+
+        return ReservationDetailResponse.from(reservationWithBakery.bakery(), reservationWithBakery.reservation());
+    }
+
+    public ReservationSimpleResponse getReservationSimple(Long customerId, Long reservationId) {
+        ReservationWithBakery reservationWithBakery = queryReservationRepository.getReservation(customerId, reservationId)
+                .orElseThrow(() -> new DomainException(RESERVATION_NOT_FOUND));
+
+        return ReservationSimpleResponse.from(reservationWithBakery.bakery(), reservationWithBakery.reservation());
     }
 }

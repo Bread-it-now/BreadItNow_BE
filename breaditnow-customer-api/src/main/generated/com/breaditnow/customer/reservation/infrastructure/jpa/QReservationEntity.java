@@ -28,6 +28,8 @@ public class QReservationEntity extends EntityPathBase<ReservationEntity> {
 
     public final QOrdererEmbeddable orderer;
 
+    public final DateTimePath<java.time.LocalDateTime> pickupDeadLine = createDateTime("pickupDeadLine", java.time.LocalDateTime.class);
+
     public final ListPath<ReservationItemEmbeddable, QReservationItemEmbeddable> reservationItems = this.<ReservationItemEmbeddable, QReservationItemEmbeddable>createList("reservationItems", ReservationItemEmbeddable.class, QReservationItemEmbeddable.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> reservationNumber = createNumber("reservationNumber", Long.class);

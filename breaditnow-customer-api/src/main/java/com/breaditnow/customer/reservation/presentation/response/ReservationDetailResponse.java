@@ -14,6 +14,7 @@ import java.util.List;
 public class ReservationDetailResponse {
     private SimpleBakeryResponse bakery;
     private ReservationResponse reservations;
+
     public static ReservationDetailResponse from(BakeryEntity bakeryEntity, ReservationEntity reservationEntity) {
         SimpleBakeryResponse bakeryResponse = SimpleBakeryResponse.of(bakeryEntity);
         ReservationResponse reservationResponse = ReservationResponse.of(reservationEntity);

@@ -40,6 +40,7 @@ public class ReservationEntity {
     private ReservationStatus reservationStatus;
 
     private LocalDateTime reservationTime;
+    private LocalDateTime pickupDeadLine;
 
     private Integer totalPrice;
 
@@ -54,6 +55,7 @@ public class ReservationEntity {
                 OrdererEmbeddable.from(reservation.getOrderer()),
                 reservation.getReservationStatus(),
                 reservation.getReservationTime(),
+                null,
                 reservation.getTotalPrice().getAmount()
         );
     }

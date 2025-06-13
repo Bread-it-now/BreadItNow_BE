@@ -6,8 +6,11 @@ import com.breaditnow.customer.reservation.application.ReservationService;
 import com.breaditnow.customer.reservation.application.request.ReservationRequest;
 import com.breaditnow.customer.reservation.infrastructure.ReservationAdapter;
 import com.breaditnow.customer.reservation.presentation.response.ReservationDetailResponse;
+import com.breaditnow.customer.reservation.presentation.response.ReservationSimpleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/reservation")
@@ -17,13 +20,18 @@ public class ReservationController {
     private final ReservationAdapter reservationAdapter;
 
     @PostMapping
-    public ApiSuccessResponse<Void> createReservation(@AuthCustomer Long customerId, @RequestBody ReservationRequest request) {
-        reservationService.createReservation(customerId, request);
-        return ApiSuccessResponse.of();
+    public ApiSuccessResponse<Map<String, Long>> createReservation(@AuthCustomer Long customerId, @RequestBody ReservationRequest request) {
+        Long reservationId = reservationService.createReservation(customerId, request);
+        return ApiSuccessResponse.of(Map.of("reservationId", reservationId));
     }
 
     @GetMapping("/{reservationId}")
-    public ApiSuccessResponse<ReservationDetailResponse> getReservation(@AuthCustomer Long customerId, @PathVariable Long reservationId) {
+    public ApiSuccessResponse<ReservationSimpleResponse> getReservationSimple(@AuthCustomer Long customerId, @PathVariable Long reservationId) {
+        return ApiSuccessResponse.of(reservationAdapter.getReservationSimple(customerId, reservationId));
+    }
+
+    @GetMapping("/{reservationId}/detail")
+    public ApiSuccessResponse<ReservationDetailResponse> getReservationDetail(@AuthCustomer Long customerId, @PathVariable Long reservationId) {
         return ApiSuccessResponse.of(reservationAdapter.getReservationDetail(customerId, reservationId));
     }
 }

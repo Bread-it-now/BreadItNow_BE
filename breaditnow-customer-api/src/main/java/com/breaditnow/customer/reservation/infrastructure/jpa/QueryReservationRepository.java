@@ -1,7 +1,7 @@
 package com.breaditnow.customer.reservation.infrastructure.jpa;
 
 import com.breaditnow.customer.bakery.infrastructure.jpa.QBakeryEntity;
-import com.breaditnow.customer.reservation.presentation.response.ReservationDetailResponse;
+import com.breaditnow.customer.reservation.infrastructure.jpa.dto.ReservationWithBakery;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class QueryReservationRepository {
     private static final QReservationEntity reservationEntity = QReservationEntity.reservationEntity;
     private static final QBakeryEntity bakeryEntity = QBakeryEntity.bakeryEntity;
 
-    public Optional<ReservationDetailResponse> getReservationDetail(Long customerId, Long reservationId) {
+    public Optional<ReservationWithBakery> getReservation(Long customerId, Long reservationId) {
         Tuple tuple = queryFactory
                 .select(bakeryEntity, reservationEntity)
                 .from(reservationEntity)
@@ -26,6 +26,6 @@ public class QueryReservationRepository {
                 .fetchOne();
 
         if (tuple == null) return Optional.empty();
-        return Optional.of(ReservationDetailResponse.from(tuple.get(bakeryEntity), tuple.get(reservationEntity)));
+        return Optional.of(new ReservationWithBakery(tuple.get(bakeryEntity), tuple.get(reservationEntity)));
     }
 }
