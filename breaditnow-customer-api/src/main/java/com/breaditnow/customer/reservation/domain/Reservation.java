@@ -1,7 +1,9 @@
 package com.breaditnow.customer.reservation.domain;
 
+import com.breaditnow.customer.common.domain.Events;
 import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.customer.reservation.domain.event.ReservationStatusChangedEvent;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,6 +12,7 @@ import java.util.List;
 
 import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.UNAUTHORIZED_RESERVATION_CANCEL;
+import static com.breaditnow.customer.reservation.domain.ReservationStatus.CANCELLED;
 
 @Getter
 public class Reservation {
@@ -45,7 +48,9 @@ public class Reservation {
 
     public void cancel(Long ordererId, String reason) {
         requireValid(ordererId, id -> !getOrdererId().equals(id), () -> new CustomerException(UNAUTHORIZED_RESERVATION_CANCEL));
+        ReservationStatus previousStatus = reservationState.getReservationStatus();
         reservationState.cancel(reason);
+        Events.publish(new ReservationStatusChangedEvent(reservationId, previousStatus, CANCELLED));
     }
 
     private Money calculateTotalPrice() {

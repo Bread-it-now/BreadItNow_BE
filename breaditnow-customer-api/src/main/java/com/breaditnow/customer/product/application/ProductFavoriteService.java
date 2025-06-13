@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.application;
 
-import com.breaditnow.customer.common.domain.DomainEventPublisher;
+import com.breaditnow.customer.common.domain.Events;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductFavorite;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
@@ -21,7 +21,6 @@ public class ProductFavoriteService {
     private final SaveProductFavoritePort saveProductFavoritePort;
     private final LoadProductFavoritePort loadProductFavoritePort;
     private final LoadProductPort loadProductPort;
-    private final DomainEventPublisher domainEventPublisher;
 
     @Transactional
     public void addFavoriteProduct(Long customerId, Long productId) {
@@ -35,7 +34,7 @@ public class ProductFavoriteService {
                 .orElseGet(() -> ProductFavorite.create(customerId, product.getId()));
 
         saveProductFavoritePort.save(productFavorite);
-        domainEventPublisher.publish(new ProductFavoriteCreatedEvent(product.getId()));
+        Events.publish(new ProductFavoriteCreatedEvent(product.getId()));
     }
 
     @Transactional
@@ -49,6 +48,6 @@ public class ProductFavoriteService {
         productFavorite.deactivate();
 
         saveProductFavoritePort.save(productFavorite);
-        domainEventPublisher.publish(new ProductFavoriteRemovedEvent(product.getId()));
+        Events.publish(new ProductFavoriteRemovedEvent(product.getId()));
     }
 }

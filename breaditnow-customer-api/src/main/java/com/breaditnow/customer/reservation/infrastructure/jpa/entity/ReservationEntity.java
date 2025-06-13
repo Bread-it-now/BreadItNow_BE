@@ -18,7 +18,7 @@ import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "reservations")
+@Table(name = "reservation")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
