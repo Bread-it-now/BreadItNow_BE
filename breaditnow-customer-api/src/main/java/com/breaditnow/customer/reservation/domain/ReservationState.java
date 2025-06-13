@@ -23,7 +23,7 @@ public class ReservationState {
         return new ReservationState(ReservationStatus.WAITING, null);
     }
 
-    public void cancelled(String cancelReason) {
+    public void cancel(String cancelReason) {
         requireValid(cancelReason, StringUtils::isEmpty, () -> new CustomerException(CANCELLATION_REASON_REQUIRED));
         requireValid(this.reservationStatus, status -> status == CANCELLED, () -> new CustomerException(ALREADY_CANCELLED));
         this.reservationStatus = CANCELLED;

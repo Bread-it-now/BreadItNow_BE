@@ -45,7 +45,7 @@ public class Reservation {
 
     public void cancel(Long ordererId, String reason) {
         requireValid(ordererId, id -> !getOrdererId().equals(id), () -> new CustomerException(UNAUTHORIZED_RESERVATION_CANCEL));
-        reservationState.cancelled(reason);
+        reservationState.cancel(reason);
     }
 
     private Money calculateTotalPrice() {
