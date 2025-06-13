@@ -17,12 +17,10 @@ public class Reservation {
     private LocalDateTime reservationTime;
     private final Money totalPrice;
 
-    public Reservation(Long reservationNumber, Orderer orderer, Long bakeryId, List<ReservationItem> reservationItems) {
-        this.reservationNumber = reservationNumber;
+    public Reservation(Orderer orderer, Long bakeryId, List<ReservationItem> reservationItems) {
         this.orderer = orderer;
         this.bakeryId = bakeryId;
         this.reservationItems = reservationItems;
-
         this.reservationStatus = ReservationStatus.WAITING;
         this.reservationTime = LocalDateTime.now();
         this.totalPrice = calculateTotalPrice();

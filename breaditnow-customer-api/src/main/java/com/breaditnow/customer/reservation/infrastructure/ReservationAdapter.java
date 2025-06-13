@@ -13,9 +13,6 @@ import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import static com.breaditnow.domain.global.exception.DomainErrorCode.RESERVATION_NOT_FOUND;
 
 @Repository
@@ -28,14 +25,6 @@ public class ReservationAdapter implements LoadReservationPort, SaveReservationP
     public Long save(Reservation reservation) {
         ReservationEntity entity = ReservationEntity.from(reservation);
         return jpaReservationRepository.save(entity).getId();
-    }
-
-    @Override
-    public Long findLatestReservationNumberForBakeryToday(Long bakeryId, LocalDate today) {
-        LocalDateTime start = today.atStartOfDay();
-        LocalDateTime end = today.plusDays(1).atStartOfDay();
-        return jpaReservationRepository.findLatestReservationNumberForBakeryToday(bakeryId, start, end)
-                .orElse(0L);
     }
 
     public ReservationDetailResponse getReservationDetail(Long customerId, Long reservationId) {
