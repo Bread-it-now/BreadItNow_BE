@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,8 +17,6 @@ public class QCustomerRegionEntity extends EntityPathBase<CustomerRegionEntity> 
 
     private static final long serialVersionUID = 16383269L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QCustomerRegionEntity customerRegionEntity = new QCustomerRegionEntity("customerRegionEntity");
 
     public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
@@ -27,30 +24,27 @@ public class QCustomerRegionEntity extends EntityPathBase<CustomerRegionEntity> 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final QCustomerRegionIdEntity id;
+    public final NumberPath<Long> customerId = createNumber("customerId", Long.class);
+
+    public final StringPath gugunCode = createString("gugunCode");
+
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
+    public final StringPath sidoCode = createString("sidoCode");
+
     public QCustomerRegionEntity(String variable) {
-        this(CustomerRegionEntity.class, forVariable(variable), INITS);
+        super(CustomerRegionEntity.class, forVariable(variable));
     }
 
     public QCustomerRegionEntity(Path<? extends CustomerRegionEntity> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QCustomerRegionEntity(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QCustomerRegionEntity(PathMetadata metadata, PathInits inits) {
-        this(CustomerRegionEntity.class, metadata, inits);
-    }
-
-    public QCustomerRegionEntity(Class<? extends CustomerRegionEntity> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.id = inits.isInitialized("id") ? new QCustomerRegionIdEntity(forProperty("id"), inits.get("id")) : null;
+        super(CustomerRegionEntity.class, metadata);
     }
 
 }

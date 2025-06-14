@@ -1,8 +1,8 @@
 package com.breaditnow.customer.region.infrastructure.entity;
 
 import com.breaditnow.customer.region.core.Region;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,23 +13,21 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(name = "region")
-@Getter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
-@Builder
+@Getter
 public class RegionEntity {
-    @EmbeddedId
-    private RegionIdEntity id;
+    @Id
+    private String regionCode;
 
     private String sidoName;
-
     private String gugunName;
-
     private String dongName;
 
-    public Region toRegion() {
+    public Region toDomain() {
         return Region.builder()
-                .id(id.toRegionId())
+                .regionCode(regionCode)
                 .sidoName(sidoName)
                 .gugunName(gugunName)
                 .dongName(dongName)
