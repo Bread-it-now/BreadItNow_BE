@@ -4,6 +4,8 @@ import com.breaditnow.customer.region.application.port.LoadRegionPort;
 import com.breaditnow.customer.region.core.Region;
 import com.breaditnow.customer.region.infrastructure.entity.RegionEntity;
 import com.breaditnow.customer.region.infrastructure.jpa.JpaRegionRepository;
+import com.breaditnow.customer.region.presentation.res.GugunResponse;
+import com.breaditnow.customer.region.presentation.res.SidoResponse;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -43,5 +45,20 @@ public class RegionAdapter implements LoadRegionPort {
     @Override
     public boolean existsBySidoAndGugunCode(String sidoAndGugunCodePrefix) {
         return jpaRegionRepository.existsByRegionCodeStartingWith(sidoAndGugunCodePrefix);
+    }
+
+    @Override
+    public Region getRegionByName(String sidoName, String gugunName, String dongName) {
+        return jpaRegionRepository.findBySidoNameAndGugunNameAndDongName(sidoName, gugunName, dongName)
+                .orElseThrow(() -> new DomainException(REGION_NOT_FOUND))
+                .toDomain();
+    }
+
+    public List<SidoResponse> findDistinctSidoInfoGroupedBySidoCodeAndName() {
+        return jpaRegionRepository.findDistinctSidoInfoGroupedBySidoCodeAndName();
+    }
+
+    public List<GugunResponse> findDistinctGugunResponsesBySidoCode(String sidoCode){
+        return jpaRegionRepository.findDistinctGugunResponsesBySidoCode(sidoCode);
     }
 }

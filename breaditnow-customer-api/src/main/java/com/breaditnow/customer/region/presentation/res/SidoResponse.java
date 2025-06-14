@@ -1,4 +1,4 @@
-package com.breaditnow.customer.region.controller.res;
+package com.breaditnow.customer.region.presentation.res;
 
 import com.breaditnow.domain.domain.region.entity.Region;
 import lombok.Builder;

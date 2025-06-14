@@ -19,11 +19,17 @@ public class QRegionEntity extends EntityPathBase<RegionEntity> {
 
     public static final QRegionEntity regionEntity = new QRegionEntity("regionEntity");
 
+    public final StringPath dongCode = createString("dongCode");
+
     public final StringPath dongName = createString("dongName");
+
+    public final StringPath gugunCode = createString("gugunCode");
 
     public final StringPath gugunName = createString("gugunName");
 
     public final StringPath regionCode = createString("regionCode");
+
+    public final StringPath sidoCode = createString("sidoCode");
 
     public final StringPath sidoName = createString("sidoName");
 

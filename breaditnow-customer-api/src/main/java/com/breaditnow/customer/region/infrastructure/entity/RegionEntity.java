@@ -1,6 +1,7 @@
 package com.breaditnow.customer.region.infrastructure.entity;
 
 import com.breaditnow.customer.region.core.Region;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -24,6 +25,15 @@ public class RegionEntity {
     private String sidoName;
     private String gugunName;
     private String dongName;
+
+    @Column(name = "sido_code", insertable = false, updatable = false)
+    private String sidoCode;
+
+    @Column(name = "gugun_code", insertable = false, updatable = false)
+    private String gugunCode;
+
+    @Column(name = "dong_code", insertable = false, updatable = false)
+    private String dongCode;
 
     public Region toDomain() {
         return Region.builder()

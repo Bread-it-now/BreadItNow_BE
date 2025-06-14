@@ -9,4 +9,5 @@ public interface LoadRegionPort {
     List<Region> findBySidoCode(String sidoCodePrefix);
     List<Region> findBySidoAndGugunCode(String sidoAndGugunCodePrefix);
     boolean existsBySidoAndGugunCode(String sidoAndGugunCodePrefix);
+    Region getRegionByName(String sidoName, String gugunName, String dongName);
 }
