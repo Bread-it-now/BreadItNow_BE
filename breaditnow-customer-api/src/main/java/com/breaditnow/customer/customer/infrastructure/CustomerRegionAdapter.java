@@ -17,4 +17,8 @@ public class CustomerRegionAdapter implements LoadCustomerRegionPort, SaveCustom
         CustomerRegionEntity customerRegionEntity = new CustomerRegionEntity(customerId, sidoCode, gugunCode);
         jpaCustomerRegionRepository.save(customerRegionEntity);
     }
+
+    public void delete(Long customerId) {
+        jpaCustomerRegionRepository.deleteByCustomerId(customerId);
+    }
 }

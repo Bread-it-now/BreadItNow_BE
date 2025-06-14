@@ -17,6 +17,7 @@ public class CustomerRegionService {
 
     @Transactional
     public void updateRegion(Long customerId, RegionUpdateRequest dto) {
+        saveCustomerRegionPort.delete(customerId);
         for (String gugunCode : dto.gugunCodes()) {
             if(!loadRegionPort.existsBySidoAndGugunCode(dto.sidoCode() + gugunCode)) {
                 throw new DomainException(DomainErrorCode.REGION_NOT_FOUND);
