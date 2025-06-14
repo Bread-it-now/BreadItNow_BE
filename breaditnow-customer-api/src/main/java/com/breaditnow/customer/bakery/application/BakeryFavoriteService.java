@@ -4,9 +4,8 @@ import com.breaditnow.customer.bakery.domain.BakeryFavorite;
 import com.breaditnow.customer.bakery.domain.event.BakeryFavoriteCreatedEvent;
 import com.breaditnow.customer.bakery.domain.event.BakeryFavoriteRemovedEvent;
 import com.breaditnow.customer.bakery.domain.port.LoadBakeryFavoritePort;
-import com.breaditnow.customer.bakery.domain.port.LoadBakeryPort;
 import com.breaditnow.customer.bakery.domain.port.SaveBakeryFavoritePort;
-import com.breaditnow.customer.common.domain.DomainEventPublisher;
+import com.breaditnow.customer.common.domain.Events;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class BakeryFavoriteService {
     private final LoadBakeryFavoritePort loadBakeryFavoritePort;
     private final SaveBakeryFavoritePort saveBakeryFavoritePort;
-    private final DomainEventPublisher domainEventPublisher;
 
     public void addFavoriteBakery(Long customerId, Long bakeryId) {
         BakeryFavorite bakeryFavorite = loadBakeryFavoritePort.findBakeryFavorite(customerId, bakeryId)
@@ -26,7 +24,7 @@ public class BakeryFavoriteService {
                 .orElseGet(() -> BakeryFavorite.create(customerId, bakeryId));
 
         saveBakeryFavoritePort.save(bakeryFavorite);
-        domainEventPublisher.publish(new BakeryFavoriteCreatedEvent(bakeryId));
+        Events.publish(new BakeryFavoriteCreatedEvent(bakeryId));
     }
 
     public void removeFavoriteBakery(Long customerId, Long bakeryId) {
@@ -34,6 +32,6 @@ public class BakeryFavoriteService {
         bakeryFavorite.deactivate();
 
         saveBakeryFavoritePort.save(bakeryFavorite);
-        domainEventPublisher.publish(new BakeryFavoriteRemovedEvent(bakeryId));
+        Events.publish(new BakeryFavoriteRemovedEvent(bakeryId));
     }
 }

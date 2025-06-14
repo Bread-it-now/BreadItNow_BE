@@ -4,6 +4,7 @@ import com.breaditnow.common.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public enum CustomerErrorCode implements ErrorCode {
 	/**
@@ -64,6 +65,14 @@ public enum CustomerErrorCode implements ErrorCode {
 	NOT_FAVORITED(NOT_FOUND, "CE002", "즐겨찾기되지 않은 상품입니다."),
 
 	/**
+	 * CF000 Reservation
+	 */
+	PRODUCT_NOT_BELONG_TO_BAKERY(BAD_REQUEST, "CR001", "상품이 해당 빵집에 속하지 않습니다."),
+	UNAUTHORIZED_RESERVATION_CANCEL(UNAUTHORIZED, "CR002", "예약 취소 권한이 없습니다."),
+	CANCELLATION_REASON_REQUIRED(BAD_REQUEST, "CR003", "예약 취소 사유는 필수입니다."),
+	ALREADY_CANCELLED(BAD_REQUEST, "CR004", "이미 취소된 예약입니다."),
+	QUANTITY_POSITIVE(BAD_REQUEST, "CR005", "예약 상품의 수량은 0보다 커야 합니다."),
+	/**
 	 * CZ000 이외
 	 */
 	INVALID_PAGE_NUMBER(BAD_REQUEST, "CZ001", "페이지 번호는 0 이상이어야 합니다."),
@@ -71,6 +80,7 @@ public enum CustomerErrorCode implements ErrorCode {
 	COORDINATES_REQUIRED(BAD_REQUEST, "CZ003", "위도와 경도는 null일 수 없습니다."),
 	INVALID_LATITUDE_RANGE(BAD_REQUEST, "CZ004", "위도는 -90과 90 사이여야 합니다."),
 	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "CZ005", "경도는 -180과 180 사이여야 합니다.");
+
 
 	private final HttpStatus httpStatus;
 	private final String code;

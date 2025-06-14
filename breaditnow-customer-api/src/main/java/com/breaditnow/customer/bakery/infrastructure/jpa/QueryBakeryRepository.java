@@ -30,11 +30,11 @@ public class QueryBakeryRepository {
                         Projections.fields(
                                 BakeryResponse.class,
                                 bakeryEntity.id.as("bakeryId"),
-                                bakeryEntity.name.as("name"),
-                                bakeryEntity.addressDescription.as("address"),
-                                bakeryEntity.phone.as("phone"),
+                                bakeryEntity.name.as("bakeryName"),
+                                bakeryEntity.addressDescription.as("bakeryAddress"),
+                                bakeryEntity.phone.as("bakeryPhone"),
                                 bakeryEntity.introduction.as("introduction"),
-                                bakeryEntity.profileImage.as("profileImage"),
+                                bakeryEntity.profileImage.as("bakeryProfileImage"),
                                 bakeryEntity.operatingStatus.as("operatingStatus"),
                                 Expressions.asBoolean(
                                         queryFactory.select(bakeryFavoriteEntity.count())
@@ -72,7 +72,7 @@ public class QueryBakeryRepository {
                                 HotBakeryResponse.class,
                                 bakeryEntity.id.as("bakeryId"),
                                 bakeryEntity.name.as("bakeryName"),
-                                bakeryEntity.profileImage.as("profileImage"),
+                                bakeryEntity.profileImage.as("bakeryProfileImage"),
                                 distanceExpression.as("distance"),
                                 bakeryEntity.favoriteCount.as("favoriteCount"),
                                 bakeryEntity.operatingStatus.as("operatingStatus"),

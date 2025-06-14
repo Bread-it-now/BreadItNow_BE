@@ -3,7 +3,7 @@ package com.breaditnow.customer.alert.infrastructure;
 import com.breaditnow.customer.alert.domain.GlobalAlertSetting;
 import com.breaditnow.customer.alert.domain.port.LoadGlobalAlertPort;
 import com.breaditnow.customer.alert.domain.port.SaveGlobalAlertPort;
-import com.breaditnow.customer.alert.infrastructure.jpa.GlobalAlertSettingEntity;
+import com.breaditnow.customer.alert.infrastructure.jpa.entity.GlobalAlertSettingEntity;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaGlobalAlertRepository;
 import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;

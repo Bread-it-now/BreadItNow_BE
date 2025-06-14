@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.reservation.controller;
 
 import com.breaditnow.customer.common.presentation.swagger.docs.ReservationControllerDocs;
@@ -51,9 +52,9 @@ public class ReservationController implements ReservationControllerDocs {
 	@GetMapping
 	public ApiSuccessResponse<ReservationPageResponse> getReservations(
 		@AuthCustomer Long customerId,
-		@RequestParam(name = "status", defaultValue = "ALL") ReservationRequestStatus status,
-		@RequestParam(name = "page", defaultValue = "0") int page,
-		@RequestParam(name = "size", defaultValue = "10") int size
+		@RequestParam(bakeryName = "status", defaultValue = "ALL") ReservationRequestStatus status,
+		@RequestParam(bakeryName = "page", defaultValue = "0") int page,
+		@RequestParam(bakeryName = "size", defaultValue = "10") int size
 	) {
 		return ApiSuccessResponse.of(reservationService.getReservations(customerId, status, page, size));
 	}
@@ -65,3 +66,4 @@ public class ReservationController implements ReservationControllerDocs {
 		return ApiSuccessResponse.of(reservationService.getReservationDetail(customerId, reservationId));
 	}
 }
+*/

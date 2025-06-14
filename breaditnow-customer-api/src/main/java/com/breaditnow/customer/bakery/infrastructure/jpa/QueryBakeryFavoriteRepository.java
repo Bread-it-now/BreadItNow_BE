@@ -42,7 +42,7 @@ public class QueryBakeryFavoriteRepository {
                                 BakeryFavoriteResponse.class,
                                 bakeryEntity.id.as("bakeryId"),
                                 bakeryEntity.name.as("bakeryName"),
-                                bakeryEntity.profileImage.as("profileImage"),
+                                bakeryEntity.profileImage.as("bakeryProfileImage"),
                                 bakeryEntity.favoriteCount.as("favoriteCount"),
                                 bakeryEntity.isActive.as("isBakeryActive"),
                                 bakeryEntity.operatingStatus.as("operatingStatus"),

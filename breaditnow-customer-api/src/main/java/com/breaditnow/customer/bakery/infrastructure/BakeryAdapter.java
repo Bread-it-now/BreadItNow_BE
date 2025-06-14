@@ -9,7 +9,7 @@ import com.breaditnow.customer.bakery.presentation.response.BakeryDetailResponse
 import com.breaditnow.customer.bakery.presentation.response.BakeryResponse;
 import com.breaditnow.customer.bakery.presentation.response.HotBakeryPageResponse;
 import com.breaditnow.customer.bakery.presentation.response.HotBakeryResponse;
-import com.breaditnow.customer.product.infrastructure.jpa.QueryProductRepository;
+import com.breaditnow.customer.product.infrastructure.jpa.query.QueryProductRepository;
 import com.breaditnow.customer.product.presentation.response.BreadProductResponse;
 import com.breaditnow.customer.product.presentation.response.OtherProductResponse;
 import com.breaditnow.domain.global.exception.DomainException;

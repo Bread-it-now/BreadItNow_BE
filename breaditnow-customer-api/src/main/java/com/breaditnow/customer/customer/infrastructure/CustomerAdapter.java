@@ -32,6 +32,13 @@ public class CustomerAdapter implements LoadCustomerPort, SaveCustomerPort {
     }
 
     @Override
+    public Customer getCustomer(Long id) {
+        return findById(id)
+                .orElseThrow(() -> new DomainException(CUSTOMER_NOT_FOUND));
+    }
+
+
+    @Override
     public Boolean isExistNickName(String nickname) {
         return jpaCustomerRepository.existsByNickname(nickname);
     }
