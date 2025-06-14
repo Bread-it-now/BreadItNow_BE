@@ -2,11 +2,11 @@ package com.breaditnow.customer.region.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.common.application.request.GeoPointRequest;
-import com.breaditnow.customer.region.core.Region;
+import com.breaditnow.customer.region.domain.Region;
 import com.breaditnow.customer.region.infrastructure.RegionAdapter;
 import com.breaditnow.customer.region.presentation.res.GugunResponse;
 import com.breaditnow.customer.region.presentation.res.SidoResponse;
-import com.breaditnow.customer.region.service.RegionService;
+import com.breaditnow.customer.region.application.RegionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

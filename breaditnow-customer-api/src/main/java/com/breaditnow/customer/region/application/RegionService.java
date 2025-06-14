@@ -1,10 +1,10 @@
-package com.breaditnow.customer.region.service;
+package com.breaditnow.customer.region.application;
 
 import com.breaditnow.common.client.kakao.GeoLocationClient;
 import com.breaditnow.common.client.kakao.dto.AddressNameDto;
 import com.breaditnow.customer.common.application.request.GeoPointRequest;
-import com.breaditnow.customer.region.application.port.LoadRegionPort;
-import com.breaditnow.customer.region.core.Region;
+import com.breaditnow.customer.region.domain.port.LoadRegionPort;
+import com.breaditnow.customer.region.domain.Region;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.breaditnow.customer.region.application.port;
+package com.breaditnow.customer.region.domain.port;
 
-import com.breaditnow.customer.region.core.Region;
+import com.breaditnow.customer.region.domain.Region;
 
 import java.util.List;
 
