@@ -4,7 +4,6 @@ import com.breaditnow.domain.domain.bakery.entity.Bakery;
 import com.breaditnow.domain.domain.bakery.repository.BakeryRepository;
 import com.breaditnow.domain.domain.product.entity.Product;
 import com.breaditnow.domain.domain.product.repository.ProductRepository;
-import com.breaditnow.external.domain.s3.FileUploaderService;
 import com.breaditnow.owner.domain.product.controller.req.ProductCreateRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductOrderItemRequest;
 import com.breaditnow.owner.domain.product.controller.req.ProductUpdateRequest;
@@ -26,26 +25,27 @@ public class ProductService {
 
     private final BakeryRepository bakeryRepository;
     private final ProductRepository productRepository;
-    private final FileUploaderService uploaderService;
+//    private final FileUploaderService uploaderService;
     private final ProductBreadCategoryService productBreadCategoryService;
 
     @Transactional
     public Long createProduct(Long ownerId, Long bakeryId, ProductCreateRequest request, MultipartFile productImage) {
         Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
 
-        String productImageUrl = uploadFile(productImage,
-                PRODUCT_IMAGE_PATH + ownerId + "/bakery/" + bakeryId + "/products");
-        Product product = request.toEntity(bakery, productImageUrl);
-        Product savedProduct = productRepository.save(product);
+//        String productImageUrl = uploadFile(productImage,
+//                PRODUCT_IMAGE_PATH + ownerId + "/bakery/" + bakeryId + "/products");
+//        Product product = request.toEntity(bakery, productImageUrl);
+//        Product savedProduct = productRepository.save(product);
 
         int nextDisplayOrder = productRepository.findMaxDisplayOrderByBakeryId(bakery.getId()) + 1;
-        product.updateDisplayOrder(nextDisplayOrder);
+//        product.updateDisplayOrder(nextDisplayOrder);
 
         Long[] breadCategoryIds = request.breadCategoryIds();
-        if (breadCategoryIds != null) {
-            productBreadCategoryService.addProductBreadCategories(breadCategoryIds, savedProduct);
-        }
-        return savedProduct.getId();
+//        if (breadCategoryIds != null) {
+//            productBreadCategoryService.addProductBreadCategories(breadCategoryIds, savedProduct);
+//        }
+//        return savedProduct.getId();
+        return null;
     }
 
     @Transactional
@@ -54,9 +54,9 @@ public class ProductService {
         Bakery bakery = bakeryRepository.getByOwnerIdAndId(ownerId, bakeryId);
         Product product = productRepository.getByBakeryIdAndId(bakeryId, productId);
 
-        String updatedProductImageUrl = uploadFile(productImage, PRODUCT_IMAGE_PATH);
-        Product updatedProduct = request.toEntity(bakery, updatedProductImageUrl);
-        product.update(updatedProduct);
+//        String updatedProductImageUrl = uploadFile(productImage, PRODUCT_IMAGE_PATH);
+//        Product updatedProduct = request.toEntity(bakery, updatedProductImageUrl);
+//        product.update(updatedProduct);
 
         Long[] breadCategoryIds = request.breadCategoryIds();
         if (breadCategoryIds != null) {
@@ -145,10 +145,10 @@ public class ProductService {
         return product.getStock();
     }
 
-    private String uploadFile(MultipartFile file, String path) {
-        if (file != null && !file.isEmpty()) {
-            return uploaderService.upload(file, path);
-        }
-        return "";
-    }
+//    private String uploadFile(MultipartFile file, String path) {
+//        if (file != null && !file.isEmpty()) {
+//            return uploaderService.upload(file, path);
+//        }
+//        return "";
+//    }
 }
