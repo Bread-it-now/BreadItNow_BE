@@ -12,7 +12,7 @@ public class HotProductResponse {
     private String productName;
     private String productImage;
     private Integer favoriteCount;
-    private Integer reservationCount;
+    private Long reservationCount;
     private Integer price;
     private Integer stock;
     private Boolean isFavorite;

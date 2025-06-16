@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/product")
 public class ProductFavoriteController {
     private final ProductFavoriteService productFavoriteService;
-    private final ProductFavoriteAdapter productFavoriteAdapter;
 
     @PostMapping("/{productId}/favorite")
     public ApiSuccessResponse<Void> addFavoriteProduct(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
@@ -27,11 +26,5 @@ public class ProductFavoriteController {
     public ApiSuccessResponse<Void> removeFavoriteProduct(@AuthCustomer Long customerId, @PathVariable("productId") Long productId) {
         productFavoriteService.removeFavoriteProduct(customerId, productId);
         return ApiSuccessResponse.of();
-    }
-
-    @GetMapping("/favorite")
-    public ApiSuccessResponse<ProductFavoritePageResponse> getFavoriteProducts(@AuthCustomer Long customerId, ProductFavoriteSearchRequest request) {
-        ProductFavoriteSearchCriteria productFavoriteSearchCriteria = ProductFavoriteSearchCriteria.of(request);
-        return ApiSuccessResponse.of(productFavoriteAdapter.getFavoriteProducts(customerId, productFavoriteSearchCriteria));
     }
 }
