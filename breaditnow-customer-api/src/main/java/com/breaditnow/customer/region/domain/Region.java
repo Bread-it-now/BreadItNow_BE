@@ -1,4 +1,4 @@
-package com.breaditnow.customer.region.core;
+package com.breaditnow.customer.region.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class Region {
-    private RegionId id;
-
+    private String regionCode;
     private final String sidoName;
     private final String gugunName;
     private final String dongName;
