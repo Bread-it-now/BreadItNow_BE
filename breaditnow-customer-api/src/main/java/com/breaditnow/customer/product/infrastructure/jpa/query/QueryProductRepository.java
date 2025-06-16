@@ -2,6 +2,7 @@ package com.breaditnow.customer.product.infrastructure.jpa.query;
 
 import com.breaditnow.customer.alert.infrastructure.jpa.entity.QProductAlertEntity;
 import com.breaditnow.customer.bakery.infrastructure.jpa.QBakeryEntity;
+import com.breaditnow.customer.common.domain.vo.PeriodRange;
 import com.breaditnow.customer.common.infrastructure.jpa.DistanceExpressionProvider;
 import com.breaditnow.customer.product.application.request.HotProductSearchCriteria;
 import com.breaditnow.customer.product.domain.ProductType;
@@ -11,10 +12,14 @@ import com.breaditnow.customer.product.infrastructure.jpa.entity.QProductFavorit
 import com.breaditnow.customer.product.presentation.response.BreadProductResponse;
 import com.breaditnow.customer.product.presentation.response.HotProductResponse;
 import com.breaditnow.customer.product.presentation.response.OtherProductResponse;
+import com.breaditnow.customer.reservation.domain.ReservationStatus;
+import com.breaditnow.customer.reservation.infrastructure.jpa.entity.QReservationEntity;
+import com.breaditnow.customer.reservation.infrastructure.jpa.vo.QReservationItemEmbeddable;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +38,8 @@ public class QueryProductRepository {
     private static final QBakeryEntity bakeryEntity = QBakeryEntity.bakeryEntity;
     private static final QProductFavoriteEntity productFavoriteEntity = QProductFavoriteEntity.productFavoriteEntity;
     private static final QProductAlertEntity productAlertEntity = QProductAlertEntity.productAlertEntity;
+    private static final QReservationEntity reservationEntity = QReservationEntity.reservationEntity;
+
     private final DistanceExpressionProvider distanceExpressionProvider;
 
     public Page<HotProductResponse> fetchHotProducts(Long customerId, HotProductSearchCriteria criteria) {
@@ -118,6 +125,7 @@ public class QueryProductRepository {
                                 productEntity.name.as("productName"),
                                 productEntity.imageUrl.as("productImage"),
                                 productEntity.favoriteCount.as("favoriteCount"),
+                                getReservationCountSubquery(criteria.periodRange()).as("reservationCount"),
                                 productEntity.price.as("price"),
                                 productEntity.stock.as("stock"),
                                 Expressions.asBoolean(
@@ -133,12 +141,31 @@ public class QueryProductRepository {
                         )
                 )
                 .from(productEntity)
-                .innerJoin(bakeryEntity).on(bakeryEntity.id.eq(productEntity.bakeryId))
                 .where(
                         productEntity.isActive.eq(true),
                         productEntity.isHidden.eq(false)
                 )
                 .orderBy(getSortExpression(criteria.hotSortType()));
+    }
+
+    private NumberExpression<Long> getReservationCountSubquery(PeriodRange periodRange) {
+        QReservationItemEmbeddable reservationItemEmbeddable = QReservationItemEmbeddable.reservationItemEmbeddable;
+        if (periodRange == null) {
+            return Expressions.asNumber(0L);
+        }
+
+        return Expressions.numberTemplate(Long.class, "({0})",
+                JPAExpressions.select(reservationItemEmbeddable.productId.count())
+                        .from(reservationEntity)
+                        .join(reservationEntity.reservationItems, reservationItemEmbeddable)
+                        .where(
+                                reservationItemEmbeddable.productId.eq(productEntity.id)
+                                        .and(reservationEntity.reservationTime.between(
+                                                periodRange.startDate().atStartOfDay(),
+                                                periodRange.endDate().atTime(23, 59, 59)))
+                                        .and(reservationEntity.reservationStatus.eq(ReservationStatus.APPROVED))
+                        )
+        );
     }
 
     private JPAQuery<Long> createCountQuery() {
@@ -158,7 +185,7 @@ public class QueryProductRepository {
     private OrderSpecifier<?> getSortExpression(HotSortType sortType) {
         return switch (sortType) {
             case FAVORITE -> Expressions.numberPath(Integer.class, "favoriteCount").desc();
-            case RESERVATION -> Expressions.numberPath(Integer.class, "reservationCount").desc();
+            case RESERVATION -> Expressions.numberPath(Long.class, "reservationCount").desc();
         };
     }
 }

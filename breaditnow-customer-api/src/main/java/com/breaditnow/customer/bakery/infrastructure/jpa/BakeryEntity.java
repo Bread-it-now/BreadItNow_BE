@@ -1,10 +1,10 @@
 package com.breaditnow.customer.bakery.infrastructure.jpa;
 
 import com.breaditnow.customer.bakery.domain.OperatingStatus;
-import com.breaditnow.customer.common.domain.vo.GeoPoint;
 import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -17,6 +17,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class BakeryEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)

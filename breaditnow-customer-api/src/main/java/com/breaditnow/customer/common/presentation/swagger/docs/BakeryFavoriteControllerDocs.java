@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
@@ -36,3 +37,4 @@ public interface BakeryFavoriteControllerDocs {
     ApiSuccessResponse<BakeryFavoritePageResponse> getFavorites(Long customerId, int page, int size, String sort,
                                                                 GeoPointRequest geoPointRequest);
 }
+*/

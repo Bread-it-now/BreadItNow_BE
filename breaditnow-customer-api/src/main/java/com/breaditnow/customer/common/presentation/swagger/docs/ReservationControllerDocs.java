@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
@@ -46,3 +47,4 @@ public interface ReservationControllerDocs {
 	@DomainErrorCodeExamples({RESERVATION_NOT_FOUND})
 	ApiSuccessResponse<ReservationDetailResponse> getReservationDetail(Long customerId, Long reservationId);
 }
+*/

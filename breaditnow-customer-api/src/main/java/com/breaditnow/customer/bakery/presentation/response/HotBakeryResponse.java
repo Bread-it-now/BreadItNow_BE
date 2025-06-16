@@ -13,5 +13,6 @@ public class HotBakeryResponse {
     private Double distance;
     private OperatingStatus operatingStatus;
     private Integer favoriteCount;
+    private Long reservationCount;
     private Boolean isFavorite;
 }

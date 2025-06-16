@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/product")
-public class ProductController {
+@RequestMapping("/api/v1/product/hot")
+public class HotProductController {
     private final ProductAdapter productAdapter;
 
-    @GetMapping("/hot")
+    @GetMapping
     public ApiSuccessResponse<HotProductPageResponse> getHotProducts(@AuthCustomer Long customerId, HotProductSearchRequest request) {
         HotProductSearchCriteria hotProductSearchCriteria = HotProductSearchCriteria.of(request);
         return ApiSuccessResponse.of(productAdapter.getHotProducts(customerId, hotProductSearchCriteria));
