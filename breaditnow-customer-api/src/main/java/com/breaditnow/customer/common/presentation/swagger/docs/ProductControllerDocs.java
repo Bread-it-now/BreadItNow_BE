@@ -1,3 +1,4 @@
+/*
 package com.breaditnow.customer.common.presentation.swagger.docs;
 
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.*;
@@ -21,3 +22,4 @@ public interface ProductControllerDocs {
 	})
 	ApiSuccessResponse<HotProductPageResponse> searchHotProducts(Long customerId, int page, int size, String sort);
 }
+*/
