@@ -2,11 +2,11 @@ package com.breaditnow.customer.region.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.common.application.request.GeoPointRequest;
-import com.breaditnow.customer.region.domain.Region;
+import com.breaditnow.customer.region.application.RegionQueryService;
 import com.breaditnow.customer.region.infrastructure.RegionAdapter;
 import com.breaditnow.customer.region.presentation.res.GugunResponse;
+import com.breaditnow.customer.region.presentation.res.LocationRegionResponse;
 import com.breaditnow.customer.region.presentation.res.SidoResponse;
-import com.breaditnow.customer.region.application.RegionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,20 +22,20 @@ import java.util.List;
 @Slf4j
 public class RegionController {
     private final RegionAdapter regionAdapter;
-    private final RegionService regionService;
+    private final RegionQueryService regionQueryService;
 
     @GetMapping("/sido")
     public ApiSuccessResponse<List<SidoResponse>> getSidoList() {
-        return ApiSuccessResponse.of(regionAdapter.findDistinctSidoInfoGroupedBySidoCodeAndName());
+        return ApiSuccessResponse.of(regionAdapter.findSidoResponses());
     }
 
     @GetMapping("/sido/{sidoCode}/gugun")
     public ApiSuccessResponse<List<GugunResponse>> getGugunListBySido(@PathVariable("sidoCode") String sidoCode) {
-        return ApiSuccessResponse.of(regionAdapter.findDistinctGugunResponsesBySidoCode(sidoCode));
+        return ApiSuccessResponse.of(regionAdapter.findGugunResponsesBySidoCode(sidoCode));
     }
 
     @GetMapping("/location")
-    public ApiSuccessResponse<Region> getGugunByCoordinates(GeoPointRequest geoPointRequest) {
-        return ApiSuccessResponse.of(regionService.getGugunByCoordinates(geoPointRequest));
+    public ApiSuccessResponse<LocationRegionResponse> getGugunByCoordinates(GeoPointRequest geoPointRequest) {
+        return ApiSuccessResponse.of(regionQueryService.getGugunByCoordinates(geoPointRequest));
     }
 }

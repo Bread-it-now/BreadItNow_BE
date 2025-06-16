@@ -2,12 +2,7 @@ package com.breaditnow.customer.region.domain.port;
 
 import com.breaditnow.customer.region.domain.Region;
 
-import java.util.List;
-
 public interface LoadRegionPort {
-    Region getRegion(String regionCode);
-    List<Region> findBySidoCode(String sidoCodePrefix);
-    List<Region> findBySidoAndGugunCode(String sidoAndGugunCodePrefix);
     boolean existsBySidoAndGugunCode(String sidoAndGugunCodePrefix);
     Region getRegionByName(String sidoName, String gugunName, String dongName);
 }

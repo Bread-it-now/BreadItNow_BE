@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JpaRegionRepository extends JpaRepository<RegionEntity, String> {
-    Optional<RegionEntity> findRegionEntityByRegionCode(String regionCode);
-    List<RegionEntity> findByRegionCodeStartingWith(String regionCodePrefix);
     boolean existsByRegionCodeStartingWith(String regionCodePrefix);
 
-    @Query("SELECT new com.breaditnow.customer.region.presentation.res.SidoResponse(r.sidoCode, r.sidoName) FROM RegionEntity r GROUP BY r.sidoCode, r.sidoName")
-    List<SidoResponse> findDistinctSidoInfoGroupedBySidoCodeAndName();
+    @Query("SELECT new com.breaditnow.customer.region.presentation.res.SidoResponse(r.sidoCode, r.sidoName) " +
+            "FROM RegionEntity r " +
+            "GROUP BY r.sidoCode, r.sidoName")
+    List<SidoResponse> findSidoResponses();
 
     @Query("SELECT new com.breaditnow.customer.region.presentation.res.GugunResponse(r.sidoName, r.gugunCode, r.gugunName) " +
             "FROM RegionEntity r " +
             "WHERE r.sidoCode = :sidoCode " +
             "GROUP BY r.sidoName, r.gugunCode, r.gugunName")
-    List<GugunResponse> findDistinctGugunResponsesBySidoCode(@Param("sidoCode") String sidoCode);
+    List<GugunResponse> findGugunResponsesBySidoCode(@Param("sidoCode") String sidoCode);
 
     Optional<RegionEntity> findBySidoNameAndGugunNameAndDongName(String sidoName, String gugunName, String dongName);
 }
