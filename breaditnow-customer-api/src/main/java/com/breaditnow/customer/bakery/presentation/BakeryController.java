@@ -1,11 +1,8 @@
 package com.breaditnow.customer.bakery.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.customer.bakery.application.request.HotBakerySearchCriteria;
 import com.breaditnow.customer.bakery.infrastructure.BakeryAdapter;
-import com.breaditnow.customer.bakery.presentation.request.HotBakerySearchRequest;
 import com.breaditnow.customer.bakery.presentation.response.BakeryDetailResponse;
-import com.breaditnow.customer.bakery.presentation.response.HotBakeryPageResponse;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +19,5 @@ public class BakeryController {
     @GetMapping("/{bakery_id}/detail")
     public ApiSuccessResponse<BakeryDetailResponse> getBakeryDetail(@AuthCustomer Long customerId, @PathVariable("bakery_id") Long bakeryId) {
         return ApiSuccessResponse.of(bakeryAdapter.getBakeryDetail(customerId, bakeryId));
-    }
-
-    @GetMapping("/hot")
-    public ApiSuccessResponse<HotBakeryPageResponse> getHotBakeries(@AuthCustomer Long customerId, HotBakerySearchRequest request) {
-        HotBakerySearchCriteria searchCriteria = HotBakerySearchCriteria.of(request);
-        return ApiSuccessResponse.of(bakeryAdapter.getHotBakeries(customerId, searchCriteria));
     }
 }

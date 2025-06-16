@@ -1,7 +1,6 @@
 package com.breaditnow.customer.bakery.infrastructure;
 
 import com.breaditnow.customer.bakery.application.request.HotBakerySearchCriteria;
-import com.breaditnow.customer.bakery.domain.port.LoadBakeryPort;
 import com.breaditnow.customer.bakery.domain.port.SaveBakeryPort;
 import com.breaditnow.customer.bakery.infrastructure.jpa.JpaBakeryRepository;
 import com.breaditnow.customer.bakery.infrastructure.jpa.QueryBakeryRepository;
@@ -23,7 +22,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_NOT_
 
 @Repository
 @RequiredArgsConstructor
-public class BakeryAdapter implements SaveBakeryPort, LoadBakeryPort {
+public class BakeryAdapter implements SaveBakeryPort {
     private final JpaBakeryRepository jpaBakeryRepository;
     private final QueryProductRepository queryProductRepository;
     private final QueryBakeryRepository queryBakeryRepository;
