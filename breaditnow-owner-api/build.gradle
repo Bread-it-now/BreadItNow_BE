@@ -20,6 +20,13 @@ dependencies {
 
     // actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // webflux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // s3
+    implementation 'software.amazon.awssdk:s3'
+    implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.1.1'
 }
 
 test {
