@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_INACTIVE;
+import static com.breaditnow.owner.bakery.domain.OperatingStatus.OPEN;
 import static com.breaditnow.owner.global.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 
 @Getter
@@ -51,7 +52,7 @@ public class Bakery {
                 .phoneNumber(phoneNumber)
                 .profileImage(profileImage)
                 .additionalImages(new ArrayList<>())
-                .operatingStatus(OperatingStatus.OPEN)
+                .operatingStatus(OPEN)
                 .favoriteCount(0)
                 .deleted(false)
                 .openTime(openTime)

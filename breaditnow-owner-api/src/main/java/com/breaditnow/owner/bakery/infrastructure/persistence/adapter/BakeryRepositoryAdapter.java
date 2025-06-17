@@ -25,4 +25,10 @@ public class BakeryRepositoryAdapter implements BakeryRepository {
         return jpaBakeryRepository.findById(bakeryId)
                 .map(BakeryEntity::toDomain);
     }
+
+    @Override
+    public Optional<Bakery> findByIdWithImages(Long bakeryId) {
+        return jpaBakeryRepository.findBakeryWithImagesById(bakeryId)
+                .map(BakeryEntity::toDomain);
+    }
 }

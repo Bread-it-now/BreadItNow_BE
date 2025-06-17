@@ -40,7 +40,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest request) {
-        Bakery bakery = getBakery(bakeryId);
+        Bakery bakery = findBakeryById(bakeryId);
         bakery.update(ownerId, request.name(), request.openTime(), request.introduction());
         bakeryRepository.save(bakery);
     }
@@ -48,7 +48,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void updateOperatingStatus(Long ownerId, Long bakeryId, OperatingStatus newStatus) {
-        Bakery bakery = getBakery(bakeryId);
+        Bakery bakery = findBakeryById(bakeryId);
         bakery.updateOperatingStatus(ownerId, newStatus);
         bakeryRepository.save(bakery);
     }
@@ -56,7 +56,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void updateProfileImage(Long ownerId, Long bakeryId, MultipartFile newProfileImage) {
-        Bakery bakery = getBakery(bakeryId);
+        Bakery bakery = findBakeryById(bakeryId);
         Image newImage = imagePort.saveImage(newProfileImage);
         bakery.updateProfileImage(ownerId, newImage);
         bakeryRepository.save(bakery);
@@ -65,7 +65,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void addAdditionalImages(Long ownerId, Long bakeryId, List<MultipartFile> images) {
-        Bakery bakery = getBakery(bakeryId);
+        Bakery bakery = findBakeryById(bakeryId);
         List<Image> newImages = images.stream()
                 .map(imagePort::saveImage)
                 .collect(Collectors.toList());
@@ -76,12 +76,12 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void deleteBakery(Long ownerId, Long bakeryId) {
-        Bakery bakery = getBakery(bakeryId);
+        Bakery bakery = findBakeryById(bakeryId);
         bakery.delete(ownerId);
         bakeryRepository.save(bakery);
     }
 
-    private Bakery getBakery(Long bakeryId) {
+    public Bakery findBakeryById(Long bakeryId) {
         return bakeryRepository.findById(bakeryId)
                 .orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
     }

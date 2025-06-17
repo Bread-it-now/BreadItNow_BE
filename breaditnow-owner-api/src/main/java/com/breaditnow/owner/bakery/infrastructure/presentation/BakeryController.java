@@ -2,9 +2,12 @@ package com.breaditnow.owner.bakery.infrastructure.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.bakery.application.port.in.*;
+import com.breaditnow.owner.bakery.application.port.in.queries.GetBakeryDetailsUseCase;
+import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryUpdateRequest;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.OperatingStatusUpdateRequest;
+import com.breaditnow.owner.bakery.infrastructure.presentation.response.BakeryResponse;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,7 @@ public class BakeryController {
     private final UpdateOperatingStatusUseCase updateOperatingStatusUseCase;
     private final UpdateProfileImageUseCase updateProfileImageUseCase;
     private final AddBakeryImagesUseCase addBakeryImagesUseCase;
+    private final GetBakeryDetailsUseCase getBakeryDetailsUseCase;
 
     @PostMapping(consumes = {MULTIPART_FORM_DATA_VALUE})
     public ApiSuccessResponse<Map<String, Long>> createBakery(
@@ -79,5 +83,11 @@ public class BakeryController {
     ) {
         addBakeryImagesUseCase.addAdditionalImages(ownerId, bakeryId, images);
         return ApiSuccessResponse.of();
+    }
+
+    @GetMapping("/{bakeryId}")
+    public ApiSuccessResponse<BakeryResponse> getBakery(@PathVariable("bakeryId") Long bakeryId) {
+        Bakery bakery = getBakeryDetailsUseCase.getBakeryDetails(bakeryId);
+        return ApiSuccessResponse.of(BakeryResponse.from(bakery));
     }
 }

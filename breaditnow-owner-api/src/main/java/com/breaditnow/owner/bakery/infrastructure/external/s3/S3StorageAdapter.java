@@ -41,7 +41,7 @@ public class S3StorageAdapter implements StoragePort {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(key)
-                    .contentType(guessContentType(fileExtension)) // Set MIME type
+                    .contentType(guessContentType(fileExtension))
                     .build();
 
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(imageBytes));
@@ -50,6 +50,7 @@ public class S3StorageAdapter implements StoragePort {
                     .bucket(bucketName)
                     .key(key)
                     .build();
+
             return s3Client.utilities().getUrl(getUrlRequest).toString();
         } catch (S3Exception e) {
             throw new RuntimeException("Failed to upload image to S3: " + e.awsErrorDetails().errorMessage(), e);
