@@ -2,6 +2,7 @@ package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.global.exception.OwnerException;
+import io.micrometer.common.util.StringUtils;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -58,22 +59,30 @@ public class Bakery {
                 .build();
     }
 
+    public void update(Long ownerId, String name, String openTime, String introduction) {
+        validateOwner(ownerId);
+        validateActive();
+        if (StringUtils.isNotBlank(name)) {
+            this.name = name;
+        }
+        if (StringUtils.isNotBlank(openTime)) {
+            this.openTime = openTime;
+        }
+        if (StringUtils.isNotBlank(introduction)) {
+            this.introduction = introduction;
+        }
+    }
+
+    public void updateOperatingStatus(Long ownerId, OperatingStatus newStatus) {
+        validateOwner(ownerId);
+        validateActive();
+        this.operatingStatus = newStatus;
+    }
+
     public void delete(Long ownerId) {
         validateOwner(ownerId);
         validateActive();
         this.deleted = true;
-    }
-
-    private void validateOwner(Long ownerId) {
-        if (!this.getOwnerId().equals(ownerId)) {
-            throw new OwnerException(UNAUTHORIZED_BAKERY_ACCESS);
-        }
-    }
-
-    private void validateActive() {
-        if (this.isDeleted()) {
-            throw new DomainException(BAKERY_INACTIVE);
-        }
     }
 
     public void updateProfileImage(Long ownerId, Image profileImage) {
@@ -87,6 +96,18 @@ public class Bakery {
         validateActive();
         if (newImages != null) {
             this.additionalImages.addAll(newImages);
+        }
+    }
+
+    private void validateOwner(Long ownerId) {
+        if (!this.getOwnerId().equals(ownerId)) {
+            throw new OwnerException(UNAUTHORIZED_BAKERY_ACCESS);
+        }
+    }
+
+    private void validateActive() {
+        if (this.isDeleted()) {
+            throw new DomainException(BAKERY_INACTIVE);
         }
     }
 }

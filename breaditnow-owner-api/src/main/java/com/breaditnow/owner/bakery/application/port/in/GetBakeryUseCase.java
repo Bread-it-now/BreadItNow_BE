@@ -1,4 +1,4 @@
-package com.breaditnow.owner.bakery.application.port.in.queries;
+package com.breaditnow.owner.bakery.application.port.in;
 
 import com.breaditnow.owner.bakery.domain.Bakery;
 
