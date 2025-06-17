@@ -1,4 +1,4 @@
-package com.breaditnow.owner.bakery.domain.port;
+package com.breaditnow.owner.bakery.application.port.out;
 
 
 import com.breaditnow.owner.bakery.domain.Bakery;

@@ -1,8 +1,9 @@
-package com.breaditnow.owner.bakery.presentation;
+package com.breaditnow.owner.bakery.infrastructure.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.owner.bakery.application.BakeryService;
-import com.breaditnow.owner.bakery.presentation.request.BakeryCreateRequest;
+import com.breaditnow.owner.bakery.application.port.in.CreateBakeryUseCase;
+import com.breaditnow.owner.bakery.application.port.in.DeleteBakeryUseCase;
+import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryCreateRequest;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequestMapping("/api/v1/bakery")
 @RequiredArgsConstructor
 public class BakeryController {
-    private final BakeryService bakeryCommandService;
+    private final CreateBakeryUseCase createBakeryUseCase;
+    private final DeleteBakeryUseCase deleteBakeryUseCase;
 
     @PostMapping(consumes = {MULTIPART_FORM_DATA_VALUE})
     public ApiSuccessResponse<Map<String, Long>> createBakery(
@@ -24,12 +26,12 @@ public class BakeryController {
             @RequestPart(value = "data") BakeryCreateRequest request,
             @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
     ){
-        return ApiSuccessResponse.of("bakeryId", bakeryCommandService.createBakery(ownerId, request, profileImage));
+        return ApiSuccessResponse.of("bakeryId", createBakeryUseCase.createBakery(ownerId, request, profileImage));
     }
 
     @DeleteMapping("/{bakeryId}")
     public ApiSuccessResponse<Void> deleteBakery(@AuthOwner Long ownerId, @PathVariable(name = "bakeryId") Long bakeryId) {
-        bakeryCommandService.deleteBakery(ownerId, bakeryId);
+        deleteBakeryUseCase.deleteBakery(ownerId, bakeryId);
         return ApiSuccessResponse.of();
     }
 }

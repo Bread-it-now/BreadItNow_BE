@@ -1,7 +1,7 @@
-package com.breaditnow.owner.bakery.infrastructure.adapter;
+package com.breaditnow.owner.bakery.infrastructure.persistence.adapter;
 
 import com.breaditnow.owner.bakery.domain.Bakery;
-import com.breaditnow.owner.bakery.domain.port.BakeryRepository;
+import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.infrastructure.persistence.jpa.BakeryEntity;
 import com.breaditnow.owner.bakery.infrastructure.persistence.jpa.JpaBakeryRepository;
 import lombok.RequiredArgsConstructor;

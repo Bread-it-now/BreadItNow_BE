@@ -1,8 +1,8 @@
-package com.breaditnow.owner.bakery.application;
+package com.breaditnow.owner.bakery.infrastructure.storage;
 
-import com.breaditnow.owner.bakery.application.port.ImageStorageService;
+import com.breaditnow.owner.bakery.application.port.out.ImagePort;
 import com.breaditnow.owner.bakery.domain.Image;
-import com.breaditnow.owner.bakery.infrastructure.external.api.StoragePort;
+import com.breaditnow.owner.bakery.application.port.out.StoragePort;
 import com.breaditnow.owner.global.exception.OwnerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import static com.breaditnow.owner.global.exception.OwnerErrorCode.IMAGE_UPLOAD_
 
 @Service
 @RequiredArgsConstructor
-public class ImageStorageServiceImpl implements ImageStorageService {
+public class ImageStorageServiceImpl implements ImagePort {
     private final StoragePort storagePort;
 
     @Override

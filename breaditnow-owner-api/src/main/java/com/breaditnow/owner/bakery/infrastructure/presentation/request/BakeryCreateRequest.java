@@ -1,4 +1,4 @@
-package com.breaditnow.owner.bakery.presentation.request;
+package com.breaditnow.owner.bakery.infrastructure.presentation.request;
 
 public record BakeryCreateRequest(
         String name,

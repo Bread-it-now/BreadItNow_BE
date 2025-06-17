@@ -1,6 +1,6 @@
-package com.breaditnow.owner.bakery.infrastructure.adapter;
+package com.breaditnow.owner.bakery.infrastructure.external.s3;
 
-import com.breaditnow.owner.bakery.infrastructure.external.api.StoragePort;
+import com.breaditnow.owner.bakery.application.port.out.StoragePort;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.sync.RequestBody;

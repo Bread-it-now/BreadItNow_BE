@@ -1,7 +1,6 @@
-package com.breaditnow.owner.bakery.infrastructure.adapter;
+package com.breaditnow.owner.bakery.infrastructure.external.api;
 
-import com.breaditnow.owner.bakery.infrastructure.external.api.AddressInfo;
-import com.breaditnow.owner.bakery.infrastructure.external.api.AddressPort;
+import com.breaditnow.owner.bakery.application.port.out.AddressPort;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
