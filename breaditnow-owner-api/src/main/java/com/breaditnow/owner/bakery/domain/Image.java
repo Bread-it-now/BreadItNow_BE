@@ -1,7 +1,10 @@
 package com.breaditnow.owner.bakery.domain;
 
-public record Image(String profileUrl) {
-    public static Image create(String profileUrl) {
-        return new Image(profileUrl);
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public record Image(String imageUrl) {
+    public static Image create(String imageUrl) {
+        return new Image(imageUrl);
     }
 }

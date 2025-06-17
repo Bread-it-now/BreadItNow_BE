@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.EnumType.STRING;
 
 @Entity
@@ -28,10 +31,8 @@ public class BakeryEntity extends BaseEntity {
 
     private String name;
 
-    private String fullAddress;
-    private String regionCode;
-    private Double latitude;
-    private Double longitude;
+    @Embedded
+    private Address address;
 
     @Enumerated(STRING)
     private OperatingStatus operatingStatus;
@@ -39,10 +40,22 @@ public class BakeryEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer favoriteCount;
 
-    private String phoneNumber;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "phone_number"))
+    private PhoneNumber phoneNumber;
+
     private String openTime;
     private String introduction;
-    private String profileImageUrl;
+
+    @Embedded
+    @AttributeOverride(name = "imageUrl", column = @Column(name = "profile_image_url"))
+    private Image profileImage;
+
+    @ElementCollection
+    @CollectionTable(name = "bakery_image", joinColumns = @JoinColumn(name = "bakery_id"))
+    @Builder.Default
+    private List<Image> additionalImages = new ArrayList<>();
+
     private boolean deleted;
 
     public static BakeryEntity from(Bakery bakery) {
@@ -50,16 +63,14 @@ public class BakeryEntity extends BaseEntity {
                 .id(bakery.getBakeryId())
                 .ownerId(bakery.getOwnerId())
                 .name(bakery.getName())
-                .fullAddress(bakery.getAddress().fullAddress())
-                .regionCode(bakery.getAddress().regionCode())
-                .latitude(bakery.getAddress().latitude())
-                .longitude(bakery.getAddress().longitude())
+                .address(bakery.getAddress())
                 .operatingStatus(bakery.getOperatingStatus())
                 .favoriteCount(bakery.getFavoriteCount())
-                .phoneNumber(bakery.getPhoneNumber() != null ? bakery.getPhoneNumber().value() : null)
+                .phoneNumber(bakery.getPhoneNumber())
                 .openTime(bakery.getOpenTime())
                 .introduction(bakery.getIntroduction())
-                .profileImageUrl(bakery.getProfileImage().profileUrl())
+                .profileImage(bakery.getProfileImage())
+                .additionalImages(bakery.getAdditionalImages())
                 .deleted(bakery.isDeleted())
                 .build();
     }
@@ -69,13 +80,14 @@ public class BakeryEntity extends BaseEntity {
                 .bakeryId(id)
                 .ownerId(ownerId)
                 .name(name)
-                .address(new Address(regionCode, fullAddress, latitude, longitude))
+                .address(this.address)
                 .operatingStatus(operatingStatus)
                 .favoriteCount(favoriteCount)
-                .phoneNumber(phoneNumber != null ? new PhoneNumber(phoneNumber) : null)
+                .phoneNumber(this.phoneNumber)
                 .openTime(openTime)
                 .introduction(introduction)
-                .profileImage(new Image(profileImageUrl))
+                .profileImage(this.profileImage)
+                .additionalImages(this.additionalImages)
                 .deleted(deleted)
                 .build();
     }

@@ -5,6 +5,9 @@ import com.breaditnow.owner.global.exception.OwnerException;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_INACTIVE;
 import static com.breaditnow.owner.global.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 
@@ -16,6 +19,7 @@ public class Bakery {
     private Address address;
     private PhoneNumber phoneNumber;
     private Image profileImage;
+    private List<Image> additionalImages;
     private OperatingStatus operatingStatus;
     private Integer favoriteCount;
     private String openTime;
@@ -23,7 +27,7 @@ public class Bakery {
     private boolean deleted;
 
     @Builder
-    private Bakery(Long bakeryId, String name, Long ownerId, Address address, PhoneNumber phoneNumber, Image profileImage, OperatingStatus operatingStatus, Integer favoriteCount, String openTime, String introduction, boolean deleted) {
+    private Bakery(Long bakeryId, String name, Long ownerId, Address address, PhoneNumber phoneNumber, Image profileImage, List<Image> additionalImages, OperatingStatus operatingStatus, Integer favoriteCount, String openTime, String introduction, boolean deleted) {
         this.bakeryId = bakeryId;
         this.name = name;
         this.ownerId = ownerId;
@@ -34,6 +38,7 @@ public class Bakery {
         this.favoriteCount = favoriteCount;
         this.openTime = openTime;
         this.introduction = introduction;
+        this.additionalImages = additionalImages != null ? additionalImages : new ArrayList<>();
         this.deleted = deleted;
     }
 
@@ -44,6 +49,7 @@ public class Bakery {
                 .address(address)
                 .phoneNumber(phoneNumber)
                 .profileImage(profileImage)
+                .additionalImages(new ArrayList<>())
                 .operatingStatus(OperatingStatus.OPEN)
                 .favoriteCount(0)
                 .deleted(false)
@@ -67,6 +73,20 @@ public class Bakery {
     private void validateActive() {
         if (this.isDeleted()) {
             throw new DomainException(BAKERY_INACTIVE);
+        }
+    }
+
+    public void updateProfileImage(Long ownerId, Image profileImage) {
+        validateOwner(ownerId);
+        validateActive();
+        this.profileImage = profileImage;
+    }
+
+    public void addAdditionalImages(Long ownerId, List<Image> newImages) {
+        validateOwner(ownerId);
+        validateActive();
+        if (newImages != null) {
+            this.additionalImages.addAll(newImages);
         }
     }
 }

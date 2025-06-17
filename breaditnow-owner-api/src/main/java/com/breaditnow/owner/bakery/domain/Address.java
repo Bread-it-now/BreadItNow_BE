@@ -2,10 +2,11 @@ package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.owner.global.exception.OwnerException;
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.Embeddable;
 
 import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
-
+@Embeddable
 public record Address(
         String regionCode,
         String fullAddress,
