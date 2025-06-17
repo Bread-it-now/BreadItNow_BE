@@ -1,8 +1,7 @@
 package com.breaditnow.owner.bakery.infrastructure.persistence.jpa;
 
 import com.breaditnow.domain.global.entity.BaseEntity;
-import com.breaditnow.owner.bakery.domain.Bakery;
-import com.breaditnow.owner.bakery.domain.OperatingStatus;
+import com.breaditnow.owner.bakery.domain.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,9 +43,11 @@ public class BakeryEntity extends BaseEntity {
     private String openTime;
     private String introduction;
     private String profileImageUrl;
+    private boolean deleted;
 
     public static BakeryEntity from(Bakery bakery) {
         return BakeryEntity.builder()
+                .id(bakery.getBakeryId())
                 .ownerId(bakery.getOwnerId())
                 .name(bakery.getName())
                 .fullAddress(bakery.getAddress().fullAddress())
@@ -54,11 +55,28 @@ public class BakeryEntity extends BaseEntity {
                 .latitude(bakery.getAddress().latitude())
                 .longitude(bakery.getAddress().longitude())
                 .operatingStatus(bakery.getOperatingStatus())
-                .favoriteCount(0)
+                .favoriteCount(bakery.getFavoriteCount())
                 .phoneNumber(bakery.getPhoneNumber() != null ? bakery.getPhoneNumber().value() : null)
                 .openTime(bakery.getOpenTime())
                 .introduction(bakery.getIntroduction())
                 .profileImageUrl(bakery.getProfileImage().profileUrl())
+                .deleted(bakery.isDeleted())
+                .build();
+    }
+
+    public Bakery toDomain() {
+        return Bakery.builder()
+                .bakeryId(id)
+                .ownerId(ownerId)
+                .name(name)
+                .address(new Address(regionCode, fullAddress, latitude, longitude))
+                .operatingStatus(operatingStatus)
+                .favoriteCount(favoriteCount)
+                .phoneNumber(phoneNumber != null ? new PhoneNumber(phoneNumber) : null)
+                .openTime(openTime)
+                .introduction(introduction)
+                .profileImage(new Image(profileImageUrl))
+                .deleted(deleted)
                 .build();
     }
 }

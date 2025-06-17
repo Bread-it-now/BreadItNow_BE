@@ -21,6 +21,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	GEOLOCATION_NOT_FOUND(NOT_FOUND, "DB004", "해당 주소의 위도, 경도를 찾을 수 없습니다."),
 	PHONE_NUMBER_REQUIRED(BAD_REQUEST, "DB005", "전화번호는 필수입니다."),
 	INVALID_PHONE_NUMBER_FORMAT(BAD_REQUEST, "DB006", "전화번호 형식이 올바르지 않습니다."),
+	UNAUTHORIZED_BAKERY_ACCESS(FORBIDDEN, "DB006", "이 빵집에 대한 삭제 권한이 없습니다."),
 
 	/**
 	 * DC000 Image

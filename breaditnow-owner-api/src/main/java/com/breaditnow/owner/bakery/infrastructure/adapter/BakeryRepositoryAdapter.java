@@ -7,14 +7,22 @@ import com.breaditnow.owner.bakery.infrastructure.persistence.jpa.JpaBakeryRepos
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class BakeryRepositoryAdapter implements BakeryRepository {
     private final JpaBakeryRepository jpaBakeryRepository;
 
     @Override
-    public Long saveBakery(Bakery bakery) {
+    public Long save(Bakery bakery) {
         BakeryEntity entity = BakeryEntity.from(bakery);
         return jpaBakeryRepository.save(entity).getId();
+    }
+
+    @Override
+    public Optional<Bakery> findById(Long bakeryId) {
+        return jpaBakeryRepository.findById(bakeryId)
+                .map(BakeryEntity::toDomain);
     }
 }
