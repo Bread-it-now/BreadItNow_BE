@@ -1,5 +1,6 @@
 package com.breaditnow.owner.bakery.infrastructure.persistence.adapter;
 
+import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.infrastructure.persistence.jpa.BakeryEntity;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
+import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,6 +27,11 @@ public class BakeryRepositoryAdapter implements BakeryRepository {
     public Optional<Bakery> findById(Long bakeryId) {
         return jpaBakeryRepository.findById(bakeryId)
                 .map(BakeryEntity::toDomain);
+    }
+
+    @Override
+    public Bakery getById(Long bakeryId) {
+        return findById(bakeryId).orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
     }
 
     @Override

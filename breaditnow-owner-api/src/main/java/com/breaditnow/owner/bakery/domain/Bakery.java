@@ -1,7 +1,12 @@
 package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.product.domain.Classification;
+import com.breaditnow.owner.product.domain.Product;
+import com.breaditnow.owner.product.domain.ProductInfo;
+import com.breaditnow.owner.product.domain.SalesPolicy;
 import io.micrometer.common.util.StringUtils;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,6 +63,12 @@ public class Bakery {
                 .openTime(openTime)
                 .introduction(introduction)
                 .build();
+    }
+
+    public Product createProduct(Long ownerId, Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes) {
+        validateOwner(ownerId);
+        validateActive();
+        return Product.create(bakeryId, productInfo, displayOrder, salesPolicy, classification, releaseTimes);
     }
 
     public void update(Long ownerId, String name, String openTime, String introduction) {

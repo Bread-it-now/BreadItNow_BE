@@ -31,11 +31,30 @@ public enum OwnerErrorCode implements ErrorCode {
 	IMAGE_UPLOAD_FAILED(INTERNAL_SERVER_ERROR, "DC003", "이미지 업로드에 실패했습니다."),
 	IMAGE_UPLOAD_FAILED_WITH_ERROR(INTERNAL_SERVER_ERROR, "DC004", "이미지 업로드 중 오류가 발생했습니다."),
 
+	/**
+	 * DD000 Product
+	 */
+	PRODUCT_NOT_ACTIVE(BAD_REQUEST, "DD001", "비활성화된 상품입니다."),
+	INVALID_AMOUNT(BAD_REQUEST, "DD002", "금액은 0보다 작을 수 없습니다."),
+	AMOUNT_REQUIRED(BAD_REQUEST, "DD003", "금액은 필수 값입니다."),
+	INVALID_STOCK(BAD_REQUEST, "DD004", "재고는 0보다 작을 수 없습니다."),
+	PRODUCT_ALREADY_HIDDEN(CONFLICT, "DD005", "상품은 이미 숨김 상태입니다."),
+	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "DD006", "상품은 이미 숨김 해제 상태입니다."),
+	INVALID_PRODUCT_CATEGORY(BAD_REQUEST, "DD010", "상품 카테고리는 BREAD, OTHER 중에서 선택해야 합니다."),
+	BREAD_CATEGORY_TYPE_REQUIRED(BAD_REQUEST, "DD011", "상품 카테고리는 필수입니다."),
+	BREAD_CATEGORY_REQUIRED(BAD_REQUEST, "DD012", "BREAD 상품 유형에는 빵 카테고리 ID가 필수입니다."),
+	BREAD_CATEGORY_MUST_BE_EMPTY(BAD_REQUEST, "DD013", "OTHER 상품 유형에는 빵 카테고리 ID가 없어야 합니다."),
 
 	/**
 	 * DY000 인증
 	 */
-	AUTHENTICATION_REQUIRED(UNAUTHORIZED, "DY001", "Owner 인증 정보가 필수입니다.");
+	AUTHENTICATION_REQUIRED(UNAUTHORIZED, "DY001", "Owner 인증 정보가 필수입니다."),
+
+
+	/**
+	 * DZ000 이외
+	 */
+	INVALID_TIME_FORMAT(BAD_REQUEST, "CC008", "시간 형식이 잘못되었습니다. 'HH:mm' 형식이어야 합니다.");
 
 
 	private final HttpStatus httpStatus;

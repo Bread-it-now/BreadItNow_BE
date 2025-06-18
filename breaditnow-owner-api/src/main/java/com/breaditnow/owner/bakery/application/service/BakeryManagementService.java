@@ -1,6 +1,5 @@
 package com.breaditnow.owner.bakery.application.service;
 
-import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.bakery.application.port.in.*;
 import com.breaditnow.owner.bakery.application.port.out.AddressPort;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
@@ -16,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +37,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void updateBakery(Long ownerId, Long bakeryId, BakeryUpdateRequest request) {
-        Bakery bakery = findBakeryById(bakeryId);
+        Bakery bakery = bakeryRepository.getById(bakeryId);
         bakery.update(ownerId, request.name(), request.openTime(), request.introduction());
         bakeryRepository.save(bakery);
     }
@@ -48,7 +45,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void updateOperatingStatus(Long ownerId, Long bakeryId, OperatingStatus newStatus) {
-        Bakery bakery = findBakeryById(bakeryId);
+        Bakery bakery = bakeryRepository.getById(bakeryId);
         bakery.updateOperatingStatus(ownerId, newStatus);
         bakeryRepository.save(bakery);
     }
@@ -56,7 +53,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void updateProfileImage(Long ownerId, Long bakeryId, MultipartFile newProfileImage) {
-        Bakery bakery = findBakeryById(bakeryId);
+        Bakery bakery = bakeryRepository.getById(bakeryId);
         Image newImage = imagePort.saveImage(newProfileImage);
         bakery.updateProfileImage(ownerId, newImage);
         bakeryRepository.save(bakery);
@@ -65,7 +62,7 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void addAdditionalImages(Long ownerId, Long bakeryId, List<MultipartFile> images) {
-        Bakery bakery = findBakeryById(bakeryId);
+        Bakery bakery = bakeryRepository.getById(bakeryId);
         List<Image> newImages = images.stream()
                 .map(imagePort::saveImage)
                 .collect(Collectors.toList());
@@ -76,13 +73,8 @@ public class BakeryManagementService implements CreateBakeryUseCase, DeleteBaker
     @Override
     @Transactional
     public void deleteBakery(Long ownerId, Long bakeryId) {
-        Bakery bakery = findBakeryById(bakeryId);
+        Bakery bakery = bakeryRepository.getById(bakeryId);
         bakery.delete(ownerId);
         bakeryRepository.save(bakery);
-    }
-
-    public Bakery findBakeryById(Long bakeryId) {
-        return bakeryRepository.findById(bakeryId)
-                .orElseThrow(() -> new DomainException(BAKERY_NOT_FOUND));
     }
 }
