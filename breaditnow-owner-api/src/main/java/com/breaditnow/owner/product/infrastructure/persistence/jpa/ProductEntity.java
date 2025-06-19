@@ -1,5 +1,6 @@
 package com.breaditnow.owner.product.infrastructure.persistence.jpa;
 
+import com.breaditnow.domain.global.entity.BaseEntity;
 import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.common.jpa.DailyTimeListConverter;
 import com.breaditnow.owner.product.domain.*;
@@ -19,7 +20,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Builder
 @Getter
-public class ProductEntity {
+public class ProductEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "product_id")
@@ -52,6 +53,8 @@ public class ProductEntity {
     @Column(name = "release_times")
     private List<DailyTime> releaseTimes;
 
+    private boolean deleted;
+
     public static ProductEntity from(Product product) {
         return ProductEntity.builder()
                 .id(product.getId())
@@ -62,6 +65,7 @@ public class ProductEntity {
                 .type(product.getClassification().type())
                 .displayOrder(product.getDisplayOrder())
                 .releaseTimes(product.getReleaseTimes())
+                .deleted(product.isDeleted())
                 .build();
     }
 
@@ -73,6 +77,8 @@ public class ProductEntity {
                 .salesPolicy(this.getSalesPolicy())
                 .classification(new Classification(this.getType(), this.getBreadCategoryIds()))
                 .displayOrder(this.getDisplayOrder())
+                .releaseTimes(this.getReleaseTimes())
+                .deleted(this.isDeleted())
                 .build();
     }
 }

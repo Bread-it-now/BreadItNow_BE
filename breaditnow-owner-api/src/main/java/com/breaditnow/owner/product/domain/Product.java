@@ -18,9 +18,10 @@ public class Product {
     private SalesPolicy salesPolicy;
     private Classification classification;
     private List<DailyTime> releaseTimes;
+    private boolean deleted;
 
     @Builder
-    public Product(Long id, Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes) {
+    public Product(Long id, Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes, boolean deleted) {
         this.id = id;
         this.bakeryId = bakeryId;
         this.productInfo = productInfo;
@@ -28,6 +29,7 @@ public class Product {
         this.salesPolicy = salesPolicy;
         this.classification = classification;
         this.releaseTimes = releaseTimes;
+        this.deleted = deleted;
     }
 
     public static Product create(Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes) {
@@ -38,10 +40,12 @@ public class Product {
                 .salesPolicy(salesPolicy)
                 .classification(classification)
                 .releaseTimes(releaseTimes)
+                .deleted(false)
                 .build();
     }
 
     public void update(ProductInfo newProductInfo, SalesPolicy newSalesPolicy, Classification newClassification, List<DailyTime> newReleaseTimes) {
+        validateIsActive();
         this.productInfo = newProductInfo;
         this.salesPolicy = newSalesPolicy;
         this.classification = newClassification;
@@ -49,6 +53,7 @@ public class Product {
     }
 
     public void updateStock(Integer stock) {
+        validateIsActive();
         if(stock < 0) {
             throw new OwnerException(INVALID_STOCK);
         }
@@ -56,12 +61,24 @@ public class Product {
     }
 
     public void changeStatus(ProductStatus newStatus) {
+        validateIsActive();
         this.salesPolicy = this.salesPolicy.withStatus(newStatus);
+    }
+
+    public void delete() {
+        validateIsActive();
+        this.deleted = true;
     }
 
     public void validateBelongsTo(Long bakeryId) {
         if(!getBakeryId().equals(bakeryId)){
             throw new OwnerException(PRODUCT_NOT_IN_BAKERY);
+        }
+    }
+
+    public void validateIsActive() {
+        if (this.deleted) {
+            throw new OwnerException(PRODUCT_INACTIVE);
         }
     }
 }

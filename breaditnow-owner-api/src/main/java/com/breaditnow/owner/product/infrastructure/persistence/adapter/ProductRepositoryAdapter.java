@@ -8,6 +8,9 @@ import com.breaditnow.owner.product.infrastructure.persistence.jpa.ProductEntity
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
 
 @Repository
@@ -32,5 +35,20 @@ public class ProductRepositoryAdapter implements ProductRepository {
         return productRepository.findById(productId)
                 .map(ProductEntity::toDomain)
                 .orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
+    }
+
+    @Override
+    public List<Product> findAllByIdInAndBakeryId(List<Long> productIds, Long bakeryId) {
+        return productRepository.findAllByIdInAndBakeryId(productIds, bakeryId).stream()
+                .map(ProductEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    public void saveAll(List<Product> products) {
+        List<ProductEntity> entities = products.stream()
+                .map(ProductEntity::from)
+                .toList();
+        productRepository.saveAll(entities);
     }
 }

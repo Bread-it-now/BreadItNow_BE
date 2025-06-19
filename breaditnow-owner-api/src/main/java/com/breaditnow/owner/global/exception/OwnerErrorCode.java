@@ -34,7 +34,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	/**
 	 * DD000 Product
 	 */
-	PRODUCT_NOT_ACTIVE(BAD_REQUEST, "DD001", "비활성화된 상품입니다."),
+	PRODUCT_INACTIVE(NOT_FOUND, "BG003", "삭제된 메뉴입니다."),
 	INVALID_AMOUNT(BAD_REQUEST, "DD002", "금액은 0보다 작을 수 없습니다."),
 	AMOUNT_REQUIRED(BAD_REQUEST, "DD003", "금액은 필수 값입니다."),
 	INVALID_STOCK(BAD_REQUEST, "DD004", "재고는 0보다 작을 수 없습니다."),
@@ -46,7 +46,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	BREAD_CATEGORY_MUST_BE_EMPTY(BAD_REQUEST, "DD013", "OTHER 상품 유형에는 빵 카테고리 ID가 없어야 합니다."),
 	PRODUCT_NOT_IN_BAKERY(BAD_REQUEST, "DD014", "상품이 해당 베이커리에 속해있지 않습니다."),
 	INVALID_PRODUCT_STATUS(BAD_REQUEST, "DD015", "유효하지 않은 상품 상태입니다. FOR_SALE, HIDDEN, SOLD_OUT 중에서 선택해야 합니다."),
-
+	PRODUCT_ALREADY_IN_SAME_STATUS(CONFLICT, "DD017", "상품이 이미 요청된 상태와 동일합니다."),
 	/**
 	 * DY000 인증
 	 */

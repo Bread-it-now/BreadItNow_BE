@@ -5,19 +5,14 @@ import com.breaditnow.owner.bakery.application.port.out.ImagePort;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
-import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
-import com.breaditnow.owner.product.application.port.in.UpdateProductStatusUseCase;
-import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;
-import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
+import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.product.application.port.in.*;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
 import com.breaditnow.owner.product.domain.Classification;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductInfo;
 import com.breaditnow.owner.product.domain.SalesPolicy;
-import com.breaditnow.owner.product.infrastructure.presentation.request.ProductCreateRequest;
-import com.breaditnow.owner.product.infrastructure.presentation.request.ProductStatusUpdateRequest;
-import com.breaditnow.owner.product.infrastructure.presentation.request.ProductStockUpdateRequest;
-import com.breaditnow.owner.product.infrastructure.presentation.request.ProductUpdateRequest;
+import com.breaditnow.owner.product.infrastructure.presentation.request.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.PRODUCT_NOT_IN_BAKERY;
+
 @Service
 @RequiredArgsConstructor
-public class ProductManagementService implements CreateProductUseCase, UpdateProductUseCase, UpdateProductStockUseCase, UpdateProductStatusUseCase {
+public class ProductManagementService implements CreateProductUseCase, UpdateProductUseCase, UpdateProductStockUseCase, UpdateProductStatusUseCase, UpdateProductsStatusUseCase {
     private final BakeryRepository bakeryRepository;
     private final ProductRepository productRepository;
     private final ImagePort imagePort;
@@ -35,7 +32,7 @@ public class ProductManagementService implements CreateProductUseCase, UpdatePro
     @Override
     @Transactional
     public Long createProduct(Long ownerId, Long bakeryId, ProductCreateRequest request, MultipartFile productImage) {
-        Bakery bakery = bakeryRepository.getById(bakeryId);
+        Bakery bakery = getValidatedBakery(ownerId, bakeryId);
 
         Image image = imagePort.saveImage(productImage);
 
@@ -81,14 +78,31 @@ public class ProductManagementService implements CreateProductUseCase, UpdatePro
         productRepository.save(product);
     }
 
-    private Product getValidatedProduct(Long ownerId, Long bakeryId, Long productId) {
+    @Override
+    @Transactional
+    public void updateProductsStatus(Long ownerId, Long bakeryId, ProductsStatusUpdateRequest request) {
+        getValidatedBakery(ownerId, bakeryId);
+        List<Product> products = productRepository.findAllByIdInAndBakeryId(request.productIds(), bakeryId);
+
+        if (products.size() != request.productIds().size()) {
+            throw new OwnerException(PRODUCT_NOT_IN_BAKERY);
+        }
+
+        products.forEach(product -> product.changeStatus(request.status()));
+        productRepository.saveAll(products);
+    }
+
+    private Bakery getValidatedBakery(Long ownerId, Long bakeryId) {
         Bakery bakery = bakeryRepository.getById(bakeryId);
         bakery.validateOwner(ownerId);
         bakery.validateActive();
+        return bakery;
+    }
 
+    private Product getValidatedProduct(Long ownerId, Long bakeryId, Long productId) {
+        getValidatedBakery(ownerId, bakeryId);
         Product product = productRepository.getById(productId);
         product.validateBelongsTo(bakeryId);
-
         return product;
     }
 }
