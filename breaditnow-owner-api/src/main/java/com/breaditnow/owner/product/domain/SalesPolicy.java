@@ -28,4 +28,8 @@ public record SalesPolicy(
         }
         return new SalesPolicy(this.price, stock, newStatus);
     }
+
+    public SalesPolicy withStatus(ProductStatus newStatus) {
+        return new SalesPolicy(this.price, this.stock, newStatus);
+    }
 }

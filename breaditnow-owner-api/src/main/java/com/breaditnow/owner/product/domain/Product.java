@@ -55,6 +55,10 @@ public class Product {
         this.salesPolicy = this.salesPolicy.withStock(stock);
     }
 
+    public void changeStatus(ProductStatus newStatus) {
+        this.salesPolicy = this.salesPolicy.withStatus(newStatus);
+    }
+
     public void validateBelongsTo(Long bakeryId) {
         if(!getBakeryId().equals(bakeryId)){
             throw new OwnerException(PRODUCT_NOT_IN_BAKERY);

@@ -45,6 +45,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	BREAD_CATEGORY_REQUIRED(BAD_REQUEST, "DD012", "BREAD 상품 유형에는 빵 카테고리 ID가 필수입니다."),
 	BREAD_CATEGORY_MUST_BE_EMPTY(BAD_REQUEST, "DD013", "OTHER 상품 유형에는 빵 카테고리 ID가 없어야 합니다."),
 	PRODUCT_NOT_IN_BAKERY(BAD_REQUEST, "DD014", "상품이 해당 베이커리에 속해있지 않습니다."),
+	INVALID_PRODUCT_STATUS(BAD_REQUEST, "DD015", "유효하지 않은 상품 상태입니다. FOR_SALE, HIDDEN, SOLD_OUT 중에서 선택해야 합니다."),
 
 	/**
 	 * DY000 인증

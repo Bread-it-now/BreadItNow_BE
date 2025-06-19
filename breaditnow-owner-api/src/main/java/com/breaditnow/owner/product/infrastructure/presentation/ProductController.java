@@ -3,9 +3,11 @@ package com.breaditnow.owner.product.infrastructure.presentation;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
+import com.breaditnow.owner.product.application.port.in.UpdateProductStatusUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductCreateRequest;
+import com.breaditnow.owner.product.infrastructure.presentation.request.ProductStatusUpdateRequest;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductStockUpdateRequest;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class ProductController {
     private final CreateProductUseCase createProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;
     private final UpdateProductStockUseCase updateProductStockUseCase;
+    private final UpdateProductStatusUseCase updateProductStatusUseCase;
 
     @PostMapping(consumes = "multipart/form-data")
     public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
@@ -53,6 +56,17 @@ public class ProductController {
             @RequestBody ProductStockUpdateRequest request
     ) {
         updateProductStockUseCase.updateProductStock(ownerId, bakeryId, productId, request);
+        return ApiSuccessResponse.of();
+    }
+
+    @PatchMapping("/{productId}/status")
+    public ApiSuccessResponse<Void> updateProductStatus(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId,
+            @PathVariable("productId") Long productId,
+            @RequestBody ProductStatusUpdateRequest request
+    ) {
+        updateProductStatusUseCase.updateProductStatus(ownerId, bakeryId, productId, request);
         return ApiSuccessResponse.of();
     }
 }
