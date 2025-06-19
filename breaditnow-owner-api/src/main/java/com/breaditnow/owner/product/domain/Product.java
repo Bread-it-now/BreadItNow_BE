@@ -1,10 +1,13 @@
 package com.breaditnow.owner.product.domain;
 
 import com.breaditnow.owner.common.domain.DailyTime;
+import com.breaditnow.owner.global.exception.OwnerException;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
 @Getter
 public class Product {
@@ -43,5 +46,18 @@ public class Product {
         this.salesPolicy = newSalesPolicy;
         this.classification = newClassification;
         this.releaseTimes = newReleaseTimes;
+    }
+
+    public void updateStock(Integer stock) {
+        if(stock < 0) {
+            throw new OwnerException(INVALID_STOCK);
+        }
+        this.salesPolicy = this.salesPolicy.withStock(stock);
+    }
+
+    public void validateBelongsTo(Long bakeryId) {
+        if(!getBakeryId().equals(bakeryId)){
+            throw new OwnerException(PRODUCT_NOT_IN_BAKERY);
+        }
     }
 }

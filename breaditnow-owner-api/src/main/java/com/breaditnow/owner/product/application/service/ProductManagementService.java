@@ -6,6 +6,7 @@ import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
+import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
 import com.breaditnow.owner.product.domain.Classification;
@@ -13,6 +14,7 @@ import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductInfo;
 import com.breaditnow.owner.product.domain.SalesPolicy;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductCreateRequest;
+import com.breaditnow.owner.product.infrastructure.presentation.request.ProductStockUpdateRequest;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductManagementService implements CreateProductUseCase, UpdateProductUseCase {
+public class ProductManagementService implements CreateProductUseCase, UpdateProductUseCase, UpdateProductStockUseCase {
     private final BakeryRepository bakeryRepository;
     private final ProductRepository productRepository;
     private final ImagePort imagePort;
@@ -42,14 +44,14 @@ public class ProductManagementService implements CreateProductUseCase, UpdatePro
         List<DailyTime> releaseTimes = request.toDailyTimes();
 
         Product product = bakery.createProduct(ownerId, bakeryId, productInfo, lastDisplayOrder, salesPolicy, classification, releaseTimes);
-
         return productRepository.save(product);
     }
 
     @Override
     @Transactional
     public void updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request, MultipartFile productImage) {
-        Product product = productRepository.getById(productId);
+        Product product = getValidatedProduct(ownerId, bakeryId, productId);
+
         Image newImage = imagePort.saveImage(productImage);
 
         ProductInfo newProductInfo = ProductInfo.create(request.name(), request.description(), newImage);
@@ -59,5 +61,24 @@ public class ProductManagementService implements CreateProductUseCase, UpdatePro
 
         product.update(newProductInfo, newSalesPolicy, newClassification, newReleaseTimes);
         productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductStock(Long ownerId, Long bakeryId, Long productId, ProductStockUpdateRequest request) {
+        Product product = getValidatedProduct(ownerId, bakeryId, productId);
+        product.updateStock(request.stock());
+        productRepository.save(product);
+    }
+
+    private Product getValidatedProduct(Long ownerId, Long bakeryId, Long productId) {
+        Bakery bakery = bakeryRepository.getById(bakeryId);
+        bakery.validateOwner(ownerId);
+        bakery.validateActive();
+
+        Product product = productRepository.getById(productId);
+        product.validateBelongsTo(bakeryId);
+
+        return product;
     }
 }

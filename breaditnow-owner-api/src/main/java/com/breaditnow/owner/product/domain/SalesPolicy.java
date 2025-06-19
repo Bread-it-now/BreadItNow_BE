@@ -16,4 +16,16 @@ public record SalesPolicy(
     public static SalesPolicy create(Integer price){
         return new SalesPolicy(new Money(price), 0, ProductStatus.FOR_SALE);
     }
+
+    public SalesPolicy withStock(Integer stock) {
+        ProductStatus currentStatus = this.status;
+        ProductStatus newStatus = currentStatus;
+
+        if (stock == 0) {
+            newStatus = ProductStatus.SOLD_OUT;
+        } else if (currentStatus == ProductStatus.SOLD_OUT && stock > 0) {
+            newStatus = ProductStatus.FOR_SALE;
+        }
+        return new SalesPolicy(this.price, stock, newStatus);
+    }
 }

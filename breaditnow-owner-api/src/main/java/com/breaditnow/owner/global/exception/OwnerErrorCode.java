@@ -21,7 +21,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	GEOLOCATION_NOT_FOUND(NOT_FOUND, "DB004", "해당 주소의 위도, 경도를 찾을 수 없습니다."),
 	PHONE_NUMBER_REQUIRED(BAD_REQUEST, "DB005", "전화번호는 필수입니다."),
 	INVALID_PHONE_NUMBER_FORMAT(BAD_REQUEST, "DB006", "전화번호 형식이 올바르지 않습니다."),
-	UNAUTHORIZED_BAKERY_ACCESS(FORBIDDEN, "DB006", "이 빵집에 대한 삭제 권한이 없습니다."),
+	UNAUTHORIZED_BAKERY_ACCESS(FORBIDDEN, "DB007", "이 빵집에 대한 접근 권한이 없습니다."),
 
 	/**
 	 * DC000 Image
@@ -44,6 +44,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	BREAD_CATEGORY_TYPE_REQUIRED(BAD_REQUEST, "DD011", "상품 카테고리는 필수입니다."),
 	BREAD_CATEGORY_REQUIRED(BAD_REQUEST, "DD012", "BREAD 상품 유형에는 빵 카테고리 ID가 필수입니다."),
 	BREAD_CATEGORY_MUST_BE_EMPTY(BAD_REQUEST, "DD013", "OTHER 상품 유형에는 빵 카테고리 ID가 없어야 합니다."),
+	PRODUCT_NOT_IN_BAKERY(BAD_REQUEST, "DD014", "상품이 해당 베이커리에 속해있지 않습니다."),
 
 	/**
 	 * DY000 인증

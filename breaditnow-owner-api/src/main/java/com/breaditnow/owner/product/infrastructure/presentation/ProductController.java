@@ -3,8 +3,10 @@ package com.breaditnow.owner.product.infrastructure.presentation;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
+import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductCreateRequest;
+import com.breaditnow.owner.product.infrastructure.presentation.request.ProductStockUpdateRequest;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.Map;
 public class ProductController {
     private final CreateProductUseCase createProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;
+    private final UpdateProductStockUseCase updateProductStockUseCase;
 
     @PostMapping(consumes = "multipart/form-data")
     public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
@@ -40,5 +43,16 @@ public class ProductController {
     ) {
         updateProductUseCase.updateProduct(ownerId, bakeryId, productId, request, productImage);
         return ApiSuccessResponse.of("productId", productId);
+    }
+
+    @PatchMapping("/{productId}/stock")
+    public ApiSuccessResponse<Void> updateProductStock(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId,
+            @PathVariable("productId") Long productId,
+            @RequestBody ProductStockUpdateRequest request
+    ) {
+        updateProductStockUseCase.updateProductStock(ownerId, bakeryId, productId, request);
+        return ApiSuccessResponse.of();
     }
 }

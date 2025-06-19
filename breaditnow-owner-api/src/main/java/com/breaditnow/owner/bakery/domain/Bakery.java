@@ -111,13 +111,13 @@ public class Bakery {
         }
     }
 
-    private void validateOwner(Long ownerId) {
+    public void validateOwner(Long ownerId) {
         if (!this.getOwnerId().equals(ownerId)) {
             throw new OwnerException(UNAUTHORIZED_BAKERY_ACCESS);
         }
     }
 
-    private void validateActive() {
+    public void validateActive() {
         if (this.isDeleted()) {
             throw new DomainException(BAKERY_INACTIVE);
         }
