@@ -6,12 +6,14 @@ import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
+import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
 import com.breaditnow.owner.product.domain.Classification;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductInfo;
 import com.breaditnow.owner.product.domain.SalesPolicy;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductCreateRequest;
+import com.breaditnow.owner.product.infrastructure.presentation.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductManagementService implements CreateProductUseCase {
+public class ProductManagementService implements CreateProductUseCase, UpdateProductUseCase {
     private final BakeryRepository bakeryRepository;
     private final ProductRepository productRepository;
     private final ImagePort imagePort;
@@ -42,5 +44,20 @@ public class ProductManagementService implements CreateProductUseCase {
         Product product = bakery.createProduct(ownerId, bakeryId, productInfo, lastDisplayOrder, salesPolicy, classification, releaseTimes);
 
         return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request, MultipartFile productImage) {
+        Product product = productRepository.getById(productId);
+        Image newImage = imagePort.saveImage(productImage);
+
+        ProductInfo newProductInfo = ProductInfo.create(request.name(), request.description(), newImage);
+        SalesPolicy newSalesPolicy = SalesPolicy.create(request.price());
+        Classification newClassification = Classification.create(request.productType(), request.breadCategoryIds());
+        List<DailyTime> newReleaseTimes = request.toDailyTimes();
+
+        product.update(newProductInfo, newSalesPolicy, newClassification, newReleaseTimes);
+        productRepository.save(product);
     }
 }

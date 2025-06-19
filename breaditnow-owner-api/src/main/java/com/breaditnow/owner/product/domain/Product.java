@@ -37,4 +37,11 @@ public class Product {
                 .releaseTimes(releaseTimes)
                 .build();
     }
+
+    public void update(ProductInfo newProductInfo, SalesPolicy newSalesPolicy, Classification newClassification, List<DailyTime> newReleaseTimes) {
+        this.productInfo = newProductInfo;
+        this.salesPolicy = newSalesPolicy;
+        this.classification = newClassification;
+        this.releaseTimes = newReleaseTimes;
+    }
 }
