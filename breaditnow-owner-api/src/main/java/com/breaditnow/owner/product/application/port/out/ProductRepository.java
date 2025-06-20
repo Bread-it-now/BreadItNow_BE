@@ -10,4 +10,5 @@ public interface ProductRepository {
     Integer findLastDisplayOrderByBakeryId(Long bakeryId);
     Product getById(Long productId);
     List<Product> findAllByIdInAndBakeryId(List<Long> productIds, Long bakeryId);
+    List<Product> findAllByBakeryIdOrderByDisplayOrderAsc(Long bakeryId);
 }

@@ -4,10 +4,13 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 import com.breaditnow.owner.product.application.port.in.*;
 import com.breaditnow.owner.product.infrastructure.presentation.request.*;
+import com.breaditnow.owner.product.infrastructure.presentation.response.ProductDetailResponse;
+import com.breaditnow.owner.product.infrastructure.presentation.response.ProductSummaryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +25,8 @@ public class ProductController {
     private final UpdateProductDisplayOrderUseCase updateProductDisplayOrderUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
     private final DeleteProductsUseCase deleteProductsUseCase;
+    private final GetProductDetailUseCase getProductDetailUseCase;
+    private final ListProductsUseCase listProductsUseCase;
 
     @PostMapping(value = "/product", consumes = "multipart/form-data")
     public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
@@ -106,5 +111,24 @@ public class ProductController {
     ) {
         deleteProductsUseCase.deleteProducts(ownerId, bakeryId, request);
         return ApiSuccessResponse.of();
+    }
+
+    @GetMapping("/product/{productId}")
+    public ApiSuccessResponse<ProductDetailResponse> getProductDetail(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId,
+            @PathVariable("productId") Long productId
+    ) {
+        ProductDetailResponse productDetail = getProductDetailUseCase.getProductDetail(ownerId, bakeryId, productId);
+        return ApiSuccessResponse.of(productDetail);
+    }
+
+    @GetMapping("/products")
+    public ApiSuccessResponse<List<ProductSummaryResponse>> listProducts(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId
+    ) {
+        List<ProductSummaryResponse> products = listProductsUseCase.listProducts(ownerId, bakeryId);
+        return ApiSuccessResponse.of(products);
     }
 }

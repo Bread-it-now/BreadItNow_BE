@@ -1,7 +1,7 @@
 package com.breaditnow.owner.bakery.application.service;
 
 import com.breaditnow.domain.global.exception.DomainException;
-import com.breaditnow.owner.bakery.application.port.in.queries.GetBakeryDetailsUseCase;
+import com.breaditnow.owner.bakery.application.port.in.GetBakeryDetailsUseCase;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import lombok.RequiredArgsConstructor;

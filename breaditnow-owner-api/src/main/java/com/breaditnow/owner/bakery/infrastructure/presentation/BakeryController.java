@@ -2,7 +2,7 @@ package com.breaditnow.owner.bakery.infrastructure.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.bakery.application.port.in.*;
-import com.breaditnow.owner.bakery.application.port.in.queries.GetBakeryDetailsUseCase;
+import com.breaditnow.owner.bakery.application.port.in.GetBakeryDetailsUseCase;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryUpdateRequest;

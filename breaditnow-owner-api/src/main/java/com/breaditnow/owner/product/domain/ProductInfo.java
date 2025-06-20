@@ -12,4 +12,8 @@ public record ProductInfo(
     public static ProductInfo create(String name, String description, Image profileImage) {
         return new ProductInfo(name, description, profileImage);
     }
+
+    public String getProfileImageUrl() {
+        return profileImage != null ? profileImage.imageUrl() : null;
+    }
 }

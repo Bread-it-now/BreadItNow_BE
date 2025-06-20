@@ -9,37 +9,43 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
 public class ProductRepositoryAdapter implements ProductRepository {
-    private final JpaProductRepository productRepository;
+    private final JpaProductRepository jpaProductRepository;
 
     @Override
     public Long save(Product product) {
         ProductEntity entity = ProductEntity.from(product);
-        return productRepository.save(entity).getId();
+        return jpaProductRepository.save(entity).getId();
     }
 
     @Override
     public Integer findLastDisplayOrderByBakeryId(Long bakeryId) {
-        return productRepository.findLastDisplayOrderByBakeryId(bakeryId)
+        return jpaProductRepository.findLastDisplayOrderByBakeryId(bakeryId)
                 .orElse(0);
     }
 
     @Override
     public Product getById(Long productId) {
-        return productRepository.findById(productId)
+        return jpaProductRepository.findById(productId)
                 .map(ProductEntity::toDomain)
                 .orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
     }
 
     @Override
     public List<Product> findAllByIdInAndBakeryId(List<Long> productIds, Long bakeryId) {
-        return productRepository.findAllByIdInAndBakeryId(productIds, bakeryId).stream()
+        return jpaProductRepository.findAllByIdInAndBakeryId(productIds, bakeryId).stream()
+                .map(ProductEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Product> findAllByBakeryIdOrderByDisplayOrderAsc(Long bakeryId) {
+        return jpaProductRepository.findAllByBakeryIdOrderByDisplayOrderAsc(bakeryId).stream()
                 .map(ProductEntity::toDomain)
                 .toList();
     }
@@ -49,6 +55,6 @@ public class ProductRepositoryAdapter implements ProductRepository {
         List<ProductEntity> entities = products.stream()
                 .map(ProductEntity::from)
                 .toList();
-        productRepository.saveAll(entities);
+        jpaProductRepository.saveAll(entities);
     }
 }
