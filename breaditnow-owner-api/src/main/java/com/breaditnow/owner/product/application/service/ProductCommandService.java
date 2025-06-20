@@ -1,18 +1,18 @@
 package com.breaditnow.owner.product.application.service;
 
-import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.application.port.out.ImagePort;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
-import com.breaditnow.owner.global.exception.OwnerException;
-import com.breaditnow.owner.product.application.port.in.*;
+import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
+import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
 import com.breaditnow.owner.product.domain.Classification;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductInfo;
 import com.breaditnow.owner.product.domain.SalesPolicy;
-import com.breaditnow.owner.product.infrastructure.presentation.request.*;
+import com.breaditnow.owner.product.infrastructure.presentation.request.ProductCreateRequest;
+import com.breaditnow.owner.product.infrastructure.presentation.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +20,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.PRODUCT_NOT_IN_BAKERY;
-
 @Service
 @RequiredArgsConstructor
-public class ProductManagementService implements CreateProductUseCase, UpdateProductUseCase, UpdateProductStockUseCase, UpdateProductStatusUseCase, UpdateProductsStatusUseCase {
-    private final BakeryRepository bakeryRepository;
+public class ProductCommandService implements CreateProductUseCase, UpdateProductUseCase{
     private final ProductRepository productRepository;
     private final ImagePort imagePort;
+    private final OwnershipValidator validator;
 
     @Override
     @Transactional
     public Long createProduct(Long ownerId, Long bakeryId, ProductCreateRequest request, MultipartFile productImage) {
-        Bakery bakery = getValidatedBakery(ownerId, bakeryId);
+        Bakery bakery = validator.getValidatedBakery(ownerId, bakeryId);
 
         Image image = imagePort.saveImage(productImage);
-
         ProductInfo productInfo = ProductInfo.create(request.name(), request.description(), image);
         SalesPolicy salesPolicy = SalesPolicy.create(request.price());
         Classification classification = Classification.create(request.productType(), request.breadCategoryIds());
@@ -49,7 +46,7 @@ public class ProductManagementService implements CreateProductUseCase, UpdatePro
     @Override
     @Transactional
     public void updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request, MultipartFile productImage) {
-        Product product = getValidatedProduct(ownerId, bakeryId, productId);
+        Product product = validator.getValidatedProduct(ownerId, bakeryId, productId);
 
         Image newImage = imagePort.saveImage(productImage);
 
@@ -60,49 +57,5 @@ public class ProductManagementService implements CreateProductUseCase, UpdatePro
 
         product.update(newProductInfo, newSalesPolicy, newClassification, newReleaseTimes);
         productRepository.save(product);
-    }
-
-    @Override
-    @Transactional
-    public void updateProductStock(Long ownerId, Long bakeryId, Long productId, ProductStockUpdateRequest request) {
-        Product product = getValidatedProduct(ownerId, bakeryId, productId);
-        product.updateStock(request.stock());
-        productRepository.save(product);
-    }
-
-    @Override
-    @Transactional
-    public void updateProductStatus(Long ownerId, Long bakeryId, Long productId, ProductStatusUpdateRequest request) {
-        Product product = getValidatedProduct(ownerId, bakeryId, productId);
-        product.changeStatus(request.status());
-        productRepository.save(product);
-    }
-
-    @Override
-    @Transactional
-    public void updateProductsStatus(Long ownerId, Long bakeryId, ProductsStatusUpdateRequest request) {
-        getValidatedBakery(ownerId, bakeryId);
-        List<Product> products = productRepository.findAllByIdInAndBakeryId(request.productIds(), bakeryId);
-
-        if (products.size() != request.productIds().size()) {
-            throw new OwnerException(PRODUCT_NOT_IN_BAKERY);
-        }
-
-        products.forEach(product -> product.changeStatus(request.status()));
-        productRepository.saveAll(products);
-    }
-
-    private Bakery getValidatedBakery(Long ownerId, Long bakeryId) {
-        Bakery bakery = bakeryRepository.getById(bakeryId);
-        bakery.validateOwner(ownerId);
-        bakery.validateActive();
-        return bakery;
-    }
-
-    private Product getValidatedProduct(Long ownerId, Long bakeryId, Long productId) {
-        getValidatedBakery(ownerId, bakeryId);
-        Product product = productRepository.getById(productId);
-        product.validateBelongsTo(bakeryId);
-        return product;
     }
 }

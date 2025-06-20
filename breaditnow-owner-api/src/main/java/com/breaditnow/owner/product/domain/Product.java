@@ -65,6 +65,11 @@ public class Product {
         this.salesPolicy = this.salesPolicy.withStatus(newStatus);
     }
 
+    public void updateDisplayOrder(Integer newDisplayOrder) {
+        validateIsActive();
+        this.displayOrder = newDisplayOrder;
+    }
+
     public void delete() {
         validateIsActive();
         this.deleted = true;

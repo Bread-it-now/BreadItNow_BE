@@ -19,6 +19,7 @@ public class ProductController {
     private final UpdateProductStockUseCase updateProductStockUseCase;
     private final UpdateProductStatusUseCase updateProductStatusUseCase;
     private final UpdateProductsStatusUseCase updateProductsStatusUseCase;
+    private final UpdateProductDisplayOrderUseCase updateProductDisplayOrderUseCase;
 
     @PostMapping(value = "/product", consumes = "multipart/form-data")
     public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
@@ -72,6 +73,16 @@ public class ProductController {
             @RequestBody ProductsStatusUpdateRequest request
     ) {
         updateProductsStatusUseCase.updateProductsStatus(ownerId, bakeryId, request);
+        return ApiSuccessResponse.of();
+    }
+
+    @PatchMapping("/products/order")
+    public ApiSuccessResponse<Void> updateProductDisplayOrder(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId,
+            @RequestBody ProductDisplayOrderUpdateRequest request
+    ) {
+        updateProductDisplayOrderUseCase.updateProductDisplayOrder(ownerId, bakeryId, request);
         return ApiSuccessResponse.of();
     }
 }
