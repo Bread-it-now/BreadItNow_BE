@@ -4,8 +4,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.global.security.annotation.AuthOwner;
 import com.breaditnow.owner.product.application.port.in.*;
 import com.breaditnow.owner.product.infrastructure.presentation.request.*;
-import com.breaditnow.owner.product.infrastructure.presentation.response.ProductDetailResponse;
-import com.breaditnow.owner.product.infrastructure.presentation.response.ProductSummaryResponse;
+import com.breaditnow.owner.product.infrastructure.presentation.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +24,7 @@ public class ProductController {
     private final UpdateProductDisplayOrderUseCase updateProductDisplayOrderUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
     private final DeleteProductsUseCase deleteProductsUseCase;
-    private final GetProductDetailUseCase getProductDetailUseCase;
+    private final GetProductUseCase getProductUseCase;
     private final ListProductsUseCase listProductsUseCase;
 
     @PostMapping(value = "/product", consumes = "multipart/form-data")
@@ -114,21 +113,22 @@ public class ProductController {
     }
 
     @GetMapping("/product/{productId}")
-    public ApiSuccessResponse<ProductDetailResponse> getProductDetail(
+    public ApiSuccessResponse<ProductResponse> getProductDetail(
             @AuthOwner Long ownerId,
             @PathVariable("bakeryId") Long bakeryId,
             @PathVariable("productId") Long productId
     ) {
-        ProductDetailResponse productDetail = getProductDetailUseCase.getProductDetail(ownerId, bakeryId, productId);
-        return ApiSuccessResponse.of(productDetail);
+        return ApiSuccessResponse.of(getProductUseCase.getProductDetail(ownerId, bakeryId, productId));
     }
 
     @GetMapping("/products")
-    public ApiSuccessResponse<List<ProductSummaryResponse>> listProducts(
+    public ApiSuccessResponse<List<ProductResponse>> listProducts(
             @AuthOwner Long ownerId,
-            @PathVariable("bakeryId") Long bakeryId
+            @PathVariable("bakeryId") Long bakeryId,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "status", required = false) String status
     ) {
-        List<ProductSummaryResponse> products = listProductsUseCase.listProducts(ownerId, bakeryId);
-        return ApiSuccessResponse.of(products);
+        ProductSearchCondition condition = new ProductSearchCondition(status, type);
+        return ApiSuccessResponse.of(listProductsUseCase.listProducts(ownerId, bakeryId, condition));
     }
 }

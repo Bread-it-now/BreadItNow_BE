@@ -7,8 +7,9 @@ import java.util.List;
 public interface ProductRepository {
     Long save(Product product);
     void saveAll(List<Product> products);
-    Integer findLastDisplayOrderByBakeryId(Long bakeryId);
+
     Product getById(Long productId);
     List<Product> findAllByIdInAndBakeryId(List<Long> productIds, Long bakeryId);
-    List<Product> findAllByBakeryIdOrderByDisplayOrderAsc(Long bakeryId);
+
+    Integer findLastDisplayOrderByBakeryId(Long bakeryId);
 }

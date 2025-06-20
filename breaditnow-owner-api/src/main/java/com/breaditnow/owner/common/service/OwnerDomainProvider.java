@@ -21,9 +21,7 @@ public class OwnerDomainProvider {
 
     public Bakery getValidatedBakery(Long ownerId, Long bakeryId) {
         Bakery bakery = bakeryRepository.getById(bakeryId);
-
         bakery.validateOwner(ownerId);
-
         bakery.validateActive();
 
         return bakery;
@@ -31,9 +29,7 @@ public class OwnerDomainProvider {
 
     public Product getValidatedProduct(Long ownerId, Long bakeryId, Long productId) {
         getValidatedBakery(ownerId, bakeryId);
-
         Product product = productRepository.getById(productId);
-
         product.validateBelongsTo(bakeryId);
 
         return product;

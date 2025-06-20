@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "product")
+@Where(clause = "deleted = false")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,24 +33,21 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "bakery_id")
     private Long bakeryId;
 
-    private String name;
-    private String description;
-    private String profileImageUrl;
-    private Integer price;
-    private Integer stock;
-
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
     @Enumerated(EnumType.STRING)
     private ProductType productType;
 
-    private Integer displayOrder;
-
     @Convert(converter = DailyTimeListConverter.class)
-    @Column(name = "release_times")
-    private List<DailyTime> releaseTimes;
+    private List<String> releaseTimes;
 
+    private String name;
+    private String description;
+    private String profileImageUrl;
+    private Integer price;
+    private Integer stock;
+    private Integer displayOrder;
     private boolean deleted;
 
     public static ProductEntity from(Product product) {
@@ -63,7 +62,7 @@ public class ProductEntity extends BaseEntity {
                 .status(product.getSalesPolicy().status())
                 .productType(product.getClassification().type())
                 .displayOrder(product.getDisplayOrder())
-                .releaseTimes(product.getReleaseTimes())
+                .releaseTimes(product.getReleaseTimesAsString())
                 .deleted(product.isDeleted())
                 .build();
     }
@@ -72,6 +71,9 @@ public class ProductEntity extends BaseEntity {
         ProductInfo productInfo = ProductInfo.create(this.name, this.description, Image.create(this.profileImageUrl));
         SalesPolicy salesPolicy = new SalesPolicy(new Money(this.price), this.stock, this.status);
         Classification classification = new Classification(this.getProductType());
+        List<DailyTime> dailyTimes = this.getReleaseTimes().stream()
+                .map(DailyTime::of)
+                .toList();
 
         return Product.builder()
                 .id(this.getId())
@@ -80,7 +82,7 @@ public class ProductEntity extends BaseEntity {
                 .salesPolicy(salesPolicy)
                 .classification(classification)
                 .displayOrder(this.getDisplayOrder())
-                .releaseTimes(this.getReleaseTimes())
+                .releaseTimes(dailyTimes)
                 .deleted(this.isDeleted())
                 .build();
     }

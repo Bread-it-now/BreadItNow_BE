@@ -46,7 +46,7 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final StringPath profileImageUrl = createString("profileImageUrl");
 
-    public final ListPath<com.breaditnow.owner.common.domain.DailyTime, com.breaditnow.owner.common.domain.QDailyTime> releaseTimes = this.<com.breaditnow.owner.common.domain.DailyTime, com.breaditnow.owner.common.domain.QDailyTime>createList("releaseTimes", com.breaditnow.owner.common.domain.DailyTime.class, com.breaditnow.owner.common.domain.QDailyTime.class, PathInits.DIRECT2);
+    public final ListPath<String, StringPath> releaseTimes = this.<String, StringPath>createList("releaseTimes", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final EnumPath<com.breaditnow.owner.product.domain.ProductStatus> status = createEnum("status", com.breaditnow.owner.product.domain.ProductStatus.class);
 

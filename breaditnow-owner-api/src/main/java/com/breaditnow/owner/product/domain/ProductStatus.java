@@ -17,7 +17,6 @@ public enum ProductStatus {
         if (value == null) {
             return null;
         }
-
         return Stream.of(ProductStatus.values())
                 .filter(status -> status.name().equalsIgnoreCase(value))
                 .findFirst()

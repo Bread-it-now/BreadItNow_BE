@@ -37,7 +37,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	INVALID_AMOUNT(BAD_REQUEST, "DD002", "금액은 0보다 작을 수 없습니다."),
 	AMOUNT_REQUIRED(BAD_REQUEST, "DD003", "금액은 필수 값입니다."),
 	INVALID_STOCK(BAD_REQUEST, "DD004", "재고는 0보다 작을 수 없습니다."),
-	INVALID_PRODUCT_CATEGORY(BAD_REQUEST, "DD007", "상품 카테고리는 BREAD, OTHER 중에서 선택해야 합니다."),
+	INVALID_PRODUCT_TYPE(BAD_REQUEST, "DD007", "상품 카테고리는 BREAD, OTHER 중에서 선택해야 합니다."),
 	PRODUCT_CATEGORY_TYPE_REQUIRED(BAD_REQUEST, "DD008", "상품 카테고리는 필수입니다."),
 	BREAD_CATEGORY_REQUIRED(BAD_REQUEST, "DD009", "BREAD 상품 유형에는 빵 카테고리 ID가 필수입니다."),
 	BREAD_CATEGORY_MUST_BE_EMPTY(BAD_REQUEST, "DD010", "OTHER 상품 유형에는 빵 카테고리 ID가 없어야 합니다."),

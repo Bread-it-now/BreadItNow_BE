@@ -6,10 +6,12 @@ import com.breaditnow.owner.global.exception.OwnerException;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.INVALID_STOCK;
 
 @Getter
 public class Product {
@@ -87,5 +89,14 @@ public class Product {
         if (this.deleted) {
             throw new DomainException(PRODUCT_NOT_FOUND);
         }
+    }
+
+    public List<String> getReleaseTimesAsString() {
+        if (this.releaseTimes == null || this.releaseTimes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return this.releaseTimes.stream()
+                .map(DailyTime::toString)
+                .collect(Collectors.toList());
     }
 }

@@ -23,6 +23,16 @@ public class ProductRepositoryAdapter implements ProductRepository {
         return jpaProductRepository.save(entity).getId();
     }
 
+
+    @Override
+    public void saveAll(List<Product> products) {
+        List<ProductEntity> entities = products.stream()
+                .map(ProductEntity::from)
+                .toList();
+
+        jpaProductRepository.saveAll(entities);
+    }
+
     @Override
     public Integer findLastDisplayOrderByBakeryId(Long bakeryId) {
         return jpaProductRepository.findLastDisplayOrderByBakeryId(bakeryId)
@@ -42,19 +52,5 @@ public class ProductRepositoryAdapter implements ProductRepository {
                 .map(ProductEntity::toDomain)
                 .toList();
     }
-
-    @Override
-    public List<Product> findAllByBakeryIdOrderByDisplayOrderAsc(Long bakeryId) {
-        return jpaProductRepository.findAllByBakeryIdOrderByDisplayOrderAsc(bakeryId).stream()
-                .map(ProductEntity::toDomain)
-                .toList();
-    }
-
-    @Override
-    public void saveAll(List<Product> products) {
-        List<ProductEntity> entities = products.stream()
-                .map(ProductEntity::from)
-                .toList();
-        jpaProductRepository.saveAll(entities);
-    }
 }
+
