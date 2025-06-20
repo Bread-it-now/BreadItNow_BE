@@ -1,8 +1,10 @@
 package com.breaditnow.owner.product.domain;
 
 import com.breaditnow.owner.bakery.domain.Image;
+import com.querydsl.core.annotations.QueryEmbeddable;
 import jakarta.persistence.Embeddable;
 
+@QueryEmbeddable
 @Embeddable
 public record ProductInfo(
         String name,

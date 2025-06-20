@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public record ProductCreateRequest(
         ProductType productType,
-        List<Long> breadCategoryIds,
         String name,
         Integer price,
         String description,

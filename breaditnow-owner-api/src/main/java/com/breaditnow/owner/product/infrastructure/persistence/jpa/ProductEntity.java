@@ -42,11 +42,6 @@ public class ProductEntity extends BaseEntity {
     @Column(name = "product_type")
     private ProductType type;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "product_bread_category", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "bread_category_id")
-    private List<Long> breadCategoryIds;
-
     private Integer displayOrder;
 
     @Convert(converter = DailyTimeListConverter.class)
@@ -61,7 +56,6 @@ public class ProductEntity extends BaseEntity {
                 .bakeryId(product.getBakeryId())
                 .productInfo(product.getProductInfo())
                 .salesPolicy(product.getSalesPolicy())
-                .breadCategoryIds(product.getClassification().breadCategoryIds())
                 .type(product.getClassification().type())
                 .displayOrder(product.getDisplayOrder())
                 .releaseTimes(product.getReleaseTimes())
@@ -75,7 +69,7 @@ public class ProductEntity extends BaseEntity {
                 .bakeryId(this.getBakeryId())
                 .productInfo(this.getProductInfo())
                 .salesPolicy(this.getSalesPolicy())
-                .classification(new Classification(this.getType(), this.getBreadCategoryIds()))
+                .classification(new Classification(this.getType()))
                 .displayOrder(this.getDisplayOrder())
                 .releaseTimes(this.getReleaseTimes())
                 .deleted(this.isDeleted())

@@ -1,22 +1,20 @@
 package com.breaditnow.owner.product.domain;
 
 import com.breaditnow.owner.global.exception.OwnerException;
+import com.querydsl.core.annotations.QueryEmbeddable;
 import jakarta.persistence.Embeddable;
 
-import java.util.List;
+import static com.breaditnow.owner.global.exception.OwnerErrorCode.PRODUCT_CATEGORY_TYPE_REQUIRED;
 
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.BREAD_CATEGORY_TYPE_REQUIRED;
-
+@QueryEmbeddable
 @Embeddable
 public record Classification(
-        ProductType type,
-        List<Long> breadCategoryIds
+        ProductType type
 ) {
-    public static Classification create(ProductType productType, List<Long> breadCategoryIds) {
+    public static Classification create(ProductType productType) {
         if (productType == null) {
-            throw new OwnerException(BREAD_CATEGORY_TYPE_REQUIRED);
+            throw new OwnerException(PRODUCT_CATEGORY_TYPE_REQUIRED);
         }
-        List<Long> validatedCategories = productType.getValidatedCategories(breadCategoryIds);
-        return new Classification(productType, validatedCategories);
+        return new Classification(productType);
     }
 }

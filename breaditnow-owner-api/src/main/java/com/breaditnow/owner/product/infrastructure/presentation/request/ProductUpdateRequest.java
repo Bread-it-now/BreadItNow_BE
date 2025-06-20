@@ -8,7 +8,6 @@ import java.util.Optional;
 
 public record ProductUpdateRequest(
         ProductType productType,
-        List<Long> breadCategoryIds,
         String name,
         Integer price,
         String description,

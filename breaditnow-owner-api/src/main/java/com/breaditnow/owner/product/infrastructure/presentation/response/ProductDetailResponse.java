@@ -17,7 +17,6 @@ public record ProductDetailResponse(
         Integer stock,
         ProductStatus status,
         ProductType productType,
-        List<Long> breadCategoryIds,
         List<String> releaseTimes,
         Integer displayOrder
 ) {
@@ -31,7 +30,6 @@ public record ProductDetailResponse(
                 .stock(product.getSalesPolicy().stock())
                 .status(product.getSalesPolicy().status())
                 .productType(product.getClassification().type())
-                .breadCategoryIds(product.getClassification().breadCategoryIds())
                 .releaseTimes(product.getReleaseTimes().stream().map(Object::toString).toList())
                 .displayOrder(product.getDisplayOrder())
                 .build();

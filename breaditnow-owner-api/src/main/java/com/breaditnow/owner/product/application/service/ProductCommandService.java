@@ -36,7 +36,7 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
         Image image = imagePort.saveImage(productImage);
         ProductInfo productInfo = ProductInfo.create(request.name(), request.description(), image);
         SalesPolicy salesPolicy = SalesPolicy.create(request.price());
-        Classification classification = Classification.create(request.productType(), request.breadCategoryIds());
+        Classification classification = Classification.create(request.productType());
         Integer lastDisplayOrder = productRepository.findLastDisplayOrderByBakeryId(bakeryId) + 1;
         List<DailyTime> releaseTimes = request.toDailyTimes();
 
@@ -53,7 +53,7 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
 
         ProductInfo newProductInfo = ProductInfo.create(request.name(), request.description(), newImage);
         SalesPolicy newSalesPolicy = SalesPolicy.create(request.price());
-        Classification newClassification = Classification.create(request.productType(), request.breadCategoryIds());
+        Classification newClassification = Classification.create(request.productType());
         List<DailyTime> newReleaseTimes = request.toDailyTimes();
 
         product.update(newProductInfo, newSalesPolicy, newClassification, newReleaseTimes);
