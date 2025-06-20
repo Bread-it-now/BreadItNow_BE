@@ -4,6 +4,7 @@ import com.breaditnow.owner.bakery.application.port.out.ImagePort;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
+import com.breaditnow.owner.common.service.OwnerDomainProvider;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
@@ -23,14 +24,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductCommandService implements CreateProductUseCase, UpdateProductUseCase{
+    private final OwnerDomainProvider ownerDomainProvider;
     private final ProductRepository productRepository;
     private final ImagePort imagePort;
-    private final OwnershipValidator validator;
 
     @Override
     @Transactional
     public Long createProduct(Long ownerId, Long bakeryId, ProductCreateRequest request, MultipartFile productImage) {
-        Bakery bakery = validator.getValidatedBakery(ownerId, bakeryId);
+        Bakery bakery = ownerDomainProvider.getValidatedBakery(ownerId, bakeryId);
 
         Image image = imagePort.saveImage(productImage);
         ProductInfo productInfo = ProductInfo.create(request.name(), request.description(), image);
@@ -46,7 +47,7 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
     @Override
     @Transactional
     public void updateProduct(Long ownerId, Long bakeryId, Long productId, ProductUpdateRequest request, MultipartFile productImage) {
-        Product product = validator.getValidatedProduct(ownerId, bakeryId, productId);
+        Product product = ownerDomainProvider.getValidatedProduct(ownerId, bakeryId, productId);
 
         Image newImage = imagePort.saveImage(productImage);
 
