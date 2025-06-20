@@ -77,7 +77,7 @@ public class Product {
 
     public void validateBelongsTo(Long bakeryId) {
         if(!getBakeryId().equals(bakeryId)){
-            throw new OwnerException(PRODUCT_NOT_IN_BAKERY);
+            throw new OwnerException(PRODUCT_NOT_FOUND);
         }
     }
 

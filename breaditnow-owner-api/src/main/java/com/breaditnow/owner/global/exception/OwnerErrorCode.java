@@ -44,12 +44,13 @@ public enum OwnerErrorCode implements ErrorCode {
 	BREAD_CATEGORY_TYPE_REQUIRED(BAD_REQUEST, "DD011", "상품 카테고리는 필수입니다."),
 	BREAD_CATEGORY_REQUIRED(BAD_REQUEST, "DD012", "BREAD 상품 유형에는 빵 카테고리 ID가 필수입니다."),
 	BREAD_CATEGORY_MUST_BE_EMPTY(BAD_REQUEST, "DD013", "OTHER 상품 유형에는 빵 카테고리 ID가 없어야 합니다."),
-	PRODUCT_NOT_IN_BAKERY(BAD_REQUEST, "DD014", "상품이 해당 베이커리에 속해있지 않습니다."),
+	PRODUCT_NOT_FOUND(NOT_FOUND, "DD014", "상품을 찾을 수 없습니다."),
 	INVALID_PRODUCT_STATUS(BAD_REQUEST, "DD015", "유효하지 않은 상품 상태입니다. FOR_SALE, HIDDEN, SOLD_OUT 중에서 선택해야 합니다."),
 	PRODUCT_ALREADY_IN_SAME_STATUS(CONFLICT, "DD017", "상품이 이미 요청된 상태와 동일합니다."),
-	DUPLICATE_DISPLAY_ORDER(BAD_REQUEST, "DD018", "상품 진열 순서에 중복된 값이 존재할 수 없습니다."),
 	DUPLICATE_PRODUCT_ID_IN_REQUEST(BAD_REQUEST, "DD019", "상품 순서 변경 요청에 중복된 상품 ID가 포함될 수 없습니다."),
-
+	DUPLICATE_DISPLAY_ORDER(BAD_REQUEST, "DD018", "상품 진열 순서에 중복된 값이 포함될 수 없습니다."),
+	DISPLAY_ORDER_SET_MISMATCH(BAD_REQUEST, "DD022", "변경 대상 상품들의 기존 순서 값과 일치하지 않는 순서 값이 포함되어 있습니다."),
+	// ...
 	/**
 	 * DY000 인증
 	 */
