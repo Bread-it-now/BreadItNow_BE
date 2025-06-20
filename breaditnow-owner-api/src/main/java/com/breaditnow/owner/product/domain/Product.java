@@ -1,5 +1,6 @@
 package com.breaditnow.owner.product.domain;
 
+import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.global.exception.OwnerException;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Getter;
 
 import java.util.List;
 
+import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
 import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
 
 @Getter
@@ -77,13 +79,13 @@ public class Product {
 
     public void validateBelongsTo(Long bakeryId) {
         if(!getBakeryId().equals(bakeryId)){
-            throw new OwnerException(PRODUCT_NOT_FOUND);
+            throw new DomainException(PRODUCT_NOT_FOUND);
         }
     }
 
     public void validateIsActive() {
         if (this.deleted) {
-            throw new OwnerException(PRODUCT_INACTIVE);
+            throw new DomainException(PRODUCT_NOT_FOUND);
         }
     }
 }

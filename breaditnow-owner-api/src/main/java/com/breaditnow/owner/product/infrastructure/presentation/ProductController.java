@@ -20,6 +20,8 @@ public class ProductController {
     private final UpdateProductStatusUseCase updateProductStatusUseCase;
     private final UpdateProductsStatusUseCase updateProductsStatusUseCase;
     private final UpdateProductDisplayOrderUseCase updateProductDisplayOrderUseCase;
+    private final DeleteProductUseCase deleteProductUseCase;
+    private final DeleteProductsUseCase deleteProductsUseCase;
 
     @PostMapping(value = "/product", consumes = "multipart/form-data")
     public ApiSuccessResponse<Map<String, Long>> createBakeryProduct(
@@ -83,6 +85,26 @@ public class ProductController {
             @RequestBody ProductDisplayOrderUpdateRequest request
     ) {
         updateProductDisplayOrderUseCase.updateProductDisplayOrder(ownerId, bakeryId, request);
+        return ApiSuccessResponse.of();
+    }
+
+    @DeleteMapping("/product/{productId}")
+    public ApiSuccessResponse<Void> deleteProduct(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId,
+            @PathVariable("productId") Long productId
+    ) {
+        deleteProductUseCase.deleteProduct(ownerId, bakeryId, productId);
+        return ApiSuccessResponse.of();
+    }
+
+    @DeleteMapping("/products")
+    public ApiSuccessResponse<Void> deleteProducts(
+            @AuthOwner Long ownerId,
+            @PathVariable("bakeryId") Long bakeryId,
+            @RequestBody ProductsDeleteRequest request
+    ) {
+        deleteProductsUseCase.deleteProducts(ownerId, bakeryId, request);
         return ApiSuccessResponse.of();
     }
 }
