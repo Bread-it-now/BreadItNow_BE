@@ -2,12 +2,8 @@ package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.owner.global.exception.OwnerErrorCode;
 import com.breaditnow.owner.global.exception.OwnerException;
-import com.querydsl.core.annotations.QueryEmbeddable;
 import io.micrometer.common.util.StringUtils;
-import jakarta.persistence.Embeddable;
 
-@QueryEmbeddable
-@Embeddable
 public record PhoneNumber(String value) {
     public PhoneNumber {
         if (StringUtils.isBlank(value)) {
