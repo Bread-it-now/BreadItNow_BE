@@ -50,7 +50,7 @@ public enum DomainErrorCode implements ErrorCode {
      * Product(BG000)
      */
     INVALID_PRODUCT_TYPE(BAD_REQUEST, "BG001", "잘못된 빵집 Type입니다."),
-    PRODUCT_NOT_FOUND(NOT_FOUND, "BG002", "메뉴를 찾을 수 없습니다."),
+    PRODUCT_NOT_FOUND(NOT_FOUND, "BG002", "상품을 찾을 수 없습니다."),
     PRODUCT_INACTIVE(NOT_FOUND, "BG003", "삭제된 메뉴입니다."),
     PRODUCT_MISMATCH(NOT_FOUND, "BG004", "해당 메뉴의 빵집이 아닙니다."),
     INVALID_HOT_PRODUCT_SORT_TYPE(BAD_REQUEST, "BG005", "잘못된 빵집 Type입니다."),

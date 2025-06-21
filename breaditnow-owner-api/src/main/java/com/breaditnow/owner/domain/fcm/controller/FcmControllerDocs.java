@@ -3,7 +3,7 @@ package com.breaditnow.owner.domain.fcm.controller;
 import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.owner.common.presentation.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,15 +1,14 @@
 package com.breaditnow.owner.domain.owner.controller;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.*;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
-
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.owner.common.presentation.annotation.DomainErrorCodeExamples;
+import com.breaditnow.owner.common.presentation.annotation.OwnerApiErrorCodeExamples;
 import com.breaditnow.owner.domain.owner.controller.req.OwnerPasswordUpdateRequest;
-import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
-import com.breaditnow.owner.global.swagger.annotation.OwnerApiErrorCodeExamples;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import static com.breaditnow.domain.global.exception.DomainErrorCode.OWNER_NOT_FOUND;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.PASSWORD_SAME_AS_CURRENT;
 
 @Tag(name = "Owner - 내 정보 API", description = "비밀번호 수정 등을 위한 API입니다.")
 public interface OwnerControllerDocs {

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.notification.controller.req.NotificationRequest;
 import com.breaditnow.owner.domain.notification.controller.res.NotificationPageResponse;
-import com.breaditnow.owner.global.swagger.annotation.DomainErrorCodeExamples;
+import com.breaditnow.owner.common.presentation.annotation.DomainErrorCodeExamples;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

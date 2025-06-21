@@ -11,8 +11,10 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "bakery")
@@ -22,7 +24,7 @@ import static jakarta.persistence.EnumType.STRING;
 @Getter
 public class BakeryEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "bakery_id")
     private Long id;
 
@@ -31,8 +33,10 @@ public class BakeryEntity extends BaseEntity {
 
     private String name;
 
-    @Embedded
-    private Address address;
+    private String regionCode;
+    private String fullAddress;
+    private double latitude;
+    private double longitude;
 
     @Enumerated(STRING)
     private OperatingStatus operatingStatus;
@@ -40,21 +44,21 @@ public class BakeryEntity extends BaseEntity {
     @ColumnDefault("0")
     private Integer favoriteCount;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "phone_number"))
-    private PhoneNumber phoneNumber;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
 
     private String openTime;
     private String introduction;
 
-    @Embedded
-    @AttributeOverride(name = "imageUrl", column = @Column(name = "profile_image_url"))
-    private Image profileImage;
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
     @ElementCollection
     @CollectionTable(name = "bakery_image", joinColumns = @JoinColumn(name = "bakery_id"))
+    @Column(name = "image_url")
     @Builder.Default
-    private List<Image> additionalImages = new ArrayList<>();
+    private List<String> additionalImages = new ArrayList<>();
 
     private boolean deleted;
 
@@ -63,14 +67,19 @@ public class BakeryEntity extends BaseEntity {
                 .id(bakery.getBakeryId())
                 .ownerId(bakery.getOwnerId())
                 .name(bakery.getName())
-                .address(bakery.getAddress())
+                .regionCode(bakery.getAddress().regionCode())
+                .fullAddress(bakery.getAddress().fullAddress())
+                .latitude(bakery.getAddress().latitude())
+                .longitude(bakery.getAddress().longitude())
                 .operatingStatus(bakery.getOperatingStatus())
                 .favoriteCount(bakery.getFavoriteCount())
-                .phoneNumber(bakery.getPhoneNumber())
+                .phoneNumber(bakery.getPhoneNumber().value())
                 .openTime(bakery.getOpenTime())
                 .introduction(bakery.getIntroduction())
-                .profileImage(bakery.getProfileImage())
-                .additionalImages(bakery.getAdditionalImages())
+                .profileImageUrl(bakery.getProfileImage().imageUrl())
+                .additionalImages(bakery.getAdditionalImages().stream()
+                        .map(Image::imageUrl)
+                        .collect(Collectors.toList()))
                 .deleted(bakery.isDeleted())
                 .build();
     }
@@ -80,14 +89,16 @@ public class BakeryEntity extends BaseEntity {
                 .bakeryId(id)
                 .ownerId(ownerId)
                 .name(name)
-                .address(this.address)
+                .address(Address.create(this.regionCode, this.fullAddress, this.latitude, this.longitude))
                 .operatingStatus(operatingStatus)
                 .favoriteCount(favoriteCount)
-                .phoneNumber(this.phoneNumber)
+                .phoneNumber(PhoneNumber.create(this.phoneNumber))
                 .openTime(openTime)
                 .introduction(introduction)
-                .profileImage(this.profileImage)
-                .additionalImages(this.additionalImages)
+                .profileImage(Image.create(this.profileImageUrl))
+                .additionalImages(this.additionalImages.stream()
+                        .map(Image::create)
+                        .toList())
                 .deleted(deleted)
                 .build();
     }

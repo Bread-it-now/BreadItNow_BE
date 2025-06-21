@@ -1,7 +1,12 @@
 package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.domain.global.exception.DomainException;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.domain.DailyTime;
+import com.breaditnow.owner.common.exception.OwnerException;
+import com.breaditnow.owner.product.domain.Classification;
+import com.breaditnow.owner.product.domain.Product;
+import com.breaditnow.owner.product.domain.ProductInfo;
+import com.breaditnow.owner.product.domain.SalesPolicy;
 import io.micrometer.common.util.StringUtils;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +16,7 @@ import java.util.List;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_INACTIVE;
 import static com.breaditnow.owner.bakery.domain.OperatingStatus.OPEN;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 
 @Getter
 public class Bakery {
@@ -60,6 +65,12 @@ public class Bakery {
                 .build();
     }
 
+    public Product createProduct(Long ownerId, Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes) {
+        validateOwner(ownerId);
+        validateActive();
+        return Product.create(bakeryId, productInfo, displayOrder, salesPolicy, classification, releaseTimes);
+    }
+
     public void update(Long ownerId, String name, String openTime, String introduction) {
         validateOwner(ownerId);
         validateActive();
@@ -100,13 +111,13 @@ public class Bakery {
         }
     }
 
-    private void validateOwner(Long ownerId) {
+    public void validateOwner(Long ownerId) {
         if (!this.getOwnerId().equals(ownerId)) {
             throw new OwnerException(UNAUTHORIZED_BAKERY_ACCESS);
         }
     }
 
-    private void validateActive() {
+    public void validateActive() {
         if (this.isDeleted()) {
             throw new DomainException(BAKERY_INACTIVE);
         }

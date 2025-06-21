@@ -20,7 +20,7 @@ import com.breaditnow.owner.domain.notification.controller.req.NotificationReque
 import com.breaditnow.owner.domain.notification.controller.res.NotificationPageResponse;
 import com.breaditnow.owner.domain.notification.service.NotificationSendService;
 import com.breaditnow.owner.domain.notification.service.NotificationService;
-import com.breaditnow.owner.global.security.annotation.AuthOwner;
+import com.breaditnow.owner.common.security.annotation.AuthOwner;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

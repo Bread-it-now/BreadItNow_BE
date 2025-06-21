@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.owner.domain.owner.controller.req.OwnerPasswordUpdateRequest;
 import com.breaditnow.owner.domain.owner.service.OwnerService;
-import com.breaditnow.owner.global.security.annotation.AuthOwner;
+import com.breaditnow.owner.common.security.annotation.AuthOwner;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
