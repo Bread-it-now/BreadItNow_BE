@@ -1,10 +1,10 @@
 package com.breaditnow.owner.common.domain;
 
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 import jakarta.persistence.Embeddable;
 
 import static com.breaditnow.owner.common.domain.ValidationUtils.requireValid;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.INVALID_AMOUNT;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.INVALID_AMOUNT;
 
 
 @Embeddable

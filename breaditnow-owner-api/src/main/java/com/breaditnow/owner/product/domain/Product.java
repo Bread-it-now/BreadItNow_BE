@@ -2,7 +2,7 @@ package com.breaditnow.owner.product.domain;
 
 import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.common.domain.DailyTime;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.INVALID_STOCK;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.INVALID_STOCK;
 
 @Getter
 public class Product {

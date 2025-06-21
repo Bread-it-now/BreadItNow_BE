@@ -1,7 +1,7 @@
 package com.breaditnow.owner.bakery.domain;
 
-import com.breaditnow.owner.global.exception.OwnerErrorCode;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerErrorCode;
+import com.breaditnow.owner.common.exception.OwnerException;
 import io.micrometer.common.util.StringUtils;
 
 public record PhoneNumber(String value) {

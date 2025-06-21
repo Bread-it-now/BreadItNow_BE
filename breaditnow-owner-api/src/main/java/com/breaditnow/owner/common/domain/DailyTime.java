@@ -1,13 +1,13 @@
 package com.breaditnow.owner.common.domain;
 
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 import jakarta.persistence.Embeddable;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.INVALID_TIME_FORMAT;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.INVALID_TIME_FORMAT;
 
 @Embeddable
 public record DailyTime(LocalTime time) implements Comparable<DailyTime> {

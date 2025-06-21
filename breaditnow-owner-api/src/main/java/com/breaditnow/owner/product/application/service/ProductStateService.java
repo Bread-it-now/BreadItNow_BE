@@ -1,6 +1,6 @@
 package com.breaditnow.owner.product.application.service;
 
-import com.breaditnow.owner.common.service.OwnerDomainProvider;
+import com.breaditnow.owner.owner.application.OwnerDomainProvider;
 import com.breaditnow.owner.product.application.port.in.UpdateProductDisplayOrderUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductStatusUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;

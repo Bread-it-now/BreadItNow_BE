@@ -1,10 +1,10 @@
 package com.breaditnow.owner.product.domain;
 
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 
 import java.util.stream.Stream;
 
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.INVALID_PRODUCT_TYPE;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.INVALID_PRODUCT_TYPE;
 
 public enum ProductType {
     BREAD, OTHER;

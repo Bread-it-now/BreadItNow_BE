@@ -1,11 +1,11 @@
 package com.breaditnow.owner.bakery.application.service;
 
 import com.breaditnow.owner.bakery.application.port.in.*;
-import com.breaditnow.owner.bakery.application.port.out.AddressPort;
+import com.breaditnow.owner.location.application.port.out.AddressPort;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
-import com.breaditnow.owner.bakery.application.port.out.ImagePort;
+import com.breaditnow.owner.image.application.port.in.ImagePort;
 import com.breaditnow.owner.bakery.domain.*;
-import com.breaditnow.owner.bakery.infrastructure.external.api.AddressInfo;
+import com.breaditnow.owner.location.infrastructure.AddressInfo;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryCreateRequest;
 import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryUpdateRequest;
 import lombok.RequiredArgsConstructor;

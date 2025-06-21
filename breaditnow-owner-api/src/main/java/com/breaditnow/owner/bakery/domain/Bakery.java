@@ -2,7 +2,7 @@ package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.common.domain.DailyTime;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 import com.breaditnow.owner.product.domain.Classification;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductInfo;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_INACTIVE;
 import static com.breaditnow.owner.bakery.domain.OperatingStatus.OPEN;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 
 @Getter
 public class Bakery {

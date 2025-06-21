@@ -1,7 +1,7 @@
 package com.breaditnow.owner.bakery.domain;
 
 import com.breaditnow.domain.global.exception.DomainException;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_INACTIVE;
 import static com.breaditnow.owner.bakery.domain.OperatingStatus.*;
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Bakery 도메인 테스트")

@@ -4,7 +4,6 @@ import com.breaditnow.domain.global.entity.BaseEntity;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.common.domain.Money;
-import com.breaditnow.owner.common.jpa.DailyTimeListConverter;
 import com.breaditnow.owner.product.domain.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

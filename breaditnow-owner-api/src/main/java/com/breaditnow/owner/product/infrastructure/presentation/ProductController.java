@@ -1,7 +1,7 @@
 package com.breaditnow.owner.product.infrastructure.presentation;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
-import com.breaditnow.owner.global.security.annotation.AuthOwner;
+import com.breaditnow.owner.common.security.annotation.AuthOwner;
 import com.breaditnow.owner.product.application.port.in.*;
 import com.breaditnow.owner.product.infrastructure.presentation.request.*;
 import com.breaditnow.owner.product.infrastructure.presentation.response.ProductResponse;

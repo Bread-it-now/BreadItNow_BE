@@ -1,10 +1,10 @@
 package com.breaditnow.owner.product.application.service;
 
-import com.breaditnow.owner.bakery.application.port.out.ImagePort;
+import com.breaditnow.owner.image.application.port.in.ImagePort;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
-import com.breaditnow.owner.common.service.OwnerDomainProvider;
+import com.breaditnow.owner.owner.application.OwnerDomainProvider;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;

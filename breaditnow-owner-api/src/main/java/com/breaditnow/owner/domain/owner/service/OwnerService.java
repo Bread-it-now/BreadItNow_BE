@@ -1,7 +1,5 @@
 package com.breaditnow.owner.domain.owner.service;
 
-import static com.breaditnow.owner.global.exception.OwnerErrorCode.*;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.breaditnow.domain.domain.owner.entity.Owner;
 import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
 import com.breaditnow.owner.domain.owner.controller.req.OwnerPasswordUpdateRequest;
-import com.breaditnow.owner.global.exception.OwnerException;
+import com.breaditnow.owner.common.exception.OwnerException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
