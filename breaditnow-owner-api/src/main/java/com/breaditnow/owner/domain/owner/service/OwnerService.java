@@ -12,6 +12,8 @@ import com.breaditnow.owner.common.exception.OwnerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.PASSWORD_SAME_AS_CURRENT;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor

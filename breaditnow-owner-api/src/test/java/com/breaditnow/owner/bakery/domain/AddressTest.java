@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.*;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Address 도메인 테스트")
