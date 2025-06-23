@@ -32,6 +32,28 @@ services:
       timeout: 5s
       retries: 5
 
+  bin-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: bin-rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - bin-network
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   bin-network:
     external: true
+
+volumes:
+  rabbitmq-data:

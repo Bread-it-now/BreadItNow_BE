@@ -1,6 +1,6 @@
 package com.breaditnow.owner.bakery.application.port.in;
 
-import com.breaditnow.owner.bakery.infrastructure.presentation.request.BakeryCreateRequest;
+import com.breaditnow.owner.bakery.infrastructure.adapter.in.presentation.request.BakeryCreateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CreateBakeryUseCase {

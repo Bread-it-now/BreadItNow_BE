@@ -6,7 +6,7 @@ import com.breaditnow.customer.product.domain.port.LoadProductPort;
 import com.breaditnow.customer.reservation.application.request.CancelReasonRequest;
 import com.breaditnow.customer.reservation.application.request.ReservationRequest;
 import com.breaditnow.customer.reservation.domain.Reservation;
-import com.breaditnow.customer.reservation.domain.ReservationProducts;
+import com.breaditnow.customer.reservation.domain.ReservationProduct;
 import com.breaditnow.customer.reservation.domain.event.ReservationStatusChangedEvent;
 import com.breaditnow.customer.reservation.domain.port.LoadReservationPort;
 import com.breaditnow.customer.reservation.domain.port.SaveReservationPort;
@@ -26,12 +26,12 @@ public class ReservationService {
 
     @Transactional
     public Long createReservation(Long ordererId, ReservationRequest request) {
-        List<ReservationProducts> reservationProducts = new ArrayList<>();
+        List<ReservationProduct> reservationProducts = new ArrayList<>();
 
         request.reservationProducts().forEach(reservationProduct -> {
             Product product = loadProductPort.getProduct(reservationProduct.productId());
             product.validateBelongsToBakery(request.bakeryId());
-            reservationProducts.add(new ReservationProducts(product.getId(), product.getName(), product.getImageUrl(), product.getPrice(), reservationProduct.quantity()));
+            reservationProducts.add(new ReservationProduct(product.getId(), product.getName(), product.getImageUrl(), product.getPrice(), reservationProduct.quantity()));
         });
 
         Reservation reservation = new Reservation(ordererId, request.bakeryId(), reservationProducts);
