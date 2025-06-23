@@ -17,8 +17,7 @@ public record BakeryInfoUpdatedEvent(
         String fullAddress,
         String profileImageUrl,
         List<String> additionalImageUrls,
-        OperatingStatus operatingStatus,
-        boolean isDeleted
+        OperatingStatus operatingStatus
 ) {
     public static BakeryInfoUpdatedEvent from(Bakery bakery) {
         String profileUrl = Optional.ofNullable(bakery.getProfileImage())
@@ -42,8 +41,7 @@ public record BakeryInfoUpdatedEvent(
                 address,
                 profileUrl,
                 additionalUrls,
-                bakery.getOperatingStatus(),
-                bakery.isDeleted()
+                bakery.getOperatingStatus()
         );
     }
 }
