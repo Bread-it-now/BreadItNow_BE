@@ -1,9 +1,9 @@
 package com.breaditnow.reservation.application.port.in;
 
-import com.breaditnow.reservation.application.dto.event.BakeryCreatedEvent;
-import com.breaditnow.reservation.application.dto.event.BakeryOperatingStatusChangedEvent;
+import com.breaditnow.reservation.application.dto.event.*;
 
 public interface BakeryInfoSynchronizationUseCase {
-    void createBakeryRecord(BakeryCreatedEvent event);
-    void synchronizeStatus(BakeryOperatingStatusChangedEvent event);
+    void createBakeryInfo(BakeryCreatedEvent event);
+    void updateBakeryInfo(BakeryUpdatedEvent event);
+    void deleteBakeryInfo(BakeryDeletedEvent event);
 }

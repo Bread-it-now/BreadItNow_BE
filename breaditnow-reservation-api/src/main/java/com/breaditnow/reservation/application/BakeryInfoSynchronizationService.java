@@ -1,14 +1,14 @@
 package com.breaditnow.reservation.application;
 
 import com.breaditnow.reservation.application.dto.event.BakeryCreatedEvent;
-import com.breaditnow.reservation.application.dto.event.BakeryOperatingStatusChangedEvent;
+import com.breaditnow.reservation.application.dto.event.BakeryDeletedEvent;
+import com.breaditnow.reservation.application.dto.event.BakeryUpdatedEvent;
 import com.breaditnow.reservation.application.port.in.BakeryInfoSynchronizationUseCase;
 import com.breaditnow.reservation.application.port.out.BakeryOperationalInfoRepositoryPort;
 import com.breaditnow.reservation.domain.BakeryOperationalInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -19,8 +19,7 @@ public class BakeryInfoSynchronizationService implements BakeryInfoSynchronizati
     private final BakeryOperationalInfoRepositoryPort repositoryPort;
 
     @Override
-    @Transactional
-    public void createBakeryRecord(BakeryCreatedEvent event) {
+    public void createBakeryInfo(BakeryCreatedEvent event) {
         if (repositoryPort.findByBakeryId(event.bakeryId()).isPresent()) {
             log.warn("Bakery record for bakeryId {} already exists. A 'Created' event may have been duplicated.", event.bakeryId());
             return;
@@ -36,8 +35,7 @@ public class BakeryInfoSynchronizationService implements BakeryInfoSynchronizati
     }
 
     @Override
-    @Transactional
-    public void synchronizeStatus(BakeryOperatingStatusChangedEvent event) {
+    public void updateBakeryInfo(BakeryUpdatedEvent event) {
         Optional<BakeryOperationalInfo> optionalInfo = repositoryPort.findByBakeryId(event.bakeryId());
 
         if (optionalInfo.isPresent()) {
@@ -54,5 +52,16 @@ public class BakeryInfoSynchronizationService implements BakeryInfoSynchronizati
 
             repositoryPort.save(newInfo);
         }
+    }
+
+    @Override
+    public void deleteBakeryInfo(BakeryDeletedEvent event) {
+        log.info("Marking operational info as deleted for bakeryId: {}", event.bakeryId());
+
+        repositoryPort.findByBakeryId(event.bakeryId())
+                .ifPresent(info -> {
+                    info.delete();
+                    repositoryPort.save(info);
+                });
     }
 }

@@ -2,7 +2,7 @@ package com.breaditnow.reservation.infrastructure.adapter.in.event;
 
 import com.breaditnow.reservation.application.dto.event.BakeryCreatedEvent;
 import com.breaditnow.reservation.application.dto.event.BakeryDeletedEvent;
-import com.breaditnow.reservation.application.dto.event.BakeryOperatingStatusChangedEvent;
+import com.breaditnow.reservation.application.dto.event.BakeryUpdatedEvent;
 import com.breaditnow.reservation.application.port.in.BakeryInfoSynchronizationUseCase;
 import com.breaditnow.reservation.application.port.in.DeleteBakerySyncDataUseCase;
 import com.breaditnow.reservation.infrastructure.config.RabbitMQConfig;
@@ -25,7 +25,7 @@ public class BakeryEventConsumer {
     }
 
     @RabbitListener(queues = RabbitMQConfig.BAKERY_STATUS_CHANGED_QUEUE)
-    public void handleBakeryUpdate(BakeryOperatingStatusChangedEvent event) {
+    public void handleBakeryUpdate(BakeryUpdatedEvent event) {
         log.info("<<< Received BakeryInfoUpdatedEvent for bakeryId: {}", event.bakeryId());
         syncUseCase.synchronizeStatus(event);
     }
