@@ -1,6 +1,6 @@
 package com.breaditnow.owner.product.domain;
 
-import com.breaditnow.owner.common.domain.Money;
+import com.breaditnow.common.domain.Money;
 import com.breaditnow.owner.common.exception.OwnerException;
 
 import static com.breaditnow.owner.common.exception.OwnerErrorCode.PRODUCT_ALREADY_IN_SAME_STATUS;

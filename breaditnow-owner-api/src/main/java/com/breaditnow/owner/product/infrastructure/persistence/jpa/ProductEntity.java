@@ -1,9 +1,9 @@
 package com.breaditnow.owner.product.infrastructure.persistence.jpa;
 
+import com.breaditnow.common.domain.Money;
 import com.breaditnow.domain.global.entity.BaseEntity;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
-import com.breaditnow.owner.common.domain.Money;
 import com.breaditnow.owner.product.domain.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,7 +56,7 @@ public class ProductEntity extends BaseEntity {
                 .name(product.getProductInfo().name())
                 .description(product.getProductInfo().description())
                 .profileImageUrl(product.getProductInfo().getProfileImageUrl())
-                .price(product.getSalesPolicy().price().amount())
+                .price(product.getSalesPolicy().price().getAmount())
                 .stock(product.getSalesPolicy().stock())
                 .status(product.getSalesPolicy().status())
                 .productType(product.getClassification().type())

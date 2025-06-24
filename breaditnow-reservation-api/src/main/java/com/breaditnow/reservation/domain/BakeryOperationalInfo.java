@@ -2,9 +2,11 @@ package com.breaditnow.reservation.domain;
 
 import com.breaditnow.reservation.application.dto.event.OperatingStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -15,12 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "bakery_operational_info")
 public class BakeryOperationalInfo {
-
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
     private Long bakeryId;
 
     @Enumerated(EnumType.STRING)

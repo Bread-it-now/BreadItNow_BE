@@ -1,11 +1,13 @@
 package com.breaditnow.owner.product.application.service;
 
 import com.breaditnow.owner.owner.application.OwnerDomainProvider;
+import com.breaditnow.owner.product.application.port.dto.event.ProductUpdatedEvent;
 import com.breaditnow.owner.product.application.port.in.UpdateProductDisplayOrderUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductStatusUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductsStatusUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.PublishProductEventPort;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductReorderer;
 import com.breaditnow.owner.product.infrastructure.presentation.request.ProductDisplayOrderUpdateRequest;
@@ -26,6 +28,7 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
     private final OwnerDomainProvider ownerDomainProvider;
     private final ProductRepository productRepository;
     private final ProductReorderer productReorderer;
+    private final PublishProductEventPort eventPort;
 
     @Override
     @Transactional
@@ -45,6 +48,7 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
         List<Product> products = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, request.productIds());
         products.forEach(product -> product.changeStatus(request.status()));
         productRepository.saveAll(products);
+        products.forEach(product -> eventPort.publishProductUpdated(ProductUpdatedEvent.from(product)));
     }
 
     @Override
@@ -54,15 +58,17 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
                 .map(ProductOrder::productId)
                 .toList();
 
-        List<Product> productsToUpdate = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, productIds);
+        List<Product> products = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, productIds);
 
-        productReorderer.reorder(productsToUpdate, request.products());
-        productRepository.saveAll(productsToUpdate);
+        productReorderer.reorder(products, request.products());
+        productRepository.saveAll(products);
+        products.forEach(product -> eventPort.publishProductUpdated(ProductUpdatedEvent.from(product)));
     }
 
     private void updateSingleProduct(Long ownerId, Long bakeryId, Long productId, Consumer<Product> updater) {
         Product product = ownerDomainProvider.getValidatedProduct(ownerId, bakeryId, productId);
         updater.accept(product);
         productRepository.save(product);
+        eventPort.publishProductUpdated(ProductUpdatedEvent.from(product));
     }
 }

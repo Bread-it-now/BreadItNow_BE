@@ -23,7 +23,6 @@ public enum CustomerErrorCode implements ErrorCode {
 	INVALID_REGION_PREFERENCE(BAD_REQUEST, "CA006", "관심 지역은 하나 이상 선택해야 합니다."),
 	ALREADY_INITIALIZED(BAD_REQUEST, "CA007", "이미 회원가입 초기화가 완료된 회원입니다"),
 
-
 	/**
 	 * CB000 FILE
 	 */
@@ -47,8 +46,6 @@ public enum CustomerErrorCode implements ErrorCode {
 	 * CD000 Product
 	 */
 	PRODUCT_NOT_ACTIVE(BAD_REQUEST, "CD001", "비활성화된 상품입니다."),
-	INVALID_AMOUNT(BAD_REQUEST, "CD002", "금액은 0보다 작을 수 없습니다."),
-	AMOUNT_REQUIRED(BAD_REQUEST, "CD003", "금액은 필수 값입니다."),
 	INVALID_STOCK(BAD_REQUEST, "CD004", "재고는 0보다 작을 수 없습니다."),
 	PRODUCT_ALREADY_HIDDEN(CONFLICT, "CD005", "상품은 이미 숨김 상태입니다."),
 	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "CD006", "상품은 이미 숨김 해제 상태입니다."),
@@ -64,14 +61,7 @@ public enum CustomerErrorCode implements ErrorCode {
 	ALREADY_FAVORITED(CONFLICT, "CE001", "이미 즐겨찾기된 상품입니다."),
 	NOT_FAVORITED(NOT_FOUND, "CE002", "즐겨찾기되지 않은 상품입니다."),
 
-	/**
-	 * CF000 Reservation
-	 */
-	PRODUCT_NOT_BELONG_TO_BAKERY(BAD_REQUEST, "CR001", "상품이 해당 빵집에 속하지 않습니다."),
-	UNAUTHORIZED_RESERVATION_CANCEL(UNAUTHORIZED, "CR002", "예약 취소 권한이 없습니다."),
-	CANCELLATION_REASON_REQUIRED(BAD_REQUEST, "CR003", "예약 취소 사유는 필수입니다."),
-	ALREADY_CANCELLED(BAD_REQUEST, "CR004", "이미 취소된 예약입니다."),
-	QUANTITY_POSITIVE(BAD_REQUEST, "CR005", "예약 상품의 수량은 0보다 커야 합니다."),
+
 	/**
 	 * CZ000 이외
 	 */

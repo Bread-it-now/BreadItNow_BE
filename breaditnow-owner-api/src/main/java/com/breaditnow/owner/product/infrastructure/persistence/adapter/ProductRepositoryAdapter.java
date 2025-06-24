@@ -18,9 +18,9 @@ public class ProductRepositoryAdapter implements ProductRepository {
     private final JpaProductRepository jpaProductRepository;
 
     @Override
-    public Long save(Product product) {
+    public Product save(Product product) {
         ProductEntity entity = ProductEntity.from(product);
-        return jpaProductRepository.save(entity).getId();
+        return jpaProductRepository.save(entity).toDomain();
     }
 
 

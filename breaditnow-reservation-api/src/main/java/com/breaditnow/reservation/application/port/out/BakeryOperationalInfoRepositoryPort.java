@@ -7,5 +7,4 @@ import java.util.Optional;
 public interface BakeryOperationalInfoRepositoryPort {
     Optional<BakeryOperationalInfo> findByBakeryId(Long bakeryId);
     void save(BakeryOperationalInfo bakeryOperationalInfo);
-    void deleteByBakeryId(Long bakeryId);
 }

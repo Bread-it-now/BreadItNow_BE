@@ -28,7 +28,7 @@ public record ProductResponse(
                 product.getSalesPolicy().status(),
                 product.getClassification().type(),
                 product.getProductInfo().name(),
-                product.getSalesPolicy().price().amount(),
+                product.getSalesPolicy().price().getAmount(),
                 product.getProductInfo().getProfileImageUrl(),
                 product.getProductInfo().description(),
                 product.getReleaseTimesAsString(),

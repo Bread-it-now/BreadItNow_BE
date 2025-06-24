@@ -1,13 +1,16 @@
 package com.breaditnow.owner.product.application.service;
 
-import com.breaditnow.owner.image.application.port.in.ImagePort;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.common.domain.DailyTime;
+import com.breaditnow.owner.image.application.port.in.ImagePort;
 import com.breaditnow.owner.owner.application.OwnerDomainProvider;
+import com.breaditnow.owner.product.application.port.dto.event.ProductCreatedEvent;
+import com.breaditnow.owner.product.application.port.dto.event.ProductUpdatedEvent;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
 import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.PublishProductEventPort;
 import com.breaditnow.owner.product.domain.Classification;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductInfo;
@@ -27,6 +30,7 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
     private final OwnerDomainProvider ownerDomainProvider;
     private final ProductRepository productRepository;
     private final ImagePort imagePort;
+    private final PublishProductEventPort eventPort;
 
     @Override
     @Transactional
@@ -41,7 +45,11 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
         List<DailyTime> releaseTimes = request.toDailyTimes();
 
         Product product = bakery.createProduct(ownerId, bakeryId, productInfo, lastDisplayOrder, salesPolicy, classification, releaseTimes);
-        return productRepository.save(product);
+
+        Product savedProduct = productRepository.save(product);
+        eventPort.publishProductCreated(ProductCreatedEvent.from(savedProduct));
+
+        return savedProduct.getId();
     }
 
     @Override
@@ -58,5 +66,7 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
 
         product.update(newProductInfo, newSalesPolicy, newClassification, newReleaseTimes);
         productRepository.save(product);
+
+        eventPort.publishProductUpdated(ProductUpdatedEvent.from(product));
     }
 }
