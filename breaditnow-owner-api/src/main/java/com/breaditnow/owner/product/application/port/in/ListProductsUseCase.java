@@ -1,7 +1,7 @@
 package com.breaditnow.owner.product.application.port.in;
 
-import com.breaditnow.owner.product.infrastructure.presentation.request.ProductSearchCondition;
-import com.breaditnow.owner.product.infrastructure.presentation.response.ProductResponse;
+import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.request.ProductSearchCondition;
+import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.response.ProductResponse;
 
 import java.util.List;
 

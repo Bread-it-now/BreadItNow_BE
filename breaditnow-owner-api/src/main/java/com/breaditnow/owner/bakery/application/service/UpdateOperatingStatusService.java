@@ -1,6 +1,6 @@
 package com.breaditnow.owner.bakery.application.service;
 
-import com.breaditnow.owner.bakery.application.dto.event.BakeryOperatingStatusChangedEvent;
+import com.breaditnow.owner.bakery.application.dto.event.BakeryUpdatedEvent;
 import com.breaditnow.owner.bakery.application.port.in.UpdateOperatingStatusUseCase;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.application.port.out.PublishBakeryEventPort;
@@ -23,7 +23,7 @@ public class UpdateOperatingStatusService implements UpdateOperatingStatusUseCas
         bakery.updateOperatingStatus(ownerId, newStatus);
         bakeryRepository.save(bakery);
 
-        BakeryOperatingStatusChangedEvent event = BakeryOperatingStatusChangedEvent.from(bakery);
-        publishBakeryEventPort.publishOperatingStatusChangedEvent(event);
+        BakeryUpdatedEvent event = BakeryUpdatedEvent.from(bakery);
+        publishBakeryEventPort.publishBakeryUpdatedEvent(event);
     }
 }

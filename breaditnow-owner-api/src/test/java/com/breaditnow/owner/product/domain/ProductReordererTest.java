@@ -1,7 +1,7 @@
 package com.breaditnow.owner.product.domain;
 
 import com.breaditnow.owner.common.exception.OwnerException;
-import com.breaditnow.owner.product.infrastructure.presentation.request.ProductDisplayOrderUpdateRequest;
+import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.request.ProductDisplayOrderUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

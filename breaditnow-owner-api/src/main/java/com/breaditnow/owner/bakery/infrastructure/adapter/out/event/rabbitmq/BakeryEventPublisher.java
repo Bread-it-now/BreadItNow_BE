@@ -2,7 +2,7 @@ package com.breaditnow.owner.bakery.infrastructure.adapter.out.event.rabbitmq;
 
 import com.breaditnow.owner.bakery.application.dto.event.BakeryCreatedEvent;
 import com.breaditnow.owner.bakery.application.dto.event.BakeryDeletedEvent;
-import com.breaditnow.owner.bakery.application.dto.event.BakeryOperatingStatusChangedEvent;
+import com.breaditnow.owner.bakery.application.dto.event.BakeryUpdatedEvent;
 import com.breaditnow.owner.bakery.application.port.out.PublishBakeryEventPort;
 import com.breaditnow.owner.common.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class BakeryEventPublisher implements PublishBakeryEventPort {
     }
 
     @Override
-    public void publishOperatingStatusChangedEvent(BakeryOperatingStatusChangedEvent event) {
+    public void publishBakeryUpdatedEvent(BakeryUpdatedEvent event) {
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.BAKERY_EVENT_EXCHANGE,
                 RabbitMQConfig.STATUS_UPDATE_ROUTING_KEY,
