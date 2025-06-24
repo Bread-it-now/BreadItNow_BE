@@ -2,7 +2,6 @@ package com.breaditnow.owner.bakery.application.service;
 
 import com.breaditnow.owner.bakery.application.port.in.UpdateProfileImageUseCase;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
-import com.breaditnow.owner.bakery.application.port.out.PublishBakeryEventPort;
 import com.breaditnow.owner.bakery.domain.Bakery;
 import com.breaditnow.owner.bakery.domain.Image;
 import com.breaditnow.owner.image.application.port.in.ImagePort;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpdateProfileImageService implements UpdateProfileImageUseCase {
     private final BakeryRepository bakeryRepository;
     private final ImagePort imagePort;
-    private final PublishBakeryEventPort publishBakeryEventPort;
 
     @Override
     @Transactional
@@ -25,6 +23,5 @@ public class UpdateProfileImageService implements UpdateProfileImageUseCase {
         Image newImage = imagePort.saveImage(newProfileImage);
         bakery.updateProfileImage(ownerId, newImage);
         bakeryRepository.save(bakery);
-        publishBakeryEventPort.publishBakeryUpdatedEvent(bakery);
     }
 }

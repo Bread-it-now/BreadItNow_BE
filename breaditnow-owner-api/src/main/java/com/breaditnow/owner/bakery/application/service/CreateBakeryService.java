@@ -1,5 +1,6 @@
 package com.breaditnow.owner.bakery.application.service;
 
+import com.breaditnow.owner.bakery.application.dto.event.BakeryCreatedEvent;
 import com.breaditnow.owner.bakery.application.port.in.CreateBakeryUseCase;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.application.port.out.PublishBakeryEventPort;
@@ -33,7 +34,10 @@ public class CreateBakeryService implements CreateBakeryUseCase {
         PhoneNumber phoneNumber = PhoneNumber.create(request.phoneNumber());
         Bakery bakery = Bakery.create(ownerId, request.name(), address, phoneNumber, image, request.openTime(), request.introduction());
         Bakery savedBakery = bakeryRepository.save(bakery);
-        publishBakeryEventPort.publishBakeryUpdatedEvent(savedBakery);
+
+        BakeryCreatedEvent event = BakeryCreatedEvent.from(savedBakery);
+        publishBakeryEventPort.publishBakeryCreatedEvent(event);
+
         return savedBakery.getBakeryId();
     }
 }

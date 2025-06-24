@@ -1,5 +1,6 @@
 package com.breaditnow.owner.bakery.application.service;
 
+import com.breaditnow.owner.bakery.application.dto.event.BakeryDeletedEvent;
 import com.breaditnow.owner.bakery.application.port.in.DeleteBakeryUseCase;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.application.port.out.PublishBakeryEventPort;
@@ -20,6 +21,8 @@ public class DeleteBakeryService implements DeleteBakeryUseCase {
         Bakery bakery = bakeryRepository.getById(bakeryId);
         bakery.delete(ownerId);
         bakeryRepository.save(bakery);
-        publishBakeryEventPort.publishBakeryDeleted(bakery.getBakeryId());
+
+        BakeryDeletedEvent event = new BakeryDeletedEvent(bakery.getBakeryId());
+        publishBakeryEventPort.publishBakeryDeleteEvent(event);
     }
 }
