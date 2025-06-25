@@ -1,4 +1,4 @@
-package com.breaditnow.owner.bakery.infrastructure.adapter.out.event.rabbitmq;
+package com.breaditnow.owner.bakery.infrastructure.adapter.out.event;
 
 import com.breaditnow.owner.bakery.application.dto.event.BakeryCreatedEvent;
 import com.breaditnow.owner.bakery.application.dto.event.BakeryDeletedEvent;

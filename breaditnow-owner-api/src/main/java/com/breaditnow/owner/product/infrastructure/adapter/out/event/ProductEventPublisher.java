@@ -1,4 +1,4 @@
-package com.breaditnow.owner.product.infrastructure.adapter.out.event.rabbitmq;
+package com.breaditnow.owner.product.infrastructure.adapter.out.event;
 
 import com.breaditnow.owner.common.config.RabbitMQConfig;
 import com.breaditnow.owner.product.application.port.dto.event.ProductCreatedEvent;

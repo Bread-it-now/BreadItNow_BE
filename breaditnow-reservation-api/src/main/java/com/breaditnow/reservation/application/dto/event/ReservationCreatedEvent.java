@@ -11,7 +11,7 @@ import java.util.List;
 public record ReservationCreatedEvent(
         Long reservationId,
         Long bakeryId,
-        Long userId,
+        Long customerId,
         LocalDateTime reservationTime,
         ReservationStatus status,
         Money totalPrice,

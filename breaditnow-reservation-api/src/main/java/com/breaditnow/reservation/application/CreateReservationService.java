@@ -1,4 +1,4 @@
-package com.breaditnow.reservation.application.port;
+package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.reservation.application.dto.event.ReservationCreatedEvent;
