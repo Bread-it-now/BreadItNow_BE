@@ -5,6 +5,6 @@ import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.reque
 
 import java.util.List;
 
-public interface ProductQueryRepository {
+public interface ProductQueryRepositoryPort {
     List<Product> search(Long bakeryId, ProductSearchCondition condition);
 }

@@ -1,10 +1,10 @@
 package com.breaditnow.reservation.application.port.out;
 
-import com.breaditnow.reservation.domain.BakeryOperationalInfo;
+import com.breaditnow.reservation.domain.BakeryInfo;
 
 import java.util.Optional;
 
 public interface BakeryOperationalInfoRepositoryPort {
-    Optional<BakeryOperationalInfo> findByBakeryId(Long bakeryId);
-    void save(BakeryOperationalInfo bakeryOperationalInfo);
+    Optional<BakeryInfo> findByBakeryId(Long bakeryId);
+    void save(BakeryInfo bakeryInfo);
 }

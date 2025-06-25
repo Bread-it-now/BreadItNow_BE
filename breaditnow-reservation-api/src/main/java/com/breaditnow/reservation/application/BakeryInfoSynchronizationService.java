@@ -5,7 +5,7 @@ import com.breaditnow.reservation.application.dto.event.BakeryDeletedEvent;
 import com.breaditnow.reservation.application.dto.event.BakeryUpdatedEvent;
 import com.breaditnow.reservation.application.port.in.BakeryInfoSynchronizationUseCase;
 import com.breaditnow.reservation.application.port.out.BakeryOperationalInfoRepositoryPort;
-import com.breaditnow.reservation.domain.BakeryOperationalInfo;
+import com.breaditnow.reservation.domain.BakeryInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class BakeryInfoSynchronizationService implements BakeryInfoSynchronizati
             return;
         }
 
-        BakeryOperationalInfo newInfo = BakeryOperationalInfo.builder()
+        BakeryInfo newInfo = BakeryInfo.builder()
                 .bakeryId(event.bakeryId())
                 .operatingStatus(event.operatingStatus())
                 .deleted(false)
@@ -36,15 +36,15 @@ public class BakeryInfoSynchronizationService implements BakeryInfoSynchronizati
 
     @Override
     public void updateBakeryInfo(BakeryUpdatedEvent event) {
-        Optional<BakeryOperationalInfo> optionalInfo = repositoryPort.findByBakeryId(event.bakeryId());
+        Optional<BakeryInfo> optionalInfo = repositoryPort.findByBakeryId(event.bakeryId());
 
         if (optionalInfo.isPresent()) {
-            BakeryOperationalInfo existingInfo = optionalInfo.get();
+            BakeryInfo existingInfo = optionalInfo.get();
             existingInfo.updateOperatingStatus(event.operatingStatus());
             repositoryPort.save(existingInfo);
         } else {
             log.warn("BakeryOperationalInfo for bakeryId {} not found. A 'StatusChanged' event may have arrived before a 'Created' event. Creating a new record to self-heal.", event.bakeryId());
-            BakeryOperationalInfo newInfo = BakeryOperationalInfo.builder()
+            BakeryInfo newInfo = BakeryInfo.builder()
                     .bakeryId(event.bakeryId())
                     .operatingStatus(event.operatingStatus())
                     .deleted(false)

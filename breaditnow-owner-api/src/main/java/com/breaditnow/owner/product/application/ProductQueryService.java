@@ -3,8 +3,8 @@ package com.breaditnow.owner.product.application;
 import com.breaditnow.owner.owner.application.OwnerDomainProvider;
 import com.breaditnow.owner.product.application.port.in.GetProductUseCase;
 import com.breaditnow.owner.product.application.port.in.ListProductsUseCase;
-import com.breaditnow.owner.product.application.port.out.ProductQueryRepository;
-import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.ProductQueryRepositoryPort;
+import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.request.ProductSearchCondition;
 import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ProductQueryService implements ListProductsUseCase, GetProductUseCase {
     private final OwnerDomainProvider ownerDomainProvider;
-    private final ProductRepository productRepository;
-    private final ProductQueryRepository productQueryRepository;
+    private final ProductRepositoryPort productRepositoryPort;
+    private final ProductQueryRepositoryPort productQueryRepositoryPort;
 
     @Override
     public List<ProductResponse> listProducts(Long ownerId, Long bakeryId, ProductSearchCondition condition) {
         ownerDomainProvider.getValidatedBakery(ownerId, bakeryId);
-        return productQueryRepository.search(bakeryId, condition).stream()
+        return productQueryRepositoryPort.search(bakeryId, condition).stream()
                 .map(ProductResponse::of)
                 .toList();
     }
@@ -32,6 +32,6 @@ public class ProductQueryService implements ListProductsUseCase, GetProductUseCa
     @Override
     public ProductResponse getProductDetail(Long ownerId, Long bakeryId, Long productId) {
         ownerDomainProvider.getValidatedBakery(ownerId, bakeryId);
-        return ProductResponse.of(productRepository.getById(productId));
+        return ProductResponse.of(productRepositoryPort.getById(productId));
     }
 }

@@ -3,7 +3,7 @@ package com.breaditnow.owner.owner.application;
 import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.domain.Bakery;
-import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.domain.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT
 @RequiredArgsConstructor
 public class OwnerDomainProvider {
     private final BakeryRepository bakeryRepository;
-    private final ProductRepository productRepository;
+    private final ProductRepositoryPort productRepositoryPort;
 
     public Bakery getValidatedBakery(Long ownerId, Long bakeryId) {
         Bakery bakery = bakeryRepository.getById(bakeryId);
@@ -29,7 +29,7 @@ public class OwnerDomainProvider {
 
     public Product getValidatedProduct(Long ownerId, Long bakeryId, Long productId) {
         getValidatedBakery(ownerId, bakeryId);
-        Product product = productRepository.getById(productId);
+        Product product = productRepositoryPort.getById(productId);
         product.validateBelongsTo(bakeryId);
 
         return product;
@@ -38,7 +38,7 @@ public class OwnerDomainProvider {
     public List<Product> getValidatedProducts(Long ownerId, Long bakeryId, List<Long> productIds) {
         getValidatedBakery(ownerId, bakeryId);
 
-        List<Product> products = productRepository.findAllByIdInAndBakeryId(productIds, bakeryId);
+        List<Product> products = productRepositoryPort.findAllByIdInAndBakeryId(productIds, bakeryId);
         if (products.size() != productIds.size()) {
             throw new DomainException(PRODUCT_NOT_FOUND);
         }

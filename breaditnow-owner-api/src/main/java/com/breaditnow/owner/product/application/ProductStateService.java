@@ -6,7 +6,7 @@ import com.breaditnow.owner.product.application.port.in.UpdateProductDisplayOrde
 import com.breaditnow.owner.product.application.port.in.UpdateProductStatusUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductStockUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductsStatusUseCase;
-import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.application.port.out.PublishProductEventPort;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.domain.ProductReorderer;
@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class ProductStateService implements UpdateProductStockUseCase, UpdateProductStatusUseCase, UpdateProductsStatusUseCase, UpdateProductDisplayOrderUseCase {
     private final OwnerDomainProvider ownerDomainProvider;
-    private final ProductRepository productRepository;
+    private final ProductRepositoryPort productRepositoryPort;
     private final ProductReorderer productReorderer;
     private final PublishProductEventPort eventPort;
 
@@ -47,7 +47,7 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
     public void updateProductsStatus(Long ownerId, Long bakeryId, ProductsStatusUpdateRequest request) {
         List<Product> products = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, request.productIds());
         products.forEach(product -> product.changeStatus(request.status()));
-        productRepository.saveAll(products);
+        productRepositoryPort.saveAll(products);
         products.forEach(product -> eventPort.publishProductUpdated(ProductUpdatedEvent.from(product)));
     }
 
@@ -61,14 +61,14 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
         List<Product> products = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, productIds);
 
         productReorderer.reorder(products, request.products());
-        productRepository.saveAll(products);
+        productRepositoryPort.saveAll(products);
         products.forEach(product -> eventPort.publishProductUpdated(ProductUpdatedEvent.from(product)));
     }
 
     private void updateSingleProduct(Long ownerId, Long bakeryId, Long productId, Consumer<Product> updater) {
         Product product = ownerDomainProvider.getValidatedProduct(ownerId, bakeryId, productId);
         updater.accept(product);
-        productRepository.save(product);
+        productRepositoryPort.save(product);
         eventPort.publishProductUpdated(ProductUpdatedEvent.from(product));
     }
 }

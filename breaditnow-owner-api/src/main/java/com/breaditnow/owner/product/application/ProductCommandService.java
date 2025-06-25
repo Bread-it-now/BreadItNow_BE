@@ -9,7 +9,7 @@ import com.breaditnow.owner.product.application.port.dto.event.ProductCreatedEve
 import com.breaditnow.owner.product.application.port.dto.event.ProductUpdatedEvent;
 import com.breaditnow.owner.product.application.port.in.CreateProductUseCase;
 import com.breaditnow.owner.product.application.port.in.UpdateProductUseCase;
-import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.application.port.out.PublishProductEventPort;
 import com.breaditnow.owner.product.domain.Classification;
 import com.breaditnow.owner.product.domain.Product;
@@ -28,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductCommandService implements CreateProductUseCase, UpdateProductUseCase{
     private final OwnerDomainProvider ownerDomainProvider;
-    private final ProductRepository productRepository;
+    private final ProductRepositoryPort productRepositoryPort;
     private final ImagePort imagePort;
     private final PublishProductEventPort eventPort;
 
@@ -41,12 +41,12 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
         ProductInfo productInfo = ProductInfo.create(request.name(), request.description(), image);
         SalesPolicy salesPolicy = SalesPolicy.create(request.price());
         Classification classification = Classification.create(request.productType());
-        Integer lastDisplayOrder = productRepository.findLastDisplayOrderByBakeryId(bakeryId) + 1;
+        Integer lastDisplayOrder = productRepositoryPort.findLastDisplayOrderByBakeryId(bakeryId) + 1;
         List<DailyTime> releaseTimes = request.toDailyTimes();
 
         Product product = bakery.createProduct(ownerId, bakeryId, productInfo, lastDisplayOrder, salesPolicy, classification, releaseTimes);
 
-        Product savedProduct = productRepository.save(product);
+        Product savedProduct = productRepositoryPort.save(product);
         eventPort.publishProductCreated(ProductCreatedEvent.from(savedProduct));
 
         return savedProduct.getId();
@@ -65,7 +65,7 @@ public class ProductCommandService implements CreateProductUseCase, UpdateProduc
         List<DailyTime> newReleaseTimes = request.toDailyTimes();
 
         product.update(newProductInfo, newSalesPolicy, newClassification, newReleaseTimes);
-        productRepository.save(product);
+        productRepositoryPort.save(product);
 
         eventPort.publishProductUpdated(ProductUpdatedEvent.from(product));
     }

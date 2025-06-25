@@ -14,7 +14,11 @@ public enum ReservationErrorCode implements ErrorCode {
 	UNAUTHORIZED_RESERVATION_CANCEL(UNAUTHORIZED, "EA003", "예약 취소 권한이 없습니다."),
 	CANCELLATION_REASON_REQUIRED(BAD_REQUEST, "EA004", "예약 취소 사유는 필수입니다."),
 	ALREADY_CANCELLED(BAD_REQUEST, "EA005", "이미 취소된 예약입니다."),
-	QUANTITY_POSITIVE(BAD_REQUEST, "EA006", "예약 상품의 수량은 0보다 커야 합니다.");
+	QUANTITY_POSITIVE(BAD_REQUEST, "EA006", "예약 상품의 수량은 0보다 커야 합니다."),
+	BAKERY_NOT_FOUND(NOT_FOUND, "EA007", "해당 빵집을 찾을 수 없습니다."),
+	BAKERY_NOT_AVAILABLE(BAD_REQUEST, "EA008", "예약이 불가능한 빵집입니다."),
+	PRODUCT_NOT_FOUND(NOT_FOUND, "EA009", "존재하지 않는 상품입니다."),
+	PRODUCT_NOT_AVAILABLE(BAD_REQUEST, "EA010", "예약이 불가능한 상품입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

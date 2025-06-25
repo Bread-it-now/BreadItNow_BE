@@ -8,7 +8,10 @@ public record ReservationCreateResponse(
         ReservationStatus status
 ) {
     public static ReservationCreateResponse from(Reservation reservation) {
-        return new ReservationCreateResponse(reservation.getReservationId(), reservation.getReservationState().getReservationStatus());
+        return new ReservationCreateResponse(
+                reservation.getReservationId(),
+                reservation.getReservationState().getReservationStatus()
+        );
     }
 }
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 public record ReservationCreateRequest(
         Long bakeryId,
-        List<ProductRequest> products
+        List<ProductRequest> reservationProducts
 ) {
     public record ProductRequest(
             Long productId,

@@ -15,8 +15,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Entity
-@Table(name = "bakery_operational_info")
-public class BakeryOperationalInfo {
+@Table(name = "bakery_info")
+public class BakeryInfo {
     @Id
     private Long bakeryId;
 
@@ -33,5 +33,9 @@ public class BakeryOperationalInfo {
 
     public void delete() {
         this.deleted = true;
+    }
+
+    public boolean isReservable() {
+        return operatingStatus == OperatingStatus.OPEN && !deleted;
     }
 }

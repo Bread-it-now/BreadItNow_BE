@@ -1,7 +1,7 @@
 package com.breaditnow.owner.product.infrastructure.adapter.out.persistence.adapter;
 
 import com.breaditnow.domain.global.exception.DomainException;
-import com.breaditnow.owner.product.application.port.out.ProductRepository;
+import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.infrastructure.adapter.out.persistence.jpa.JpaProductRepository;
 import com.breaditnow.owner.product.infrastructure.adapter.out.persistence.jpa.ProductEntity;
@@ -14,7 +14,7 @@ import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRepositoryAdapter implements ProductRepository {
+public class ProductRepositoryAdapter implements ProductRepositoryPort {
     private final JpaProductRepository jpaProductRepository;
 
     @Override

@@ -1,6 +1,6 @@
 package com.breaditnow.owner.product.infrastructure.adapter.out.persistence.adapter;
 
-import com.breaditnow.owner.product.application.port.out.ProductQueryRepository;
+import com.breaditnow.owner.product.application.port.out.ProductQueryRepositoryPort;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.infrastructure.adapter.in.presentation.request.ProductSearchCondition;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductQueryRepositoryAdapter implements ProductQueryRepository {
+public class ProductQueryRepositoryAdapter implements ProductQueryRepositoryPort {
     private final JPAQueryFactory queryFactory;
 
     @Override

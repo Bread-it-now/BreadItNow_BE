@@ -32,6 +32,10 @@ public class RabbitMQConfig {
     public static final String PRODUCT_UPDATED_ROUTING_KEY = "routing.key.product.updated";
     public static final String PRODUCT_DELETED_ROUTING_KEY = "routing.key.product.deleted";
 
+    // Reservation Events 상수
+    public static final String RESERVATION_EVENT_EXCHANGE = "reservation.event.exchange";
+    public static final String RESERVATION_CREATED_ROUTING_KEY = "routing.key.reservation.created";
+
     // Common Bean
     @Bean
     public MessageConverter jackson2JsonMessageConverter() {
@@ -82,5 +86,11 @@ public class RabbitMQConfig {
     @Bean
     public Binding bindingProductDeleted(Queue productDeletedQueue, DirectExchange productEventExchange) {
         return BindingBuilder.bind(productDeletedQueue).to(productEventExchange).with(PRODUCT_DELETED_ROUTING_KEY);
+    }
+
+    // Reservation Events
+    @Bean
+    public DirectExchange reservationEventExchange() {
+        return new DirectExchange(RESERVATION_EVENT_EXCHANGE);
     }
 }

@@ -4,7 +4,7 @@ import com.breaditnow.owner.product.domain.Product;
 
 import java.util.List;
 
-public interface ProductRepository {
+public interface ProductRepositoryPort {
     Product save(Product product);
     void saveAll(List<Product> products);
 
