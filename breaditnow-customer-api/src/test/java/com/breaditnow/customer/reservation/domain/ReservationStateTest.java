@@ -1,5 +1,6 @@
 package com.breaditnow.customer.reservation.domain;
 
+import com.amazonaws.services.ec2.model.ReservationState;
 import com.breaditnow.customer.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -10,7 +11,6 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.CANCELL
 import static com.breaditnow.customer.reservation.domain.ReservationStatus.CANCELLED;
 import static com.breaditnow.customer.reservation.domain.ReservationStatus.WAITING;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DisplayName("ReservationState 도메인 테스트")
 class ReservationStateTest {

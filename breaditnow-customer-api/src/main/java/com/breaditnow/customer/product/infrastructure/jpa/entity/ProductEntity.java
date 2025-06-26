@@ -1,13 +1,15 @@
 package com.breaditnow.customer.product.infrastructure.jpa.entity;
 
+import com.breaditnow.common.domain.Money;
 import com.breaditnow.customer.common.domain.DailyTime;
-import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductType;
 import com.breaditnow.customer.product.infrastructure.jpa.ReleaseTimesConverter;
 import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;

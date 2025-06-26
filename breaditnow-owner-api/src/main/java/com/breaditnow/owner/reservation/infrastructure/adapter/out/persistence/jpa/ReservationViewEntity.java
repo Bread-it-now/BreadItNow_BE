@@ -33,5 +33,14 @@ public class ReservationViewEntity {
 
     @Column(nullable = false)
     private String status;
+
+    private String reservationNumber;
+    private LocalDateTime pickupDeadline;
+
+    public void updateOnApproval(String status, String reservationNumber, LocalDateTime pickupDeadline) {
+        this.status = status;
+        this.reservationNumber = reservationNumber;
+        this.pickupDeadline = pickupDeadline;
+    }
 }
 

@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.domain;
 
-import com.breaditnow.customer.common.domain.Money;
+import com.breaditnow.common.domain.Money;
 import com.breaditnow.customer.common.domain.DailyTime;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.util.List;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.ONLY_BREAD_CAN_BE_FAVORITED;
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.PRODUCT_NOT_BELONG_TO_BAKERY;
+//import static com.breaditnow.customer.common.exception.CustomerErrorCode.PRODUCT_NOT_BELONG_TO_BAKERY;
 
 @Getter
 public class Product {
@@ -60,9 +60,9 @@ public class Product {
         return this.type == ProductType.BREAD;
     }
 
-    public void validateBelongsToBakery(Long bakeryId) {
-        if (!getBakeryId().equals(bakeryId)) {
-            throw new CustomerException(PRODUCT_NOT_BELONG_TO_BAKERY);
-        }
-    }
+//    public void validateBelongsToBakery(Long bakeryId) {
+//        if (!getBakeryId().equals(bakeryId)) {
+//            throw new CustomerException(PRODUCT_NOT_BELONG_TO_BAKERY);
+//        }
+//    }
 }

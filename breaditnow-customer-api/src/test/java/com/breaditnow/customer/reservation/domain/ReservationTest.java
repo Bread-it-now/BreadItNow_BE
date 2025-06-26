@@ -1,6 +1,5 @@
 package com.breaditnow.customer.reservation.domain;
 
-import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

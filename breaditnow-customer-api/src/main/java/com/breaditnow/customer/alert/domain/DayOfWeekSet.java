@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
+import static com.breaditnow.common.util.ValidationUtils.requireValid;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.EMPTY_DND_DAYS;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_DND_DAY_VALUE;
 

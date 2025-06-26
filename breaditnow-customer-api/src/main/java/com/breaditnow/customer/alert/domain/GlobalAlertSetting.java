@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
-import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
+import static com.breaditnow.common.util.ValidationUtils.requireValid;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
 
 @Getter

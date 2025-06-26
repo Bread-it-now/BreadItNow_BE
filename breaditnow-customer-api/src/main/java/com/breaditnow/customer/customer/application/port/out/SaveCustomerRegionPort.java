@@ -1,4 +1,4 @@
-package com.breaditnow.customer.customer.domain.port;
+package com.breaditnow.customer.customer.application.port.out;
 
 public interface SaveCustomerRegionPort {
     void preference(Long customerId, String sidoCode, String gugunCode);

@@ -6,7 +6,7 @@ import com.breaditnow.customer.alert.domain.port.SaveProductAlertPort;
 import com.breaditnow.customer.alert.infrastructure.jpa.JpaProductAlertRepository;
 import com.breaditnow.customer.alert.infrastructure.jpa.entity.ProductAlertEntity;
 import com.breaditnow.customer.alert.infrastructure.jpa.entity.ProductAlertEntityId;
-import com.breaditnow.customer.alert.infrastructure.jpa.query.QueryProductAlertRepository;
+//import com.breaditnow.customer.alert.infrastructure.jpa.query.QueryProductAlertRepository;
 import com.breaditnow.customer.alert.presentation.response.ProductAlertPageResponse;
 import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
 import com.breaditnow.customer.common.domain.vo.Pagination;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAlertPort {
     private final JpaProductAlertRepository jpaProductAlertRepository;
-    private final QueryProductAlertRepository queryProductAlertRepository;
+//    private final QueryProductAlertRepository queryProductAlertRepository;
 
     @Override
     public void save(ProductAlert productAlert) {
@@ -41,10 +41,12 @@ public class ProductAlertAdapter implements LoadProductAlertPort, SaveProductAle
     }
 
     public TodayProductAlertListResponse getTodayProductAlert(Long customerId) {
-        return TodayProductAlertListResponse.of(queryProductAlertRepository.getTodayProductAlert(customerId));
+//        return TodayProductAlertListResponse.of(queryProductAlertRepository.getTodayProductAlert(customerId));
+        return null;
     }
 
     public ProductAlertPageResponse getProductAlerts(Long customerId, Pagination pagination) {
-        return ProductAlertPageResponse.of(queryProductAlertRepository.getProductAlerts(customerId, pagination));
+//        return ProductAlertPageResponse.of(queryProductAlertRepository.getProductAlerts(customerId, pagination));
+        return null;
     }
 }

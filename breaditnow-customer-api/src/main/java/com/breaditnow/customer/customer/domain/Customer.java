@@ -1,14 +1,14 @@
 package com.breaditnow.customer.customer.domain;
 
-import com.breaditnow.customer.customer.domain.port.SaveImageStoragePort;
+import com.breaditnow.customer.customer.application.port.out.SaveImageStoragePort;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.breaditnow.customer.common.domain.ValidationUtils.requireValid;
-import static com.breaditnow.customer.common.domain.ValidationUtils.setIfNotNull;
+import static com.breaditnow.common.util.ValidationUtils.requireValid;
+import static com.breaditnow.common.util.ValidationUtils.setIfNotNull;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
 
 @Getter
