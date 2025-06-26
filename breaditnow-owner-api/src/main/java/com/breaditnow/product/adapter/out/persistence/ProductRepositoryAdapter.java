@@ -1,7 +1,7 @@
 package com.breaditnow.product.adapter.out.persistence;
 
 import com.breaditnow.common.exception.OwnerException;
-import com.breaditnow.product.domain.port.out.ProductRepositoryPort;
+import com.breaditnow.product.domain.port.out.ProductRepository;
 import com.breaditnow.product.domain.model.Product;
 import com.breaditnow.product.adapter.out.persistence.repository.JpaProductRepository;
 import com.breaditnow.product.adapter.out.persistence.entity.ProductEntity;
@@ -15,7 +15,7 @@ import static com.breaditnow.common.exception.OwnerErrorCode.PRODUCT_NOT_FOUND;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRepositoryAdapter implements ProductRepositoryPort {
+public class ProductRepositoryAdapter implements ProductRepository {
     private final JpaProductRepository jpaProductRepository;
 
     @Override

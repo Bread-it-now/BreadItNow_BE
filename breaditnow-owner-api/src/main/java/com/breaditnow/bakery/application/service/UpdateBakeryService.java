@@ -3,7 +3,7 @@ package com.breaditnow.bakery.application.service;
 import com.breaditnow.bakery.domain.port.in.UpdateBakeryUseCase;
 import com.breaditnow.bakery.domain.port.out.BakeryRepository;
 import com.breaditnow.bakery.domain.model.Bakery;
-import com.breaditnow.bakery.adapter.in.web.dto.request.BakeryUpdateRequest;
+import com.breaditnow.bakery.application.dto.request.BakeryUpdateRequest;
 import com.breaditnow.common.support.RepositorySupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

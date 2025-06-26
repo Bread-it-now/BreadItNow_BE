@@ -1,10 +1,11 @@
 package com.breaditnow.product.domain.model;
 
 import com.breaditnow.common.domain.Money;
+import com.breaditnow.common.domain.ProductStatus;
 import com.breaditnow.common.exception.OwnerException;
 
+import static com.breaditnow.common.domain.ProductStatus.SOLD_OUT;
 import static com.breaditnow.common.exception.OwnerErrorCode.PRODUCT_ALREADY_IN_SAME_STATUS;
-import static com.breaditnow.product.domain.model.ProductStatus.SOLD_OUT;
 
 public record SalesPolicy(
         Money price,

@@ -1,20 +1,18 @@
 package com.breaditnow.product.application;
 
 import com.breaditnow.owner.application.OwnerDomainProvider;
-import com.breaditnow.product.application.port.event.ProductUpdatedEvent;
+import com.breaditnow.product.application.dto.request.ProductDisplayOrderUpdateRequest;
+import com.breaditnow.product.application.dto.request.ProductDisplayOrderUpdateRequest.ProductOrder;
+import com.breaditnow.product.application.dto.request.ProductStatusUpdateRequest;
+import com.breaditnow.product.application.dto.request.ProductStockUpdateRequest;
+import com.breaditnow.product.application.dto.request.ProductsStatusUpdateRequest;
+import com.breaditnow.product.domain.model.Product;
+import com.breaditnow.product.domain.model.ProductReorderer;
 import com.breaditnow.product.domain.port.in.UpdateProductDisplayOrderUseCase;
 import com.breaditnow.product.domain.port.in.UpdateProductStatusUseCase;
 import com.breaditnow.product.domain.port.in.UpdateProductStockUseCase;
 import com.breaditnow.product.domain.port.in.UpdateProductsStatusUseCase;
-import com.breaditnow.product.domain.port.out.ProductRepositoryPort;
-import com.breaditnow.product.domain.port.out.PublishProductEventPort;
-import com.breaditnow.product.domain.model.Product;
-import com.breaditnow.product.domain.model.ProductReorderer;
-import com.breaditnow.product.adapter.in.dto.request.ProductDisplayOrderUpdateRequest;
-import com.breaditnow.product.adapter.in.dto.request.ProductDisplayOrderUpdateRequest.ProductOrder;
-import com.breaditnow.product.adapter.in.dto.request.ProductStatusUpdateRequest;
-import com.breaditnow.product.adapter.in.dto.request.ProductStockUpdateRequest;
-import com.breaditnow.product.adapter.in.dto.request.ProductsStatusUpdateRequest;
+import com.breaditnow.product.domain.port.out.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +24,8 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class ProductStateService implements UpdateProductStockUseCase, UpdateProductStatusUseCase, UpdateProductsStatusUseCase, UpdateProductDisplayOrderUseCase {
     private final OwnerDomainProvider ownerDomainProvider;
-    private final ProductRepositoryPort productRepositoryPort;
+    private final ProductRepository productRepository;
     private final ProductReorderer productReorderer;
-    private final PublishProductEventPort eventPort;
 
     @Override
     @Transactional
@@ -47,8 +44,7 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
     public void updateProductsStatus(Long ownerId, Long bakeryId, ProductsStatusUpdateRequest request) {
         List<Product> products = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, request.productIds());
         products.forEach(product -> product.changeStatus(request.status()));
-        productRepositoryPort.saveAll(products);
-        products.forEach(product -> eventPort.publishProductUpdated(ProductUpdatedEvent.from(product)));
+        productRepository.saveAll(products);
     }
 
     @Override
@@ -61,14 +57,12 @@ public class ProductStateService implements UpdateProductStockUseCase, UpdatePro
         List<Product> products = ownerDomainProvider.getValidatedProducts(ownerId, bakeryId, productIds);
 
         productReorderer.reorder(products, request.products());
-        productRepositoryPort.saveAll(products);
-        products.forEach(product -> eventPort.publishProductUpdated(ProductUpdatedEvent.from(product)));
+        productRepository.saveAll(products);
     }
 
     private void updateSingleProduct(Long ownerId, Long bakeryId, Long productId, Consumer<Product> updater) {
         Product product = ownerDomainProvider.getValidatedProduct(ownerId, bakeryId, productId);
         updater.accept(product);
-        productRepositoryPort.save(product);
-        eventPort.publishProductUpdated(ProductUpdatedEvent.from(product));
+        productRepository.save(product);
     }
 }

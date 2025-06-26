@@ -1,6 +1,6 @@
 package com.breaditnow.product.domain.port.in;
 
-import com.breaditnow.product.adapter.in.dto.request.ProductUpdateRequest;
+import com.breaditnow.product.application.dto.request.ProductUpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UpdateProductUseCase {

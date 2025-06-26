@@ -1,9 +1,10 @@
 package com.breaditnow.product.adapter.out.persistence.entity;
 
-import com.breaditnow.common.domain.Money;
-import com.breaditnow.image.domain.Image;
-import com.breaditnow.common.jpa.BaseEntity;
 import com.breaditnow.common.domain.DailyTime;
+import com.breaditnow.common.domain.Money;
+import com.breaditnow.common.domain.ProductStatus;
+import com.breaditnow.common.jpa.BaseEntity;
+import com.breaditnow.image.domain.Image;
 import com.breaditnow.product.domain.model.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -25,3 +25,9 @@ spring:
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
 
+api:
+  internal:
+    customer-service:
+      url: http://localhost:9001
+    owner-service:
+      url: http://localhost:9002

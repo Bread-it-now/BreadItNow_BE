@@ -1,6 +1,7 @@
 package com.breaditnow.bakery.domain.model;
 
 import com.breaditnow.common.domain.DailyTime;
+import com.breaditnow.common.domain.OperatingStatus;
 import com.breaditnow.common.exception.OwnerErrorCode;
 import com.breaditnow.common.exception.OwnerException;
 import com.breaditnow.image.domain.Image;
@@ -16,7 +17,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.breaditnow.bakery.domain.model.OperatingStatus.OPEN;
+import static com.breaditnow.common.domain.OperatingStatus.OPEN;
 import static com.breaditnow.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 
 @Getter

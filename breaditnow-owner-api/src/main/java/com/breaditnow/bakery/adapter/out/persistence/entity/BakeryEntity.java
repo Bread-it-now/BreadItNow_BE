@@ -1,6 +1,7 @@
 package com.breaditnow.bakery.adapter.out.persistence.entity;
 
 import com.breaditnow.bakery.domain.model.*;
+import com.breaditnow.common.domain.OperatingStatus;
 import com.breaditnow.common.jpa.BaseEntity;
 import com.breaditnow.image.domain.Image;
 import com.breaditnow.location.domain.model.Address;

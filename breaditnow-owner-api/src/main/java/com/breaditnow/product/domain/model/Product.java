@@ -1,6 +1,7 @@
 package com.breaditnow.product.domain.model;
 
 import com.breaditnow.common.domain.DailyTime;
+import com.breaditnow.common.domain.ProductStatus;
 import com.breaditnow.common.exception.OwnerException;
 import lombok.Builder;
 import lombok.Getter;

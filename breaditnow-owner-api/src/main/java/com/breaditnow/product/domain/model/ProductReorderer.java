@@ -1,7 +1,7 @@
 package com.breaditnow.product.domain.model;
 
 import com.breaditnow.common.exception.OwnerException;
-import com.breaditnow.product.adapter.in.dto.request.ProductDisplayOrderUpdateRequest.ProductOrder;
+import com.breaditnow.product.application.dto.request.ProductDisplayOrderUpdateRequest.ProductOrder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;

@@ -1,9 +1,9 @@
 package com.breaditnow.bakery.adapter.in.web;
 
-import com.breaditnow.bakery.adapter.in.web.dto.request.BakeryCreateRequest;
-import com.breaditnow.bakery.adapter.in.web.dto.request.BakeryUpdateRequest;
-import com.breaditnow.bakery.adapter.in.web.dto.request.OperatingStatusUpdateRequest;
-import com.breaditnow.bakery.adapter.in.web.dto.response.BakeryResponse;
+import com.breaditnow.bakery.application.dto.request.BakeryCreateRequest;
+import com.breaditnow.bakery.application.dto.request.BakeryUpdateRequest;
+import com.breaditnow.bakery.application.dto.request.OperatingStatusUpdateRequest;
+import com.breaditnow.bakery.application.dto.response.BakeryResponse;
 import com.breaditnow.bakery.application.facade.BakeryFacade;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.security.annotation.AuthOwner;

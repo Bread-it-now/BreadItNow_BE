@@ -2,8 +2,8 @@ package com.breaditnow.product.adapter.in;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.security.annotation.AuthOwner;
-import com.breaditnow.product.adapter.in.dto.request.*;
-import com.breaditnow.product.adapter.in.dto.response.ProductResponse;
+import com.breaditnow.product.application.dto.request.*;
+import com.breaditnow.product.application.dto.response.ProductResponse;
 import com.breaditnow.product.domain.port.in.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

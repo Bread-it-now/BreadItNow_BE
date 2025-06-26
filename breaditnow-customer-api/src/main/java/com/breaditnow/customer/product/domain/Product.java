@@ -9,7 +9,6 @@ import lombok.Getter;
 import java.util.List;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.ONLY_BREAD_CAN_BE_FAVORITED;
-//import static com.breaditnow.customer.common.exception.CustomerErrorCode.PRODUCT_NOT_BELONG_TO_BAKERY;
 
 @Getter
 public class Product {

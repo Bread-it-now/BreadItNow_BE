@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.breaditnow.bakery.domain.model.OperatingStatus.*;
+import static com.breaditnow.common.domain.OperatingStatus.*;
 import static com.breaditnow.common.exception.OwnerErrorCode.BAKERY_INACTIVE;
 import static com.breaditnow.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 import static org.assertj.core.api.Assertions.*;

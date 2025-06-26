@@ -1,10 +1,10 @@
 package com.breaditnow.bakery.application.facade;
 
-import com.breaditnow.bakery.adapter.in.web.dto.request.BakeryCreateRequest;
-import com.breaditnow.bakery.adapter.in.web.dto.request.BakeryUpdateRequest;
-import com.breaditnow.bakery.adapter.in.web.dto.response.BakeryResponse;
+import com.breaditnow.bakery.application.dto.request.BakeryCreateRequest;
+import com.breaditnow.bakery.application.dto.request.BakeryUpdateRequest;
+import com.breaditnow.bakery.application.dto.response.BakeryResponse;
 import com.breaditnow.bakery.domain.model.Bakery;
-import com.breaditnow.bakery.domain.model.OperatingStatus;
+import com.breaditnow.common.domain.OperatingStatus;
 import com.breaditnow.bakery.domain.port.in.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

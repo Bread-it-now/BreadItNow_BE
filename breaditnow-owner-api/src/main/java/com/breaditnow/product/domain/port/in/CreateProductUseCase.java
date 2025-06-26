@@ -1,6 +1,6 @@
 package com.breaditnow.product.domain.port.in;
 
-import com.breaditnow.product.adapter.in.dto.request.ProductCreateRequest;
+import com.breaditnow.product.application.dto.request.ProductCreateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CreateProductUseCase {
