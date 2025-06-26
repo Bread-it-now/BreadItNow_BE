@@ -20,7 +20,7 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public static final QProductEntity productEntity = new QProductEntity("productEntity");
 
-    public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
+    public final com.breaditnow.owner.common.domain.QBaseEntity _super = new com.breaditnow.owner.common.domain.QBaseEntity(this);
 
     public final NumberPath<Long> bakeryId = createNumber("bakeryId", Long.class);
 

@@ -3,7 +3,7 @@ package com.breaditnow.customer.alert.infrastructure.jpa.entity;
 import com.breaditnow.customer.alert.domain.DayOfWeekSet;
 import com.breaditnow.customer.alert.domain.GlobalAlertSetting;
 import com.breaditnow.customer.alert.infrastructure.jpa.DayOfWeekSetConverter;
-import com.breaditnow.customer.common.domain.DailyTime;
+import com.breaditnow.common.domain.DailyTime;
 import com.breaditnow.customer.common.infrastructure.jpa.ReleaseTimeConverter;
 import jakarta.persistence.*;
 import lombok.*;

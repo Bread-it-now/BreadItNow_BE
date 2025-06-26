@@ -1,13 +1,13 @@
 package com.breaditnow.customer.product.application.request;
 
-import com.breaditnow.customer.common.domain.vo.GeoPoint;
-import com.breaditnow.customer.common.domain.vo.Pagination;
+import com.breaditnow.common.domain.GeoPoint;
+import com.breaditnow.common.domain.Pagination;
+import com.breaditnow.common.domain.SortType;
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.product.presentation.request.ProductFavoriteSearchRequest;
-import com.breaditnow.domain.domain.bakery.enumerate.SortType;
 
+import static com.breaditnow.common.domain.SortType.DISTANCE;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.COORDINATES_REQUIRED;
-import static com.breaditnow.domain.domain.bakery.enumerate.SortType.DISTANCE;
 
 public record ProductFavoriteSearchCriteria(Pagination pagination, SortType sortType, GeoPoint location) {
     public static ProductFavoriteSearchCriteria of(ProductFavoriteSearchRequest request) {

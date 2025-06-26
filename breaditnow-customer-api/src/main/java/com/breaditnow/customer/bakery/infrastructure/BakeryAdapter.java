@@ -5,11 +5,12 @@ import com.breaditnow.customer.bakery.domain.port.SaveBakeryPort;
 import com.breaditnow.customer.bakery.infrastructure.jpa.JpaBakeryRepository;
 import com.breaditnow.customer.bakery.presentation.response.BakeryDetailResponse;
 import com.breaditnow.customer.bakery.presentation.response.HotBakeryPageResponse;
-import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_NOT_FOUND;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.BAKERY_NOT_FOUND;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class BakeryAdapter implements SaveBakeryPort {
 
     public void validateIsExistBakery(Long bakeryId) {
         if(!jpaBakeryRepository.existsById(bakeryId)) {
-            throw new DomainException(BAKERY_NOT_FOUND);
+            throw new CustomerException(BAKERY_NOT_FOUND);
         }
     }
 

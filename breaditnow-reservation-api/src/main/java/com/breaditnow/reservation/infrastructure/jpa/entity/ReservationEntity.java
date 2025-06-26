@@ -2,7 +2,7 @@ package com.breaditnow.reservation.infrastructure.jpa.entity;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.reservation.domain.Reservation;
-import com.breaditnow.reservation.domain.ReservationStatus;
+import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.infrastructure.jpa.embeddable.ReservationItemEmbeddable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

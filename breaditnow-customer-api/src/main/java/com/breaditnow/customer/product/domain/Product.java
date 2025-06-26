@@ -1,7 +1,7 @@
 package com.breaditnow.customer.product.domain;
 
 import com.breaditnow.common.domain.Money;
-import com.breaditnow.customer.common.domain.DailyTime;
+import com.breaditnow.common.domain.DailyTime;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.Builder;
 import lombok.Getter;

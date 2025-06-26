@@ -1,8 +1,8 @@
 package com.breaditnow.owner.product.infrastructure.adapter.out.persistence.jpa;
 
 import com.breaditnow.common.domain.Money;
-import com.breaditnow.domain.global.entity.BaseEntity;
 import com.breaditnow.owner.bakery.domain.Image;
+import com.breaditnow.owner.common.domain.BaseEntity;
 import com.breaditnow.owner.common.domain.DailyTime;
 import com.breaditnow.owner.product.domain.*;
 import jakarta.persistence.*;

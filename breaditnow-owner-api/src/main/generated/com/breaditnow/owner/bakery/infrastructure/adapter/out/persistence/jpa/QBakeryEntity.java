@@ -20,7 +20,7 @@ public class QBakeryEntity extends EntityPathBase<BakeryEntity> {
 
     public static final QBakeryEntity bakeryEntity = new QBakeryEntity("bakeryEntity");
 
-    public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
+    public final com.breaditnow.owner.common.domain.QBaseEntity _super = new com.breaditnow.owner.common.domain.QBaseEntity(this);
 
     public final ListPath<String, StringPath> additionalImages = this.<String, StringPath>createList("additionalImages", String.class, StringPath.class, PathInits.DIRECT2);
 

@@ -1,7 +1,10 @@
 package com.breaditnow.owner.common.security.resolver;
 
-import static com.breaditnow.owner.common.exception.OwnerErrorCode.*;
-
+import com.breaditnow.owner.common.exception.OwnerException;
+import com.breaditnow.owner.common.security.annotation.AuthOwner;
+import com.breaditnow.owner.owner.domain.model.Owner;
+import com.breaditnow.owner.owner.domain.port.out.OwnerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -9,12 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.breaditnow.domain.domain.owner.entity.Owner;
-import com.breaditnow.domain.domain.owner.repository.OwnerRepository;
-import com.breaditnow.owner.common.exception.OwnerException;
-import com.breaditnow.owner.common.security.annotation.AuthOwner;
-
-import lombok.RequiredArgsConstructor;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.AUTHENTICATION_REQUIRED;
 
 @Component
 @RequiredArgsConstructor
@@ -44,7 +42,8 @@ public class OwnerArgumentResolver implements HandlerMethodArgumentResolver {
 				return null;
 			}
 		}
-		Owner owner = ownerRepository.getById(Long.valueOf(userIdHeader));
+		Owner owner = ownerRepository.findById(Long.valueOf(userIdHeader))
+				.orElseThrow(() -> new OwnerException(AUTHENTICATION_REQUIRED));
 
 		if (Owner.class.isAssignableFrom(parameter.getParameterType())) {
 			return owner;

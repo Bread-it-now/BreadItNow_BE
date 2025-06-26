@@ -1,6 +1,6 @@
 package com.breaditnow.owner.product.infrastructure.adapter.out.persistence.adapter;
 
-import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.owner.common.exception.OwnerException;
 import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.domain.Product;
 import com.breaditnow.owner.product.infrastructure.adapter.out.persistence.jpa.JpaProductRepository;
@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
+import static com.breaditnow.owner.common.exception.OwnerErrorCode.PRODUCT_NOT_FOUND;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     public Product getById(Long productId) {
         return jpaProductRepository.findById(productId)
                 .map(ProductEntity::toDomain)
-                .orElseThrow(() -> new DomainException(PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new OwnerException(PRODUCT_NOT_FOUND));
     }
 
     @Override

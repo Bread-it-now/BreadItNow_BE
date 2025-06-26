@@ -1,10 +1,10 @@
 package com.breaditnow.customer.customer.infrastructure;
 
+import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.customer.application.port.out.CustomerRepositoryPort;
 import com.breaditnow.customer.customer.domain.Customer;
 import com.breaditnow.customer.customer.infrastructure.jpa.CustomerEntity;
 import com.breaditnow.customer.customer.infrastructure.jpa.JpaCustomerRepository;
-import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.CUSTOMER_NOT_FOUND;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.CUSTOMER_NOT_FOUND;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class CustomerPersistenceAdapter implements CustomerRepositoryPort {
     @Override
     public Customer getCustomer(Long id) {
         return findById(id)
-                .orElseThrow(() -> new DomainException(CUSTOMER_NOT_FOUND));
+                .orElseThrow(() -> new CustomerException(CUSTOMER_NOT_FOUND));
     }
 
 

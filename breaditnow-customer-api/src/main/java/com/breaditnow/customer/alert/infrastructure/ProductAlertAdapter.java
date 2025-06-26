@@ -9,7 +9,7 @@ import com.breaditnow.customer.alert.infrastructure.jpa.entity.ProductAlertEntit
 //import com.breaditnow.customer.alert.infrastructure.jpa.query.QueryProductAlertRepository;
 import com.breaditnow.customer.alert.presentation.response.ProductAlertPageResponse;
 import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
-import com.breaditnow.customer.common.domain.vo.Pagination;
+import com.breaditnow.common.domain.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

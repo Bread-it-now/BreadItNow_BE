@@ -42,7 +42,15 @@ public enum CommonErrorCode implements ErrorCode {
 	 * Domain(AE000)
 	 */
 	INVALID_AMOUNT(BAD_REQUEST, "AE001", "금액은 0보다 작을 수 없습니다."),
-	AMOUNT_REQUIRED(BAD_REQUEST, "AE002", "금액은 필수 값입니다.");
+	AMOUNT_REQUIRED(BAD_REQUEST, "AE002", "금액은 필수 값입니다."),
+	SORT_CONDITION_NOT_FOUND(BAD_REQUEST, "AE003", "정렬 조건을 찾을 수 없습니다."),
+	INVALID_PAGE_NUMBER(BAD_REQUEST, "AE004", "페이지 번호는 0 이상이어야 합니다."),
+	INVALID_PAGE_SIZE(BAD_REQUEST, "AE005", "페이지 크기는 1 이상 100 이하이어야 합니다."),
+	INVALID_TIME_FORMAT(BAD_REQUEST, "AE006", "잘못된 시간 형식입니다. 올바른 형식은 HH:mm 입니다."),
+	COORDINATES_REQUIRED(BAD_REQUEST, "AE007", "좌표는 필수 값입니다."),
+	INVALID_LATITUDE_RANGE(BAD_REQUEST, "AE008", "위도는 -90.0에서 90.0 사이여야 합니다."),
+	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "AE009", "경도는 -180.0에서 180.0 사이여야 합니다."),
+	INVALID_PERIOD_VALUE(BAD_REQUEST, "AE010", "잘못된 기간 값입니다. DAILY, WEEKLY, MONTHLY 중 하나여야 합니다."),;
 
 	private final HttpStatus httpStatus;
 	private final String code;

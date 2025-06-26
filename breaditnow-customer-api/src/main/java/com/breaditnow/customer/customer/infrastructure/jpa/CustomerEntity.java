@@ -1,8 +1,8 @@
 package com.breaditnow.customer.customer.infrastructure.jpa;
 
+import com.breaditnow.customer.common.domain.BaseEntity;
 import com.breaditnow.customer.customer.domain.Customer;
 import com.breaditnow.customer.customer.domain.Provider;
-import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

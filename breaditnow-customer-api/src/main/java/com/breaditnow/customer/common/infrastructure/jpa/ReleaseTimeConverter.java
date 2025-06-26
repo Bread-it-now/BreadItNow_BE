@@ -1,6 +1,6 @@
 package com.breaditnow.customer.common.infrastructure.jpa;
 
-import com.breaditnow.customer.common.domain.DailyTime;
+import com.breaditnow.common.domain.DailyTime;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

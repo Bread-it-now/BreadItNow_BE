@@ -1,16 +1,12 @@
 package com.breaditnow.reservation.domain;
 
 import com.breaditnow.common.domain.Money;
-import com.breaditnow.reservation.infrastructure.exception.ReservationException;
+import com.breaditnow.common.domain.ReservationStatus;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.breaditnow.common.util.ValidationUtils.requireValid;
-import static com.breaditnow.reservation.infrastructure.exception.ReservationErrorCode.UNAUTHORIZED_RESERVATION_CANCEL;
-
 
 @Getter
 public class Reservation {
@@ -22,6 +18,7 @@ public class Reservation {
     private ReservationState reservationState;
     private LocalDateTime reservationTime;
     private Money totalPrice;
+    private LocalDateTime pickupDeadline;
 
     @Builder
     private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long ordererId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {
@@ -44,9 +41,22 @@ public class Reservation {
         this.totalPrice = calculateTotalPrice();
     }
 
-    public void cancel(Long ordererId, String reason) {
-        requireValid(ordererId, id -> !getOrdererId().equals(id), () -> new ReservationException(UNAUTHORIZED_RESERVATION_CANCEL));
-        reservationState.cancel(reason);
+    public void approve(Long newReservationNumber){
+        this.reservationState.approve();
+        this.reservationNumber = newReservationNumber;
+        this.pickupDeadline = calculatePickupDeadline();
+    }
+
+    public void cancel(String reason) {
+        this.reservationState.cancel(reason);
+    }
+
+    public void partiallyApprove(List<ReservationProduct> adjustedProducts, Long newReservationNumber) {
+        this.reservationState.partiallyApprove();
+        this.reservationProducts = adjustedProducts;
+        this.reservationNumber = newReservationNumber;
+        this.pickupDeadline = calculatePickupDeadline();
+        this.totalPrice = calculateTotalPrice();
     }
 
     private Money calculateTotalPrice() {
@@ -54,4 +64,6 @@ public class Reservation {
                 .map(ReservationProduct::getTotalPrice)
                 .reduce(Money.ZERO, Money::add);
     }
+
+    private LocalDateTime calculatePickupDeadline() { return LocalDateTime.now().plusMinutes(30); }
 }

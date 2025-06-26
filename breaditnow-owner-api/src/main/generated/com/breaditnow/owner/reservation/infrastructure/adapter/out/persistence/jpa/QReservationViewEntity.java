@@ -23,9 +23,13 @@ public class QReservationViewEntity extends EntityPathBase<ReservationViewEntity
 
     public final NumberPath<Long> customerId = createNumber("customerId", Long.class);
 
+    public final DateTimePath<java.time.LocalDateTime> pickupDeadline = createDateTime("pickupDeadline", java.time.LocalDateTime.class);
+
     public final StringPath productInfoJson = createString("productInfoJson");
 
     public final NumberPath<Long> reservationId = createNumber("reservationId", Long.class);
+
+    public final StringPath reservationNumber = createString("reservationNumber");
 
     public final DateTimePath<java.time.LocalDateTime> reservationTime = createDateTime("reservationTime", java.time.LocalDateTime.class);
 

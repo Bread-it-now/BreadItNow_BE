@@ -1,5 +1,6 @@
 package com.breaditnow.reservation.domain;
 
+import com.breaditnow.common.domain.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

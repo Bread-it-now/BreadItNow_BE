@@ -3,7 +3,7 @@ package com.breaditnow.reservation.application.dto.event;
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.reservation.domain.Reservation;
 import com.breaditnow.reservation.domain.ReservationProduct;
-import com.breaditnow.reservation.domain.ReservationStatus;
+import com.breaditnow.common.domain.ReservationStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

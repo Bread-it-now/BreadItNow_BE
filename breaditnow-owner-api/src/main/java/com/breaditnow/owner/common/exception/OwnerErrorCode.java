@@ -22,6 +22,8 @@ public enum OwnerErrorCode implements ErrorCode {
 	PHONE_NUMBER_REQUIRED(BAD_REQUEST, "DB005", "전화번호는 필수입니다."),
 	INVALID_PHONE_NUMBER_FORMAT(BAD_REQUEST, "DB006", "전화번호 형식이 올바르지 않습니다."),
 	UNAUTHORIZED_BAKERY_ACCESS(FORBIDDEN, "DB007", "이 빵집에 대한 접근 권한이 없습니다."),
+	BAKERY_INACTIVE(FORBIDDEN, "DB008", "비활성화된 빵집입니다. 활성화 후 다시 시도해주세요."),
+	BAKERY_NOT_FOUND(NOT_FOUND, "DB009", "해당 빵집을 찾을 수 없습니다."),
 
 	/**
 	 * DC000 Image
@@ -46,7 +48,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	DUPLICATE_PRODUCT_ID_IN_REQUEST(BAD_REQUEST, "DD013", "상품 순서 변경 요청에 중복된 상품 ID가 포함될 수 없습니다."),
 	DUPLICATE_DISPLAY_ORDER(BAD_REQUEST, "DD014", "상품 진열 순서에 중복된 값이 포함될 수 없습니다."),
 	DISPLAY_ORDER_SET_MISMATCH(BAD_REQUEST, "DD015", "변경 대상 상품들의 기존 순서 값과 일치하지 않는 순서 값이 포함되어 있습니다."),
-
+	PRODUCT_NOT_FOUND(NOT_FOUND, "DD016", "해당 상품을 찾을 수 없습니다."),
 	/**
 	 * DY000 인증
 	 */
@@ -56,7 +58,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	/**
 	 * DZ000 이외
 	 */
-	INVALID_TIME_FORMAT(BAD_REQUEST, "CC008", "시간 형식이 잘못되었습니다. 'HH:mm' 형식이어야 합니다.");
+	INVALID_TIME_FORMAT(BAD_REQUEST, "CC008", "시간 형식이 잘못되었습니다. 'HH:mm' 형식이어야 합니다."), ;
 
 
 	private final HttpStatus httpStatus;

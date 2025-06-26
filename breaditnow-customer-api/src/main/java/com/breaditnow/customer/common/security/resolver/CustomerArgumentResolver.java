@@ -1,11 +1,10 @@
 package com.breaditnow.customer.common.security.resolver;
 
+import com.amazonaws.services.s3.model.Owner;
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import com.breaditnow.customer.customer.application.CustomerService;
 import com.breaditnow.customer.customer.domain.Customer;
-//import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.domain.domain.owner.entity.Owner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.breaditnow.customer.customer.infrastructure.jpa;
 
-import com.breaditnow.domain.global.entity.BaseEntity;
+import com.breaditnow.customer.common.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

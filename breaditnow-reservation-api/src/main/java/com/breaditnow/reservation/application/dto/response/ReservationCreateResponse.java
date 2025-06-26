@@ -1,7 +1,7 @@
 package com.breaditnow.reservation.application.dto.response;
 
 import com.breaditnow.reservation.domain.Reservation;
-import com.breaditnow.reservation.domain.ReservationStatus;
+import com.breaditnow.common.domain.ReservationStatus;
 
 public record ReservationCreateResponse(
         Long reservationId,

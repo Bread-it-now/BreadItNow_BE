@@ -1,6 +1,6 @@
 package com.breaditnow.customer.product.presentation.response;
 
-import com.breaditnow.customer.common.domain.vo.PageInfo;
+import com.breaditnow.common.domain.PageInfo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

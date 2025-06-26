@@ -7,7 +7,6 @@ import com.breaditnow.customer.customer.domain.Customer;
 import com.breaditnow.customer.product.domain.port.LoadProductCategoryPort;
 import com.breaditnow.customer.product.domain.ProductCategory;
 import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.DUPLICATE_NICKNAME;
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_BREAD_CATEGORY_IDS;
-import static com.breaditnow.domain.global.exception.DomainErrorCode.DUPLICATE_NICKNAME;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class CustomerInitializationService {
     public void initCustomerInfo(Long customerId, CustomerInitRequest dto) {
         Customer customer = customerService.loadCustomer(customerId);
         if (customerRepositoryPort.isExistNickName(dto.nickname())) {
-            throw new DomainException(DUPLICATE_NICKNAME);
+            throw new CustomerException(DUPLICATE_NICKNAME);
         }
 
         Set<ProductCategory> validCats = new HashSet<>(loadProductCategoryPort.findAllByIds(dto.breadCategoryIds()));

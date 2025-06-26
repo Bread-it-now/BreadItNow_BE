@@ -19,7 +19,7 @@ public class QBakeryEntity extends EntityPathBase<BakeryEntity> {
 
     public static final QBakeryEntity bakeryEntity = new QBakeryEntity("bakeryEntity");
 
-    public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
+    public final com.breaditnow.customer.common.domain.QBaseEntity _super = new com.breaditnow.customer.common.domain.QBaseEntity(this);
 
     public final StringPath addressDescription = createString("addressDescription");
 

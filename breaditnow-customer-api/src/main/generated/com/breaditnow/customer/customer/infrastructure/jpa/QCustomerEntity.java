@@ -19,7 +19,7 @@ public class QCustomerEntity extends EntityPathBase<CustomerEntity> {
 
     public static final QCustomerEntity customerEntity = new QCustomerEntity("customerEntity");
 
-    public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
+    public final com.breaditnow.customer.common.domain.QBaseEntity _super = new com.breaditnow.customer.common.domain.QBaseEntity(this);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

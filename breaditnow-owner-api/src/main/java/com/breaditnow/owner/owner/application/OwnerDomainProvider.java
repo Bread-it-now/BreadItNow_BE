@@ -1,8 +1,9 @@
 package com.breaditnow.owner.owner.application;
 
-import com.breaditnow.domain.global.exception.DomainException;
 import com.breaditnow.owner.bakery.application.port.out.BakeryRepository;
 import com.breaditnow.owner.bakery.domain.Bakery;
+import com.breaditnow.owner.common.exception.OwnerErrorCode;
+import com.breaditnow.owner.common.exception.OwnerException;
 import com.breaditnow.owner.product.application.port.out.ProductRepositoryPort;
 import com.breaditnow.owner.product.domain.Product;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.PRODUCT_NOT_FOUND;
 
 
 @Component
@@ -40,7 +40,7 @@ public class OwnerDomainProvider {
 
         List<Product> products = productRepositoryPort.findAllByIdInAndBakeryId(productIds, bakeryId);
         if (products.size() != productIds.size()) {
-            throw new DomainException(PRODUCT_NOT_FOUND);
+            throw new OwnerException(OwnerErrorCode.PRODUCT_NOT_FOUND);
         }
 
         return products;

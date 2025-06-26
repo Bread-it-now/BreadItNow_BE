@@ -1,7 +1,7 @@
 package com.breaditnow.customer.bakery.infrastructure.jpa;
 
+import com.breaditnow.customer.common.domain.BaseEntity;
 import com.breaditnow.customer.bakery.domain.OperatingStatus;
-import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

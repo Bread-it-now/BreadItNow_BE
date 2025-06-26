@@ -1,7 +1,6 @@
 package com.breaditnow.customer.product.controller.res;
 
-import com.breaditnow.domain.domain.product.entity.Product;
-
+import com.breaditnow.customer.product.domain.Product;
 import lombok.Builder;
 
 @Builder
@@ -18,11 +17,11 @@ public record SearchProductResponse(
 	public static SearchProductResponse of(Product product, Boolean isFavorite) {
 		return SearchProductResponse.builder()
 			.productId(product.getId())
-			.bakeryId(product.getBakery().getId())
-			.bakeryName(product.getBakery().getName())
+//			.bakeryId(product.getBakery().getId())
+//			.bakeryName(product.getBakery().getName())
 			.productName(product.getName())
-			.image(product.getImage())
-			.price(product.getPrice())
+//			.image(product.getImage())
+//			.price(product.getPrice())
 			.isFavorite(isFavorite)
 			.stock(product.getStock())
 			.build();

@@ -1,32 +1,11 @@
 package com.breaditnow.customer.common.config;
 
-import static io.swagger.v3.oas.models.security.SecurityScheme.In.*;
-import static io.swagger.v3.oas.models.security.SecurityScheme.Type.*;
-import static java.util.stream.Collectors.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.web.method.HandlerMethod;
-
 import com.breaditnow.common.exception.ErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;
 import com.breaditnow.common.swagger.ExampleHolder;
 import com.breaditnow.customer.common.presentation.swagger.annotation.CommonErrorCodeExamples;
 import com.breaditnow.customer.common.presentation.swagger.annotation.CustomerApiErrorCodeExamples;
-import com.breaditnow.customer.common.presentation.swagger.annotation.DomainErrorCodeExamples;
-import com.breaditnow.customer.common.presentation.swagger.annotation.ExternalErrorCodeExamples;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -41,6 +20,23 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.web.method.HandlerMethod;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER;
+import static io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP;
+import static java.util.stream.Collectors.groupingBy;
 
 @Configuration
 @RequiredArgsConstructor
@@ -81,21 +77,11 @@ public class SwaggerConfig {
 
 			CustomerApiErrorCodeExamples customerApiErrorCodeExamples = handlerMethod.getMethodAnnotation(
 				CustomerApiErrorCodeExamples.class);
-			DomainErrorCodeExamples domainErrorCodeExamples = handlerMethod.getMethodAnnotation(
-				DomainErrorCodeExamples.class);
-			ExternalErrorCodeExamples externalErrorCodeExamples = handlerMethod.getMethodAnnotation(
-				ExternalErrorCodeExamples.class);
 			CommonErrorCodeExamples commonErrorCodeExamples = handlerMethod.getMethodAnnotation(
 				CommonErrorCodeExamples.class);
 
 			if (customerApiErrorCodeExamples != null) {
 				errorCodes.addAll(Arrays.asList(customerApiErrorCodeExamples.value()));
-			}
-			if (domainErrorCodeExamples != null) {
-				errorCodes.addAll(Arrays.asList(domainErrorCodeExamples.value()));
-			}
-			if (externalErrorCodeExamples != null) {
-				errorCodes.addAll(Arrays.asList(externalErrorCodeExamples.value()));
 			}
 			if (commonErrorCodeExamples != null) {
 				errorCodes.addAll(Arrays.asList(commonErrorCodeExamples.value()));

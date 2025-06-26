@@ -18,7 +18,8 @@ public enum ReservationErrorCode implements ErrorCode {
 	BAKERY_NOT_FOUND(NOT_FOUND, "EA007", "해당 빵집을 찾을 수 없습니다."),
 	BAKERY_NOT_AVAILABLE(BAD_REQUEST, "EA008", "예약이 불가능한 빵집입니다."),
 	PRODUCT_NOT_FOUND(NOT_FOUND, "EA009", "존재하지 않는 상품입니다."),
-	PRODUCT_NOT_AVAILABLE(BAD_REQUEST, "EA010", "예약이 불가능한 상품입니다.");
+	PRODUCT_NOT_AVAILABLE(BAD_REQUEST, "EA010", "예약이 불가능한 상품입니다."),
+	ALREADY_PROCESSED(BAD_REQUEST, "EA011", "이미 처리된 예약입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;
