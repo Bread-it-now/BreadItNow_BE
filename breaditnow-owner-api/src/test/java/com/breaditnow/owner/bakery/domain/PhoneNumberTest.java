@@ -1,7 +1,8 @@
 package com.breaditnow.owner.bakery.domain;
 
-import com.breaditnow.owner.common.exception.OwnerErrorCode;
-import com.breaditnow.owner.common.exception.OwnerException;
+import com.breaditnow.bakery.domain.model.PhoneNumber;
+import com.breaditnow.common.exception.OwnerErrorCode;
+import com.breaditnow.common.exception.OwnerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

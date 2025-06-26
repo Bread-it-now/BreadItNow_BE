@@ -1,16 +1,19 @@
 package com.breaditnow.owner.bakery.domain;
 
-import com.breaditnow.domain.global.exception.DomainException;
-import com.breaditnow.owner.common.exception.OwnerException;
+import com.breaditnow.bakery.domain.model.Address;
+import com.breaditnow.bakery.domain.model.Bakery;
+import com.breaditnow.bakery.domain.model.Image;
+import com.breaditnow.bakery.domain.model.PhoneNumber;
+import com.breaditnow.common.exception.OwnerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.BAKERY_INACTIVE;
-import static com.breaditnow.owner.bakery.domain.OperatingStatus.*;
-import static com.breaditnow.owner.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
+import static com.breaditnow.bakery.domain.model.OperatingStatus.*;
+import static com.breaditnow.common.exception.OwnerErrorCode.BAKERY_INACTIVE;
+import static com.breaditnow.common.exception.OwnerErrorCode.UNAUTHORIZED_BAKERY_ACCESS;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Bakery 도메인 테스트")
@@ -63,7 +66,7 @@ class BakeryTest {
     void updateBakeryWhenDeleted() {
         bakery.delete(ownerId);
         assertThatThrownBy(() -> bakery.update(ownerId, "이름", "10:00", "소개"))
-                .isInstanceOf(DomainException.class)
+                .isInstanceOf(OwnerException.class)
                 .hasFieldOrPropertyWithValue("errorCode", BAKERY_INACTIVE);
     }
 
@@ -112,7 +115,7 @@ class BakeryTest {
         bakery.delete(ownerId);
         Image img = Image.create("a.jpg");
         assertThatThrownBy(() -> bakery.addAdditionalImages(ownerId, List.of(img)))
-                .isInstanceOf(DomainException.class)
+                .isInstanceOf(OwnerException.class)
                 .hasFieldOrPropertyWithValue("errorCode", BAKERY_INACTIVE);
     }
 }
