@@ -1,6 +1,6 @@
 package com.breaditnow.owner.bakery.domain;
 
-import com.breaditnow.bakery.domain.model.Address;
+import com.breaditnow.location.domain.model.Address;
 import com.breaditnow.common.exception.OwnerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

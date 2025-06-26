@@ -2,7 +2,8 @@ package com.breaditnow.product.domain;
 
 import com.breaditnow.common.domain.DailyTime;
 import com.breaditnow.common.exception.OwnerException;
-import com.breaditnow.bakery.domain.model.Image;
+import com.breaditnow.image.domain.Image;
+import com.breaditnow.product.domain.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

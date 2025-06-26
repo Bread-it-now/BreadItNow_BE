@@ -2,6 +2,9 @@ package com.breaditnow.product.infrastructure.adapter.out.persistence.jpa;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.breaditnow.product.adapter.out.persistence.entity.ProductEntity;
+import com.breaditnow.product.domain.model.ProductStatus;
+import com.breaditnow.product.domain.model.ProductType;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -42,13 +45,13 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final EnumPath<com.breaditnow.product.domain.ProductType> productType = createEnum("productType", com.breaditnow.product.domain.ProductType.class);
+    public final EnumPath<ProductType> productType = createEnum("productType", ProductType.class);
 
     public final StringPath profileImageUrl = createString("profileImageUrl");
 
     public final ListPath<String, StringPath> releaseTimes = this.<String, StringPath>createList("releaseTimes", String.class, StringPath.class, PathInits.DIRECT2);
 
-    public final EnumPath<com.breaditnow.product.domain.ProductStatus> status = createEnum("status", com.breaditnow.product.domain.ProductStatus.class);
+    public final EnumPath<ProductStatus> status = createEnum("status", ProductStatus.class);
 
     public final NumberPath<Integer> stock = createNumber("stock", Integer.class);
 

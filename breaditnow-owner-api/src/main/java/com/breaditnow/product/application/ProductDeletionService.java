@@ -1,13 +1,13 @@
 package com.breaditnow.product.application;
 
 import com.breaditnow.owner.application.OwnerDomainProvider;
-import com.breaditnow.product.application.port.dto.event.ProductDeletedEvent;
-import com.breaditnow.product.application.port.in.DeleteProductUseCase;
-import com.breaditnow.product.application.port.in.DeleteProductsUseCase;
-import com.breaditnow.product.application.port.out.ProductRepositoryPort;
-import com.breaditnow.product.application.port.out.PublishProductEventPort;
-import com.breaditnow.product.domain.Product;
-import com.breaditnow.product.infrastructure.adapter.in.presentation.request.ProductsDeleteRequest;
+import com.breaditnow.product.application.port.event.ProductDeletedEvent;
+import com.breaditnow.product.domain.port.in.DeleteProductUseCase;
+import com.breaditnow.product.domain.port.in.DeleteProductsUseCase;
+import com.breaditnow.product.domain.port.out.ProductRepositoryPort;
+import com.breaditnow.product.domain.port.out.PublishProductEventPort;
+import com.breaditnow.product.domain.model.Product;
+import com.breaditnow.product.adapter.in.dto.request.ProductsDeleteRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

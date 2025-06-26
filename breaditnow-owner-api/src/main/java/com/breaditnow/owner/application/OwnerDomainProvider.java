@@ -5,8 +5,8 @@ import com.breaditnow.bakery.domain.model.Bakery;
 import com.breaditnow.common.exception.OwnerErrorCode;
 import com.breaditnow.common.exception.OwnerException;
 import com.breaditnow.common.support.RepositorySupport;
-import com.breaditnow.product.application.port.out.ProductRepositoryPort;
-import com.breaditnow.product.domain.Product;
+import com.breaditnow.product.domain.port.out.ProductRepositoryPort;
+import com.breaditnow.product.domain.model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

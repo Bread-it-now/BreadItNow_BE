@@ -1,11 +1,11 @@
 package com.breaditnow.bakery.application.service;
 
 import com.breaditnow.bakery.domain.model.Bakery;
-import com.breaditnow.bakery.domain.model.Image;
+import com.breaditnow.image.domain.Image;
 import com.breaditnow.bakery.domain.port.in.AddBakeryImagesUseCase;
 import com.breaditnow.bakery.domain.port.out.BakeryRepository;
 import com.breaditnow.common.support.RepositorySupport;
-import com.breaditnow.image.application.port.in.ImagePort;
+import com.breaditnow.image.application.port.in.ImageUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddBakeryImagesService implements AddBakeryImagesUseCase {
     private final BakeryRepository bakeryRepository;
-    private final ImagePort imagePort;
+    private final ImageUseCase imageUseCase;
 
     @Override
     @Transactional
@@ -26,7 +26,7 @@ public class AddBakeryImagesService implements AddBakeryImagesUseCase {
         Bakery bakery = RepositorySupport.findBakeryOrElseThrow(bakeryRepository, bakeryId);
 
         List<Image> newImages = images.stream()
-                .map(imagePort::saveImage)
+                .map(imageUseCase::saveImage)
                 .collect(Collectors.toList());
 
         bakery.addAdditionalImages(ownerId, newImages);

@@ -1,7 +1,7 @@
 package com.breaditnow.bakery.adapter.in.web.dto.response;
 
 import com.breaditnow.bakery.domain.model.Bakery;
-import com.breaditnow.bakery.domain.model.Image;
+import com.breaditnow.image.domain.Image;
 import com.breaditnow.bakery.domain.model.OperatingStatus;
 
 import java.util.List;

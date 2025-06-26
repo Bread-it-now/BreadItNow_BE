@@ -1,8 +1,8 @@
 package com.breaditnow.owner.bakery.domain;
 
-import com.breaditnow.bakery.domain.model.Address;
+import com.breaditnow.location.domain.model.Address;
 import com.breaditnow.bakery.domain.model.Bakery;
-import com.breaditnow.bakery.domain.model.Image;
+import com.breaditnow.image.domain.Image;
 import com.breaditnow.bakery.domain.model.PhoneNumber;
 import com.breaditnow.common.exception.OwnerException;
 import org.junit.jupiter.api.BeforeEach;

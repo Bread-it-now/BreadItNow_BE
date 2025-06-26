@@ -1,6 +1,6 @@
 package com.breaditnow.reservation.infrastructure.adapter.in.event;
 
-import com.breaditnow.common.config.RabbitMQConfig;
+import com.breaditnow.config.RabbitMQConfig;
 import com.breaditnow.reservation.application.dto.event.ReservationCreatedEvent;
 import com.breaditnow.reservation.application.port.in.ReservationViewSynchronizationUseCase;
 import lombok.RequiredArgsConstructor;

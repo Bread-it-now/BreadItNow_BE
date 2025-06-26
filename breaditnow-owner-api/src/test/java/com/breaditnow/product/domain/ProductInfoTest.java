@@ -1,6 +1,7 @@
 package com.breaditnow.product.domain;
 
-import com.breaditnow.bakery.domain.model.Image;
+import com.breaditnow.image.domain.Image;
+import com.breaditnow.product.domain.model.ProductInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

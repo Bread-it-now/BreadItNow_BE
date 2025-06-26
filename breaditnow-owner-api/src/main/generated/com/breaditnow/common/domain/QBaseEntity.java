@@ -2,6 +2,7 @@ package com.breaditnow.common.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.breaditnow.common.jpa.BaseEntity;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;

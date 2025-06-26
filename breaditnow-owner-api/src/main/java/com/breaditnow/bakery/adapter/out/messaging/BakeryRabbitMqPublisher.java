@@ -4,7 +4,7 @@ import com.breaditnow.bakery.application.event.BakeryCreatedEvent;
 import com.breaditnow.bakery.application.event.BakeryDeletedEvent;
 import com.breaditnow.bakery.application.event.BakeryUpdatedEvent;
 import com.breaditnow.bakery.domain.port.out.BakeryEventPublisherPort;
-import com.breaditnow.common.config.RabbitMQConfig;
+import com.breaditnow.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;

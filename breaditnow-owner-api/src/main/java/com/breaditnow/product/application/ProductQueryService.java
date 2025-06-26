@@ -1,12 +1,12 @@
 package com.breaditnow.product.application;
 
 import com.breaditnow.owner.application.OwnerDomainProvider;
-import com.breaditnow.product.application.port.in.GetProductUseCase;
-import com.breaditnow.product.application.port.in.ListProductsUseCase;
-import com.breaditnow.product.application.port.out.ProductQueryRepositoryPort;
-import com.breaditnow.product.application.port.out.ProductRepositoryPort;
-import com.breaditnow.product.infrastructure.adapter.in.presentation.request.ProductSearchCondition;
-import com.breaditnow.product.infrastructure.adapter.in.presentation.response.ProductResponse;
+import com.breaditnow.product.domain.port.in.GetProductUseCase;
+import com.breaditnow.product.domain.port.in.ListProductsUseCase;
+import com.breaditnow.product.domain.port.out.ProductQueryRepositoryPort;
+import com.breaditnow.product.domain.port.out.ProductRepositoryPort;
+import com.breaditnow.product.adapter.in.dto.request.ProductSearchCondition;
+import com.breaditnow.product.adapter.in.dto.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
