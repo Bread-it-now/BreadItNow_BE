@@ -2,7 +2,7 @@ package com.breaditnow.customer.common.infrastructure;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.breaditnow.customer.customer.application.port.out.SaveImageStoragePort;
+import com.breaditnow.customer.customer.domain.port.out.SaveImageStoragePort;
 import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

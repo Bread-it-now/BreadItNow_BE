@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,8 +38,7 @@ public class OwnerService implements OwnerUseCase{
     }
 
     @Override
-    public Owner findOwnerById(Long ownerId) {
-        return ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new IllegalArgumentException("Owner not found"));
+    public Optional<Owner> findOwnerById(Long ownerId) {
+        return ownerRepository.findById(ownerId);
     }
 }

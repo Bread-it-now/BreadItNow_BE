@@ -5,6 +5,7 @@ import com.breaditnow.common.domain.OperatingStatus;
 
 public record BakeryInfoResponse(
         Long bakeryId,
+        Long ownerId,
         String name,
         OperatingStatus operatingStatus,
         boolean isDeleted
@@ -12,6 +13,7 @@ public record BakeryInfoResponse(
     public static BakeryInfoResponse from(Bakery bakery) {
         return new BakeryInfoResponse(
                 bakery.getBakeryId(),
+                bakery.getOwnerId(),
                 bakery.getName(),
                 bakery.getOperatingStatus(),
                 bakery.isDeleted()

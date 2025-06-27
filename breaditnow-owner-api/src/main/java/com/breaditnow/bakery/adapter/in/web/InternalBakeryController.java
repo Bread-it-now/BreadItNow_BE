@@ -16,11 +16,7 @@ public class InternalBakeryController {
     private final GetBakeryInfoUseCase getBakeryInfoUseCase;
 
     @GetMapping("/{bakeryId}")
-    public ApiSuccessResponse<BakeryInfoResponse> getBakeryInfo(@PathVariable("bakeryId") Long id) {
-        BakeryInfoResponse response = getBakeryInfoUseCase.findById(id)
-                .map(BakeryInfoResponse::from)
-                .orElseThrow(() -> new IllegalArgumentException("Bakery not found with id: " + id)); // 또는 커스텀 예외
-
-        return ApiSuccessResponse.of(response);
+    public ApiSuccessResponse<BakeryInfoResponse> getBakeryInfo(@PathVariable("bakeryId") Long bakeryId) {
+        return ApiSuccessResponse.of(getBakeryInfoUseCase.findById(bakeryId));
     }
 }

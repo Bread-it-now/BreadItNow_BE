@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/internal/api/v1/bakery/{bakeryId}/product")
@@ -16,12 +15,10 @@ public class InternalProductController {
     private final GetProductInfoListUseCase getProductInfoListUseCase;
 
     @GetMapping
-    public ApiSuccessResponse<List<ProductInfoResponse>> getProductInfoList(@PathVariable("bakeryId") Long bakeryId, @RequestParam List<Long> ids) {
-        List<ProductInfoResponse> responses = getProductInfoListUseCase.findAllByIds(ids, bakeryId)
-                .stream()
-                .map(ProductInfoResponse::from)
-                .collect(Collectors.toList());
-
-        return ApiSuccessResponse.of(responses);
+    public ApiSuccessResponse<List<ProductInfoResponse>> getProductInfoList(
+            @PathVariable("bakeryId") Long bakeryId,
+            @RequestParam List<Long> productIds
+    ) {
+        return ApiSuccessResponse.of(getProductInfoListUseCase.findAllByIds(productIds, bakeryId));
     }
 }

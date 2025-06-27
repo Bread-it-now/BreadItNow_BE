@@ -2,7 +2,7 @@ package com.breaditnow.customer.customer.application;
 
 import com.breaditnow.customer.common.exception.CustomerErrorCode;
 import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.customer.customer.application.port.out.SaveCustomerRegionPort;
+import com.breaditnow.customer.customer.domain.port.out.SaveCustomerRegionPort;
 import com.breaditnow.customer.customer.application.request.RegionUpdateRequest;
 import com.breaditnow.customer.region.domain.port.LoadRegionPort;
 import lombok.RequiredArgsConstructor;

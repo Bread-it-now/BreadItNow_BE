@@ -1,9 +1,7 @@
 package com.breaditnow.bakery.domain.port.in;
 
-import com.breaditnow.bakery.domain.model.Bakery;
-
-import java.util.Optional;
+import com.breaditnow.bakery.application.dto.response.BakeryInfoResponse;
 
 public interface GetBakeryInfoUseCase {
-    Optional<Bakery> findById(Long bakeryId);
+    BakeryInfoResponse findById(Long bakeryId);
 }

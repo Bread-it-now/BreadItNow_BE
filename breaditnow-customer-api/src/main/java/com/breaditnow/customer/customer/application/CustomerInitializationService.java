@@ -1,9 +1,9 @@
 package com.breaditnow.customer.customer.application;
 
-import com.breaditnow.customer.customer.application.port.out.CustomerRepositoryPort;
-import com.breaditnow.customer.customer.application.port.out.SaveCustomerProductCategoryPort;
+import com.breaditnow.customer.customer.domain.port.out.CustomerRepository;
+import com.breaditnow.customer.customer.domain.port.out.SaveCustomerProductCategoryPort;
 import com.breaditnow.customer.customer.application.request.CustomerInitRequest;
-import com.breaditnow.customer.customer.domain.Customer;
+import com.breaditnow.customer.customer.domain.model.Customer;
 import com.breaditnow.customer.product.domain.port.LoadProductCategoryPort;
 import com.breaditnow.customer.product.domain.ProductCategory;
 import com.breaditnow.customer.common.exception.CustomerException;
@@ -21,14 +21,14 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID
 @RequiredArgsConstructor
 public class CustomerInitializationService {
     private final CustomerService customerService;
-    private final CustomerRepositoryPort customerRepositoryPort;
+    private final CustomerRepository customerRepository;
     private final LoadProductCategoryPort loadProductCategoryPort;
     private final SaveCustomerProductCategoryPort saveCustomerProductCategoryPort;
 
     @Transactional
     public void initCustomerInfo(Long customerId, CustomerInitRequest dto) {
         Customer customer = customerService.loadCustomer(customerId);
-        if (customerRepositoryPort.isExistNickName(dto.nickname())) {
+        if (customerRepository.isExistNickName(dto.nickname())) {
             throw new CustomerException(DUPLICATE_NICKNAME);
         }
 
@@ -42,6 +42,6 @@ public class CustomerInitializationService {
         }
 
         customer.changeNickname(dto.nickname());
-        customerRepositoryPort.save(customer);
+        customerRepository.save(customer);
     }
 }

@@ -25,6 +25,10 @@ spring:
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
 
+fcm:
+  file_path: file:config/breaditnow-fcm.json
+  project_id: ${FCM_PROJECT_ID}
+
 api:
   internal:
     customer-service:

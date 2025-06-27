@@ -1,14 +1,14 @@
 package com.breaditnow.product.application;
 
 import com.breaditnow.owner.application.OwnerDomainProvider;
-import com.breaditnow.product.domain.model.Product;
+import com.breaditnow.product.application.dto.request.ProductSearchCondition;
+import com.breaditnow.product.application.dto.response.ProductInfoResponse;
+import com.breaditnow.product.application.dto.response.ProductResponse;
 import com.breaditnow.product.domain.port.in.GetProductInfoListUseCase;
 import com.breaditnow.product.domain.port.in.GetProductUseCase;
 import com.breaditnow.product.domain.port.in.ListProductsUseCase;
 import com.breaditnow.product.domain.port.out.ProductQueryRepository;
 import com.breaditnow.product.domain.port.out.ProductRepository;
-import com.breaditnow.product.application.dto.request.ProductSearchCondition;
-import com.breaditnow.product.application.dto.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,9 @@ public class ProductQueryService implements ListProductsUseCase, GetProductUseCa
     }
 
     @Override
-    public List<Product> findAllByIds(List<Long> ids, Long bakeryId) {
-        return productRepository.findAllByIdInAndBakeryId(ids, bakeryId);
+    public List<ProductInfoResponse> findAllByIds(List<Long> ids, Long bakeryId) {
+        return productRepository.findAllByIdInAndBakeryId(ids, bakeryId).stream()
+                .map(ProductInfoResponse::from)
+                .toList();
     }
 }

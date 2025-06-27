@@ -1,0 +1,7 @@
+package com.breaditnow.reservation.domain.port.out;
+
+import java.util.Optional;
+
+public interface CustomerApiPort {
+    Optional<String> findFcmTokenById(Long customerId);
+}

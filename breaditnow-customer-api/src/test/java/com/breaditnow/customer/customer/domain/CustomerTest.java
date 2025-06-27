@@ -1,7 +1,8 @@
 package com.breaditnow.customer.customer.domain;
 
 import com.breaditnow.customer.common.exception.CustomerException;
-import com.breaditnow.customer.customer.application.port.out.SaveImageStoragePort;
+import com.breaditnow.customer.customer.domain.model.Customer;
+import com.breaditnow.customer.customer.domain.port.out.SaveImageStoragePort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
