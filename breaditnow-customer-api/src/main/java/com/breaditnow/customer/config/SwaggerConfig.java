@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.config;
+package com.breaditnow.customer.config;
 
 import com.breaditnow.common.exception.ErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;

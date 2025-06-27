@@ -1,4 +1,4 @@
-package com.breaditnow.reservation.application.service;
+package com.breaditnow.reservation.application.service.command;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.exception.ReservationException;

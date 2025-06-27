@@ -6,20 +6,18 @@ import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
-@RequestMapping("/api/v1/reservation")
+@RequestMapping("/internal/api/v1/reservation")
 @RequiredArgsConstructor
-public class ReservationController {
+public class InternalReservationController {
     private final CreateReservationUseCase createReservationUseCase;
 
     @PostMapping
-    public ApiSuccessResponse<Map<String, Long>> createReservation(
-            @RequestHeader("X-Authorization-Id") Long customerId,
+    public ApiSuccessResponse<Long> createReservation(
+            @RequestHeader("X-Customer-Id") Long customerId,
             @RequestBody ReservationCreateRequest request
     ) {
         Long reservationId = createReservationUseCase.createReservation(customerId, request);
-        return ApiSuccessResponse.of("reservationId", reservationId);
+        return ApiSuccessResponse.of(reservationId);
     }
 }

@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.config;
+package com.breaditnow.customer.config;
 
 import com.breaditnow.customer.common.domain.Events;
 import org.springframework.beans.factory.InitializingBean;

@@ -1,4 +1,4 @@
-package com.breaditnow.customer.common.config;
+package com.breaditnow.customer.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
