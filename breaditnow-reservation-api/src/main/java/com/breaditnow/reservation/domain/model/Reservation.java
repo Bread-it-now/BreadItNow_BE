@@ -2,11 +2,16 @@ package com.breaditnow.reservation.domain.model;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.domain.ReservationStatus;
+import com.breaditnow.common.domain.Role;
+import com.breaditnow.common.exception.ReservationException;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.breaditnow.common.domain.Role.CUSTOMER;
+import static com.breaditnow.common.exception.ReservationErrorCode.UNAUTHORIZED_RESERVATION_CANCEL;
 
 @Getter
 public class Reservation {
@@ -48,7 +53,10 @@ public class Reservation {
         this.pickupDeadline = calculatePickupDeadline();
     }
 
-    public void cancel(String reason) {
+    public void cancel(Long userId, Role role, String reason) {
+        if(role == CUSTOMER && !userId.equals(this.customerId)) {
+            throw new ReservationException(UNAUTHORIZED_RESERVATION_CANCEL);
+        }
         this.reservationState.cancel(reason);
     }
 

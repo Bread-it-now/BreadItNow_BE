@@ -1,4 +1,4 @@
-package com.breaditnow.reservation.adapter.in.web.dto.request;
+package com.breaditnow.reservation.application.dto.request;
 
 import java.util.List;
 

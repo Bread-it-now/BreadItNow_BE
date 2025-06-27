@@ -2,8 +2,8 @@ package com.breaditnow.reservation.application.service.command;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.exception.ReservationException;
-import com.breaditnow.reservation.adapter.in.web.dto.request.ReservationCreateRequest;
-import com.breaditnow.reservation.adapter.in.web.dto.request.ReservationCreateRequest.ProductRequest;
+import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
+import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.internal.ProductInfo;
 import com.breaditnow.reservation.application.event.ReservationCreatedEvent;
