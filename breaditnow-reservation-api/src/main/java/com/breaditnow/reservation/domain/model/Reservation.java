@@ -75,4 +75,8 @@ public class Reservation {
     }
 
     private LocalDateTime calculatePickupDeadline() { return LocalDateTime.now().plusMinutes(30); }
+
+    public void cancel(String reason) {
+        this.reservationState.cancel(reason);
+    }
 }

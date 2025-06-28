@@ -7,6 +7,9 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // security
+    implementation 'org.springframework.security:spring-security-crypto'
+
     // rabbitmq
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
 

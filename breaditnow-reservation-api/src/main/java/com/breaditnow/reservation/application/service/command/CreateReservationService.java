@@ -1,7 +1,10 @@
 package com.breaditnow.reservation.application.service.command;
 
 import com.breaditnow.common.domain.Money;
+import com.breaditnow.common.domain.Role;
+import com.breaditnow.common.exception.ReservationErrorCode;
 import com.breaditnow.common.exception.ReservationException;
+import com.breaditnow.common.security.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.breaditnow.common.domain.Role.CUSTOMER;
 import static com.breaditnow.common.exception.ReservationErrorCode.BAKERY_NOT_FOUND;
 import static com.breaditnow.common.exception.ReservationErrorCode.PRODUCT_NOT_FOUND;
 
@@ -34,15 +38,19 @@ public class CreateReservationService implements CreateReservationUseCase {
 
     @Override
     @Transactional
-    public Long createReservation(Long customerId, ReservationCreateRequest request) {
+    public Long createReservation(AuthenticatedUser user, ReservationCreateRequest request) {
+        if(Role.fromString(user.role()) != CUSTOMER){
+            throw new ReservationException(ReservationErrorCode.UNAUTHORIZED_RESERVATION_CREATION);
+        }
+
         BakeryInfo bakeryInfo = getBakeryInfo(request.bakeryId());
         Map<Long, ProductInfo> productInfoMap = getProductInfoMap(request, bakeryInfo.bakeryId());
         List<ReservationProduct> reservationProducts = toReservationProducts(request, productInfoMap);
 
-        Reservation reservation = new Reservation(customerId, bakeryInfo.bakeryId(), reservationProducts);
+        Reservation reservation = new Reservation(user.userId(), bakeryInfo.bakeryId(), reservationProducts);
         Reservation savedReservation = reservationRepository.save(reservation);
 
-        publishReservationCreatedEvent(savedReservation, customerId, bakeryInfo, reservationProducts);
+        publishReservationCreatedEvent(savedReservation, user.userId(), bakeryInfo, reservationProducts);
 
         return savedReservation.getReservationId();
     }
