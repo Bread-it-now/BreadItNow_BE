@@ -42,7 +42,7 @@ public class ReservationEntity {
     private String cancellationReason;
 
     private LocalDateTime reservationTime;
-    private LocalDateTime pickupDeadLine;
+    private LocalDateTime approvalTime;
 
     private Integer totalPrice;
 
@@ -52,6 +52,8 @@ public class ReservationEntity {
                 .cancellationReason(reservation.getReservationState().getCancelReason())
                 .reservationStatus(reservation.getReservationState().getReservationStatus())
                 .reservationNumber(reservation.getReservationNumber())
+                .approvalTime(reservation.getApprovalTime())
+                .approvalTime(reservation.getApprovalTime())
                 .reservationTime(reservation.getReservationTime())
                 .totalPrice(reservation.getTotalPrice().getAmount())
                 .reservationItems(reservation.getReservationProducts().stream()
@@ -75,6 +77,7 @@ public class ReservationEntity {
                 .totalPrice(new Money(this.totalPrice))
                 .reservationTime(this.reservationTime)
                 .reservationNumber(this.reservationNumber)
+                .approvalTime(this.approvalTime)
                 .build();
     }
 }

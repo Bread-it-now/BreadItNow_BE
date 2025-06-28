@@ -5,6 +5,7 @@ import com.breaditnow.common.security.AuthUser;
 import com.breaditnow.common.security.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
+import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReservationController {
     private final CreateReservationUseCase createReservationUseCase;
     private final CancelReservationUseCase cancelReservationUseCase;
+    private final ApproveReservationUseCase approveReservationUseCase;
 
     @PostMapping
     public ApiSuccessResponse<Long> createReservation(@AuthUser AuthenticatedUser user, @RequestBody ReservationCreateRequest request) {
@@ -30,6 +32,15 @@ public class ReservationController {
             @RequestBody ReservationCancelRequest request
     ) {
         cancelReservationUseCase.cancelReservation(user, reservationId, request);
+        return ApiSuccessResponse.of();
+    }
+
+    @PostMapping("{reservationId}/approve")
+    public ApiSuccessResponse<Void> approveReservation(
+            @AuthUser AuthenticatedUser user,
+            @PathVariable("reservationId") Long reservationId
+    ) {
+        approveReservationUseCase.approveReservation(user, reservationId);
         return ApiSuccessResponse.of();
     }
 }

@@ -8,7 +8,7 @@ public enum ReservationErrorCode implements ErrorCode {
 	/**
 	 * EA000 Reservation
 	 */
-	RESERVATION_NOT_FOUND(NOT_FOUND, "EA001", "RESERVATION_NOT_FOUND"),
+	RESERVATION_NOT_FOUND(NOT_FOUND, "EA001", "예약을 찾을 수 없습니다."),
 	PRODUCT_NOT_BELONG_TO_BAKERY(BAD_REQUEST, "EA002", "상품이 해당 빵집에 속하지 않습니다."),
 	UNAUTHORIZED_RESERVATION_CANCEL(UNAUTHORIZED, "EA003", "예약 취소 권한이 없습니다."),
 	CANCELLATION_REASON_REQUIRED(BAD_REQUEST, "EA004", "예약 취소 사유는 필수입니다."),
@@ -19,8 +19,8 @@ public enum ReservationErrorCode implements ErrorCode {
 	PRODUCT_NOT_FOUND(NOT_FOUND, "EA009", "존재하지 않는 상품입니다."),
 	PRODUCT_NOT_AVAILABLE(BAD_REQUEST, "EA010", "예약이 불가능한 상품입니다."),
 	ALREADY_PROCESSED(BAD_REQUEST, "EA011", "이미 처리된 예약입니다."),
-	UNAUTHORIZED_RESERVATION_CREATION(UNAUTHORIZED, "EA012", "예약 생성 권한이 없습니다."),
-	FORBIDDEN_ACCESS(FORBIDDEN, "EA013", "접근이 금지되었습니다."),;
+	FORBIDDEN_ACCESS(FORBIDDEN, "EA012", "접근이 금지되었습니다."),
+	UNAUTHORIZED_ACCESS(UNAUTHORIZED, "EA013", "권한이 없습니다."),;
 
 	private final HttpStatus httpStatus;
 	private final String code;

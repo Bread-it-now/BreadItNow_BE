@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface ReservationRepository {
     Optional<Reservation> findById(Long reservationId);
     Reservation save(Reservation reservation);
+    Optional<Reservation> findLastOfBakeryForToday(Long bakeryId);
 }

@@ -23,10 +23,10 @@ public class Reservation {
     private ReservationState reservationState;
     private LocalDateTime reservationTime;
     private Money totalPrice;
-    private LocalDateTime pickupDeadline;
+    private LocalDateTime approvalTime;
 
     @Builder
-    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason) {
+    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason, LocalDateTime approvalTime) {
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
         this.customerId = customerId;
@@ -35,7 +35,7 @@ public class Reservation {
         this.reservationState = new ReservationState(reservationStatus, cancellationReason);
         this.totalPrice = totalPrice;
         this.reservationTime = reservationTime;
-        this.pickupDeadline = calculatePickupDeadline();
+        this.approvalTime = approvalTime;
     }
 
     public Reservation(Long customerId, Long bakeryId, List<ReservationProduct> reservationProducts) {
@@ -50,7 +50,7 @@ public class Reservation {
     public void approve(Long newReservationNumber){
         this.reservationState.approve();
         this.reservationNumber = newReservationNumber;
-        this.pickupDeadline = calculatePickupDeadline();
+        this.approvalTime = LocalDateTime.now();
     }
 
     public void cancel(Long userId, Role role, String reason) {
@@ -64,7 +64,6 @@ public class Reservation {
         this.reservationState.partiallyApprove();
         this.reservationProducts = adjustedProducts;
         this.reservationNumber = newReservationNumber;
-        this.pickupDeadline = calculatePickupDeadline();
         this.totalPrice = calculateTotalPrice();
     }
 
@@ -74,7 +73,7 @@ public class Reservation {
                 .reduce(Money.ZERO, Money::add);
     }
 
-    private LocalDateTime calculatePickupDeadline() { return LocalDateTime.now().plusMinutes(30); }
+    private LocalDateTime calculatePickupDeadline(LocalDateTime now) { return now.plusMinutes(30); }
 
     public void cancel(String reason) {
         this.reservationState.cancel(reason);

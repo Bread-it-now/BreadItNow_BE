@@ -1,4 +1,4 @@
-package com.breaditnow.reservation.application.service.command;
+package com.breaditnow.reservation.application.service;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.domain.Role;
@@ -40,7 +40,7 @@ public class CreateReservationService implements CreateReservationUseCase {
     @Transactional
     public Long createReservation(AuthenticatedUser user, ReservationCreateRequest request) {
         if(Role.fromString(user.role()) != CUSTOMER){
-            throw new ReservationException(ReservationErrorCode.UNAUTHORIZED_RESERVATION_CREATION);
+            throw new ReservationException(ReservationErrorCode.UNAUTHORIZED_ACCESS);
         }
 
         BakeryInfo bakeryInfo = getBakeryInfo(request.bakeryId());
