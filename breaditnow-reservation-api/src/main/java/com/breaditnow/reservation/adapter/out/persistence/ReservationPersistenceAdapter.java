@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.breaditnow.common.domain.ReservationStatus.APPROVED;
 import static java.time.LocalTime.MAX;
 
 @Repository
@@ -36,7 +37,7 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(MAX);
 
-        return jpaRepository.findFirstByBakeryIdAndApprovalTimeBetweenOrderByReservationNumberDesc(bakeryId, startOfDay, endOfDay)
+        return jpaRepository.findFirstByBakeryIdAndReservationStatusAndModifiedAtBetweenOrderByReservationNumberDesc(bakeryId,  APPROVED, startOfDay, endOfDay)
                 .map(ReservationEntity::toDomain);
     }
 }

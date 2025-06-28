@@ -1,15 +1,16 @@
 package com.breaditnow.reservation.adapter.out.persistence.entity;
 
 import com.breaditnow.common.domain.Money;
-import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.common.domain.ReservationStatus;
+import com.breaditnow.common.jpa.BaseEntity;
+import com.breaditnow.reservation.domain.model.Reservation;
+import com.breaditnow.reservation.domain.model.ReservationState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -17,12 +18,16 @@ import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "reservation")
+@Table(name = "reservation", indexes = {
+        @Index(name = "idx_bakery_status_modified", columnList = "bakery_id, reservation_status, modified_at"),
+        @Index(name = "idx_orderer_modified", columnList = "orderer_id, modified_at"),
+        @Index(name = "idx_reservation_number", columnList = "reservation_number")
+})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ReservationEntity {
+public class ReservationEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "reservation_id")
@@ -40,10 +45,6 @@ public class ReservationEntity {
     @Enumerated(STRING)
     private ReservationStatus reservationStatus;
     private String cancellationReason;
-
-    private LocalDateTime reservationTime;
-    private LocalDateTime approvalTime;
-
     private Integer totalPrice;
 
     public static ReservationEntity from(Reservation reservation) {
@@ -52,9 +53,6 @@ public class ReservationEntity {
                 .cancellationReason(reservation.getReservationState().getCancelReason())
                 .reservationStatus(reservation.getReservationState().getReservationStatus())
                 .reservationNumber(reservation.getReservationNumber())
-                .approvalTime(reservation.getApprovalTime())
-                .approvalTime(reservation.getApprovalTime())
-                .reservationTime(reservation.getReservationTime())
                 .totalPrice(reservation.getTotalPrice().getAmount())
                 .reservationItems(reservation.getReservationProducts().stream()
                         .map(ReservationItemEmbeddable::from)
@@ -71,13 +69,11 @@ public class ReservationEntity {
                         .map(ReservationItemEmbeddable::toDomain)
                         .toList()
                 )
-                .reservationStatus(this.reservationStatus)
+                .reservationState(new ReservationState(this.reservationStatus, this.cancellationReason))
                 .bakeryId(this.bakeryId)
                 .customerId(this.ordererId)
                 .totalPrice(new Money(this.totalPrice))
-                .reservationTime(this.reservationTime)
                 .reservationNumber(this.reservationNumber)
-                .approvalTime(this.approvalTime)
                 .build();
     }
 }

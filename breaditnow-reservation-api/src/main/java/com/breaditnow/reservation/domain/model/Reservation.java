@@ -1,7 +1,6 @@
 package com.breaditnow.reservation.domain.model;
 
 import com.breaditnow.common.domain.Money;
-import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationException;
 import lombok.Builder;
@@ -21,21 +20,17 @@ public class Reservation {
     private Long reservationNumber;
     private List<ReservationProduct> reservationProducts;
     private ReservationState reservationState;
-    private LocalDateTime reservationTime;
     private Money totalPrice;
-    private LocalDateTime approvalTime;
 
     @Builder
-    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationStatus reservationStatus, LocalDateTime reservationTime, Money totalPrice, String cancellationReason, LocalDateTime approvalTime) {
+    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationState reservationState, Money totalPrice) {
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
         this.customerId = customerId;
         this.reservationNumber = reservationNumber;
         this.reservationProducts = reservationProducts;
-        this.reservationState = new ReservationState(reservationStatus, cancellationReason);
+        this.reservationState = reservationState;
         this.totalPrice = totalPrice;
-        this.reservationTime = reservationTime;
-        this.approvalTime = approvalTime;
     }
 
     public Reservation(Long customerId, Long bakeryId, List<ReservationProduct> reservationProducts) {
@@ -43,14 +38,12 @@ public class Reservation {
         this.bakeryId = bakeryId;
         this.reservationProducts = reservationProducts;
         this.reservationState = ReservationState.waiting();
-        this.reservationTime = LocalDateTime.now();
         this.totalPrice = calculateTotalPrice();
     }
 
     public void approve(Long newReservationNumber){
         this.reservationState.approve();
         this.reservationNumber = newReservationNumber;
-        this.approvalTime = LocalDateTime.now();
     }
 
     public void cancel(Long userId, Role role, String reason) {

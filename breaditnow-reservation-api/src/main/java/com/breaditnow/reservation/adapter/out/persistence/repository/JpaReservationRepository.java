@@ -1,5 +1,6 @@
 package com.breaditnow.reservation.adapter.out.persistence.repository;
 
+import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.adapter.out.persistence.entity.ReservationEntity;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +11,10 @@ import java.util.Optional;
 
 public interface JpaReservationRepository extends JpaRepository<ReservationEntity, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<ReservationEntity> findFirstByBakeryIdAndApprovalTimeBetweenOrderByReservationNumberDesc(Long bakeryId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+    Optional<ReservationEntity> findFirstByBakeryIdAndReservationStatusAndModifiedAtBetweenOrderByReservationNumberDesc(
+            Long bakeryId,
+            ReservationStatus status,
+            LocalDateTime startOfTime,
+            LocalDateTime endOfTime
+    );
 }
