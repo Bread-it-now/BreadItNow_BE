@@ -29,14 +29,14 @@ public class ApproveReservationService implements ApproveReservationUseCase {
         Reservation reservationToApprove = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
 
-        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(reservationToApprove.getBakeryId())
+        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(reservationToApprove.getReservedBakery().bakeryId())
                 .orElseThrow(() -> new ReservationException(BAKERY_NOT_FOUND));
 
         if (!bakeryInfo.ownerId().equals(user.userId())) {
             throw new ReservationException(UNAUTHORIZED_ACCESS);
         }
 
-        Long newReservationNumber = reservationRepository.findLastOfBakeryForToday(reservationToApprove.getBakeryId())
+        Long newReservationNumber = reservationRepository.findLastOfBakeryForToday(reservationToApprove.getReservedBakery().bakeryId())
                 .map(lastReservation -> lastReservation.getReservationNumber() + 1)
                 .orElse(1L);
 

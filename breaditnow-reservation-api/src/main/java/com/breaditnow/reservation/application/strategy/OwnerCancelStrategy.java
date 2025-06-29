@@ -15,12 +15,11 @@ import static com.breaditnow.common.exception.ReservationErrorCode.UNAUTHORIZED_
 @Component
 @RequiredArgsConstructor
 public class OwnerCancelStrategy implements ReservationCancelStrategy {
-
     private final OwnerApiPort ownerApiPort;
 
     @Override
     public void checkAuthority(AuthenticatedUser user, Reservation reservation) {
-        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(reservation.getBakeryId())
+        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(reservation.getReservedBakery().bakeryId())
                 .orElseThrow(() -> new ReservationException(BAKERY_NOT_FOUND));
 
         if (!bakeryInfo.ownerId().equals(user.userId())) {

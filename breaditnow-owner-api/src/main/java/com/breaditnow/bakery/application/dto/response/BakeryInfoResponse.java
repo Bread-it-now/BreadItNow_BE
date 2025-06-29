@@ -7,6 +7,9 @@ public record BakeryInfoResponse(
         Long bakeryId,
         Long ownerId,
         String name,
+        String address,
+        String phone,
+        String profileImageUrl,
         OperatingStatus operatingStatus,
         boolean isDeleted
 ) {
@@ -15,6 +18,9 @@ public record BakeryInfoResponse(
                 bakery.getBakeryId(),
                 bakery.getOwnerId(),
                 bakery.getName(),
+                bakery.getAddress().fullAddress(),
+                bakery.getPhoneNumber().value(),
+                bakery.getProfileImage().imageUrl(),
                 bakery.getOperatingStatus(),
                 bakery.isDeleted()
         );

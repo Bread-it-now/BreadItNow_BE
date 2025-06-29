@@ -5,6 +5,7 @@ import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.jpa.BaseEntity;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationState;
+import com.breaditnow.reservation.domain.model.ReservedBakery;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,12 @@ public class ReservationEntity extends BaseEntity {
 
     private Long bakeryId;
     private String bakeryName;
+    private String bakeryAddress;
+    private String bakeryPhone;
+    private String bakeryProfileImageUrl;
+
     private Long ordererId;
+
     private Long reservationNumber;
 
     @ElementCollection(fetch = EAGER)
@@ -41,10 +47,14 @@ public class ReservationEntity extends BaseEntity {
 
     @Enumerated(STRING)
     private ReservationStatus reservationStatus;
+
     private String cancellationReason;
+
     private Integer totalPrice;
 
     public static ReservationEntity from(Reservation reservation) {
+        ReservedBakery reservedBakery = reservation.getReservedBakery();
+
         return ReservationEntity.builder()
                 .id(reservation.getReservationId())
                 .cancellationReason(reservation.getReservationState().getCancelReason())
@@ -55,12 +65,16 @@ public class ReservationEntity extends BaseEntity {
                         .map(ReservationItemEmbeddable::from)
                         .toList())
                 .ordererId(reservation.getCustomerId())
-                .bakeryId(reservation.getBakeryId())
-                .bakeryName(reservation.getBakeryName())
+                .bakeryId(reservedBakery.bakeryId())
+                .bakeryName(reservedBakery.name())
+                .bakeryAddress(reservedBakery.address())
+                .bakeryPhone(reservedBakery.phone())
+                .bakeryProfileImageUrl(reservedBakery.profileImageUrl())
                 .build();
     }
 
     public Reservation toDomain() {
+        ReservedBakery reservedBakery = new ReservedBakery(this.bakeryId, this.bakeryName, this.bakeryAddress, this.bakeryPhone, this.bakeryProfileImageUrl);
         return Reservation.builder()
                 .reservationId(this.id)
                 .reservationProducts(this.reservationItems.stream()
@@ -68,8 +82,7 @@ public class ReservationEntity extends BaseEntity {
                         .toList()
                 )
                 .reservationState(new ReservationState(this.reservationStatus, this.cancellationReason))
-                .bakeryId(this.bakeryId)
-                .bakeryName(this.bakeryName)
+                .reservedBakery(reservedBakery)
                 .customerId(this.ordererId)
                 .totalPrice(new Money(this.totalPrice))
                 .reservationNumber(this.reservationNumber)

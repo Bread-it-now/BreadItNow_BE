@@ -7,14 +7,14 @@ import com.breaditnow.reservation.domain.model.ReservationProduct;
 
 import java.util.List;
 
-public record MySimpleReservationResponse(
+public record MyReservationSimpleResponse(
     ReservationInfo reservationInfo,
     List<ReservationProductResponse> reservationProducts,
     ReservationSummary reservationSummary
 ) {
-    public static MySimpleReservationResponse from(Reservation reservation) {
+    public static MyReservationSimpleResponse from(Reservation reservation) {
         ReservationInfo reservationInfo = new ReservationInfo(
-                reservation.getBakeryName(),
+                reservation.getReservedBakery().name(),
                 reservation.getReservationTime().format(DailyTime.DATE_FORMATTER),
                 reservation.getReservationState().getReservationStatus()
         );
@@ -28,7 +28,7 @@ public record MySimpleReservationResponse(
                 reservation.getTotalPrice().getAmount()
         );
 
-        return new MySimpleReservationResponse(reservationInfo, products, reservationSummary);
+        return new MyReservationSimpleResponse(reservationInfo, products, reservationSummary);
     }
 
     public record ReservationInfo(

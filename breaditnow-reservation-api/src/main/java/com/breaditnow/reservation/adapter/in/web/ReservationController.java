@@ -5,7 +5,8 @@ import com.breaditnow.reservation.adapter.in.resolver.AuthUser;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
-import com.breaditnow.reservation.application.dto.response.MySimpleReservationResponse;
+import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
+import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
 import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
@@ -48,7 +49,12 @@ public class ReservationController {
     }
 
     @GetMapping("/{reservationId}")
-    public ApiSuccessResponse<MySimpleReservationResponse> getSimpleReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
+    public ApiSuccessResponse<MyReservationSimpleResponse> getSimpleReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
         return ApiSuccessResponse.of(queryUseCase.getSimpleReservation(user, reservationId));
+    }
+
+    @GetMapping("/{reservationId}/detail")
+    public ApiSuccessResponse<MyReservationDetailResponse> getDetailReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
+        return ApiSuccessResponse.of(queryUseCase.getDetailReservation(user, reservationId));
     }
 }

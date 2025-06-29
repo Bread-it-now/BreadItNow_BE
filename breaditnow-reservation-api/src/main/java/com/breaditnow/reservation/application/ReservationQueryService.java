@@ -2,11 +2,10 @@ package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.exception.ReservationException;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
-import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
-import com.breaditnow.reservation.application.dto.response.MySimpleReservationResponse;
+import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
+import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
-import com.breaditnow.reservation.domain.port.out.OwnerApiPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class ReservationQueryService implements ReservationQueryUseCase {
     private final ReservationRepository reservationRepository;
 
     @Override
-    public MySimpleReservationResponse getSimpleReservation(AuthenticatedUser user, Long reservationId) {
+    public MyReservationSimpleResponse getSimpleReservation(AuthenticatedUser user, Long reservationId) {
         if(!user.isCustomer()) {
             throw new ReservationException(FORBIDDEN_ACCESS);
         }
@@ -34,6 +33,22 @@ public class ReservationQueryService implements ReservationQueryUseCase {
             throw new ReservationException(FORBIDDEN_ACCESS);
         }
 
-        return MySimpleReservationResponse.from(reservation);
+        return MyReservationSimpleResponse.from(reservation);
+    }
+
+    @Override
+    public MyReservationDetailResponse getDetailReservation(AuthenticatedUser user, Long reservationId) {
+        if(!user.isCustomer()) {
+            throw new ReservationException(FORBIDDEN_ACCESS);
+        }
+
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
+
+        if (!reservation.getCustomerId().equals(user.userId())) {
+            throw new ReservationException(FORBIDDEN_ACCESS);
+        }
+
+        return MyReservationDetailResponse.from(reservation);
     }
 }

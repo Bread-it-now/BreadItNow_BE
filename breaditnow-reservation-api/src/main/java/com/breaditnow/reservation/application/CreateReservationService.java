@@ -1,17 +1,19 @@
 package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.domain.Money;
+import com.breaditnow.common.domain.OperatingStatus;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationErrorCode;
 import com.breaditnow.common.exception.ReservationException;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
-import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
-import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.internal.ProductInfo;
+import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
+import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.event.ReservationCreatedEvent;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
+import com.breaditnow.reservation.domain.model.ReservedBakery;
 import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
 import com.breaditnow.reservation.domain.port.out.OwnerApiPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
@@ -25,8 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.breaditnow.common.domain.Role.CUSTOMER;
-import static com.breaditnow.common.exception.ReservationErrorCode.BAKERY_NOT_FOUND;
-import static com.breaditnow.common.exception.ReservationErrorCode.PRODUCT_NOT_FOUND;
+import static com.breaditnow.common.exception.ReservationErrorCode.*;
 
 
 @Service
@@ -44,10 +45,26 @@ public class CreateReservationService implements CreateReservationUseCase {
         }
 
         BakeryInfo bakeryInfo = getBakeryInfo(request.bakeryId());
+        if (bakeryInfo.deleted()) {
+            throw new ReservationException(BAKERY_IS_DELETED);
+        }
+        if (bakeryInfo.operatingStatus() != OperatingStatus.OPEN) {
+            throw new ReservationException(BAKERY_IS_NOT_OPENED);
+        }
+
+        ReservedBakery reservedBakery = new ReservedBakery(
+                bakeryInfo.bakeryId(),
+                bakeryInfo.name(),
+                bakeryInfo.address(),
+                bakeryInfo.phone(),
+                bakeryInfo.profileImageUrl()
+        );
+
+
         Map<Long, ProductInfo> productInfoMap = getProductInfoMap(request, bakeryInfo.bakeryId());
         List<ReservationProduct> reservationProducts = toReservationProducts(request, productInfoMap);
 
-        Reservation reservation = new Reservation(user.userId(), bakeryInfo.bakeryId(), bakeryInfo.name(), reservationProducts);
+        Reservation reservation = new Reservation(user.userId(), reservedBakery, reservationProducts);
         Reservation savedReservation = reservationRepository.save(reservation);
 
         publishReservationCreatedEvent(savedReservation, user.userId(), bakeryInfo, reservationProducts);
