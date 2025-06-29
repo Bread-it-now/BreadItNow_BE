@@ -11,6 +11,7 @@ import static com.breaditnow.common.exception.CommonErrorCode.INVALID_TIME_FORMA
 
 public record DailyTime(LocalTime time) implements Comparable<DailyTime> {
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static DailyTime of(String hm) {
         try {

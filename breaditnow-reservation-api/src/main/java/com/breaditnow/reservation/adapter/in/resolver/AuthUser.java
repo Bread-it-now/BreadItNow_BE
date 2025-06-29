@@ -1,4 +1,4 @@
-package com.breaditnow.common.security;
+package com.breaditnow.reservation.adapter.in.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

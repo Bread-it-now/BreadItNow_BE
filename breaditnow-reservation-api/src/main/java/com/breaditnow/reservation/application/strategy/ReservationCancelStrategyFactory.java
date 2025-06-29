@@ -1,4 +1,4 @@
-package com.breaditnow.reservation.application.service.strategy;
+package com.breaditnow.reservation.application.strategy;
 
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationException;

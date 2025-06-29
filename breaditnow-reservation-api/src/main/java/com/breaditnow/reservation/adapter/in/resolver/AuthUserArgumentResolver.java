@@ -1,4 +1,4 @@
-package com.breaditnow.common.security;
+package com.breaditnow.reservation.adapter.in.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

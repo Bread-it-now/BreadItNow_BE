@@ -1,6 +1,6 @@
 package com.breaditnow.config;
 
-import com.breaditnow.common.security.AuthUserArgumentResolver;
+import com.breaditnow.reservation.adapter.in.resolver.AuthUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

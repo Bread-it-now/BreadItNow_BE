@@ -1,10 +1,10 @@
-package com.breaditnow.reservation.application.service;
+package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationErrorCode;
 import com.breaditnow.common.exception.ReservationException;
-import com.breaditnow.common.security.AuthenticatedUser;
+import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;

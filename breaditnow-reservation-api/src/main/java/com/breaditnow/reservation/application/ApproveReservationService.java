@@ -1,7 +1,7 @@
-package com.breaditnow.reservation.application.service;
+package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.exception.ReservationException;
-import com.breaditnow.common.security.AuthenticatedUser;
+import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;

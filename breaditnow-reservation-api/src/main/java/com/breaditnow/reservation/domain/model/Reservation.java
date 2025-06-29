@@ -21,9 +21,10 @@ public class Reservation {
     private List<ReservationProduct> reservationProducts;
     private ReservationState reservationState;
     private Money totalPrice;
+    private LocalDateTime reservationTime;
 
     @Builder
-    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationState reservationState, Money totalPrice) {
+    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationState reservationState, Money totalPrice,  LocalDateTime reservationTime) {
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
         this.customerId = customerId;
@@ -31,6 +32,7 @@ public class Reservation {
         this.reservationProducts = reservationProducts;
         this.reservationState = reservationState;
         this.totalPrice = totalPrice;
+        this.reservationTime = reservationTime;
     }
 
     public Reservation(Long customerId, Long bakeryId, List<ReservationProduct> reservationProducts) {

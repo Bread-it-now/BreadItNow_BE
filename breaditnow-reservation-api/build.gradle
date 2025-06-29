@@ -24,4 +24,7 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // p6spy for SQL logging
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }

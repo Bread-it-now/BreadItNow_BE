@@ -1,8 +1,8 @@
-package com.breaditnow.reservation.application.service.strategy;
+package com.breaditnow.reservation.application.strategy;
 
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationException;
-import com.breaditnow.common.security.AuthenticatedUser;
+import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.domain.model.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

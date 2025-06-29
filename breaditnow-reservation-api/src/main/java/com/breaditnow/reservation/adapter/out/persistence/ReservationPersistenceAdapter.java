@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.breaditnow.common.domain.ReservationStatus.APPROVED;
@@ -26,6 +27,20 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> findByCustomerId(Long customerId) {
+        return jpaRepository.findAllByOrdererIdWithItemsOrderByModifiedAtDesc(customerId).stream()
+                .map(ReservationEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Reservation> findByBakeryId(Long bakeryId) {
+        return jpaRepository.findAllByBakeryIdWithItemsOrderByModifiedAtDesc(bakeryId).stream()
+                .map(ReservationEntity::toDomain)
+                .toList();
+    }
+
+    @Override
     public Reservation save(Reservation reservation) {
         ReservationEntity entity = ReservationEntity.from(reservation);
         ReservationEntity savedEntity = jpaRepository.save(entity);
@@ -37,7 +52,7 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(MAX);
 
-        return jpaRepository.findFirstByBakeryIdAndReservationStatusAndModifiedAtBetweenOrderByReservationNumberDesc(bakeryId,  APPROVED, startOfDay, endOfDay)
+        return jpaRepository.findFirstByBakeryIdAndReservationStatusAndModifiedAtBetweenOrderByReservationNumberDesc(bakeryId, APPROVED, startOfDay, endOfDay)
                 .map(ReservationEntity::toDomain);
     }
 }

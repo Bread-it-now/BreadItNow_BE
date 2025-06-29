@@ -18,11 +18,7 @@ import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "reservation", indexes = {
-        @Index(name = "idx_bakery_status_modified", columnList = "bakery_id, reservation_status, modified_at"),
-        @Index(name = "idx_orderer_modified", columnList = "orderer_id, modified_at"),
-        @Index(name = "idx_reservation_number", columnList = "reservation_number")
-})
+@Table(name = "reservation")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -74,6 +70,7 @@ public class ReservationEntity extends BaseEntity {
                 .customerId(this.ordererId)
                 .totalPrice(new Money(this.totalPrice))
                 .reservationNumber(this.reservationNumber)
+                .reservationTime(getModifiedAt())
                 .build();
     }
 }

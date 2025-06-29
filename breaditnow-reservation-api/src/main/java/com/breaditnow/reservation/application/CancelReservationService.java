@@ -1,11 +1,11 @@
-package com.breaditnow.reservation.application.service;
+package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationException;
-import com.breaditnow.common.security.AuthenticatedUser;
+import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
-import com.breaditnow.reservation.application.service.strategy.ReservationCancelStrategy;
-import com.breaditnow.reservation.application.service.strategy.ReservationCancelStrategyFactory;
+import com.breaditnow.reservation.application.strategy.ReservationCancelStrategy;
+import com.breaditnow.reservation.application.strategy.ReservationCancelStrategyFactory;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;

@@ -1,4 +1,4 @@
-package com.breaditnow.common.security;
+package com.breaditnow.reservation.adapter.in.resolver;
 
 public record AuthenticatedUser(Long userId, String role) {
     public boolean isCustomer() {
