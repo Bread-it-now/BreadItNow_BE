@@ -30,6 +30,7 @@ public class ReservationEntity extends BaseEntity {
     private Long id;
 
     private Long bakeryId;
+    private String bakeryName;
     private Long ordererId;
     private Long reservationNumber;
 
@@ -55,6 +56,7 @@ public class ReservationEntity extends BaseEntity {
                         .toList())
                 .ordererId(reservation.getCustomerId())
                 .bakeryId(reservation.getBakeryId())
+                .bakeryName(reservation.getBakeryName())
                 .build();
     }
 
@@ -67,6 +69,7 @@ public class ReservationEntity extends BaseEntity {
                 )
                 .reservationState(new ReservationState(this.reservationStatus, this.cancellationReason))
                 .bakeryId(this.bakeryId)
+                .bakeryName(this.bakeryName)
                 .customerId(this.ordererId)
                 .totalPrice(new Money(this.totalPrice))
                 .reservationNumber(this.reservationNumber)

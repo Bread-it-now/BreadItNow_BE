@@ -2,7 +2,6 @@ package com.breaditnow.reservation.application.dto.response;
 
 import com.breaditnow.common.domain.DailyTime;
 import com.breaditnow.common.domain.ReservationStatus;
-import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
 
@@ -13,9 +12,9 @@ public record MySimpleReservationResponse(
     List<ReservationProductResponse> reservationProducts,
     ReservationSummary reservationSummary
 ) {
-    public static MySimpleReservationResponse from(Reservation reservation, BakeryInfo bakeryInfo) {
+    public static MySimpleReservationResponse from(Reservation reservation) {
         ReservationInfo reservationInfo = new ReservationInfo(
-                bakeryInfo.name(),
+                reservation.getBakeryName(),
                 reservation.getReservationTime().format(DailyTime.DATE_FORMATTER),
                 reservation.getReservationState().getReservationStatus()
         );

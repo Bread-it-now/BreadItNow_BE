@@ -16,6 +16,7 @@ import static com.breaditnow.common.exception.ReservationErrorCode.UNAUTHORIZED_
 public class Reservation {
     private Long reservationId;
     private Long bakeryId;
+    private String bakeryName;
     private Long customerId;
     private Long reservationNumber;
     private List<ReservationProduct> reservationProducts;
@@ -24,9 +25,10 @@ public class Reservation {
     private LocalDateTime reservationTime;
 
     @Builder
-    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, Long customerId, ReservationState reservationState, Money totalPrice,  LocalDateTime reservationTime) {
+    private Reservation(Long reservationId, Long reservationNumber, List<ReservationProduct> reservationProducts, Long bakeryId, String bakeryName, Long customerId, ReservationState reservationState, Money totalPrice,  LocalDateTime reservationTime) {
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
+        this.bakeryName = bakeryName;
         this.customerId = customerId;
         this.reservationNumber = reservationNumber;
         this.reservationProducts = reservationProducts;
@@ -35,9 +37,10 @@ public class Reservation {
         this.reservationTime = reservationTime;
     }
 
-    public Reservation(Long customerId, Long bakeryId, List<ReservationProduct> reservationProducts) {
+    public Reservation(Long customerId, Long bakeryId, String bakeryName, List<ReservationProduct> reservationProducts) {
         this.customerId = customerId;
         this.bakeryId = bakeryId;
+        this.bakeryName = bakeryName;
         this.reservationProducts = reservationProducts;
         this.reservationState = ReservationState.waiting();
         this.totalPrice = calculateTotalPrice();

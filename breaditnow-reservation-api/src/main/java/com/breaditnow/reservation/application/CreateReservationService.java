@@ -47,7 +47,7 @@ public class CreateReservationService implements CreateReservationUseCase {
         Map<Long, ProductInfo> productInfoMap = getProductInfoMap(request, bakeryInfo.bakeryId());
         List<ReservationProduct> reservationProducts = toReservationProducts(request, productInfoMap);
 
-        Reservation reservation = new Reservation(user.userId(), bakeryInfo.bakeryId(), reservationProducts);
+        Reservation reservation = new Reservation(user.userId(), bakeryInfo.bakeryId(), bakeryInfo.name(), reservationProducts);
         Reservation savedReservation = reservationRepository.save(reservation);
 
         publishReservationCreatedEvent(savedReservation, user.userId(), bakeryInfo, reservationProducts);

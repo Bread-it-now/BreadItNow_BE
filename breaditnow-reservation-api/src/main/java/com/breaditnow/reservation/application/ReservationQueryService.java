@@ -20,7 +20,6 @@ import static com.breaditnow.common.exception.ReservationErrorCode.RESERVATION_N
 @RequiredArgsConstructor
 public class ReservationQueryService implements ReservationQueryUseCase {
     private final ReservationRepository reservationRepository;
-    private final OwnerApiPort ownerApiPort;
 
     @Override
     public MySimpleReservationResponse getSimpleReservation(AuthenticatedUser user, Long reservationId) {
@@ -31,9 +30,10 @@ public class ReservationQueryService implements ReservationQueryUseCase {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
 
-        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(reservation.getBakeryId())
-                .orElseThrow(() -> new ReservationException(FORBIDDEN_ACCESS));
+        if (!reservation.getCustomerId().equals(user.userId())) {
+            throw new ReservationException(FORBIDDEN_ACCESS);
+        }
 
-        return MySimpleReservationResponse.from(reservation, bakeryInfo);
+        return MySimpleReservationResponse.from(reservation);
     }
 }
