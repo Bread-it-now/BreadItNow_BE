@@ -68,7 +68,12 @@ public class Reservation {
                 .reduce(Money.ZERO, Money::add);
     }
 
-    private LocalDateTime calculatePickupDeadline(LocalDateTime now) { return now.plusMinutes(30); }
+    public LocalDateTime calculatePickupDeadline() {
+        if(reservationTime == null) {
+            return null;
+        }
+        return reservationTime.plusMinutes(30);
+    }
 
     public void cancel(String reason) {
         this.reservationState.cancel(reason);

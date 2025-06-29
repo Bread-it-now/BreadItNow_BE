@@ -1,10 +1,13 @@
 package com.breaditnow.reservation.adapter.out.persistence;
 
+import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.adapter.out.persistence.entity.ReservationEntity;
 import com.breaditnow.reservation.adapter.out.persistence.repository.JpaReservationRepository;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -31,6 +34,12 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
         return jpaRepository.findAllByOrdererIdWithItemsOrderByModifiedAtDesc(customerId).stream()
                 .map(ReservationEntity::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Page<Reservation> findByCustomerId(Long ordererId, Pageable pageable, ReservationStatus status) {
+        return jpaRepository.findByOrdererId(ordererId, pageable, status)
+                .map(ReservationEntity::toDomain);
     }
 
     @Override

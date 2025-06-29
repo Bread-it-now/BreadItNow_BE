@@ -2,6 +2,8 @@ package com.breaditnow.reservation.adapter.out.persistence.repository;
 
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.adapter.out.persistence.entity.ReservationEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +24,9 @@ public interface JpaReservationRepository extends JpaRepository<ReservationEntit
 
     @Query("SELECT r FROM ReservationEntity r JOIN FETCH r.reservationItems WHERE r.bakeryId = :bakeryId ORDER BY r.modifiedAt DESC")
     List<ReservationEntity> findAllByBakeryIdWithItemsOrderByModifiedAtDesc(@Param("bakeryId") Long bakeryId);
+
+    @Query("SELECT r FROM ReservationEntity r " +
+            "WHERE r.ordererId = :ordererId " +
+            "AND (:status IS NULL OR r.reservationStatus = :status)")
+    Page<ReservationEntity> findByOrdererId(Long ordererId, Pageable pageable, @Param("status") ReservationStatus status);
 }

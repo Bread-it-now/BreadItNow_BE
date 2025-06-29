@@ -1,13 +1,17 @@
 package com.breaditnow.reservation.application;
 
+import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.exception.ReservationException;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
+import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,5 +54,15 @@ public class ReservationQueryService implements ReservationQueryUseCase {
         }
 
         return MyReservationDetailResponse.from(reservation);
+    }
+
+    @Override
+    public MyReservationPageResponse getMyReservations(AuthenticatedUser user, Pageable pageable, ReservationStatus status) {
+        if(!user.isCustomer()) {
+            throw new ReservationException(FORBIDDEN_ACCESS);
+        }
+
+        Page<Reservation> reservationPage = reservationRepository.findByCustomerId(user.userId(), pageable, status);
+        return MyReservationPageResponse.from(reservationPage);
     }
 }

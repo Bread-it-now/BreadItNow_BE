@@ -1,17 +1,22 @@
 package com.breaditnow.reservation.adapter.in.web;
 
+import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.reservation.adapter.in.resolver.AuthUser;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
+import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
 import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -56,5 +61,16 @@ public class ReservationController {
     @GetMapping("/{reservationId}/detail")
     public ApiSuccessResponse<MyReservationDetailResponse> getDetailReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
         return ApiSuccessResponse.of(queryUseCase.getDetailReservation(user, reservationId));
+    }
+
+    @GetMapping("/my")
+    public ApiSuccessResponse<MyReservationPageResponse> getMyReservations(
+            @AuthUser AuthenticatedUser user,
+            @RequestParam(name = "status", required = false) ReservationStatus status,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("modifiedAt").descending());
+        return ApiSuccessResponse.of(queryUseCase.getMyReservations(user, pageable, status));
     }
 }
