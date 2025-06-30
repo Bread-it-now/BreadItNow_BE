@@ -55,7 +55,7 @@ public class Reservation {
         this.reservationState.cancel(reason);
     }
 
-    public void partiallyApprove(List<ReservationProduct> adjustedProducts, Long newReservationNumber) {
+    public void partialApprove(List<ReservationProduct> adjustedProducts, Long newReservationNumber) {
         this.reservationState.partiallyApprove();
         this.reservationProducts = adjustedProducts;
         this.reservationNumber = newReservationNumber;

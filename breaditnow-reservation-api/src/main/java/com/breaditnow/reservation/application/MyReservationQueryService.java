@@ -7,7 +7,7 @@ import com.breaditnow.reservation.application.dto.response.MyReservationDetailRe
 import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
 import com.breaditnow.reservation.domain.model.Reservation;
-import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
+import com.breaditnow.reservation.domain.port.in.MyReservationQueryUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ import static com.breaditnow.common.exception.ReservationErrorCode.RESERVATION_N
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ReservationQueryService implements ReservationQueryUseCase {
+public class MyReservationQueryService implements MyReservationQueryUseCase {
     private final ReservationRepository reservationRepository;
 
     @Override

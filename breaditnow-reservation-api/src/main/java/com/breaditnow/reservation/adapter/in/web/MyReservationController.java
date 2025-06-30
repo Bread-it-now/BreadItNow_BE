@@ -4,14 +4,14 @@ import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.reservation.adapter.in.resolver.AuthUser;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
-import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
-import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
+import com.breaditnow.reservation.application.dto.request.MyReservationCancelRequest;
+import com.breaditnow.reservation.application.dto.request.MyReservationCreateRequest;
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
-import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
-import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
-import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
+import com.breaditnow.reservation.domain.port.in.MyCancelReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.MyReservationQueryUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,23 +24,23 @@ import java.util.Map;
 @RequestMapping("/api/v1/my/reservation")
 @RequiredArgsConstructor
 public class MyReservationController {
-    private final CreateReservationUseCase createReservationUseCase;
-    private final CancelReservationUseCase cancelReservationUseCase;
-    private final ReservationQueryUseCase queryUseCase;
+    private final MyCreateReservationUseCase myCreateReservationUseCase;
+    private final MyCancelReservationUseCase myCancelReservationUseCase;
+    private final MyReservationQueryUseCase queryUseCase;
 
     @PostMapping
-    public ApiSuccessResponse<Map<String, Long>> createReservation(@AuthUser AuthenticatedUser user, @RequestBody ReservationCreateRequest request) {
-        Long reservationId = createReservationUseCase.createReservation(user, request);
+    public ApiSuccessResponse<Map<String, Long>> createReservation(@AuthUser AuthenticatedUser user, @RequestBody MyReservationCreateRequest request) {
+        Long reservationId = myCreateReservationUseCase.createReservation(user, request);
         return ApiSuccessResponse.of(Map.of("reservationId", reservationId));
     }
 
-    @PatchMapping("{reservationId}/cancel")
+    @PostMapping("{reservationId}/cancel")
     public ApiSuccessResponse<Void> cancelReservation(
             @AuthUser AuthenticatedUser user,
             @PathVariable("reservationId") Long reservationId,
-            @RequestBody ReservationCancelRequest request
+            @RequestBody MyReservationCancelRequest request
     ) {
-        cancelReservationUseCase.cancelReservation(user, reservationId, request);
+        myCancelReservationUseCase.cancelReservation(user, reservationId, request);
         return ApiSuccessResponse.of();
     }
 

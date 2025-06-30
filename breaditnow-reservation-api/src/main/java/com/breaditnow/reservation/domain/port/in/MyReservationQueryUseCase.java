@@ -7,7 +7,7 @@ import com.breaditnow.reservation.application.dto.response.MyReservationPageResp
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
 import org.springframework.data.domain.Pageable;
 
-public interface ReservationQueryUseCase {
+public interface MyReservationQueryUseCase {
     MyReservationSimpleResponse getSimpleReservation(AuthenticatedUser user, Long reservationId);
     MyReservationDetailResponse getDetailReservation(AuthenticatedUser user, Long reservationId);
     MyReservationPageResponse getMyReservations(AuthenticatedUser user, Pageable pageable, ReservationStatus status);

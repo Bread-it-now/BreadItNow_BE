@@ -8,13 +8,13 @@ import com.breaditnow.common.exception.ReservationException;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.internal.ProductInfo;
-import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest;
-import com.breaditnow.reservation.application.dto.request.ReservationCreateRequest.ProductRequest;
+import com.breaditnow.reservation.application.dto.request.MyReservationCreateRequest;
+import com.breaditnow.reservation.application.dto.request.MyReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.event.ReservationCreatedEvent;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
 import com.breaditnow.reservation.domain.model.ReservedBakery;
-import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
 import com.breaditnow.reservation.domain.port.out.OwnerApiPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +32,14 @@ import static com.breaditnow.common.exception.ReservationErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class CreateReservationService implements CreateReservationUseCase {
+public class MyCreateReservationService implements MyCreateReservationUseCase {
     private final OwnerApiPort ownerApiPort;
     private final ReservationRepository reservationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
-    public Long createReservation(AuthenticatedUser user, ReservationCreateRequest request) {
+    public Long createReservation(AuthenticatedUser user, MyReservationCreateRequest request) {
         if(Role.fromString(user.role()) != CUSTOMER){
             throw new ReservationException(ReservationErrorCode.UNAUTHORIZED_ACCESS);
         }
@@ -60,7 +60,6 @@ public class CreateReservationService implements CreateReservationUseCase {
                 bakeryInfo.profileImageUrl()
         );
 
-
         Map<Long, ProductInfo> productInfoMap = getProductInfoMap(request, bakeryInfo.bakeryId());
         List<ReservationProduct> reservationProducts = toReservationProducts(request, productInfoMap);
 
@@ -77,14 +76,14 @@ public class CreateReservationService implements CreateReservationUseCase {
                 .orElseThrow(() -> new ReservationException(BAKERY_NOT_FOUND));
     }
 
-    private Map<Long, ProductInfo> getProductInfoMap(ReservationCreateRequest request, Long bakeryId) {
+    private Map<Long, ProductInfo> getProductInfoMap(MyReservationCreateRequest request, Long bakeryId) {
         List<Long> productIds = request.reservationProducts().stream()
                 .map(ProductRequest::productId)
                 .toList();
         return ownerApiPort.findProductsByIds(productIds, bakeryId);
     }
 
-    private List<ReservationProduct> toReservationProducts(ReservationCreateRequest request, Map<Long, ProductInfo> productInfoMap) {
+    private List<ReservationProduct> toReservationProducts(MyReservationCreateRequest request, Map<Long, ProductInfo> productInfoMap) {
         return request.reservationProducts().stream()
                 .map(productRequest -> {
                     ProductInfo productInfo = Optional.ofNullable(productInfoMap.get(productRequest.productId()))
