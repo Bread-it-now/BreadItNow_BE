@@ -21,22 +21,26 @@ public class ApproveReservationService implements ApproveReservationUseCase {
     private final OwnerApiPort ownerApiPort;
 
     @Override
-    public void approveReservation(AuthenticatedUser user, Long reservationId) {
+    public void approveReservation(AuthenticatedUser user, Long bakeryId, Long reservationId) {
         if(!user.isOwner()){
             throw new ReservationException(FORBIDDEN_ACCESS);
         }
 
-        Reservation reservationToApprove = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
-
-        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(reservationToApprove.getReservedBakery().bakeryId())
+        BakeryInfo bakeryInfo = ownerApiPort.findBakeryById(bakeryId)
                 .orElseThrow(() -> new ReservationException(BAKERY_NOT_FOUND));
 
         if (!bakeryInfo.ownerId().equals(user.userId())) {
             throw new ReservationException(UNAUTHORIZED_ACCESS);
         }
 
-        Long newReservationNumber = reservationRepository.findLastOfBakeryForToday(reservationToApprove.getReservedBakery().bakeryId())
+        Reservation reservationToApprove = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
+
+        if (!reservationToApprove.getReservedBakery().bakeryId().equals(bakeryId)) {
+            throw new ReservationException(UNAUTHORIZED_ACCESS);
+        }
+
+        Long newReservationNumber = reservationRepository.findLastOfBakeryForToday(bakeryId)
                 .map(lastReservation -> lastReservation.getReservationNumber() + 1)
                 .orElse(1L);
 

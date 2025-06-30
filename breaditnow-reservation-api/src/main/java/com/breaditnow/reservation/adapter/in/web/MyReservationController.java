@@ -9,29 +9,29 @@ import com.breaditnow.reservation.application.dto.request.ReservationCreateReque
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
-import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CreateReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/v1/reservation")
+@RequestMapping("/api/v1/my/reservation")
 @RequiredArgsConstructor
-public class ReservationController {
+public class MyReservationController {
     private final CreateReservationUseCase createReservationUseCase;
     private final CancelReservationUseCase cancelReservationUseCase;
-    private final ApproveReservationUseCase approveReservationUseCase;
     private final ReservationQueryUseCase queryUseCase;
 
     @PostMapping
-    public ApiSuccessResponse<Long> createReservation(@AuthUser AuthenticatedUser user, @RequestBody ReservationCreateRequest request) {
+    public ApiSuccessResponse<Map<String, Long>> createReservation(@AuthUser AuthenticatedUser user, @RequestBody ReservationCreateRequest request) {
         Long reservationId = createReservationUseCase.createReservation(user, request);
-        return ApiSuccessResponse.of(reservationId);
+        return ApiSuccessResponse.of(Map.of("reservationId", reservationId));
     }
 
     @PatchMapping("{reservationId}/cancel")
@@ -44,13 +44,13 @@ public class ReservationController {
         return ApiSuccessResponse.of();
     }
 
-    @PostMapping("{reservationId}/approve")
-    public ApiSuccessResponse<Void> approveReservation(
+    @GetMapping
+    public ApiSuccessResponse<MyReservationPageResponse> getMyReservations(
             @AuthUser AuthenticatedUser user,
-            @PathVariable("reservationId") Long reservationId
+            @RequestParam(name = "status", required = false) ReservationStatus status,
+            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        approveReservationUseCase.approveReservation(user, reservationId);
-        return ApiSuccessResponse.of();
+        return ApiSuccessResponse.of(queryUseCase.getMyReservations(user, pageable, status));
     }
 
     @GetMapping("/{reservationId}")
@@ -61,16 +61,5 @@ public class ReservationController {
     @GetMapping("/{reservationId}/detail")
     public ApiSuccessResponse<MyReservationDetailResponse> getDetailReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
         return ApiSuccessResponse.of(queryUseCase.getDetailReservation(user, reservationId));
-    }
-
-    @GetMapping("/my")
-    public ApiSuccessResponse<MyReservationPageResponse> getMyReservations(
-            @AuthUser AuthenticatedUser user,
-            @RequestParam(name = "status", required = false) ReservationStatus status,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("modifiedAt").descending());
-        return ApiSuccessResponse.of(queryUseCase.getMyReservations(user, pageable, status));
     }
 }
