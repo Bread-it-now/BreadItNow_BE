@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface ReservationRepository {
     Reservation save(Reservation reservation);
     Optional<Reservation> findById(Long reservationId);
-    Optional<Reservation> findLastOfBakeryForToday(Long bakeryId);
+    Long getNextReservationNumber(Long bakeryId);
 
     List<Reservation> findByCustomerId(Long customerId);
     Page<Reservation> findByCustomerId(Long customerId, Pageable pageable, ReservationStatus status);

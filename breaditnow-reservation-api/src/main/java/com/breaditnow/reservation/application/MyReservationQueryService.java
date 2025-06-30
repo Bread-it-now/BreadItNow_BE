@@ -6,6 +6,8 @@ import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
+import com.breaditnow.reservation.application.provider.ReservationProvider;
+import com.breaditnow.reservation.application.validator.ReservationValidator;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.in.MyReservationQueryUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
@@ -15,28 +17,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.breaditnow.common.exception.ReservationErrorCode.FORBIDDEN_ACCESS;
-import static com.breaditnow.common.exception.ReservationErrorCode.RESERVATION_NOT_FOUND;
+import static com.breaditnow.common.exception.ReservationErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MyReservationQueryService implements MyReservationQueryUseCase {
+    private final ReservationValidator reservationValidator;
+    private final ReservationProvider reservationProvider;
     private final ReservationRepository reservationRepository;
 
     @Override
     public MyReservationSimpleResponse getSimpleReservation(AuthenticatedUser user, Long reservationId) {
         if(!user.isCustomer()) {
-            throw new ReservationException(FORBIDDEN_ACCESS);
+            throw new ReservationException(UNAUTHORIZED_ACCESS);
         }
 
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
-
-        if (!reservation.getCustomerId().equals(user.userId())) {
-            throw new ReservationException(FORBIDDEN_ACCESS);
-        }
-
+        Reservation reservation = reservationProvider.provide(reservationId);
+        reservationValidator.validateReservationBelongsToCustomer(reservation, user.userId());
         return MyReservationSimpleResponse.from(reservation);
     }
 
@@ -46,12 +44,8 @@ public class MyReservationQueryService implements MyReservationQueryUseCase {
             throw new ReservationException(FORBIDDEN_ACCESS);
         }
 
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
-
-        if (!reservation.getCustomerId().equals(user.userId())) {
-            throw new ReservationException(FORBIDDEN_ACCESS);
-        }
+        Reservation reservation = reservationProvider.provide(reservationId);
+        reservationValidator.validateReservationBelongsToCustomer(reservation, user.userId());
 
         return MyReservationDetailResponse.from(reservation);
     }

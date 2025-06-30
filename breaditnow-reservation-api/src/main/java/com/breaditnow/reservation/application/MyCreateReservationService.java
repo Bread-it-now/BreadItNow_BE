@@ -1,21 +1,19 @@
 package com.breaditnow.reservation.application;
 
-import com.breaditnow.common.domain.Money;
-import com.breaditnow.common.domain.OperatingStatus;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationErrorCode;
 import com.breaditnow.common.exception.ReservationException;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
-import com.breaditnow.reservation.application.dto.internal.ProductInfo;
 import com.breaditnow.reservation.application.dto.request.MyReservationCreateRequest;
-import com.breaditnow.reservation.application.dto.request.MyReservationCreateRequest.ProductRequest;
 import com.breaditnow.reservation.application.event.ReservationCreatedEvent;
+import com.breaditnow.reservation.application.factory.ProductFactory;
+import com.breaditnow.reservation.application.provider.BakeryProvider;
+import com.breaditnow.reservation.application.validator.BakeryValidator;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
 import com.breaditnow.reservation.domain.model.ReservedBakery;
 import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
-import com.breaditnow.reservation.domain.port.out.OwnerApiPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,17 +21,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static com.breaditnow.common.domain.Role.CUSTOMER;
-import static com.breaditnow.common.exception.ReservationErrorCode.*;
-
 
 @Service
 @RequiredArgsConstructor
 public class MyCreateReservationService implements MyCreateReservationUseCase {
-    private final OwnerApiPort ownerApiPort;
+    private final ProductFactory productFactory;
+    private final BakeryProvider bakeryProvider;
+    private final BakeryValidator bakeryValidator;
     private final ReservationRepository reservationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -44,59 +40,18 @@ public class MyCreateReservationService implements MyCreateReservationUseCase {
             throw new ReservationException(ReservationErrorCode.UNAUTHORIZED_ACCESS);
         }
 
-        BakeryInfo bakeryInfo = getBakeryInfo(request.bakeryId());
-        if (bakeryInfo.deleted()) {
-            throw new ReservationException(BAKERY_IS_DELETED);
-        }
-        if (bakeryInfo.operatingStatus() != OperatingStatus.OPEN) {
-            throw new ReservationException(BAKERY_IS_NOT_OPENED);
-        }
+        BakeryInfo bakeryInfo = bakeryProvider.provide(request.bakeryId());
+        bakeryValidator.validateBakeryForReservation(bakeryInfo);
+        ReservedBakery reservedBakery = ReservedBakery.create(bakeryInfo);
 
-        ReservedBakery reservedBakery = new ReservedBakery(
-                bakeryInfo.bakeryId(),
-                bakeryInfo.name(),
-                bakeryInfo.address(),
-                bakeryInfo.phone(),
-                bakeryInfo.profileImageUrl()
-        );
-
-        Map<Long, ProductInfo> productInfoMap = getProductInfoMap(request, bakeryInfo.bakeryId());
-        List<ReservationProduct> reservationProducts = toReservationProducts(request, productInfoMap);
-
+        List<ReservationProduct> reservationProducts = productFactory.createFrom(request, bakeryInfo.bakeryId());
         Reservation reservation = new Reservation(user.userId(), reservedBakery, reservationProducts);
+
         Reservation savedReservation = reservationRepository.save(reservation);
 
         publishReservationCreatedEvent(savedReservation, user.userId(), bakeryInfo, reservationProducts);
 
         return savedReservation.getReservationId();
-    }
-
-    private BakeryInfo getBakeryInfo(Long bakeryId) {
-        return ownerApiPort.findBakeryById(bakeryId)
-                .orElseThrow(() -> new ReservationException(BAKERY_NOT_FOUND));
-    }
-
-    private Map<Long, ProductInfo> getProductInfoMap(MyReservationCreateRequest request, Long bakeryId) {
-        List<Long> productIds = request.reservationProducts().stream()
-                .map(ProductRequest::productId)
-                .toList();
-        return ownerApiPort.findProductsByIds(productIds, bakeryId);
-    }
-
-    private List<ReservationProduct> toReservationProducts(MyReservationCreateRequest request, Map<Long, ProductInfo> productInfoMap) {
-        return request.reservationProducts().stream()
-                .map(productRequest -> {
-                    ProductInfo productInfo = Optional.ofNullable(productInfoMap.get(productRequest.productId()))
-                            .orElseThrow(() -> new ReservationException(PRODUCT_NOT_FOUND));
-                    return new ReservationProduct(
-                            productInfo.productId(),
-                            productInfo.name(),
-                            productInfo.imageUrl(),
-                            new Money(productInfo.price()),
-                            productRequest.quantity()
-                    );
-                })
-                .toList();
     }
 
     private void publishReservationCreatedEvent(Reservation reservation, Long customerId, BakeryInfo bakeryInfo, List<ReservationProduct> reservationProducts) {

@@ -57,11 +57,13 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
     }
 
     @Override
-    public Optional<Reservation> findLastOfBakeryForToday(Long bakeryId) {
+    public Long getNextReservationNumber(Long bakeryId) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(MAX);
 
         return jpaRepository.findFirstByBakeryIdAndReservationStatusAndModifiedAtBetweenOrderByReservationNumberDesc(bakeryId, APPROVED, startOfDay, endOfDay)
-                .map(ReservationEntity::toDomain);
+                .map(ReservationEntity::getReservationNumber)
+                .map(lastNumber -> lastNumber + 1)
+                .orElse(1L);
     }
 }

@@ -11,11 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @Component
@@ -34,7 +33,7 @@ public class OwnerApiAdapter implements OwnerApiPort {
     }
 
     @Override
-    public Map<Long, ProductInfo> findProductsByIds(List<Long> productIds, Long bakeryId) {
+    public List<ProductInfo> findProductsByIds(List<Long> productIds, Long bakeryId) {
         return ownerServiceClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/internal/api/v1/bakery/{bakeryId}/product")
@@ -44,15 +43,12 @@ public class OwnerApiAdapter implements OwnerApiPort {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ApiSuccessResponse<List<ProductInfo>>>() {})
                 .map(ApiSuccessResponse::data)
-                .map(list -> list.stream().collect(Collectors.toMap(ProductInfo::productId, p -> p)))
-                .onErrorResume(e -> Mono.just(Collections.emptyMap()))
+                .onErrorResume(e -> Mono.just(emptyList()))
                 .block();
     }
 
     @Override
     public Optional<String> findFcmTokenById(Long ownerId) {
-        log.info("Requesting FCM token for ownerId: {}", ownerId);
-
         var responseType = new ParameterizedTypeReference<ApiSuccessResponse<String>>() {};
 
         return ownerServiceClient.get()
@@ -60,7 +56,6 @@ public class OwnerApiAdapter implements OwnerApiPort {
                 .retrieve()
                 .bodyToMono(responseType)
                 .map(ApiSuccessResponse::data)
-                .doOnError(error -> log.error("Owner API 호출 실패. ownerId: {}, error: {}", ownerId, error.getMessage()))
                 .onErrorResume(e -> Mono.empty())
                 .blockOptional();
     }
