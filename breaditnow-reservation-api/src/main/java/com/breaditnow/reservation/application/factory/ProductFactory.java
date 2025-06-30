@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +19,12 @@ public class ProductFactory {
     private final ProductProvider productProvider;
 
     public List<ReservationProduct> createFrom(ReservationPartialApproveRequest request, Long bakeryId) {
+        Map<Long, Integer> quantityMap = request.reservationProducts().stream()
+                .collect(Collectors.toMap(
+                        ReservationPartialApproveRequest.ProductRequest::productId,
+                        ReservationPartialApproveRequest.ProductRequest::quantity
+                ));
+
         List<Long> productIds = request.reservationProducts().stream()
                 .map(ReservationPartialApproveRequest.ProductRequest::productId)
                 .toList();
@@ -29,12 +37,18 @@ public class ProductFactory {
                             productInfo.name(),
                             productInfo.imageUrl(),
                             new Money(productInfo.price()),
-                            productInfo.stock()
+                            quantityMap.get(productInfo.productId())
                 ))
                 .toList();
     }
 
     public List<ReservationProduct> createFrom(MyReservationCreateRequest request, Long bakeryId) {
+        Map<Long, Integer> quantityMap = request.reservationProducts().stream()
+                .collect(Collectors.toMap(
+                        MyReservationCreateRequest.ProductRequest::productId,
+                        MyReservationCreateRequest.ProductRequest::quantity
+                ));
+
         List<Long> productIds = request.reservationProducts().stream()
                 .map(MyReservationCreateRequest.ProductRequest::productId)
                 .toList();
@@ -47,7 +61,7 @@ public class ProductFactory {
                         productInfo.name(),
                         productInfo.imageUrl(),
                         new Money(productInfo.price()),
-                        productInfo.stock()
+                        quantityMap.get(productInfo.productId())
                 ))
                 .toList();
     }
