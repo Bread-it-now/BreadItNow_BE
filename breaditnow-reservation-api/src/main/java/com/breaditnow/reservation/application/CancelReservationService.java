@@ -30,5 +30,6 @@ public class CancelReservationService implements CancelReservationUseCase {
         ReservationCancelStrategy strategy = strategyFactory.findStrategy(Role.fromString(user.role()));
         strategy.checkAuthority(user, reservation);
         reservation.cancel(request.reason());
+        reservationRepository.save(reservation);
     }
 }
