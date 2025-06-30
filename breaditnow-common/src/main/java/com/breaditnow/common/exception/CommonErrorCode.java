@@ -50,7 +50,12 @@ public enum CommonErrorCode implements ErrorCode {
 	COORDINATES_REQUIRED(BAD_REQUEST, "AE007", "좌표는 필수 값입니다."),
 	INVALID_LATITUDE_RANGE(BAD_REQUEST, "AE008", "위도는 -90.0에서 90.0 사이여야 합니다."),
 	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "AE009", "경도는 -180.0에서 180.0 사이여야 합니다."),
-	INVALID_PERIOD_VALUE(BAD_REQUEST, "AE010", "잘못된 기간 값입니다. DAILY, WEEKLY, MONTHLY 중 하나여야 합니다."),;
+	INVALID_PERIOD_VALUE(BAD_REQUEST, "AE010", "잘못된 기간 값입니다. DAILY, WEEKLY, MONTHLY 중 하나여야 합니다."),
+
+	/**
+	 * AUTH(AF000)
+	 */
+	MISSING_AUTHORIZATION_HEADER(BAD_REQUEST, "AE011", "Authorization 헤더가 누락되었습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String code;

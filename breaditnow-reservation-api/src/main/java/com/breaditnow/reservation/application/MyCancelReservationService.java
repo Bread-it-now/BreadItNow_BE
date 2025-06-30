@@ -1,6 +1,6 @@
 package com.breaditnow.reservation.application;
 
-import com.breaditnow.common.exception.ReservationException;
+import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.MyReservationCancelRequest;
 import com.breaditnow.reservation.application.provider.ReservationProvider;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.breaditnow.common.exception.ReservationErrorCode.*;
+import static com.breaditnow.common.domain.Role.CUSTOMER;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +23,8 @@ public class MyCancelReservationService implements MyCancelReservationUseCase {
     private final ReservationRepository reservationRepository;
 
     @Override
+    @Authorize(CUSTOMER)
     public void cancelReservation(AuthenticatedUser user, Long reservationId, MyReservationCancelRequest request) {
-        if(!user.isCustomer()) {
-            throw new ReservationException(UNAUTHORIZED_ACCESS);
-        }
         Reservation reservation = reservationProvider.provide(reservationId);
         reservationValidator.validateReservationBelongsToCustomer(reservation, user.userId());
 

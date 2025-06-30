@@ -1,5 +1,6 @@
 package com.breaditnow.reservation.application;
 
+import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.provider.BakeryProvider;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.breaditnow.common.domain.Role.OWNER;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -24,6 +27,7 @@ public class ApproveReservationService implements ApproveReservationUseCase {
     private final ReservationValidator reservationValidator;
 
     @Override
+    @Authorize(OWNER)
     public void approveReservation(AuthenticatedUser user, Long bakeryId, Long reservationId) {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);

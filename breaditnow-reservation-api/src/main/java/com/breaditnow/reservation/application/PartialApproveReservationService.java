@@ -1,5 +1,6 @@
 package com.breaditnow.reservation.application;
 
+import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.request.ReservationPartialApproveRequest;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.breaditnow.common.domain.Role.OWNER;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -30,6 +33,7 @@ public class PartialApproveReservationService implements PartialApproveReservati
     private final ReservationRepository reservationRepository;
 
     @Override
+    @Authorize(OWNER)
     public void partialApproveReservation(AuthenticatedUser user, Long reservationId, Long bakeryId, ReservationPartialApproveRequest request) {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
 

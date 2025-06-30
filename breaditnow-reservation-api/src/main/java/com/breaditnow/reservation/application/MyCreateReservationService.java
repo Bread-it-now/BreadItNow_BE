@@ -1,5 +1,6 @@
 package com.breaditnow.reservation.application;
 
+import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.ReservationErrorCode;
 import com.breaditnow.common.exception.ReservationException;
@@ -35,11 +36,8 @@ public class MyCreateReservationService implements MyCreateReservationUseCase {
 
     @Override
     @Transactional
+    @Authorize(CUSTOMER)
     public Long createReservation(AuthenticatedUser user, MyReservationCreateRequest request) {
-        if(Role.fromString(user.role()) != CUSTOMER){
-            throw new ReservationException(ReservationErrorCode.UNAUTHORIZED_ACCESS);
-        }
-
         BakeryInfo bakeryInfo = bakeryProvider.provide(request.bakeryId());
         bakeryValidator.validateBakeryForReservation(bakeryInfo);
         ReservedBakery reservedBakery = ReservedBakery.create(bakeryInfo);

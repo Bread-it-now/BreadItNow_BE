@@ -9,6 +9,7 @@ import com.breaditnow.reservation.domain.model.ReservationProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,21 +26,7 @@ public class ProductFactory {
                         ReservationPartialApproveRequest.ProductRequest::quantity
                 ));
 
-        List<Long> productIds = request.reservationProducts().stream()
-                .map(ReservationPartialApproveRequest.ProductRequest::productId)
-                .toList();
-
-        List<ProductInfo> productInfos = productProvider.provideAllByIds(productIds, bakeryId);
-
-        return productInfos.stream()
-                .map(productInfo -> new ReservationProduct(
-                            productInfo.productId(),
-                            productInfo.name(),
-                            productInfo.imageUrl(),
-                            new Money(productInfo.price()),
-                            quantityMap.get(productInfo.productId())
-                ))
-                .toList();
+        return createReservationProducts(quantityMap, bakeryId);
     }
 
     public List<ReservationProduct> createFrom(MyReservationCreateRequest request, Long bakeryId) {
@@ -49,10 +36,11 @@ public class ProductFactory {
                         MyReservationCreateRequest.ProductRequest::quantity
                 ));
 
-        List<Long> productIds = request.reservationProducts().stream()
-                .map(MyReservationCreateRequest.ProductRequest::productId)
-                .toList();
+        return createReservationProducts(quantityMap, bakeryId);
+    }
 
+    private List<ReservationProduct> createReservationProducts(Map<Long, Integer> quantityMap, Long bakeryId) {
+        List<Long> productIds = new ArrayList<>(quantityMap.keySet());
         List<ProductInfo> productInfos = productProvider.provideAllByIds(productIds, bakeryId);
 
         return productInfos.stream()

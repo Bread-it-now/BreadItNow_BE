@@ -1,7 +1,7 @@
 package com.breaditnow.reservation.application;
 
+import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.common.domain.ReservationStatus;
-import com.breaditnow.common.exception.ReservationException;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.breaditnow.common.exception.ReservationErrorCode.*;
+import static com.breaditnow.common.domain.Role.CUSTOMER;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,22 +28,16 @@ public class MyReservationQueryService implements MyReservationQueryUseCase {
     private final ReservationRepository reservationRepository;
 
     @Override
+    @Authorize(CUSTOMER)
     public MyReservationSimpleResponse getSimpleReservation(AuthenticatedUser user, Long reservationId) {
-        if(!user.isCustomer()) {
-            throw new ReservationException(UNAUTHORIZED_ACCESS);
-        }
-
         Reservation reservation = reservationProvider.provide(reservationId);
         reservationValidator.validateReservationBelongsToCustomer(reservation, user.userId());
         return MyReservationSimpleResponse.from(reservation);
     }
 
     @Override
+    @Authorize(CUSTOMER)
     public MyReservationDetailResponse getDetailReservation(AuthenticatedUser user, Long reservationId) {
-        if(!user.isCustomer()) {
-            throw new ReservationException(FORBIDDEN_ACCESS);
-        }
-
         Reservation reservation = reservationProvider.provide(reservationId);
         reservationValidator.validateReservationBelongsToCustomer(reservation, user.userId());
 
@@ -51,11 +45,8 @@ public class MyReservationQueryService implements MyReservationQueryUseCase {
     }
 
     @Override
+    @Authorize(CUSTOMER)
     public MyReservationPageResponse getMyReservations(AuthenticatedUser user, Pageable pageable, ReservationStatus status) {
-        if(!user.isCustomer()) {
-            throw new ReservationException(FORBIDDEN_ACCESS);
-        }
-
         Page<Reservation> reservationPage = reservationRepository.findByCustomerId(user.userId(), pageable, status);
         return MyReservationPageResponse.from(reservationPage);
     }
