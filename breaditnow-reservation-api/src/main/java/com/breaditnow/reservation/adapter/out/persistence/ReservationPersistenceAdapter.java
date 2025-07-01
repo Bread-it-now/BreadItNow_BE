@@ -50,6 +50,12 @@ public class ReservationPersistenceAdapter implements ReservationRepository {
     }
 
     @Override
+    public Page<Reservation> findByBakeryId(Long bakeryId, Pageable pageable, ReservationStatus status) {
+        return jpaRepository.findByBakeryId(bakeryId, pageable, status)
+                .map(ReservationEntity::toDomain);
+    }
+
+    @Override
     public Reservation save(Reservation reservation) {
         ReservationEntity entity = ReservationEntity.from(reservation);
         ReservationEntity savedEntity = jpaRepository.save(entity);

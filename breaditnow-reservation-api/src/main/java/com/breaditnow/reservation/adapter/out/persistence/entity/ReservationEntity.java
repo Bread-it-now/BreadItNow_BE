@@ -3,6 +3,7 @@ package com.breaditnow.reservation.adapter.out.persistence.entity;
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.jpa.BaseEntity;
+import com.breaditnow.reservation.domain.model.Orderer;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationState;
 import com.breaditnow.reservation.domain.model.ReservedBakery;
@@ -37,6 +38,8 @@ public class ReservationEntity extends BaseEntity {
     private String bakeryProfileImageUrl;
 
     private Long ordererId;
+    private String ordererPhoneNumber;
+    private String ordererNickname;
 
     private Long reservationNumber;
 
@@ -64,7 +67,9 @@ public class ReservationEntity extends BaseEntity {
                 .reservationItems(reservation.getReservationProducts().stream()
                         .map(ReservationItemEmbeddable::from)
                         .toList())
-                .ordererId(reservation.getCustomerId())
+                .ordererId(reservation.getOrderer().getCustomerId())
+                .ordererPhoneNumber(reservation.getOrderer().getPhoneNumber())
+                .ordererNickname(reservation.getOrderer().getNickname())
                 .bakeryId(reservedBakery.bakeryId())
                 .bakeryName(reservedBakery.name())
                 .bakeryAddress(reservedBakery.address())
@@ -74,7 +79,6 @@ public class ReservationEntity extends BaseEntity {
     }
 
     public Reservation toDomain() {
-        ReservedBakery reservedBakery = new ReservedBakery(this.bakeryId, this.bakeryName, this.bakeryAddress, this.bakeryPhone, this.bakeryProfileImageUrl);
         return Reservation.builder()
                 .reservationId(this.id)
                 .reservationProducts(this.reservationItems.stream()
@@ -82,8 +86,8 @@ public class ReservationEntity extends BaseEntity {
                         .toList()
                 )
                 .reservationState(new ReservationState(this.reservationStatus, this.cancellationReason))
-                .reservedBakery(reservedBakery)
-                .customerId(this.ordererId)
+                .reservedBakery(new ReservedBakery(this.bakeryId, this.bakeryName, this.bakeryAddress, this.bakeryPhone, this.bakeryProfileImageUrl))
+                .orderer(new Orderer(this.ordererId, this.ordererNickname, this.ordererPhoneNumber))
                 .totalPrice(new Money(this.totalPrice))
                 .reservationNumber(this.reservationNumber)
                 .reservationTime(getModifiedAt())

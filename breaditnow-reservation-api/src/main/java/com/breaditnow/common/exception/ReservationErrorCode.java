@@ -22,7 +22,8 @@ public enum ReservationErrorCode implements ErrorCode {
 	FORBIDDEN_ACCESS(FORBIDDEN, "EA012", "접근이 금지되었습니다."),
 	UNAUTHORIZED_ACCESS(UNAUTHORIZED, "EA013", "권한이 없습니다."),
 	BAKERY_IS_NOT_OPENED(BAD_REQUEST, "EA014", "빵집이 운영 중이 아닙니다."),
-	BAKERY_IS_DELETED(NOT_FOUND, "EA015", "빵집이 삭제되었습니다."),;
+	BAKERY_IS_DELETED(NOT_FOUND, "EA015", "빵집이 삭제되었습니다."),
+	CUSTOMER_NOT_FOUND(NOT_FOUND, "EA016", "고객을 찾을 수 없습니다."),;
 
 
 	private final HttpStatus httpStatus;

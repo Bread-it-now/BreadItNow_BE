@@ -17,4 +17,5 @@ public interface ReservationRepository {
     Page<Reservation> findByCustomerId(Long customerId, Pageable pageable, ReservationStatus status);
 
     List<Reservation> findByBakeryId(Long bakeryId);
+    Page<Reservation> findByBakeryId(Long bakeryId, Pageable pageable, ReservationStatus status);
 }

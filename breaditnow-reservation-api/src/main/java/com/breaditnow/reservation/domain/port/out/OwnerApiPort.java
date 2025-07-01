@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OwnerApiPort {
-    Optional<BakeryInfo> findBakeryById(Long bakeryId);
-    List<ProductInfo> findProductsByIds(List<Long> productIds, Long bakeryId);
+    Optional<BakeryInfo> findBakeryInfoById(Long bakeryId);
+    List<ProductInfo> findProductInfosByIds(List<Long> productIds, Long bakeryId);
     Optional<String> findFcmTokenById(Long ownerId);
 }

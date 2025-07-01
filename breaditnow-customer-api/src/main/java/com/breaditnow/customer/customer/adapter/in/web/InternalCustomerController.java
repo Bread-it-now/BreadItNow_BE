@@ -1,6 +1,7 @@
 package com.breaditnow.customer.customer.adapter.in.web;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.customer.application.internal.CustomerInfo;
 import com.breaditnow.customer.customer.domain.model.Customer;
 import com.breaditnow.customer.customer.domain.port.in.GetCustomerInfoUseCase;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,16 @@ public class InternalCustomerController {
         String fcmToken = getCustomerInfoUseCase.findById(customerId)
                 .map(Customer::getFcmToken)
                 .orElse(null);
+
         return ApiSuccessResponse.of(fcmToken);
+    }
+
+    @GetMapping("/{customerId}")
+    public ApiSuccessResponse<CustomerInfo> getCustomerInfo(@PathVariable Long customerId) {
+        CustomerInfo customerInfo = getCustomerInfoUseCase.findById(customerId)
+                .map(CustomerInfo::of)
+                .orElse(null);
+
+        return ApiSuccessResponse.of(customerInfo);
     }
 }

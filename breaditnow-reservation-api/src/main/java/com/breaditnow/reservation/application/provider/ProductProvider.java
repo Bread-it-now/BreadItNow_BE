@@ -16,7 +16,7 @@ public class ProductProvider {
     private final OwnerApiPort ownerApiPort;
 
     public List<ProductInfo> provideAllByIds(List<Long> productIds, Long bakeryId) {
-        List<ProductInfo> productInfos = ownerApiPort.findProductsByIds(productIds, bakeryId);
+        List<ProductInfo> productInfos = ownerApiPort.findProductInfosByIds(productIds, bakeryId);
 
         if (productInfos.size() != productIds.size()) {
             throw new ReservationException(PRODUCT_NOT_FOUND);

@@ -29,4 +29,9 @@ public interface JpaReservationRepository extends JpaRepository<ReservationEntit
             "WHERE r.ordererId = :ordererId " +
             "AND (:status IS NULL OR r.reservationStatus = :status)")
     Page<ReservationEntity> findByOrdererId(Long ordererId, Pageable pageable, @Param("status") ReservationStatus status);
+
+    @Query("SELECT r FROM ReservationEntity r " +
+            "WHERE r.bakeryId = :bakeryId " +
+            "AND (:status IS NULL OR r.reservationStatus = :status)")
+    Page<ReservationEntity> findByBakeryId(Long bakeryId, Pageable pageable, @Param("status") ReservationStatus status);
 }

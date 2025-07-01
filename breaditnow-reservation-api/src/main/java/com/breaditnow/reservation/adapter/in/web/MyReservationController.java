@@ -14,11 +14,12 @@ import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.MyReservationQueryUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @RequestMapping("/api/v1/my/reservation")
@@ -26,7 +27,7 @@ import java.util.Map;
 public class MyReservationController {
     private final MyCreateReservationUseCase myCreateReservationUseCase;
     private final MyCancelReservationUseCase myCancelReservationUseCase;
-    private final MyReservationQueryUseCase queryUseCase;
+    private final MyReservationQueryUseCase myReservationQueryUseCase;
 
     @PostMapping
     public ApiSuccessResponse<Map<String, Long>> createReservation(@AuthUser AuthenticatedUser user, @RequestBody MyReservationCreateRequest request) {
@@ -48,18 +49,18 @@ public class MyReservationController {
     public ApiSuccessResponse<MyReservationPageResponse> getMyReservations(
             @AuthUser AuthenticatedUser user,
             @RequestParam(name = "status", required = false) ReservationStatus status,
-            @PageableDefault(sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(sort = "modifiedAt", direction = DESC) Pageable pageable
     ) {
-        return ApiSuccessResponse.of(queryUseCase.getMyReservations(user, pageable, status));
+        return ApiSuccessResponse.of(myReservationQueryUseCase.getMyReservations(user, pageable, status));
     }
 
     @GetMapping("/{reservationId}")
     public ApiSuccessResponse<MyReservationSimpleResponse> getSimpleReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
-        return ApiSuccessResponse.of(queryUseCase.getSimpleReservation(user, reservationId));
+        return ApiSuccessResponse.of(myReservationQueryUseCase.getSimpleReservation(user, reservationId));
     }
 
     @GetMapping("/{reservationId}/detail")
     public ApiSuccessResponse<MyReservationDetailResponse> getDetailReservation(@AuthUser AuthenticatedUser user, @PathVariable Long reservationId) {
-        return ApiSuccessResponse.of(queryUseCase.getDetailReservation(user, reservationId));
+        return ApiSuccessResponse.of(myReservationQueryUseCase.getDetailReservation(user, reservationId));
     }
 }

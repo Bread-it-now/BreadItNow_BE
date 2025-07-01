@@ -23,7 +23,7 @@ public class OwnerApiAdapter implements OwnerApiPort {
     private final WebClient ownerServiceClient;
 
     @Override
-    public Optional<BakeryInfo> findBakeryById(Long bakeryId) {
+    public Optional<BakeryInfo> findBakeryInfoById(Long bakeryId) {
         return ownerServiceClient.get()
                 .uri("/internal/api/v1/bakery/{bakeryId}", bakeryId)
                 .retrieve()
@@ -33,7 +33,7 @@ public class OwnerApiAdapter implements OwnerApiPort {
     }
 
     @Override
-    public List<ProductInfo> findProductsByIds(List<Long> productIds, Long bakeryId) {
+    public List<ProductInfo> findProductInfosByIds(List<Long> productIds, Long bakeryId) {
         return ownerServiceClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/internal/api/v1/bakery/{bakeryId}/product")

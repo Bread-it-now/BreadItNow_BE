@@ -9,7 +9,7 @@ import static com.breaditnow.common.exception.ReservationErrorCode.UNAUTHORIZED_
 @Component
 public class ReservationValidator {
     public void validateReservationBelongsToCustomer(Reservation reservation, Long customerId) {
-        if (!reservation.getCustomerId().equals(customerId)) {
+        if (!reservation.getOrderer().getCustomerId().equals(customerId)) {
             throw new ReservationException(UNAUTHORIZED_ACCESS);
         }
     }

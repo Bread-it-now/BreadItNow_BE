@@ -13,7 +13,7 @@ public class BakeryProvider {
     private final OwnerApiPort ownerApiPort;
 
     public BakeryInfo provide(Long bakeryId) {
-        return ownerApiPort.findBakeryById(bakeryId)
+        return ownerApiPort.findBakeryInfoById(bakeryId)
                 .orElseThrow(() -> new ReservationException(ReservationErrorCode.BAKERY_NOT_FOUND));
     }
 }
