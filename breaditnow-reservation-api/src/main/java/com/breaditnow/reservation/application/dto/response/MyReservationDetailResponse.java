@@ -1,6 +1,5 @@
 package com.breaditnow.reservation.application.dto.response;
 
-import com.breaditnow.common.domain.DailyTime;
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
@@ -55,7 +54,7 @@ public record MyReservationDetailResponse(
             return new ReservationInfo(
                     reservation.getReservationId(),
                     reservation.getReservationNumber(),
-                    reservation.getReservationTime().format(DailyTime.DATE_FORMATTER),
+                    reservation.getReservationDate(),
                     reservation.getReservationState().getReservationStatus()
             );
         }

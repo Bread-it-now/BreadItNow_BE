@@ -42,6 +42,10 @@ public class ReservationState {
         this.cancelReason = cancelReason;
     }
 
+    public boolean isCompleted() {
+        return this.reservationStatus == APPROVED || this.reservationStatus == PARTIAL_APPROVED;
+    }
+
     private void validateNotWaiting() {
         if (this.reservationStatus != WAITING) {
             throw new ReservationException(ALREADY_PROCESSED);

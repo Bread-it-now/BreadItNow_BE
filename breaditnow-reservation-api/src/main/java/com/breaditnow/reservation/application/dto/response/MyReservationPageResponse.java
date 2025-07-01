@@ -49,7 +49,7 @@ public record MyReservationPageResponse(
                     reservation.getReservedBakery().name(),
                     reservation.getReservedBakery().profileImageUrl(),
                     reservation.getTotalPrice().getAmount(),
-                    reservation.calculatePickupDeadline().format(DailyTime.DATE_FORMATTER),
+                    reservation.getPickupDeadline(),
                     reservation.getReservationState().getCancelReason(),
                     reservation.getReservationProducts().size(),
                     mainProductName

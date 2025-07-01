@@ -1,14 +1,11 @@
 package com.breaditnow.reservation.application.dto.response;
 
-import com.breaditnow.common.domain.DailyTime;
 import com.breaditnow.common.domain.PageInfo;
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.domain.model.Reservation;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-
-import static com.breaditnow.common.domain.DailyTime.DATE_FORMATTER;
 
 public record ReservationPageResponse(
         List<ReservationResponse> reservations,
@@ -18,12 +15,12 @@ public record ReservationPageResponse(
         List<ReservationResponse> reservationResponses = reservationPage.getContent().stream()
                 .map(reservation -> new ReservationResponse(
                         reservation.getReservationId(),
-                        reservation.getReservationTime().format(DATE_FORMATTER),
+                        reservation.getReservationDate(),
                         reservation.getReservationNumber(),
                         reservation.getReservationState().getReservationStatus(),
                         reservation.getOrderer().getNickname(),
                         reservation.getTotalPrice().getAmount(),
-                        reservation.calculatePickupDeadline().format(DailyTime.DATE_FORMATTER)
+                        reservation.getPickupDeadline()
                 ))
                 .toList();
         return new ReservationPageResponse(reservationResponses, PageInfo.of(reservationPage));

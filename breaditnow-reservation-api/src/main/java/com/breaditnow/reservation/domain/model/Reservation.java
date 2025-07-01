@@ -7,6 +7,8 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.breaditnow.common.domain.DailyTime.DATE_FORMATTER;
+
 @Getter
 public class Reservation {
     private Long reservationId;
@@ -51,16 +53,25 @@ public class Reservation {
     }
 
     private Money calculateTotalPrice() {
-        return reservationProducts.stream()
+        return this.reservationProducts.stream()
                 .map(ReservationProduct::getTotalPrice)
                 .reduce(Money.ZERO, Money::add);
     }
 
-    public LocalDateTime calculatePickupDeadline() {
-        if(reservationTime == null) {
+    public String getPickupDeadline() {
+        LocalDateTime localDateTime = calculatePickupDeadline();
+        return localDateTime == null ? null : localDateTime.format(DATE_FORMATTER);
+    }
+
+    public String getReservationDate() {
+        return this.reservationTime == null ? null : this.reservationTime.format(DATE_FORMATTER);
+    }
+
+    private LocalDateTime calculatePickupDeadline() {
+        if(this.reservationTime == null || !this.reservationState.isCompleted()) {
             return null;
         }
-        return reservationTime.plusMinutes(30);
+        return this.reservationTime.plusMinutes(30);
     }
 
     public void cancel(String reason) {
