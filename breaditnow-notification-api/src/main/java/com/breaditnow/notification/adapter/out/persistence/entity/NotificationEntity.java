@@ -22,6 +22,7 @@ public class NotificationEntity extends BaseEntity {
     private Long id;
 
     private Long userId;
+    private Long bakeryId;
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
@@ -29,7 +30,6 @@ public class NotificationEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
-    private String title;
     private String content;
     private boolean isRead;
 
@@ -37,6 +37,7 @@ public class NotificationEntity extends BaseEntity {
         return NotificationEntity.builder()
                 .id(notification.getNotificationId())
                 .userId(notification.getUserId())
+                .bakeryId(notification.getBakeryId())
                 .userType(notification.getUserType())
                 .notificationType(notification.getNotificationType())
                 .content(notification.getContent())
@@ -49,7 +50,7 @@ public class NotificationEntity extends BaseEntity {
                 .notificationId(this.id)
                 .userId(this.userId)
                 .userType(this.userType)
-                .notificationType(this.notificationType)
+                .bakeryId(this.bakeryId)
                 .content(this.content)
                 .isRead(this.isRead)
                 .build();

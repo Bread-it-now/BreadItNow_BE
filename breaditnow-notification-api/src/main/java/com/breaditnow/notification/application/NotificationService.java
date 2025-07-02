@@ -28,12 +28,7 @@ public class NotificationService {
                 .orElse(null);
 
         String content = formatOwnerContent(event);
-        Notification notification = Notification.create(
-                event.ownerId(),
-                OWNER,
-                RESERVATION_CREATED,
-                content
-        );
+        Notification notification = Notification.create(event.ownerId(), event.bakeryId(), OWNER, RESERVATION_CREATED, content);
         notificationRepository.save(notification);
         fcmPort.sendNotification(fcmToken, "예약", content);
     }
