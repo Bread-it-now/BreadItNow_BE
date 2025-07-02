@@ -1,5 +1,7 @@
 package com.breaditnow.notification.domain.model;
 
+import com.breaditnow.common.exception.NotificationErrorCode;
+import com.breaditnow.common.exception.NotificationException;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -36,5 +38,12 @@ public class Notification {
                 .notificationType(notificationType)
                 .isRead(false)
                 .build();
+    }
+
+    public void read() {
+        if(this.isRead) {
+            throw new NotificationException(NotificationErrorCode.ALREADY_READ_NOTIFICATION);
+        }
+        this.isRead = true;
     }
 }

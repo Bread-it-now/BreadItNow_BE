@@ -10,7 +10,10 @@ public enum NotificationErrorCode implements ErrorCode {
 	 */
 	BAKERY_NOT_FOUND(NOT_FOUND, "EA001", "해당 빵집을 찾을 수 없습니다."),
 	FORBIDDEN_ACCESS(FORBIDDEN, "EA002", "접근 권한이 없습니다."),
-	UNAUTHORIZED_ACCESS(UNAUTHORIZED, "EA003", "인증되지 않은 사용자입니다."),;
+	UNAUTHORIZED_ACCESS(UNAUTHORIZED, "EA003", "인증되지 않은 사용자입니다."),
+	ALREADY_READ_NOTIFICATION(CONFLICT, "EA004", "이미 읽은 알림입니다."),
+	NOTIFICATION_NOT_FOUND(NOT_FOUND, "EA005", "알림을 찾을 수 없습니다."),;
+
 
 
 	private final HttpStatus httpStatus;
