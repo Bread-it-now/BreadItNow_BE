@@ -22,7 +22,8 @@ public enum CustomerErrorCode implements ErrorCode {
 	INVALID_BREAD_CATEGORY_IDS(BAD_REQUEST, "CY005", "유효하지 않은 빵 카테고리 ID입니다."),
 	INVALID_REGION_PREFERENCE(BAD_REQUEST, "CA006", "관심 지역은 하나 이상 선택해야 합니다."),
 	ALREADY_INITIALIZED(BAD_REQUEST, "CA007", "이미 회원가입 초기화가 완료된 회원입니다"),
-
+	CUSTOMER_NOT_FOUND(NOT_FOUND, "CA008", "해당 고객을 찾을 수 없습니다."),
+	DUPLICATE_NICKNAME(CONFLICT, "CA009", "이미 사용 중인 닉네임입니다."),
 
 	/**
 	 * CB000 FILE
@@ -42,13 +43,13 @@ public enum CustomerErrorCode implements ErrorCode {
 	ALREADY_INACTIVE(BAD_REQUEST, "CC007", "이미 비활성화된 방해금지 모드입니다."),
 	INVALID_TIME_FORMAT(BAD_REQUEST, "CC008", "시간 형식이 잘못되었습니다. 'HH:mm' 형식이어야 합니다."),
 	ALERT_ALREADY_ACTIVE(CONFLICT, "CC010", "이미 등록된 알림입니다."),
+	ALERT_NOT_FOUND(NOT_FOUND, "CC011", "해당 알림을 찾을 수 없습니다."),
+	ALERT_DND_SETTING_NOT_FOUND(NOT_FOUND, "CC012", "방해금지 모드 설정을 찾을 수 없습니다."),
 
 	/**
 	 * CD000 Product
 	 */
 	PRODUCT_NOT_ACTIVE(BAD_REQUEST, "CD001", "비활성화된 상품입니다."),
-	INVALID_AMOUNT(BAD_REQUEST, "CD002", "금액은 0보다 작을 수 없습니다."),
-	AMOUNT_REQUIRED(BAD_REQUEST, "CD003", "금액은 필수 값입니다."),
 	INVALID_STOCK(BAD_REQUEST, "CD004", "재고는 0보다 작을 수 없습니다."),
 	PRODUCT_ALREADY_HIDDEN(CONFLICT, "CD005", "상품은 이미 숨김 상태입니다."),
 	PRODUCT_ALREADY_UNHIDDEN(CONFLICT, "CD006", "상품은 이미 숨김 해제 상태입니다."),
@@ -57,21 +58,25 @@ public enum CustomerErrorCode implements ErrorCode {
 	INVALID_HOT_SORT_TYPE(BAD_REQUEST, "CD009", "핫 상품은 RESERVATION, FAVORITE 중에서 선택해야 합니다."),
 	INVALID_PRODUCT_CATEGORY(BAD_REQUEST, "CD010", "상품 카테고리는 BREAD, OTHER 중에서 선택해야 합니다."),
 	ONLY_BREAD_CAN_BE_FAVORITED(BAD_REQUEST, "CD011", "빵 상품만 즐겨찾기할 수 있습니다."),
+	PRODUCT_NOT_FOUND(NOT_FOUND, "CD012", "해당 상품을 찾을 수 없습니다."),
 
 	/**
 	 * CE000 FAVORITE
 	 */
 	ALREADY_FAVORITED(CONFLICT, "CE001", "이미 즐겨찾기된 상품입니다."),
 	NOT_FAVORITED(NOT_FOUND, "CE002", "즐겨찾기되지 않은 상품입니다."),
+	BAKERY_FAVORITE_NOT_FOUND(NOT_FOUND, "CE003", "즐겨찾기된 빵집을 찾을 수 없습니다."),
+	BREAD_FAVORITE_NOT_FOUND(NOT_FOUND, "CE004", "즐겨찾기된 빵 상품을 찾을 수 없습니다."),
 
 	/**
-	 * CF000 Reservation
+	 * CF000 BAKERY
 	 */
-	PRODUCT_NOT_BELONG_TO_BAKERY(BAD_REQUEST, "CR001", "상품이 해당 빵집에 속하지 않습니다."),
-	UNAUTHORIZED_RESERVATION_CANCEL(UNAUTHORIZED, "CR002", "예약 취소 권한이 없습니다."),
-	CANCELLATION_REASON_REQUIRED(BAD_REQUEST, "CR003", "예약 취소 사유는 필수입니다."),
-	ALREADY_CANCELLED(BAD_REQUEST, "CR004", "이미 취소된 예약입니다."),
-	QUANTITY_POSITIVE(BAD_REQUEST, "CR005", "예약 상품의 수량은 0보다 커야 합니다."),
+	BAKERY_NOT_FOUND(NOT_FOUND, "CF001", "해당 빵집을 찾을 수 없습니다."),
+
+	/**
+	 * CG000 REGION
+	 */
+	REGION_NOT_FOUND(NOT_FOUND, "CG001", "해당 지역을 찾을 수 없습니다."),
 	/**
 	 * CZ000 이외
 	 */
@@ -79,7 +84,9 @@ public enum CustomerErrorCode implements ErrorCode {
 	INVALID_PAGE_SIZE(BAD_REQUEST, "CZ002", "페이지 크기는 1에서 100 사이여야 합니다."),
 	COORDINATES_REQUIRED(BAD_REQUEST, "CZ003", "위도와 경도는 null일 수 없습니다."),
 	INVALID_LATITUDE_RANGE(BAD_REQUEST, "CZ004", "위도는 -90과 90 사이여야 합니다."),
-	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "CZ005", "경도는 -180과 180 사이여야 합니다.");
+	INVALID_LONGITUDE_RANGE(BAD_REQUEST, "CZ005", "경도는 -180과 180 사이여야 합니다."), ;
+
+
 
 
 	private final HttpStatus httpStatus;

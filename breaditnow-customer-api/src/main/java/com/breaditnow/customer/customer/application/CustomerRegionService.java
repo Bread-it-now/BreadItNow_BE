@@ -1,10 +1,10 @@
 package com.breaditnow.customer.customer.application;
 
+import com.breaditnow.customer.common.exception.CustomerErrorCode;
+import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.customer.customer.domain.port.out.SaveCustomerRegionPort;
 import com.breaditnow.customer.customer.application.request.RegionUpdateRequest;
-import com.breaditnow.customer.customer.domain.port.SaveCustomerRegionPort;
 import com.breaditnow.customer.region.domain.port.LoadRegionPort;
-import com.breaditnow.domain.global.exception.DomainErrorCode;
-import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class CustomerRegionService {
         saveCustomerRegionPort.delete(customerId);
         for (String gugunCode : dto.gugunCodes()) {
             if(!loadRegionPort.existsBySidoAndGugunCode(dto.sidoCode() + gugunCode)) {
-                throw new DomainException(DomainErrorCode.REGION_NOT_FOUND);
+                throw new CustomerException(CustomerErrorCode.REGION_NOT_FOUND);
             }
             saveCustomerRegionPort.preference(customerId, dto.sidoCode(), gugunCode);
         }

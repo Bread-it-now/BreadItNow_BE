@@ -3,10 +3,7 @@ package com.breaditnow.customer.common.security.resolver;
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import com.breaditnow.customer.customer.application.CustomerService;
-import com.breaditnow.customer.customer.domain.Customer;
-//import com.breaditnow.domain.domain.customer.entity.Customer;
-import com.breaditnow.customer.customer.domain.port.LoadCustomerPort;
-import com.breaditnow.domain.domain.owner.entity.Owner;
+import com.breaditnow.customer.customer.domain.model.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -25,10 +22,10 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		boolean hasAnnotation = parameter.hasParameterAnnotation(AuthCustomer.class);
-		boolean isOwnerType = Owner.class.isAssignableFrom(parameter.getParameterType());
+		boolean isCustomerType = Customer.class.isAssignableFrom(parameter.getParameterType());
 		boolean isLongType = Long.class.isAssignableFrom(parameter.getParameterType())
 			|| long.class.isAssignableFrom(parameter.getParameterType());
-		return hasAnnotation && (isOwnerType || isLongType);
+		return hasAnnotation && (isCustomerType || isLongType);
 	}
 
 	@Override

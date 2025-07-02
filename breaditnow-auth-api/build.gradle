@@ -3,7 +3,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(":breaditnow-domain")
     implementation project(":breaditnow-common")
     implementation project(":breaditnow-redis")
 

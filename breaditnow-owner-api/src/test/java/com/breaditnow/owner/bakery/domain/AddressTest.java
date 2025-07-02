@@ -1,11 +1,12 @@
 package com.breaditnow.owner.bakery.domain;
 
-import com.breaditnow.owner.common.exception.OwnerException;
+import com.breaditnow.location.domain.model.Address;
+import com.breaditnow.common.exception.OwnerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.breaditnow.owner.common.exception.OwnerErrorCode.*;
+import static com.breaditnow.common.exception.OwnerErrorCode.*;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Address 도메인 테스트")

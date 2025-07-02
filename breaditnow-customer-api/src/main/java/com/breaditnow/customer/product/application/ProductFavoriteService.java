@@ -1,6 +1,8 @@
 package com.breaditnow.customer.product.application;
 
 import com.breaditnow.customer.common.domain.Events;
+import com.breaditnow.customer.common.exception.CustomerErrorCode;
+import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.product.domain.Product;
 import com.breaditnow.customer.product.domain.ProductFavorite;
 import com.breaditnow.customer.product.domain.event.ProductFavoriteCreatedEvent;
@@ -8,12 +10,10 @@ import com.breaditnow.customer.product.domain.event.ProductFavoriteRemovedEvent;
 import com.breaditnow.customer.product.domain.port.LoadProductFavoritePort;
 import com.breaditnow.customer.product.domain.port.LoadProductPort;
 import com.breaditnow.customer.product.domain.port.SaveProductFavoritePort;
-import com.breaditnow.domain.global.exception.DomainException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.BREAD_FAVORITE_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class ProductFavoriteService {
 
         ProductFavorite productFavorite = loadProductFavoritePort
                 .findProductFavorite(customerId, product.getId())
-                .orElseThrow(() -> new DomainException(BREAD_FAVORITE_NOT_FOUND));
+                .orElseThrow(() -> new CustomerException(CustomerErrorCode.BREAD_FAVORITE_NOT_FOUND));
 
         productFavorite.deactivate();
 

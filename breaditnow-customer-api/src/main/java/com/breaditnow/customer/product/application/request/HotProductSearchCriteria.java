@@ -1,9 +1,9 @@
 package com.breaditnow.customer.product.application.request;
 
-import com.breaditnow.customer.common.domain.vo.GeoPoint;
-import com.breaditnow.customer.common.domain.vo.Pagination;
-import com.breaditnow.customer.common.domain.vo.Period;
-import com.breaditnow.customer.common.domain.vo.PeriodRange;
+import com.breaditnow.common.domain.GeoPoint;
+import com.breaditnow.common.domain.Pagination;
+import com.breaditnow.common.domain.Period;
+import com.breaditnow.common.domain.PeriodRange;
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.product.domain.vo.HotSortType;
 import com.breaditnow.customer.product.presentation.request.HotProductSearchRequest;

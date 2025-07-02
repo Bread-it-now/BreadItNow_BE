@@ -1,7 +1,7 @@
 package com.breaditnow.customer.alert.infrastructure.jpa.entity;
 
+import com.breaditnow.customer.common.domain.BaseEntity;
 import com.breaditnow.customer.alert.domain.ProductAlert;
-import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

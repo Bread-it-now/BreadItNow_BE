@@ -22,7 +22,7 @@ public class QProductFavoriteEntity extends EntityPathBase<ProductFavoriteEntity
 
     public static final QProductFavoriteEntity productFavoriteEntity = new QProductFavoriteEntity("productFavoriteEntity");
 
-    public final com.breaditnow.domain.global.entity.QBaseEntity _super = new com.breaditnow.domain.global.entity.QBaseEntity(this);
+    public final com.breaditnow.customer.common.domain.QBaseEntity _super = new com.breaditnow.customer.common.domain.QBaseEntity(this);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

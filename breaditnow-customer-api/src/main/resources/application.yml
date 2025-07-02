@@ -56,3 +56,10 @@ management:
     web:
       exposure:
         include: health
+
+api:
+  internal:
+    owner-service:
+      url: http://localhost:9002
+    reservation-service:
+      url: http://localhost:9003

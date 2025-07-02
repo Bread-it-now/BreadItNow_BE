@@ -1,6 +1,6 @@
 package com.breaditnow.customer.common.application.request;
 
-import com.breaditnow.domain.global.dto.GeoPoint;
+import com.breaditnow.common.domain.GeoPoint;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;

@@ -7,7 +7,7 @@ import com.breaditnow.customer.alert.infrastructure.ProductAlertAdapter;
 import com.breaditnow.customer.alert.presentation.request.ProductAlertSearchRequest;
 import com.breaditnow.customer.alert.presentation.response.ProductAlertPageResponse;
 import com.breaditnow.customer.alert.presentation.response.TodayProductAlertListResponse;
-import com.breaditnow.customer.common.domain.vo.Pagination;
+import com.breaditnow.common.domain.Pagination;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

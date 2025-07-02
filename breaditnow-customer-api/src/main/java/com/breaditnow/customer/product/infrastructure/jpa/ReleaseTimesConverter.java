@@ -1,13 +1,11 @@
 package com.breaditnow.customer.product.infrastructure.jpa;
 
-import com.breaditnow.customer.common.domain.DailyTime;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Converter
 public class ReleaseTimesConverter implements AttributeConverter<List<String>, String> {

@@ -1,6 +1,6 @@
 package com.breaditnow.customer.common.infrastructure.jpa;
 
-import com.breaditnow.customer.common.domain.vo.GeoPoint;
+import com.breaditnow.common.domain.GeoPoint;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import org.springframework.stereotype.Component;

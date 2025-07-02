@@ -2,11 +2,12 @@ package com.breaditnow.customer.alert.application;
 
 import com.breaditnow.customer.alert.domain.ProductAlert;
 import com.breaditnow.customer.alert.domain.port.LoadProductAlertPort;
-import com.breaditnow.domain.global.exception.DomainException;
+import com.breaditnow.customer.common.exception.CustomerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.breaditnow.domain.global.exception.DomainErrorCode.ALERT_NOT_FOUND;
+import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALERT_NOT_FOUND;
+
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +16,6 @@ public class ProductAlertValidator {
 
     public ProductAlert validateProductAlertAndGet(Long customerId, Long productId) {
         return loadProductAlertPort.loadProductAlert(customerId, productId)
-                .orElseThrow(() -> new DomainException(ALERT_NOT_FOUND));
+                .orElseThrow(() -> new CustomerException(ALERT_NOT_FOUND));
     }
 }

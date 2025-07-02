@@ -1,8 +1,8 @@
 package com.breaditnow.customer.region.application;
 
-import com.breaditnow.common.client.kakao.GeoLocationClient;
-import com.breaditnow.common.client.kakao.dto.AddressNameDto;
 import com.breaditnow.customer.common.application.request.GeoPointRequest;
+import com.breaditnow.customer.location.application.AddressInfo;
+import com.breaditnow.customer.location.application.port.out.AddressPort;
 import com.breaditnow.customer.region.domain.Region;
 import com.breaditnow.customer.region.domain.port.LoadRegionPort;
 import com.breaditnow.customer.region.presentation.res.LocationRegionResponse;
@@ -14,12 +14,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class RegionQueryService {
-    private final GeoLocationClient geoLocationClient;
+    private final AddressPort addressPort;
     private final LoadRegionPort loadRegionPort;
 
-    public LocationRegionResponse getGugunByCoordinates(GeoPointRequest geoPointRequest) {
-        AddressNameDto addressNameDto = geoLocationClient.lookupAddress(geoPointRequest.latitude(), geoPointRequest.longitude());
-        Region region = loadRegionPort.getRegionByName(addressNameDto.getSidoName(), addressNameDto.getGugunName(), addressNameDto.getDongName());
+    public LocationRegionResponse getGugunByCoordinates(GeoPointRequest request) {
+        AddressInfo addressInfo = addressPort.getAddressInfo(request.longitude(), request.latitude())
+                .orElseThrow(() -> new IllegalArgumentException("주소 정보를 찾을 수 없습니다."));
+
+        Region region = loadRegionPort.getRegionByName(
+                addressInfo.getSidoName(),
+                addressInfo.getGugunName(),
+                addressInfo.getDongName()
+        );
         return LocationRegionResponse.of(region.getRegionCode(), region.getSidoName(), region.getGugunName());
     }
 }

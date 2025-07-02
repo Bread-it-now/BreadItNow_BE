@@ -1,12 +1,10 @@
 package com.breaditnow.customer.product.controller.res;
 
-import java.util.List;
-
+import com.breaditnow.common.domain.PageInfo;
+import lombok.Builder;
 import org.springframework.data.domain.Page;
 
-import com.breaditnow.common.page.PageInfo;
-
-import lombok.Builder;
+import java.util.List;
 
 @Builder
 public record SearchProductPageResponse(
@@ -14,12 +12,7 @@ public record SearchProductPageResponse(
 	PageInfo pageInfo
 ) {
 	public static SearchProductPageResponse of(Page<SearchProductResponse> searchProductResponses) {
-		PageInfo pageInfo = PageInfo.builder()
-			.totalElements(searchProductResponses.getTotalElements())
-			.totalPages(searchProductResponses.getTotalPages())
-			.isLast(searchProductResponses.isLast())
-			.currPage(searchProductResponses.getPageable().getPageNumber())
-			.build();
+		PageInfo pageInfo = PageInfo.of(searchProductResponses);
 
 		return SearchProductPageResponse.builder()
 			.searchProducts(searchProductResponses.getContent())

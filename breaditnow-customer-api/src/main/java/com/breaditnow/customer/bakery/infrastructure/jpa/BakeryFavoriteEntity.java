@@ -1,11 +1,10 @@
 package com.breaditnow.customer.bakery.infrastructure.jpa;
 
+import com.breaditnow.customer.common.domain.BaseEntity;
 import com.breaditnow.customer.bakery.domain.BakeryFavorite;
-import com.breaditnow.domain.global.entity.BaseEntity;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

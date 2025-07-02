@@ -1,6 +1,5 @@
 package com.breaditnow.customer.reservation.domain;
 
-import com.breaditnow.customer.common.domain.Money;
 import com.breaditnow.customer.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,8 +16,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @DisplayName("Reservation 도메인 테스트")
 class ReservationTest {
 
-    private ReservationProducts createProduct(long id, int price, int quantity) {
-        return new ReservationProducts(id, "상품" + id, "image.jpg", new Money(price), quantity);
+    private ReservationProduct createProduct(long id, int price, int quantity) {
+        return new ReservationProduct(id, "상품" + id, "image.jpg", new Money(price), quantity);
     }
 
     @Nested
@@ -28,7 +27,7 @@ class ReservationTest {
         @Test
         @DisplayName("필수값만으로 생성 시 대기 상태, 현재 시간, 총액이 자동 설정된다")
         void createWithRequiredValues() {
-            List<ReservationProducts> products = List.of(
+            List<ReservationProduct> products = List.of(
                     createProduct(1L, 1000, 2),
                     createProduct(2L, 2000, 1)
             );
