@@ -5,6 +5,8 @@ import com.breaditnow.notification.adapter.out.persistence.repository.JpaNotific
 import com.breaditnow.notification.domain.model.Notification;
 import com.breaditnow.notification.domain.port.out.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,5 +18,11 @@ public class NotificationPersistenceAdapter implements NotificationRepository {
     public Notification save(Notification notification) {
         NotificationEntity entity = NotificationEntity.from(notification);
         return jpaNotificationRepository.save(entity).toDomain();
+    }
+
+    @Override
+    public Page<Notification> getNotifications(Long bakeryId, Pageable pageable) {
+        return jpaNotificationRepository.findByBakeryIdOrderByCreatedAtDesc(bakeryId, pageable)
+                .map(NotificationEntity::toDomain);
     }
 }

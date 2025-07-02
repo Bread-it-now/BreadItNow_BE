@@ -1,6 +1,7 @@
 package com.breaditnow.notification.adapter.out.http;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.notification.application.internal.BakeryInfo;
 import com.breaditnow.notification.domain.port.out.OwnerApiPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +26,16 @@ public class OwnerApiAdapter implements OwnerApiPort {
                 .bodyToMono(responseType)
                 .map(ApiSuccessResponse::data)
                 .onErrorResume(e -> Mono.empty())
+                .blockOptional();
+    }
+
+    @Override
+    public Optional<BakeryInfo> findBakeryInfoById(Long bakeryId) {
+        return ownerServiceClient.get()
+                .uri("/internal/api/v1/bakery/{bakeryId}", bakeryId)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<ApiSuccessResponse<BakeryInfo>>() {})
+                .map(ApiSuccessResponse::data)
                 .blockOptional();
     }
 }

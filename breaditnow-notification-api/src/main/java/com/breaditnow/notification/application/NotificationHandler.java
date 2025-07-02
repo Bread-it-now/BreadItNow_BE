@@ -13,24 +13,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import static com.breaditnow.notification.domain.model.NotificationType.RESERVATION_CREATED;
+import static com.breaditnow.notification.domain.model.TitleType.RESERVATION;
 import static com.breaditnow.notification.domain.model.UserType.OWNER;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationService {
+public class NotificationHandler {
     private final FcmPort fcmPort;
     private final OwnerApiPort ownerApiPort;
     private final NotificationRepository notificationRepository;
 
     @Transactional
-    public void sendReservationNotification(ReservationCreatedEvent event) {
+    public void handleReservationCreation(ReservationCreatedEvent event) {
         String fcmToken = ownerApiPort.findFcmTokenById(event.ownerId())
                 .orElse(null);
 
         String content = formatOwnerContent(event);
-        Notification notification = Notification.create(event.ownerId(), event.bakeryId(), OWNER, RESERVATION_CREATED, content);
+        Notification notification = Notification.create(event.ownerId(), event.bakeryId(), OWNER, RESERVATION, RESERVATION_CREATED, content);
         notificationRepository.save(notification);
-        fcmPort.sendNotification(fcmToken, "예약", content);
+
+        if (fcmToken != null) {
+            fcmPort.sendNotification(fcmToken, "예약", content);
+        }
     }
 
     private String formatOwnerContent(ReservationCreatedEvent event) {

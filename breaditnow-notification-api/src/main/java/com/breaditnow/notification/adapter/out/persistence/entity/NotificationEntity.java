@@ -2,12 +2,15 @@ package com.breaditnow.notification.adapter.out.persistence.entity;
 
 import com.breaditnow.notification.domain.model.Notification;
 import com.breaditnow.notification.domain.model.NotificationType;
+import com.breaditnow.notification.domain.model.TitleType;
 import com.breaditnow.notification.domain.model.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static jakarta.persistence.EnumType.STRING;
 
 @Entity
 @Table(name = "notification")
@@ -24,11 +27,14 @@ public class NotificationEntity extends BaseEntity {
     private Long userId;
     private Long bakeryId;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private UserType userType;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private NotificationType notificationType;
+
+    @Enumerated(STRING)
+    private TitleType titleType;
 
     private String content;
     private boolean isRead;
@@ -40,6 +46,7 @@ public class NotificationEntity extends BaseEntity {
                 .bakeryId(notification.getBakeryId())
                 .userType(notification.getUserType())
                 .notificationType(notification.getNotificationType())
+                .titleType(notification.getTitleType())
                 .content(notification.getContent())
                 .isRead(notification.isRead())
                 .build();
@@ -51,7 +58,9 @@ public class NotificationEntity extends BaseEntity {
                 .userId(this.userId)
                 .userType(this.userType)
                 .bakeryId(this.bakeryId)
+                .titleType(this.titleType)
                 .content(this.content)
+                .notificationType(this.notificationType)
                 .isRead(this.isRead)
                 .build();
     }
