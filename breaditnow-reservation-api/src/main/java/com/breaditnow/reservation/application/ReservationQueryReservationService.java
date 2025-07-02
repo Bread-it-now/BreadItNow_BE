@@ -4,8 +4,10 @@ import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
+import com.breaditnow.reservation.application.dto.response.ReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.ReservationPageResponse;
 import com.breaditnow.reservation.application.provider.BakeryProvider;
+import com.breaditnow.reservation.application.provider.ReservationProvider;
 import com.breaditnow.reservation.application.validator.BakeryValidator;
 import com.breaditnow.reservation.domain.port.in.QueryReservationUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
@@ -23,12 +25,20 @@ public class ReservationQueryReservationService implements QueryReservationUseCa
     private final BakeryProvider bakeryProvider;
     private final BakeryValidator bakeryValidator;
     private final ReservationRepository reservationRepository;
+    private final ReservationProvider reservationProvider;
 
     @Override
     @Authorize(OWNER)
     public ReservationPageResponse getMyReservations(AuthenticatedUser user, Long bakeryId, Pageable pageable, ReservationStatus status) {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);
-        return ReservationPageResponse.of(reservationRepository.findByBakeryId(bakeryId, pageable, status));
+        return ReservationPageResponse.from(reservationRepository.findByBakeryId(bakeryId, pageable, status));
+    }
+
+    @Override
+    public ReservationDetailResponse getReservation(AuthenticatedUser user, Long bakeryId, Long reservationId) {
+        BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
+        bakeryValidator.validateOwner(bakeryInfo, user);
+        return ReservationDetailResponse.from(reservationProvider.provide(reservationId, bakeryId));
     }
 }

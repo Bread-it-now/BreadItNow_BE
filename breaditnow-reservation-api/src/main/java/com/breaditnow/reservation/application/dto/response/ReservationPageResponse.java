@@ -11,7 +11,7 @@ public record ReservationPageResponse(
         List<ReservationResponse> reservations,
         PageInfo pageInfo
 ) {
-    public static ReservationPageResponse of(Page<Reservation> reservationPage) {
+    public static ReservationPageResponse from(Page<Reservation> reservationPage) {
         List<ReservationResponse> reservationResponses = reservationPage.getContent().stream()
                 .map(reservation -> new ReservationResponse(
                         reservation.getReservationId(),

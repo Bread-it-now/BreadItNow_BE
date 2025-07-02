@@ -17,4 +17,10 @@ public class ReservationProvider {
         return reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
     }
+
+    public Reservation provide(Long reservationId, Long bakeryId) {
+        return reservationRepository.findById(reservationId)
+                .filter(reservation -> reservation.getReservedBakery().bakeryId().equals(bakeryId))
+                .orElseThrow(() -> new ReservationException(RESERVATION_NOT_FOUND));
+    }
 }

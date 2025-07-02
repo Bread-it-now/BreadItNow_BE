@@ -31,7 +31,7 @@ public record MyReservationDetailResponse(
             String bakeryName,
             String bakeryAddress,
             String bakeryPhone,
-            String bakeryProfileImage
+            String bakeryProfileImageUrl
     ) {
         public static BakeryInfo from(ReservedBakery reservedBakery) {
             return new BakeryInfo(

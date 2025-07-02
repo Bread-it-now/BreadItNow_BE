@@ -6,6 +6,7 @@ import com.breaditnow.reservation.adapter.in.resolver.AuthUser;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationPartialApproveRequest;
+import com.breaditnow.reservation.application.dto.response.ReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.ReservationPageResponse;
 import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
@@ -67,5 +68,15 @@ public class ReservationController {
             @PageableDefault(sort = "modifiedAt", direction = DESC) Pageable pageable
     ) {
         return ApiSuccessResponse.of(queryReservationUseCase.getMyReservations(user, bakeryId, pageable, status));
+    }
+
+    @GetMapping("/{reservationId}")
+    public ApiSuccessResponse<ReservationDetailResponse> getReservation(
+            @AuthUser AuthenticatedUser user,
+            @PathVariable("bakeryId") Long bakeryId,
+            @PathVariable("reservationId") Long reservationId
+    ) {
+        ReservationDetailResponse reservation = queryReservationUseCase.getReservation(user, bakeryId, reservationId);
+        return ApiSuccessResponse.of(reservation);
     }
 }
