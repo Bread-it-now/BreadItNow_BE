@@ -13,7 +13,6 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 
-
 @Configuration
 public class FirebaseConfig {
     private final Resource firebaseResource;

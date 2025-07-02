@@ -10,5 +10,5 @@ include 'breaditnow-reservation-api'
 include 'breaditnow-common'
 include 'breaditnow-redis'
 include 'breaditnow-external'
-
+include 'breaditnow-notification-api'
 

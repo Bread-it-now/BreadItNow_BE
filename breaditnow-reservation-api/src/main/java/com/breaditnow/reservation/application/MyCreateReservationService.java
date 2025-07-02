@@ -15,9 +15,9 @@ import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
 import com.breaditnow.reservation.domain.model.ReservedBakery;
 import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
+import com.breaditnow.reservation.domain.port.out.ReservationEventPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ public class MyCreateReservationService implements MyCreateReservationUseCase {
     private final BakeryProvider bakeryProvider;
     private final BakeryValidator bakeryValidator;
     private final ReservationRepository reservationRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final ReservationEventPort reservationEventPort;
 
     @Override
     @Transactional
@@ -56,7 +56,7 @@ public class MyCreateReservationService implements MyCreateReservationUseCase {
     }
 
     private void publishReservationCreatedEvent(Reservation reservation, Long customerId, BakeryInfo bakeryInfo, List<ReservationProduct> reservationProducts) {
-        eventPublisher.publishEvent(new ReservationCreatedEvent(
+        reservationEventPort.publish(new ReservationCreatedEvent(
                 reservation.getReservationId(),
                 customerId,
                 bakeryInfo.ownerId(),

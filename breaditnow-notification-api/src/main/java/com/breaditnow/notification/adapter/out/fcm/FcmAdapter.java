@@ -1,6 +1,6 @@
-package com.breaditnow.reservation.adapter.out.fcm;
+package com.breaditnow.notification.adapter.out.fcm;
 
-import com.breaditnow.reservation.domain.port.out.FcmPort;
+import com.breaditnow.notification.domain.port.out.FcmPort;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;

@@ -41,10 +41,6 @@ aws:
     stack:
       auto: false
 
-fcm:
-  file_path: file:config/breaditnow-fcm.json
-  project_id: ${FCM_PROJECT_ID}
-
 webhook:
   discord:
     username: ${DISCORD_USERNAME}
