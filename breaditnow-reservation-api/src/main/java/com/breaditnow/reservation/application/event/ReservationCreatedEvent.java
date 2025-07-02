@@ -1,13 +1,13 @@
 package com.breaditnow.reservation.application.event;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record ReservationCreatedEvent(
         Long reservationId,
-        Long customerId,
         Long ownerId,
-        String bakeryName,
+        String customerName,
         List<String> productNames,
-        Integer totalPrice
+        LocalDateTime reservationTime
 ) {
 }

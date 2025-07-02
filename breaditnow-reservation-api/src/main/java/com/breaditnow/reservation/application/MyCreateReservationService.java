@@ -51,18 +51,17 @@ public class MyCreateReservationService implements MyCreateReservationUseCase {
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
-        publishReservationCreatedEvent(savedReservation, user.userId(), bakeryInfo, reservationProducts);
+        publishReservationCreatedEvent(savedReservation, bakeryInfo.ownerId(), reservationProducts);
         return savedReservation.getReservationId();
     }
 
-    private void publishReservationCreatedEvent(Reservation reservation, Long customerId, BakeryInfo bakeryInfo, List<ReservationProduct> reservationProducts) {
+    private void publishReservationCreatedEvent(Reservation reservation, Long ownerId, List<ReservationProduct> reservationProducts) {
         reservationEventPort.publish(new ReservationCreatedEvent(
                 reservation.getReservationId(),
-                customerId,
-                bakeryInfo.ownerId(),
-                bakeryInfo.name(),
+                ownerId,
+                reservation.getOrderer().getNickname(),
                 reservationProducts.stream().map(ReservationProduct::getProductName).toList(),
-                reservation.getTotalPrice().getAmount()
+                reservation.getReservationTime()
         ));
     }
 }
