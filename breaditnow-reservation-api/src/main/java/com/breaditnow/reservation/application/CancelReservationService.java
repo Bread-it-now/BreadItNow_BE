@@ -33,8 +33,7 @@ public class CancelReservationService implements CancelReservationUseCase {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);
 
-        Reservation reservation = reservationProvider.provide(reservationId);
-        reservationValidator.validateBakeryMatch(reservation, bakeryId);
+        Reservation reservation = reservationProvider.provide(reservationId, bakeryId);
 
         reservation.cancel(request.reason());
         reservationRepository.save(reservation);

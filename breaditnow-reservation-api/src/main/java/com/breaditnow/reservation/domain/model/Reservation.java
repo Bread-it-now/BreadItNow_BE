@@ -45,17 +45,15 @@ public class Reservation {
         this.reservationNumber = newReservationNumber;
     }
 
+    public void cancel(String reason) {
+        this.reservationState.cancel(reason);
+    }
+
     public void partialApprove(List<ReservationProduct> adjustedProducts, Long newReservationNumber) {
         this.reservationState.partiallyApprove();
         this.reservationProducts = adjustedProducts;
         this.reservationNumber = newReservationNumber;
         this.totalPrice = calculateTotalPrice();
-    }
-
-    private Money calculateTotalPrice() {
-        return this.reservationProducts.stream()
-                .map(ReservationProduct::getTotalPrice)
-                .reduce(Money.ZERO, Money::add);
     }
 
     public String getPickupDeadline() {
@@ -74,7 +72,9 @@ public class Reservation {
         return this.reservationTime.plusMinutes(30);
     }
 
-    public void cancel(String reason) {
-        this.reservationState.cancel(reason);
+    private Money calculateTotalPrice() {
+        return this.reservationProducts.stream()
+                .map(ReservationProduct::getTotalPrice)
+                .reduce(Money.ZERO, Money::add);
     }
 }

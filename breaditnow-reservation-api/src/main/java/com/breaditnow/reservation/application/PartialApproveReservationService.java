@@ -42,9 +42,7 @@ public class PartialApproveReservationService implements PartialApproveReservati
 
         List<ReservationProduct> reservationProducts = productFactory.createFrom(request, bakeryInfo.bakeryId());
 
-        Reservation reservation = reservationProvider.provide(reservationId);
-        reservationValidator.validateBakeryMatch(reservation, bakeryId);
-
+        Reservation reservation = reservationProvider.provide(reservationId, bakeryId);
         Long newReservationNumber = reservationRepository.getNextReservationNumber(bakeryId);
 
         reservation.partialApprove(reservationProducts, newReservationNumber);

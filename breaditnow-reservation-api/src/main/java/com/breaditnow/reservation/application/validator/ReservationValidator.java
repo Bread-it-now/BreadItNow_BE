@@ -13,10 +13,4 @@ public class ReservationValidator {
             throw new ReservationException(UNAUTHORIZED_ACCESS);
         }
     }
-
-    public void validateBakeryMatch(Reservation reservation, Long bakeryId) {
-        if (!reservation.getReservedBakery().bakeryId().equals(bakeryId)) {
-            throw new ReservationException(UNAUTHORIZED_ACCESS);
-        }
-    }
 }

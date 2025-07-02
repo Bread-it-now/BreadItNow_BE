@@ -25,6 +25,7 @@ public class ReservationProduct {
         this.quantity = quantity;
         this.totalPrice = calculateTotalPrice();
     }
+
     private Money calculateTotalPrice() {
         return price.multiply(quantity);
     }

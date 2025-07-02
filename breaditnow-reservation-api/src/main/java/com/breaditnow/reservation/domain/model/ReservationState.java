@@ -1,6 +1,5 @@
 package com.breaditnow.reservation.domain.model;
 
-
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.exception.ReservationException;
 import lombok.Getter;
@@ -36,8 +35,11 @@ public class ReservationState {
     }
 
     public void cancel(String cancelReason) {
+        if(isCompleted()) {
+            throw new ReservationException(ALREADY_PROCESSED);
+        }
+
         requireValid(cancelReason, Objects::isNull, () -> new ReservationException(CANCELLATION_REASON_REQUIRED));
-        requireValid(this.reservationStatus, status -> status == CANCELLED, () -> new ReservationException(ALREADY_CANCELLED));
         this.reservationStatus = CANCELLED;
         this.cancelReason = cancelReason;
     }

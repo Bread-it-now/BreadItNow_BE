@@ -32,8 +32,7 @@ public class ApproveReservationService implements ApproveReservationUseCase {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);
 
-        Reservation reservationToApprove = reservationProvider.provide(reservationId);
-        reservationValidator.validateBakeryMatch(reservationToApprove, bakeryId);
+        Reservation reservationToApprove = reservationProvider.provide(reservationId, bakeryId);
 
         Long newReservationNumber = reservationRepository.getNextReservationNumber(bakeryId);
         reservationToApprove.approve(newReservationNumber);
