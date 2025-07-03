@@ -27,7 +27,7 @@ public record NotificationPageResponse(
         public static NotificationResponse from(Notification notification) {
             return new NotificationResponse(
                     notification.getNotificationId(),
-                    notification.getTitleType().getTitle(),
+                    notification.getNotificationType().getTitleType().getTitle(),
                     notification.getContent(),
                     notification.isRead()
             );

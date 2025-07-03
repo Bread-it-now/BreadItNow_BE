@@ -21,7 +21,7 @@ import static com.breaditnow.common.domain.Role.OWNER;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ReservationServiceQuery implements ReservationQueryUseCase {
+public class ReservationQueryService implements ReservationQueryUseCase {
     private final BakeryProvider bakeryProvider;
     private final BakeryValidator bakeryValidator;
     private final ReservationRepository reservationRepository;
@@ -36,6 +36,7 @@ public class ReservationServiceQuery implements ReservationQueryUseCase {
     }
 
     @Override
+    @Authorize(OWNER)
     public ReservationDetailResponse getReservation(AuthenticatedUser user, Long bakeryId, Long reservationId) {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);

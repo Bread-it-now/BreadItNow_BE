@@ -5,7 +5,7 @@ import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.internal.OrdererInfo;
 import com.breaditnow.reservation.application.dto.request.MyReservationCreateRequest;
-import com.breaditnow.reservation.application.event.ReservationCreatedEvent;
+import com.breaditnow.reservation.application.event.ReservationStatusChangedEvent;
 import com.breaditnow.reservation.application.factory.ProductFactory;
 import com.breaditnow.reservation.application.provider.BakeryProvider;
 import com.breaditnow.reservation.application.provider.CustomerProvider;
@@ -27,7 +27,7 @@ import static com.breaditnow.common.domain.Role.CUSTOMER;
 
 @Service
 @RequiredArgsConstructor
-public class MyReservationCreateCreationService implements MyReservationCreateUseCase {
+public class MyReservationCreationService implements MyReservationCreateUseCase {
     private final ProductFactory productFactory;
     private final CustomerProvider customerProvider;
     private final BakeryProvider bakeryProvider;
@@ -51,18 +51,11 @@ public class MyReservationCreateCreationService implements MyReservationCreateUs
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
-        publishReservationCreatedEvent(savedReservation, bakeryInfo, reservationProducts);
-        return savedReservation.getReservationId();
-    }
+        Long reservationId = savedReservation.getReservationId();
 
-    private void publishReservationCreatedEvent(Reservation reservation, BakeryInfo bakeryInfo, List<ReservationProduct> reservationProducts) {
-        reservationEventPort.publish(new ReservationCreatedEvent(
-                reservation.getReservationId(),
-                bakeryInfo.bakeryId(),
-                bakeryInfo.ownerId(),
-                reservation.getOrderer().getNickname(),
-                reservationProducts.stream().map(ReservationProduct::getProductName).toList(),
-                reservation.getReservationTime()
-        ));
+        ReservationStatusChangedEvent reservationCreatedEvent = ReservationStatusChangedEvent.from(savedReservation, CUSTOMER, null, bakeryInfo.ownerId());
+        reservationEventPort.publish(reservationCreatedEvent);
+
+        return reservationId;
     }
 }

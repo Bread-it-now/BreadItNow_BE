@@ -17,7 +17,7 @@ public class NotificationProvider {
     public Notification provide(AuthenticatedUser user, Long bakeryId, Long notificationId) {
         return notificationRepository.findById(notificationId)
                 .filter(notification -> notification.getBakeryId().equals(bakeryId))
-                .filter(notification -> notification.getUserId().equals(user.userId()))
+                .filter(notification -> notification.getRecipient().userId().equals(user.userId()))
                 .orElseThrow(() -> new NotificationException(NOTIFICATION_NOT_FOUND));
     }
 }

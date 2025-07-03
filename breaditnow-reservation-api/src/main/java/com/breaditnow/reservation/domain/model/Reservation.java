@@ -65,7 +65,7 @@ public class Reservation {
         return this.reservationTime == null ? null : this.reservationTime.format(DATE_FORMATTER);
     }
 
-    private LocalDateTime calculatePickupDeadline() {
+    public LocalDateTime calculatePickupDeadline() {
         if(this.reservationTime == null || !this.reservationState.isCompleted()) {
             return null;
         }

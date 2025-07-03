@@ -11,9 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    private static final String BREADITNOW_EXCHANGE = "breaditnow.exchange";
-    private static final String NOTIFICATION_RESERVATION_QUEUE = "notification.reservation.queue";
-    private static final String RESERVATION_ROUTING_PATTERN = "reservation.#";
+
+    public static final String BREADITNOW_EXCHANGE = "breaditnow.exchange";
+    public static final String NOTIFICATION_RESERVATION_QUEUE = "notification.reservation.queue";
+    public static final String RESERVATION_ROUTING_PATTERN = "reservation.#";
 
     @Bean
     public MessageConverter jackson2JsonMessageConverter() {

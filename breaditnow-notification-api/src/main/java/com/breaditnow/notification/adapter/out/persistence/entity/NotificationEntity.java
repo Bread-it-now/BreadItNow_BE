@@ -1,9 +1,9 @@
 package com.breaditnow.notification.adapter.out.persistence.entity;
 
+import com.breaditnow.common.domain.Role;
 import com.breaditnow.notification.domain.model.Notification;
+import com.breaditnow.notification.domain.model.NotificationActor;
 import com.breaditnow.notification.domain.model.NotificationType;
-import com.breaditnow.notification.domain.model.TitleType;
-import com.breaditnow.notification.domain.model.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,18 +23,19 @@ public class NotificationEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
     private Long id;
-
-    private Long userId;
+    private Long reservationId;
     private Long bakeryId;
 
     @Enumerated(STRING)
-    private UserType userType;
+    private Role recipientType;
+    private Long recipientId;
+
+    @Enumerated(STRING)
+    private Role initiatorType;
+    private Long initiatorId;
 
     @Enumerated(STRING)
     private NotificationType notificationType;
-
-    @Enumerated(STRING)
-    private TitleType titleType;
 
     private String content;
     private boolean isRead;
@@ -43,11 +44,13 @@ public class NotificationEntity extends BaseEntity {
     public static NotificationEntity from(Notification notification) {
         return NotificationEntity.builder()
                 .id(notification.getNotificationId())
-                .userId(notification.getUserId())
+                .reservationId(notification.getReservationId())
                 .bakeryId(notification.getBakeryId())
-                .userType(notification.getUserType())
+                .recipientType(notification.getRecipient().role())
+                .recipientId(notification.getRecipient().userId())
+                .initiatorType(notification.getInitiator().role())
+                .initiatorId(notification.getInitiator().userId())
                 .notificationType(notification.getNotificationType())
-                .titleType(notification.getTitleType())
                 .content(notification.getContent())
                 .isRead(notification.isRead())
                 .isDeleted(notification.isDeleted())
@@ -57,10 +60,10 @@ public class NotificationEntity extends BaseEntity {
     public Notification toDomain() {
         return Notification.builder()
                 .notificationId(this.id)
-                .userId(this.userId)
-                .userType(this.userType)
+                .reservationId(this.reservationId)
+                .recipient(new NotificationActor(this.recipientId, this.recipientType))
+                .initiator(new NotificationActor(this.initiatorId, this.initiatorType))
                 .bakeryId(this.bakeryId)
-                .titleType(this.titleType)
                 .content(this.content)
                 .notificationType(this.notificationType)
                 .isRead(this.isRead)

@@ -10,36 +10,38 @@ import static com.breaditnow.common.exception.NotificationErrorCode.ALREADY_READ
 @Getter
 public class Notification {
     private Long notificationId;
-    private Long userId;
+    private Long reservationId;
     private Long bakeryId;
-    private UserType userType;
-    private TitleType titleType;
+
+    private NotificationActor recipient;
+    private NotificationActor initiator;
+
     private NotificationType notificationType;
     private String content;
     private boolean isRead;
     private boolean isDeleted;
 
     @Builder
-    public Notification(Long notificationId, Long userId, Long bakeryId, UserType userType, TitleType titleType, NotificationType notificationType, String content, boolean isRead, boolean isDeleted) {
+    public Notification(Long notificationId, Long reservationId, Long bakeryId, NotificationActor recipient, NotificationActor initiator, NotificationType notificationType, String content, boolean isRead, boolean isDeleted) {
         this.notificationId = notificationId;
-        this.userId = userId;
+        this.reservationId = reservationId;
         this.bakeryId = bakeryId;
-        this.userType = userType;
-        this.titleType = titleType;
+        this.recipient = recipient;
+        this.initiator = initiator;
         this.notificationType = notificationType;
         this.content = content;
         this.isRead = isRead;
         this.isDeleted = isDeleted;
     }
 
-    public static Notification create(Long userId, Long bakeryId, UserType userType, TitleType titleType, NotificationType notificationType, String content) {
+    public static Notification create(Long reservationId, Long bakeryId, NotificationActor recipient, NotificationActor initiator, NotificationType notificationType, String content) {
         return Notification.builder()
-                .userId(userId)
+                .reservationId(reservationId)
                 .bakeryId(bakeryId)
-                .userType(userType)
-                .titleType(titleType)
-                .content(content)
+                .recipient(recipient)
+                .initiator(initiator)
                 .notificationType(notificationType)
+                .content(content)
                 .isRead(false)
                 .isDeleted(false)
                 .build();
