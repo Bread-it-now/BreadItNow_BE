@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class NotificationCommandService implements NotificationReadUseCase, NotificationDeleteUseCase {
+public class NotificationManagementService implements NotificationReadUseCase, NotificationDeleteUseCase {
     private final NotificationProvider notificationProvider;
     private final NotificationRepository notificationRepository;
 

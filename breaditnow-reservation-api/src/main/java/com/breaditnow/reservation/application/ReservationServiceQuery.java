@@ -9,7 +9,7 @@ import com.breaditnow.reservation.application.dto.response.ReservationPageRespon
 import com.breaditnow.reservation.application.provider.BakeryProvider;
 import com.breaditnow.reservation.application.provider.ReservationProvider;
 import com.breaditnow.reservation.application.validator.BakeryValidator;
-import com.breaditnow.reservation.domain.port.in.QueryReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +21,7 @@ import static com.breaditnow.common.domain.Role.OWNER;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ReservationQueryReservationService implements QueryReservationUseCase {
+public class ReservationServiceQuery implements ReservationQueryUseCase {
     private final BakeryProvider bakeryProvider;
     private final BakeryValidator bakeryValidator;
     private final ReservationRepository reservationRepository;

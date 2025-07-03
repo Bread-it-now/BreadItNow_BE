@@ -2,6 +2,6 @@ package com.breaditnow.reservation.domain.port.in;
 
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 
-public interface ApproveReservationUseCase {
+public interface ReservationApproveUseCase {
     void approveReservation(AuthenticatedUser user, Long bakeryId, Long reservationId);
 }

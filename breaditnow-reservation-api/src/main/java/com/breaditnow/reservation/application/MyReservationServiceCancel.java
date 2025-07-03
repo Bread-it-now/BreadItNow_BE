@@ -6,7 +6,7 @@ import com.breaditnow.reservation.application.dto.request.MyReservationCancelReq
 import com.breaditnow.reservation.application.provider.ReservationProvider;
 import com.breaditnow.reservation.application.validator.ReservationValidator;
 import com.breaditnow.reservation.domain.model.Reservation;
-import com.breaditnow.reservation.domain.port.in.MyCancelReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.MyReservationCancelUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import static com.breaditnow.common.domain.Role.CUSTOMER;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MyCancelReservationService implements MyCancelReservationUseCase {
+public class MyReservationServiceCancel implements MyReservationCancelUseCase {
     private final ReservationProvider reservationProvider;
     private final ReservationValidator reservationValidator;
     private final ReservationRepository reservationRepository;

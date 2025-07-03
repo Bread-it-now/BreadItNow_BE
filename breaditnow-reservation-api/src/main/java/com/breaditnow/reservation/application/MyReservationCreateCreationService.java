@@ -14,7 +14,7 @@ import com.breaditnow.reservation.domain.model.Orderer;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
 import com.breaditnow.reservation.domain.model.ReservedBakery;
-import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.MyReservationCreateUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationEventPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import static com.breaditnow.common.domain.Role.CUSTOMER;
 
 @Service
 @RequiredArgsConstructor
-public class MyCreateReservationService implements MyCreateReservationUseCase {
+public class MyReservationCreateCreationService implements MyReservationCreateUseCase {
     private final ProductFactory productFactory;
     private final CustomerProvider customerProvider;
     private final BakeryProvider bakeryProvider;

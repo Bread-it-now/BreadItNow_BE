@@ -8,10 +8,10 @@ import com.breaditnow.reservation.application.dto.request.ReservationCancelReque
 import com.breaditnow.reservation.application.dto.request.ReservationPartialApproveRequest;
 import com.breaditnow.reservation.application.dto.response.ReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.ReservationPageResponse;
-import com.breaditnow.reservation.domain.port.in.ApproveReservationUseCase;
-import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
-import com.breaditnow.reservation.domain.port.in.PartialApproveReservationUseCase;
-import com.breaditnow.reservation.domain.port.in.QueryReservationUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationApproveUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationCancelUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationPartialApproveUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationQueryUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,10 +23,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @RequestMapping("/api/v1/bakery/{bakeryId}/reservation")
 @RequiredArgsConstructor
 public class ReservationController {
-    private final ApproveReservationUseCase approveReservationUseCase;
-    private final CancelReservationUseCase cancelReservationUseCase;
-    private final PartialApproveReservationUseCase partialApproveReservationUseCase;
-    private final QueryReservationUseCase queryReservationUseCase;
+    private final ReservationApproveUseCase reservationApproveUseCase;
+    private final ReservationCancelUseCase reservationCancelUseCase;
+    private final ReservationPartialApproveUseCase reservationPartialApproveUseCase;
+    private final ReservationQueryUseCase reservationQueryUseCase;
 
     @PostMapping("{reservationId}/approve")
     public ApiSuccessResponse<Void> approveReservation(
@@ -34,7 +34,7 @@ public class ReservationController {
             @PathVariable Long bakeryId,
             @PathVariable("reservationId") Long reservationId
     ) {
-        approveReservationUseCase.approveReservation(user, bakeryId, reservationId);
+        reservationApproveUseCase.approveReservation(user, bakeryId, reservationId);
         return ApiSuccessResponse.of();
     }
 
@@ -45,7 +45,7 @@ public class ReservationController {
             @PathVariable("bakeryId") Long bakeryId,
             @RequestBody ReservationCancelRequest request
     ) {
-        cancelReservationUseCase.cancelReservation(user, reservationId, bakeryId, request);
+        reservationCancelUseCase.cancelReservation(user, reservationId, bakeryId, request);
         return ApiSuccessResponse.of();
     }
 
@@ -56,7 +56,7 @@ public class ReservationController {
             @PathVariable("bakeryId") Long bakeryId,
             @RequestBody ReservationPartialApproveRequest request
     ) {
-        partialApproveReservationUseCase.partialApproveReservation(user, reservationId, bakeryId, request);
+        reservationPartialApproveUseCase.partialApproveReservation(user, reservationId, bakeryId, request);
         return ApiSuccessResponse.of();
     }
 
@@ -67,7 +67,7 @@ public class ReservationController {
             @RequestParam(name = "status", required = false) ReservationStatus status,
             @PageableDefault(sort = "modifiedAt", direction = DESC) Pageable pageable
     ) {
-        return ApiSuccessResponse.of(queryReservationUseCase.getMyReservations(user, bakeryId, pageable, status));
+        return ApiSuccessResponse.of(reservationQueryUseCase.getMyReservations(user, bakeryId, pageable, status));
     }
 
     @GetMapping("/{reservationId}")
@@ -76,7 +76,7 @@ public class ReservationController {
             @PathVariable("bakeryId") Long bakeryId,
             @PathVariable("reservationId") Long reservationId
     ) {
-        ReservationDetailResponse reservation = queryReservationUseCase.getReservation(user, bakeryId, reservationId);
+        ReservationDetailResponse reservation = reservationQueryUseCase.getReservation(user, bakeryId, reservationId);
         return ApiSuccessResponse.of(reservation);
     }
 }

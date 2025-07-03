@@ -18,7 +18,7 @@ import static com.breaditnow.notification.domain.model.UserType.OWNER;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationHandler {
+public class NotificationCreationService {
     private final FcmPort fcmPort;
     private final OwnerApiPort ownerApiPort;
     private final NotificationRepository notificationRepository;
