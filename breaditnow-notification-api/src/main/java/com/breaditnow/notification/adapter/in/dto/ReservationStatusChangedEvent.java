@@ -16,7 +16,7 @@ public record ReservationStatusChangedEvent(
         List<String> productNames,
         Integer totalPrice,
         ReservationStatus reservationStatus,
-        String reservationNumber,
+        Long reservationNumber,
         LocalDateTime pickupDeadline,
         Role initiatedBy,
         String cancelReason,

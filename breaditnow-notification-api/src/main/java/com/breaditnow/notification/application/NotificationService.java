@@ -3,76 +3,36 @@ package com.breaditnow.notification.application;
 import com.breaditnow.common.domain.ReservationStatus;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.notification.adapter.in.dto.ReservationStatusChangedEvent;
+import com.breaditnow.notification.application.provider.NotificationActorProvider;
 import com.breaditnow.notification.domain.model.*;
-import com.breaditnow.notification.domain.port.out.CustomerApiPort;
-import com.breaditnow.notification.domain.port.out.FcmPort;
 import com.breaditnow.notification.domain.port.out.NotificationRepository;
-import com.breaditnow.notification.domain.port.out.OwnerApiPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.breaditnow.common.domain.Role.CUSTOMER;
-import static com.breaditnow.common.domain.Role.OWNER;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
-    private final FcmPort fcmPort;
     private final NotificationRepository notificationRepository;
-    private final OwnerApiPort ownerApiPort;
-    private final CustomerApiPort customerApiPort;
+    private final FcmNotifier fcmNotifier;
+    private final NotificationActorProvider notificationActorProvider;
 
     @Transactional
     public void processAndSendNotifications(ReservationStatusChangedEvent event) {
-        Role initiatedBy = event.initiatedBy();
-        NotificationType notificationType = mapStatusToNotificationType(event.reservationStatus(), initiatedBy);
+        NotificationActor recipient = notificationActorProvider.recipientOf(event.initiatedBy(), event.customerId(), event.ownerId());
+        NotificationActor initiator = notificationActorProvider.initiatorOf(event.initiatedBy(), event.customerId(), event.ownerId());
 
-        NotificationActor initiator = new NotificationActor(
-                initiatedBy == CUSTOMER ? event.customerId() : event.ownerId(),
-                initiatedBy
-        );
-        NotificationActor recipient = new NotificationActor(
-                initiatedBy == CUSTOMER ? event.ownerId() : event.customerId(),
-                initiatedBy == CUSTOMER ? OWNER : CUSTOMER
-        );
+        NotificationType notificationType = mapStatusToNotificationType(event.reservationStatus(), event.initiatedBy());
 
-        NotificationData data = NotificationData.builder()
-                .customerNickname(event.customerNickname())
-                .bakeryName(event.bakeryName())
-                .productNames(event.productNames())
-                .pickupDeadline(event.pickupDeadline())
-                .cancelReason(event.cancelReason())
-                .reservationTime(event.eventOccurredAt())
-                .build();
-
+        NotificationData data = createNotificationData(event);
         NotificationMessage message = notificationType.createMessage(data);
         if (message == null || message.content().isEmpty()) return;
 
-        saveNotification(event, recipient, initiator, notificationType, message);
-        sendFcm(recipient, message);
-    }
-
-    private void saveNotification(ReservationStatusChangedEvent event, NotificationActor recipient, NotificationActor initiator, NotificationType notificationType, NotificationMessage message) {
-        Notification notification = Notification.create(
-                event.reservationId(),
-                event.bakeryId(),
-                recipient,
-                initiator,
-                notificationType,
-                message.content()
-        );
+        Notification notification = Notification.create(event.reservationId(), event.bakeryId(), recipient, initiator, notificationType, message.content());
         notificationRepository.save(notification);
-    }
-
-    private void sendFcm(NotificationActor recipient, NotificationMessage message) {
-        if (recipient.role() == OWNER) {
-            ownerApiPort.findFcmTokenById(recipient.userId())
-                    .ifPresent(token -> fcmPort.sendNotification(token, message.title(), message.content()));
-        } else if (recipient.role() == CUSTOMER) {
-            customerApiPort.findFcmTokenById(recipient.userId())
-                    .ifPresent(token -> fcmPort.sendNotification(token, message.title(), message.content()));
-        }
+        fcmNotifier.notify(recipient, message);
     }
 
     private NotificationType mapStatusToNotificationType(ReservationStatus status, Role role) {
@@ -88,5 +48,17 @@ public class NotificationService {
                 }
             }
         };
+    }
+
+    private NotificationData createNotificationData(ReservationStatusChangedEvent event) {
+        return NotificationData.builder()
+                .customerNickname(event.customerNickname())
+                .bakeryName(event.bakeryName())
+                .productNames(event.productNames())
+                .reservationNumber(event.reservationNumber())
+                .pickupDeadline(event.pickupDeadline())
+                .cancelReason(event.cancelReason())
+                .reservationTime(event.eventOccurredAt())
+                .build();
     }
 }

@@ -38,7 +38,7 @@ public class MyReservationManagementService implements MyReservationCancelUseCas
         Reservation savedReservation = reservationRepository.save(reservation);
 
         BakeryInfo bakeryInfo = bakeryProvider.provide(reservation.getReservedBakery().bakeryId());
-        ReservationStatusChangedEvent reservationCreatedEvent = ReservationStatusChangedEvent.from(savedReservation, CUSTOMER, null, bakeryInfo.ownerId());
+        ReservationStatusChangedEvent reservationCreatedEvent = ReservationStatusChangedEvent.from(savedReservation, CUSTOMER, request.reason(), bakeryInfo.ownerId());
         reservationEventPort.publish(reservationCreatedEvent);
     }
 }

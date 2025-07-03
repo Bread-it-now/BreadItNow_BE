@@ -9,6 +9,7 @@ import java.util.List;
 public record NotificationData(
         String customerNickname,
         String bakeryName,
+        Long reservationNumber,
         List<String> productNames,
         LocalDateTime reservationTime,
         LocalDateTime pickupDeadline,
