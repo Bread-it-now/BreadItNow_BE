@@ -38,6 +38,7 @@ public class NotificationEntity extends BaseEntity {
 
     private String content;
     private boolean isRead;
+    private boolean isDeleted;
 
     public static NotificationEntity from(Notification notification) {
         return NotificationEntity.builder()
@@ -49,6 +50,7 @@ public class NotificationEntity extends BaseEntity {
                 .titleType(notification.getTitleType())
                 .content(notification.getContent())
                 .isRead(notification.isRead())
+                .isDeleted(notification.isDeleted())
                 .build();
     }
 
@@ -62,6 +64,7 @@ public class NotificationEntity extends BaseEntity {
                 .content(this.content)
                 .notificationType(this.notificationType)
                 .isRead(this.isRead)
+                .isDeleted(this.isDeleted)
                 .build();
     }
 }

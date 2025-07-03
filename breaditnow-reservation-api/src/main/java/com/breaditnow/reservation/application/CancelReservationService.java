@@ -7,7 +7,6 @@ import com.breaditnow.reservation.application.dto.request.ReservationCancelReque
 import com.breaditnow.reservation.application.provider.BakeryProvider;
 import com.breaditnow.reservation.application.provider.ReservationProvider;
 import com.breaditnow.reservation.application.validator.BakeryValidator;
-import com.breaditnow.reservation.application.validator.ReservationValidator;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.port.in.CancelReservationUseCase;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
@@ -24,7 +23,6 @@ public class CancelReservationService implements CancelReservationUseCase {
     private final BakeryProvider bakeryProvider;
     private final BakeryValidator bakeryValidator;
     private final ReservationProvider reservationProvider;
-    private final ReservationValidator reservationValidator;
     private final ReservationRepository reservationRepository;
 
     @Override

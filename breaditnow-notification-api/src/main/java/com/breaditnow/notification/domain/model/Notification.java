@@ -1,9 +1,11 @@
 package com.breaditnow.notification.domain.model;
 
-import com.breaditnow.common.exception.NotificationErrorCode;
 import com.breaditnow.common.exception.NotificationException;
 import lombok.Builder;
 import lombok.Getter;
+
+import static com.breaditnow.common.exception.NotificationErrorCode.ALREADY_DELETED_NOTIFICATION;
+import static com.breaditnow.common.exception.NotificationErrorCode.ALREADY_READ_NOTIFICATION;
 
 @Getter
 public class Notification {
@@ -15,9 +17,10 @@ public class Notification {
     private NotificationType notificationType;
     private String content;
     private boolean isRead;
+    private boolean isDeleted;
 
     @Builder
-    public Notification(Long notificationId, Long userId, Long bakeryId, UserType userType, TitleType titleType, NotificationType notificationType, String content, boolean isRead) {
+    public Notification(Long notificationId, Long userId, Long bakeryId, UserType userType, TitleType titleType, NotificationType notificationType, String content, boolean isRead, boolean isDeleted) {
         this.notificationId = notificationId;
         this.userId = userId;
         this.bakeryId = bakeryId;
@@ -26,6 +29,7 @@ public class Notification {
         this.notificationType = notificationType;
         this.content = content;
         this.isRead = isRead;
+        this.isDeleted = isDeleted;
     }
 
     public static Notification create(Long userId, Long bakeryId, UserType userType, TitleType titleType, NotificationType notificationType, String content) {
@@ -37,13 +41,21 @@ public class Notification {
                 .content(content)
                 .notificationType(notificationType)
                 .isRead(false)
+                .isDeleted(false)
                 .build();
     }
 
     public void read() {
         if(this.isRead) {
-            throw new NotificationException(NotificationErrorCode.ALREADY_READ_NOTIFICATION);
+            throw new NotificationException(ALREADY_READ_NOTIFICATION);
         }
         this.isRead = true;
+    }
+
+    public void delete() {
+        if(this.isDeleted) {
+            throw new NotificationException(ALREADY_DELETED_NOTIFICATION);
+        }
+        this.isDeleted = true;
     }
 }

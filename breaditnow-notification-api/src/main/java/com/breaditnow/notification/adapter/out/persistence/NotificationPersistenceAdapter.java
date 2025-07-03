@@ -33,4 +33,5 @@ public class NotificationPersistenceAdapter implements NotificationRepository {
         return jpaNotificationRepository.findByBakeryIdOrderByCreatedAtDesc(bakeryId, pageable)
                 .map(NotificationEntity::toDomain);
     }
+
 }

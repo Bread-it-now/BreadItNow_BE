@@ -4,6 +4,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.notification.adapter.in.web.resolver.AuthUser;
 import com.breaditnow.notification.adapter.in.web.resolver.AuthenticatedUser;
 import com.breaditnow.notification.application.dto.response.NotificationPageResponse;
+import com.breaditnow.notification.domain.port.in.NotificationDeleteUseCase;
 import com.breaditnow.notification.domain.port.in.NotificationQueryUseCase;
 import com.breaditnow.notification.domain.port.in.NotificationReadUseCase;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class NotificationController {
     private final NotificationQueryUseCase notificationQueryUseCase;
     private final NotificationReadUseCase notificationReadUseCase;
+    private final NotificationDeleteUseCase notificationDeleteUseCase;
 
     @GetMapping
     public ApiSuccessResponse<NotificationPageResponse> getNotifications(
@@ -33,6 +35,16 @@ public class NotificationController {
             @PathVariable Long notificationId
     ) {
         notificationReadUseCase.markNotificationAsRead(user, bakeryId, notificationId);
-        return ApiSuccessResponse.of(null);
+        return ApiSuccessResponse.of();
+    }
+
+    @DeleteMapping("/{notificationId}")
+    public ApiSuccessResponse<Void> deleteNotification(
+            @AuthUser AuthenticatedUser user,
+            @PathVariable Long bakeryId,
+            @PathVariable Long notificationId
+    ) {
+        notificationDeleteUseCase.notificationDelete(user, bakeryId, notificationId);
+        return ApiSuccessResponse.of();
     }
 }
