@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
-public class ProductStateService implements UpdateProductStockUseCase, UpdateProductStatusUseCase, UpdateProductsStatusUseCase, UpdateProductDisplayOrderUseCase {
+public class ProductManagementService implements UpdateProductStockUseCase, UpdateProductStatusUseCase, UpdateProductsStatusUseCase, UpdateProductDisplayOrderUseCase {
     private final OwnerDomainProvider ownerDomainProvider;
     private final ProductRepository productRepository;
     private final ProductReorderer productReorderer;

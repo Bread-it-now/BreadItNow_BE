@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductCommandService implements CreateProductUseCase, UpdateProductUseCase{
+public class ProductCreationService implements CreateProductUseCase, UpdateProductUseCase{
     private final OwnerDomainProvider ownerDomainProvider;
     private final ProductRepository productRepository;
     private final ImageUseCase imageUseCase;

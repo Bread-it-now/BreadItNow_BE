@@ -1,4 +1,4 @@
-package com.breaditnow.product.adapter.in;
+package com.breaditnow.product.adapter.in.web;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.product.application.dto.response.ProductInfoResponse;

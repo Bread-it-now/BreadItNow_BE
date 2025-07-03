@@ -1,11 +1,12 @@
 package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.aop.Authorize;
+import com.breaditnow.common.dto.StockUpdateItem;
+import com.breaditnow.common.event.StockDecreaseRequestedEvent;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
 import com.breaditnow.reservation.application.dto.request.ReservationPartialApproveRequest;
-import com.breaditnow.reservation.application.event.ReservationStatusChangedEvent;
 import com.breaditnow.reservation.application.factory.ProductFactory;
 import com.breaditnow.reservation.application.provider.BakeryProvider;
 import com.breaditnow.reservation.application.provider.ReservationProvider;
@@ -48,7 +49,10 @@ public class ReservationManagementService implements ReservationApproveUseCase, 
         reservation.approve(newReservationNumber);
         reservationRepository.save(reservation);
 
-        reservationEventPort.publish(ReservationStatusChangedEvent.from(reservation, OWNER, null, user.userId()));
+        List<StockUpdateItem> stockUpdateItems = reservation.getReservationProducts().stream()
+                .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
+                .toList();
+        reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), stockUpdateItems));
     }
 
     @Override
@@ -62,7 +66,7 @@ public class ReservationManagementService implements ReservationApproveUseCase, 
         reservation.cancel(request.reason());
         reservationRepository.save(reservation);
 
-        reservationEventPort.publish(ReservationStatusChangedEvent.from(reservation, OWNER, request.reason(), user.userId()));
+//        reservationEventPort.publish(ReservationStatusChangedEvent.from(reservation, OWNER, request.reason(), user.userId()));
     }
 
     @Override
@@ -79,8 +83,11 @@ public class ReservationManagementService implements ReservationApproveUseCase, 
         Long newReservationNumber = reservationRepository.getNextReservationNumber(bakeryId);
 
         reservation.partialApprove(reservationProducts, newReservationNumber);
-        reservationRepository.save(reservation);
+        Reservation savedReservation = reservationRepository.save(reservation);
 
-        reservationEventPort.publish(ReservationStatusChangedEvent.from(reservation, OWNER, request.reason(), user.userId()));
+        List<StockUpdateItem> stockUpdateItems = savedReservation.getReservationProducts().stream()
+                .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
+                .toList();
+        reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), stockUpdateItems));
     }
 }
