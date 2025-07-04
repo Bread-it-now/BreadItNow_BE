@@ -15,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.breaditnow.common.domain.NotificationType.RESERVATION_APPROVAL_FAILED;
 import static com.breaditnow.common.domain.NotificationType.RESERVATION_APPROVED;
-import static com.breaditnow.common.domain.NotificationType.RESERVATION_CANCELED_BY_OWNER;
 import static com.breaditnow.common.domain.Role.CUSTOMER;
+import static com.breaditnow.common.domain.Role.SYSTEM;
 
 @Slf4j
 @Service
@@ -43,53 +44,46 @@ public class ReservationNotificationService {
                 .map(ReservationProduct::getProductName)
                 .toList();
 
-        NotificationSendRequestedEvent notificationSendRequestedEvent = new NotificationSendRequestedEvent(
-                reservation.getReservationId(),
-                reservation.getReservedBakery().bakeryId(),
-                recipient,
-                initiator,
-                RESERVATION_APPROVED,
-                reservation.getOrderer().getNickname(),
-                reservation.getReservedBakery().name(),
-                productNames,
-                reservation.getReservationNumber(),
-                reservation.calculatePickupDeadline(),
-                null
-        );
-
+        NotificationSendRequestedEvent notificationSendRequestedEvent = NotificationSendRequestedEvent.builder()
+                .reservationId(reservation.getReservationId())
+                .bakeryId(reservation.getReservedBakery().bakeryId())
+                .recipient(recipient)
+                .initiator(initiator)
+                .notificationType(RESERVATION_APPROVED)
+                .customerNickName(reservation.getOrderer().getNickname())
+                .bakeryName(reservation.getReservedBakery().name())
+                .productNames(productNames)
+                .reservationNumber(newReservationNumber)
+                .pickupDeadline(reservation.calculatePickupDeadline())
+                .build();
         notificationEventPort.publish(notificationSendRequestedEvent);
     }
 
     @Transactional
     public void handleFailedReservation(StockUpdateResultEvent resultEvent) {
-        log.warn("재고 처리 실패로 보상 트랜잭션을 시작합니다. 예약 ID: {}, 사유: {}", resultEvent.reservationId(), resultEvent.message());
+        log.warn("재고 처리 실패로 '승인 실패' 처리를 시작합니다. 예약 ID: {}", resultEvent.reservationId());
+
         Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
 
-        String cancelReason = "재고 부족으로 예약이 자동 취소되었습니다.";
-        reservation.cancel(cancelReason);
-        reservationRepository.save(reservation);
-        log.info("예약 상태를 '취소'로 변경했습니다. 예약 ID: {}", reservation.getReservationId());
+        String cancelReason = "재고 부족";
+
+        UserIdentifier initiator = new UserIdentifier(0L, SYSTEM);
+        UserIdentifier recipient = resultEvent.initiator();
 
         List<String> productNames = reservation.getReservationProducts().stream()
                 .map(ReservationProduct::getProductName)
                 .toList();
 
-        UserIdentifier initiator = resultEvent.initiator();
-        UserIdentifier recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
-
-        var eventToSend = new NotificationSendRequestedEvent(
-                reservation.getReservationId(),
-                reservation.getReservedBakery().bakeryId(),
-                recipient,
-                initiator,
-                RESERVATION_CANCELED_BY_OWNER,
-                reservation.getOrderer().getNickname(),
-                reservation.getReservedBakery().name(),
-                productNames,
-                null,
-                null,
-                cancelReason
-        );
+        var eventToSend = NotificationSendRequestedEvent.builder()
+                .reservationId(reservation.getReservationId())
+                .bakeryId(reservation.getReservedBakery().bakeryId())
+                .recipient(recipient)
+                .initiator(initiator)
+                .notificationType(RESERVATION_APPROVAL_FAILED)
+                .customerNickName(reservation.getOrderer().getNickname())
+                .productNames(productNames)
+                .cancelReason(cancelReason)
+                .build();
 
         notificationEventPort.publish(eventToSend);
     }

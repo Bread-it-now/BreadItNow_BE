@@ -2,10 +2,12 @@ package com.breaditnow.common.event;
 
 import com.breaditnow.common.domain.NotificationType;
 import com.breaditnow.common.domain.UserIdentifier;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 public record NotificationSendRequestedEvent(
         Long reservationId,
         Long bakeryId,

@@ -8,7 +8,8 @@ import static com.breaditnow.common.exception.CommonErrorCode.INVALID_PARAMETER;
 
 public enum Role {
     CUSTOMER,
-    OWNER;
+    OWNER,
+    SYSTEM;
 
     public static Role from(String role) {
         if (role == null) {
