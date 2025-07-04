@@ -1,8 +1,8 @@
 package com.breaditnow.product.application;
 
-import com.breaditnow.common.domain.OperationType;
 import com.breaditnow.common.dto.StockUpdateItem;
-import com.breaditnow.common.domain.UserIdentifier;
+import com.breaditnow.common.event.StockDecreaseRequestedEvent;
+import com.breaditnow.common.event.StockIncreaseRequestedEvent;
 import com.breaditnow.common.event.StockUpdateResultEvent;
 import com.breaditnow.product.domain.model.Product;
 import com.breaditnow.product.domain.port.out.ProductEventPort;
@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
+import static com.breaditnow.common.domain.OperationType.DECREASE;
+import static com.breaditnow.common.domain.OperationType.INCREASE;
 import static com.breaditnow.common.event.StockUpdateResultEvent.Status.FAILURE;
 import static com.breaditnow.common.event.StockUpdateResultEvent.Status.SUCCESS;
 
@@ -23,34 +23,34 @@ public class ProductStockService {
     private final ProductEventPort productEventPort;
 
     @Transactional
-    public void decreaseStock(Long reservationId, UserIdentifier initiator, List<StockUpdateItem> stockUpdateItems) {
+    public void decreaseStock(StockDecreaseRequestedEvent event) {
         try {
-            for(StockUpdateItem item : stockUpdateItems) {
+            for(StockUpdateItem item : event.stockUpdateItems()) {
                 Product product = productRepository.getById(item.productId());
                 product.updateStock(product.getSalesPolicy().stock() - item.quantity());
                 productRepository.save(product);
             }
-            StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator, SUCCESS, null);
-            productEventPort.publishStockUpdateResult(result, OperationType.DECREASE);
+            StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), SUCCESS, event.cancelReason());
+            productEventPort.publishStockUpdateResult(result, DECREASE);
         } catch (Exception e) {
-            StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator , FAILURE, e.getMessage());
-            productEventPort.publishStockUpdateResult(result, OperationType.DECREASE);
+            StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), FAILURE, e.getMessage());
+            productEventPort.publishStockUpdateResult(result, DECREASE);
         }
     }
 
     @Transactional
-    public void increaseStock(Long reservationId, UserIdentifier initiator, List<StockUpdateItem> stockUpdateItems, String reason) {
+    public void increaseStock(StockIncreaseRequestedEvent event) {
         try {
-            for(StockUpdateItem item : stockUpdateItems) {
+            for(StockUpdateItem item : event.stockUpdateItems()) {
                 Product product = productRepository.getById(item.productId());
                 product.updateStock(product.getSalesPolicy().stock() + item.quantity());
                 productRepository.save(product);
             }
-            StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator, SUCCESS, reason);
-            productEventPort.publishStockUpdateResult(result, OperationType.INCREASE);
+            StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), SUCCESS, event.cancelReason());
+            productEventPort.publishStockUpdateResult(result, INCREASE);
         } catch (Exception e) {
-            StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator, FAILURE, e.getMessage());
-            productEventPort.publishStockUpdateResult(result, OperationType.INCREASE);
+            StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), FAILURE, e.getMessage());
+            productEventPort.publishStockUpdateResult(result, INCREASE);
         }
     }
 }

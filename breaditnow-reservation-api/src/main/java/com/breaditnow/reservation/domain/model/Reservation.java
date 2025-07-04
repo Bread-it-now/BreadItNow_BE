@@ -1,11 +1,16 @@
 package com.breaditnow.reservation.domain.model;
 
 import com.breaditnow.common.domain.Money;
+import com.breaditnow.common.dto.StockUpdateItem;
+import com.breaditnow.common.exception.ReservationErrorCode;
+import com.breaditnow.common.exception.ReservationException;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.breaditnow.common.domain.DailyTime.DATE_FORMATTER;
 
@@ -49,9 +54,25 @@ public class Reservation {
         this.reservationState.cancel(reason);
     }
 
-    public void partialApprove(List<ReservationProduct> adjustedProducts, Long newReservationNumber) {
+    public void partialApprove(List<StockUpdateItem> updateItems, Long newReservationNumber) {
         this.reservationState.partiallyApprove();
-        this.reservationProducts = adjustedProducts;
+
+        Map<Long, ReservationProduct> originalProductMap = this.reservationProducts.stream()
+                .collect(Collectors.toMap(ReservationProduct::getProductId, product -> product));
+
+        this.reservationProducts = updateItems.stream()
+                .map(item -> {
+                    ReservationProduct originalProduct = originalProductMap.get(item.productId());
+                    if (originalProduct == null) throw new ReservationException(ReservationErrorCode.PRODUCT_NOT_IN_RESERVATION);
+                    return new ReservationProduct(
+                            originalProduct.getProductId(),
+                            originalProduct.getProductName(),
+                            originalProduct.getProductImage(),
+                            originalProduct.getPrice(),
+                            item.quantity()
+                    );
+                })
+                .toList();
         this.reservationNumber = newReservationNumber;
         this.totalPrice = calculateTotalPrice();
     }

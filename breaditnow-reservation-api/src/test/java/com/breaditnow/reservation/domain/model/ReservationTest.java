@@ -2,6 +2,7 @@ package com.breaditnow.reservation.domain.model;
 
 import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.domain.ReservationStatus;
+import com.breaditnow.common.dto.StockUpdateItem;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -59,13 +60,16 @@ class ReservationTest {
         @DisplayName("예약 부분승인 시 상품, 예약번호, 총액이 변경된다")
         void partialApprove() {
             Reservation reservation = new Reservation(orderer, reservedBakery, products);
-            ReservationProduct onlyOne = new ReservationProduct(
-                    1L, "식빵", "bread.jpg", new Money(3000), 1
-            );
-            reservation.partialApprove(List.of(onlyOne), 456L);
+            StockUpdateItem updateItem = new StockUpdateItem(1L, 1);
+            reservation.partialApprove(List.of(updateItem), 456L);
 
             assertThat(reservation.getReservationState().getReservationStatus()).isEqualTo(ReservationStatus.PARTIAL_APPROVED);
-            assertThat(reservation.getReservationProducts()).containsExactly(onlyOne);
+            assertThat(reservation.getReservationProducts())
+                    .anySatisfy(product -> {
+                        assertThat(product.getProductId()).isEqualTo(1L);
+                        assertThat(product.getQuantity()).isEqualTo(1);
+                    })
+                    .noneMatch(product -> product.getProductId().equals(2L));
             assertThat(reservation.getReservationNumber()).isEqualTo(456L);
             assertThat(reservation.getTotalPrice()).isEqualTo(new Money(3000));
         }

@@ -23,9 +23,7 @@ public class ProductEventRabbitMqAdapter implements ProductEventPort {
                 event.status().name().toLowerCase()
         );
 
-        log.info("재고 처리 결과 발행: Exchange [{}], RoutingKey [{}], 예약 ID [{}]",
-                RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event.reservationId());
-
+        log.info("재고 처리 결과 발행: Exchange [{}], RoutingKey [{}], 예약 [{}]", RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
         rabbitTemplate.convertAndSend(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
     }
 }

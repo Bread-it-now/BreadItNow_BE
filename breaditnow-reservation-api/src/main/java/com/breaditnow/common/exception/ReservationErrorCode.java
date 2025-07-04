@@ -23,7 +23,8 @@ public enum ReservationErrorCode implements ErrorCode {
 	UNAUTHORIZED_ACCESS(UNAUTHORIZED, "EA013", "권한이 없습니다."),
 	BAKERY_IS_NOT_OPENED(BAD_REQUEST, "EA014", "빵집이 운영 중이 아닙니다."),
 	BAKERY_IS_DELETED(NOT_FOUND, "EA015", "빵집이 삭제되었습니다."),
-	CUSTOMER_NOT_FOUND(NOT_FOUND, "EA016", "고객을 찾을 수 없습니다."),;
+	CUSTOMER_NOT_FOUND(NOT_FOUND, "EA016", "고객을 찾을 수 없습니다."),
+	PRODUCT_NOT_IN_RESERVATION(BAD_REQUEST, "EA017", "예약에 포함되지 않은 상품입니다."),;
 
 
 	private final HttpStatus httpStatus;

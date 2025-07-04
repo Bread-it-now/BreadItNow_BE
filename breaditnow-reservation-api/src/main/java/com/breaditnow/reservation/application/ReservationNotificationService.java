@@ -1,5 +1,6 @@
 package com.breaditnow.reservation.application;
 
+import com.breaditnow.common.domain.NotificationType;
 import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.common.event.NotificationSendRequestedEvent;
 import com.breaditnow.common.event.StockUpdateResultEvent;
@@ -15,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.breaditnow.common.domain.NotificationType.RESERVATION_APPROVAL_FAILED;
-import static com.breaditnow.common.domain.NotificationType.RESERVATION_APPROVED;
+import static com.breaditnow.common.domain.NotificationType.*;
+import static com.breaditnow.common.domain.ReservationStatus.PARTIAL_APPROVED;
 import static com.breaditnow.common.domain.Role.CUSTOMER;
 import static com.breaditnow.common.domain.Role.SYSTEM;
 
@@ -33,23 +34,29 @@ public class ReservationNotificationService {
         Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
 
         Long newReservationNumber = reservationRepository.getNextReservationNumber(reservation.getReservedBakery().bakeryId());
-        reservation.approve(newReservationNumber);
-        reservationRepository.save(reservation);
-
         UserIdentifier initiator = resultEvent.initiator();
         UserIdentifier recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
-
 
         List<String> productNames = reservation.getReservationProducts().stream()
                 .map(ReservationProduct::getProductName)
                 .toList();
+
+        NotificationType notificationType = RESERVATION_APPROVED;
+        if(resultEvent.reservationStatus() == PARTIAL_APPROVED){
+            reservation.partialApprove(resultEvent.stockUpdateItems(), newReservationNumber);
+            notificationType = RESERVATION_PARTIALLY_APPROVED;
+        }
+        else{
+            reservation.approve(newReservationNumber);
+        }
+        reservationRepository.save(reservation);
 
         NotificationSendRequestedEvent notificationSendRequestedEvent = NotificationSendRequestedEvent.builder()
                 .reservationId(reservation.getReservationId())
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
                 .initiator(initiator)
-                .notificationType(RESERVATION_APPROVED)
+                .notificationType(notificationType)
                 .customerNickName(reservation.getOrderer().getNickname())
                 .bakeryName(reservation.getReservedBakery().name())
                 .productNames(productNames)

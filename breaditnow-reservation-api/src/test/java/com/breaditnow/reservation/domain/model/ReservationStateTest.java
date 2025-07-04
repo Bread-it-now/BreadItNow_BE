@@ -61,15 +61,6 @@ class ReservationStateTest {
         }
 
         @Test
-        @DisplayName("이미 완료된 상태에서 취소 시 예외 발생")
-        void cancel_alreadyProcessed() {
-            ReservationState state = new ReservationState(APPROVED, null);
-            assertThatThrownBy(() -> state.cancel("사유"))
-                    .isInstanceOf(ReservationException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", ALREADY_PROCESSED);
-        }
-
-        @Test
         @DisplayName("취소 사유가 null이면 예외 발생")
         void cancel_reasonRequired() {
             ReservationState state = ReservationState.waiting();

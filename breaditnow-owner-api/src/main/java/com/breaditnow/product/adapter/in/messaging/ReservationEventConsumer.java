@@ -17,13 +17,13 @@ public class ReservationEventConsumer {
 
     @RabbitListener(queues = RabbitMQConstants.QUEUE_STOCK_DECREASE_REQUEST)
     public void handleStockDecreaseRequest(StockDecreaseRequestedEvent event) {
-        log.info("재고 감소 요청 수신: 예약 ID [{}]", event.reservationId());
-        productStockService.decreaseStock(event.reservationId(), event.initiator(), event.stockUpdateItems());
+        log.info("재고 감소 요청 수신: {}", event);
+        productStockService.decreaseStock(event);
     }
 
     @RabbitListener(queues = RabbitMQConstants.QUEUE_STOCK_INCREASE_REQUEST)
     public void handleStockIncreaseRequest(StockIncreaseRequestedEvent event) {
-        log.info("재고 증가 요청 수신: 예약 ID [{}]", event.reservationId());
-        productStockService.increaseStock(event.reservationId(), event.initiator(), event.stockUpdateItems(), event.cancelReason());
+        log.info("재고 증가 요청 수신: {}", event);
+        productStockService.increaseStock(event);
     }
 }

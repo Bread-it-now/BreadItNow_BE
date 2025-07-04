@@ -18,7 +18,7 @@ public class StockDecreaseResultConsumer {
 
     @RabbitListener(queues = RabbitMQConstants.QUEUE_STOCK_DECREASE_RESULT)
     public void handleStockDecreaseResult(StockUpdateResultEvent resultEvent) {
-        log.info("재고 감소 결과 수신: 예약 ID [{}], 상태 [{}]", resultEvent.reservationId(), resultEvent.status());
+        log.info("재고 감소 결과 수신: {}", resultEvent);
         if (resultEvent.status() == SUCCESS) {
             reservationNotificationService.requestSuccessNotification(resultEvent);
         } else {
