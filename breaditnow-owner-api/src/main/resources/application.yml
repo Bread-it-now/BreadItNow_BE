@@ -12,6 +12,16 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE}
 
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          max-attempts: 3
+          multiplier: 2.0
+        default-requeue-rejected: false
+
 geolocation:
   kakao:
     client-id: ${OAUTH2_KAKAO_CLIENT_ID}

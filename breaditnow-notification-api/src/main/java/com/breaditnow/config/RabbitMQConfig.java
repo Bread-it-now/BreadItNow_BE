@@ -10,10 +10,27 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 import static com.breaditnow.common.messaging.RabbitMQConstants.*;
 
 @Configuration
 public class RabbitMQConfig {
+    @Bean
+    public TopicExchange dlqExchange() {
+        return new TopicExchange(DLQ_EXCHANGE_NAME);
+    }
+
+    @Bean
+    public Queue dlq() {
+        return new Queue(DLQ_QUEUE_NAME);
+    }
+
+    @Bean
+    public Binding dlqBinding() {
+        return BindingBuilder.bind(dlq()).to(dlqExchange()).with("#");
+    }
+
     @Bean
     public MessageConverter messageConverter(ObjectMapper objectMapper) {
         return new Jackson2JsonMessageConverter(objectMapper);
@@ -26,7 +43,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue notificationSendRequestQueue() {
-        return new Queue(QUEUE_NOTIFICATION_SEND_REQUEST, true);
+        return new Queue(QUEUE_NOTIFICATION_SEND_REQUEST, true, false, false, Map.of("x-dead-letter-exchange", DLQ_EXCHANGE_NAME));
     }
 
     @Bean

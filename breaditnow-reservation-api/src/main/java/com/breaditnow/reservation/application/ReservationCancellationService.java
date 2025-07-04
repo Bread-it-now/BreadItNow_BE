@@ -31,13 +31,13 @@ public class ReservationCancellationService {
         Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
 
         if (reservation.getReservationState().getReservationStatus() == CANCELLED) {
-            log.warn("이미 취소된 예약입니다. (예약 ID: {}). 중복 처리를 방지합니다.", resultEvent.reservationId());
+            log.warn("이미 취소된 예약입니다. (예약 ID: {}). 중복 처리를 방지합니다. {} ", resultEvent.reservationId(), resultEvent);
             return;
         }
 
         reservation.cancel(resultEvent.message());
         reservationRepository.save(reservation);
-        log.info("예약 ID [{}]의 상태를 CANCELLED로 최종 변경했습니다.", resultEvent.reservationId());
+        log.info("예약 ID [{}]의 상태를 CANCELLED로 최종 변경했습니다. {} ", resultEvent.reservationId(), resultEvent);
 
         sendCancellationNotification(reservation, resultEvent.initiator(), resultEvent.message());
     }

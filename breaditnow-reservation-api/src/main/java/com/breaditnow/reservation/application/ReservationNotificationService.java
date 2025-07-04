@@ -37,19 +37,19 @@ public class ReservationNotificationService {
         UserIdentifier initiator = resultEvent.initiator();
         UserIdentifier recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
 
-        List<String> productNames = reservation.getReservationProducts().stream()
-                .map(ReservationProduct::getProductName)
-                .toList();
-
         NotificationType notificationType = RESERVATION_APPROVED;
         if(resultEvent.reservationStatus() == PARTIAL_APPROVED){
-            reservation.partialApprove(resultEvent.stockUpdateItems(), newReservationNumber);
+            reservation.partialApprove(resultEvent.stockUpdateItems(), newReservationNumber, resultEvent.message());
             notificationType = RESERVATION_PARTIALLY_APPROVED;
         }
         else{
             reservation.approve(newReservationNumber);
         }
         reservationRepository.save(reservation);
+
+        List<String> productNames = reservation.getReservationProducts().stream()
+                .map(ReservationProduct::getProductName)
+                .toList();
 
         NotificationSendRequestedEvent notificationSendRequestedEvent = NotificationSendRequestedEvent.builder()
                 .reservationId(reservation.getReservationId())
@@ -68,11 +68,11 @@ public class ReservationNotificationService {
 
     @Transactional
     public void handleFailedReservation(StockUpdateResultEvent resultEvent) {
-        log.warn("재고 처리 실패로 '승인 실패' 처리를 시작합니다. 예약 ID: {}", resultEvent.reservationId());
+        log.warn("재고 처리 실패로 '승인 실패' 처리를 시작합니다. 예약 {}", resultEvent);
 
         Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
 
-        String cancelReason = "재고 부족";
+        String cancelReason = "(시스템)재고 부족";
 
         UserIdentifier initiator = new UserIdentifier(0L, SYSTEM);
         UserIdentifier recipient = resultEvent.initiator();

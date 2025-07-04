@@ -61,7 +61,7 @@ class ReservationTest {
         void partialApprove() {
             Reservation reservation = new Reservation(orderer, reservedBakery, products);
             StockUpdateItem updateItem = new StockUpdateItem(1L, 1);
-            reservation.partialApprove(List.of(updateItem), 456L);
+            reservation.partialApprove(List.of(updateItem), 456L, "일부 상품 재고 부족");
 
             assertThat(reservation.getReservationState().getReservationStatus()).isEqualTo(ReservationStatus.PARTIAL_APPROVED);
             assertThat(reservation.getReservationProducts())
@@ -81,7 +81,7 @@ class ReservationTest {
             reservation.cancel("고객 요청");
 
             assertThat(reservation.getReservationState().getReservationStatus()).isEqualTo(ReservationStatus.CANCELLED);
-            assertThat(reservation.getReservationState().getCancelReason()).isEqualTo("고객 요청");
+            assertThat(reservation.getReservationState().getReason()).isEqualTo("고객 요청");
         }
     }
 

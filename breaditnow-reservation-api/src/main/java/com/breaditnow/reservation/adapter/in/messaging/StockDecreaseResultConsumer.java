@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import static com.breaditnow.common.event.StockUpdateResultEvent.Status.FAILURE;
 import static com.breaditnow.common.event.StockUpdateResultEvent.Status.SUCCESS;
 
 @Slf4j
@@ -21,7 +22,8 @@ public class StockDecreaseResultConsumer {
         log.info("재고 감소 결과 수신: {}", resultEvent);
         if (resultEvent.status() == SUCCESS) {
             reservationNotificationService.requestSuccessNotification(resultEvent);
-        } else {
+        }
+        else if(resultEvent.status() == FAILURE) {
             reservationNotificationService.handleFailedReservation(resultEvent);
         }
     }

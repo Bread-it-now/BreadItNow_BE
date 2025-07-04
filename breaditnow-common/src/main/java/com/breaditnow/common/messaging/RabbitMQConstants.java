@@ -4,8 +4,10 @@ public final class RabbitMQConstants {
 
     private RabbitMQConstants() {}
 
-    // Exchange
+
     public static final String BREADITNOW_TOPIC_EXCHANGE = "breaditnow.topic";
+    public static final String DLQ_EXCHANGE_NAME = RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE + ".dlx";
+    public static final String DLQ_QUEUE_NAME = "dead-letter-queue";
 
     // --- 재고 감소(Stock Decrease) 관련 ---
     // 예약 서비스 -> 상품 서비스
@@ -14,7 +16,7 @@ public final class RabbitMQConstants {
 
     // 상품 서비스 -> 예약 서비스
     public static final String QUEUE_STOCK_DECREASE_RESULT = "stock.decrease.result.queue";
-    public static final String ROUTING_KEY_STOCK_DECREASE_RESULT_WILDCARD = "v1.stock.decrease.*";
+    public static final String ROUTING_KEY_STOCK_DECREASE_RESULT_WILDCARD = "v1.stock.result.decrease.#";
 
 
     // --- 재고 증가(Stock Increase) 관련 ---
@@ -24,7 +26,7 @@ public final class RabbitMQConstants {
 
     // 상품 서비스 -> 예약 서비스
     public static final String QUEUE_STOCK_INCREASE_RESULT = "stock.increase.result.queue";
-    public static final String ROUTING_KEY_STOCK_INCREASE_RESULT_WILDCARD = "v1.stock.increase.*";
+    public static final String ROUTING_KEY_STOCK_INCREASE_RESULT_WILDCARD = "v1.stock.result.increase.#";
 
 
     // --- 알림 발송(Notification Send) 관련 ---
@@ -33,5 +35,5 @@ public final class RabbitMQConstants {
     public static final String ROUTING_KEY_NOTIFICATION_SEND_REQUEST = "v1.notification.send.requested";
 
     // --- 결과 발행용 라우팅 키 포맷 ---
-    public static final String ROUTING_KEY_STOCK_RESULT_FORMAT = "v1.stock.%s.%s"; // operation, status
+    public static final String ROUTING_KEY_STOCK_RESULT_FORMAT = "v1.stock.result.%s.%s"; // operation, status
 }

@@ -4,10 +4,11 @@ import com.breaditnow.common.dto.StockUpdateItem;
 import com.breaditnow.common.event.StockDecreaseRequestedEvent;
 import com.breaditnow.common.event.StockIncreaseRequestedEvent;
 import com.breaditnow.common.event.StockUpdateResultEvent;
+import com.breaditnow.product.application.event.ProductStockUpdatedEvent;
 import com.breaditnow.product.domain.model.Product;
-import com.breaditnow.product.domain.port.out.ProductEventPort;
 import com.breaditnow.product.domain.port.out.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,7 @@ import static com.breaditnow.common.event.StockUpdateResultEvent.Status.SUCCESS;
 @RequiredArgsConstructor
 public class ProductStockService {
     private final ProductRepository productRepository;
-    private final ProductEventPort productEventPort;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void decreaseStock(StockDecreaseRequestedEvent event) {
@@ -31,10 +32,11 @@ public class ProductStockService {
                 productRepository.save(product);
             }
             StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), SUCCESS, event.cancelReason());
-            productEventPort.publishStockUpdateResult(result, DECREASE);
+            eventPublisher.publishEvent(new ProductStockUpdatedEvent(result, DECREASE));
         } catch (Exception e) {
             StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), FAILURE, e.getMessage());
-            productEventPort.publishStockUpdateResult(result, DECREASE);
+            eventPublisher.publishEvent(new ProductStockUpdatedEvent(result, DECREASE));
+            throw new RuntimeException("재고 감소 처리 중 오류 발생", e);
         }
     }
 
@@ -47,10 +49,11 @@ public class ProductStockService {
                 productRepository.save(product);
             }
             StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), SUCCESS, event.cancelReason());
-            productEventPort.publishStockUpdateResult(result, INCREASE);
+            eventPublisher.publishEvent(new ProductStockUpdatedEvent(result, INCREASE));
         } catch (Exception e) {
             StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), FAILURE, e.getMessage());
-            productEventPort.publishStockUpdateResult(result, INCREASE);
+            eventPublisher.publishEvent(new ProductStockUpdatedEvent(result, INCREASE));
+            throw new RuntimeException("재고 증가 처리 중 오류 발생", e);
         }
     }
 }

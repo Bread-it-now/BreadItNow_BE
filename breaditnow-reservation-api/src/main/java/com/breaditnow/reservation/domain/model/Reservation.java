@@ -54,8 +54,8 @@ public class Reservation {
         this.reservationState.cancel(reason);
     }
 
-    public void partialApprove(List<StockUpdateItem> updateItems, Long newReservationNumber) {
-        this.reservationState.partiallyApprove();
+    public void partialApprove(List<StockUpdateItem> updateItems, Long newReservationNumber, String reason) {
+        this.reservationState.partiallyApprove(reason);
 
         Map<Long, ReservationProduct> originalProductMap = this.reservationProducts.stream()
                 .collect(Collectors.toMap(ReservationProduct::getProductId, product -> product));

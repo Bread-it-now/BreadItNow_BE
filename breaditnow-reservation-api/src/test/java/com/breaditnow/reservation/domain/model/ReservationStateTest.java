@@ -57,7 +57,7 @@ class ReservationStateTest {
             ReservationState state = ReservationState.waiting();
             state.cancel("고객 요청");
             assertThat(state.getReservationStatus()).isEqualTo(CANCELLED);
-            assertThat(state.getCancelReason()).isEqualTo("고객 요청");
+            assertThat(state.getReason()).isEqualTo("고객 요청");
         }
 
         @Test

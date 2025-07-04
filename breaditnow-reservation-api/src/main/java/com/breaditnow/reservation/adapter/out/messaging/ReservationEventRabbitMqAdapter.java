@@ -33,7 +33,7 @@ public class ReservationEventRabbitMqAdapter implements ReservationEventPort {
     @Override
     public void publishStockIncreaseRequest(StockIncreaseRequestedEvent event) {
         final String routingKey = RabbitMQConstants.ROUTING_KEY_STOCK_INCREASE_REQUEST;
-        log.info("재고 증가 요청 이벤트 발행: RoutingKey [{}], 예약 ID [{}]", routingKey, event.reservationId());
+        log.info("재고 증가 요청 이벤트 발행: RoutingKey [{}], 예약 [{}]", routingKey, event);
         rabbitTemplate.convertAndSend(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
     }
 }

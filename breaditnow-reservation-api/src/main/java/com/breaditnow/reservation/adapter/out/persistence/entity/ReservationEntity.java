@@ -60,7 +60,7 @@ public class ReservationEntity extends BaseEntity {
 
         return ReservationEntity.builder()
                 .id(reservation.getReservationId())
-                .cancellationReason(reservation.getReservationState().getCancelReason())
+                .cancellationReason(reservation.getReservationState().getReason())
                 .reservationStatus(reservation.getReservationState().getReservationStatus())
                 .reservationNumber(reservation.getReservationNumber())
                 .totalPrice(reservation.getTotalPrice().getAmount())
