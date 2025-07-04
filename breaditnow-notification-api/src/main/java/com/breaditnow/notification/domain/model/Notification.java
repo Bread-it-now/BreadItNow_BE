@@ -1,5 +1,7 @@
 package com.breaditnow.notification.domain.model;
 
+import com.breaditnow.common.domain.NotificationType;
+import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.common.exception.NotificationException;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +15,8 @@ public class Notification {
     private Long reservationId;
     private Long bakeryId;
 
-    private NotificationActor recipient;
-    private NotificationActor initiator;
+    private UserIdentifier recipient;
+    private UserIdentifier initiator;
 
     private NotificationType notificationType;
     private String content;
@@ -22,7 +24,7 @@ public class Notification {
     private boolean isDeleted;
 
     @Builder
-    public Notification(Long notificationId, Long reservationId, Long bakeryId, NotificationActor recipient, NotificationActor initiator, NotificationType notificationType, String content, boolean isRead, boolean isDeleted) {
+    public Notification(Long notificationId, Long reservationId, Long bakeryId, UserIdentifier recipient, UserIdentifier initiator, NotificationType notificationType, String content, boolean isRead, boolean isDeleted) {
         this.notificationId = notificationId;
         this.reservationId = reservationId;
         this.bakeryId = bakeryId;
@@ -34,7 +36,7 @@ public class Notification {
         this.isDeleted = isDeleted;
     }
 
-    public static Notification create(Long reservationId, Long bakeryId, NotificationActor recipient, NotificationActor initiator, NotificationType notificationType, String content) {
+    public static Notification create(Long reservationId, Long bakeryId, UserIdentifier recipient, UserIdentifier initiator, NotificationType notificationType, String content) {
         return Notification.builder()
                 .reservationId(reservationId)
                 .bakeryId(bakeryId)

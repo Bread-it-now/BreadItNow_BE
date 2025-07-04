@@ -1,0 +1,9 @@
+package com.breaditnow.common.domain;
+
+public enum NotificationType {
+    RESERVATION_REQUESTED,
+    RESERVATION_APPROVED,
+    RESERVATION_PARTIALLY_APPROVED,
+    RESERVATION_CANCELED_BY_CUSTOMER,
+    RESERVATION_CANCELED_BY_OWNER
+}

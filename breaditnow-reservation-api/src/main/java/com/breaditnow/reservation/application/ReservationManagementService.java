@@ -2,6 +2,7 @@ package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.aop.Authorize;
 import com.breaditnow.common.dto.StockUpdateItem;
+import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.common.event.StockDecreaseRequestedEvent;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
@@ -45,14 +46,12 @@ public class ReservationManagementService implements ReservationApproveUseCase, 
 
         Reservation reservation = reservationProvider.provide(reservationId, bakeryId);
 
-        Long newReservationNumber = reservationRepository.getNextReservationNumber(bakeryId);
-        reservation.approve(newReservationNumber);
-        reservationRepository.save(reservation);
-
+        UserIdentifier initiator = new UserIdentifier(user.userId(), OWNER);
         List<StockUpdateItem> stockUpdateItems = reservation.getReservationProducts().stream()
                 .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
                 .toList();
-        reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), stockUpdateItems));
+
+        reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), initiator, stockUpdateItems));
     }
 
     @Override
@@ -88,6 +87,6 @@ public class ReservationManagementService implements ReservationApproveUseCase, 
         List<StockUpdateItem> stockUpdateItems = savedReservation.getReservationProducts().stream()
                 .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
                 .toList();
-        reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), stockUpdateItems));
+//        reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), stockUpdateItems));
     }
 }

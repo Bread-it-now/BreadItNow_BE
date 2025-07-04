@@ -20,10 +20,7 @@ public class ProductEventRabbitMqAdapter implements ProductEventPort {
             case SUCCESS -> "v1.stock.update.succeeded";
             case FAILURE -> "v1.stock.update.failed";
         };
-
-        log.info("재고 처리 결과 이벤트를 발행합니다. Exchange: {}, RoutingKey: {}, 예약 ID: {}",
-                RabbitMQConfig.EXCHANGE_NAME, routingKey, event.reservationId());
-
+        log.info("재고 처리 결과 이벤트를 발행합니다. Exchange: {}, RoutingKey: {}, 예약 ID: {}", RabbitMQConfig.EXCHANGE_NAME, routingKey, event.reservationId());
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, routingKey, event);
     }
 }

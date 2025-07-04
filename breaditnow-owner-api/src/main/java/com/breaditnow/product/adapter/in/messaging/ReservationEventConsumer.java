@@ -13,6 +13,6 @@ public class ReservationEventConsumer {
 
     @RabbitListener(queues = "product.stock-decrease.queue")
     public void handleStockDecreaseRequest(StockDecreaseRequestedEvent event) {
-        productStockService.decreaseStock(event.reservationId(), event.stockUpdateItems());
+        productStockService.decreaseStock(event.reservationId(), event.initiator(), event.stockUpdateItems());
     }
 }

@@ -1,64 +1,42 @@
 package com.breaditnow.notification.application;
 
-import com.breaditnow.common.domain.ReservationStatus;
-import com.breaditnow.common.domain.Role;
-import com.breaditnow.notification.adapter.in.dto.ReservationStatusChangedEvent;
-import com.breaditnow.notification.application.provider.NotificationActorProvider;
-import com.breaditnow.notification.domain.model.*;
+import com.breaditnow.common.event.NotificationSendRequestedEvent;
+import com.breaditnow.notification.application.dto.NotificationTypeMessageUtil;
+import com.breaditnow.notification.domain.model.Notification;
+import com.breaditnow.notification.domain.model.NotificationMessage;
 import com.breaditnow.notification.domain.port.out.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.breaditnow.common.domain.Role.CUSTOMER;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final FcmNotifier fcmNotifier;
-    private final NotificationActorProvider notificationActorProvider;
 
     @Transactional
-    public void processAndSendNotifications(ReservationStatusChangedEvent event) {
-        NotificationActor recipient = notificationActorProvider.recipientOf(event.initiatedBy(), event.customerId(), event.ownerId());
-        NotificationActor initiator = notificationActorProvider.initiatorOf(event.initiatedBy(), event.customerId(), event.ownerId());
+    public void sendNotification(NotificationSendRequestedEvent event) {
+        try {
+            NotificationMessage message = NotificationTypeMessageUtil.createMessage(event);
 
-        NotificationType notificationType = mapStatusToNotificationType(event.reservationStatus(), event.initiatedBy());
+            Notification notification = Notification.create(
+                    event.reservationId(),
+                    event.bakeryId(),
+                    event.recipient(),
+                    event.initiator(),
+                    event.notificationType(),
+                    message.content()
+            );
+            notificationRepository.save(notification);
+            log.info("알림 이력 저장 완료: 알림 ID [{}]", notification.getNotificationId());
 
-        NotificationData data = createNotificationData(event);
-        NotificationMessage message = notificationType.createMessage(data);
-        if (message == null || message.content().isEmpty()) return;
-
-        Notification notification = Notification.create(event.reservationId(), event.bakeryId(), recipient, initiator, notificationType, message.content());
-        notificationRepository.save(notification);
-        fcmNotifier.notify(recipient, message);
-    }
-
-    private NotificationType mapStatusToNotificationType(ReservationStatus status, Role role) {
-        return switch (status) {
-            case WAITING -> NotificationType.RESERVATION_REQUESTED;
-            case APPROVED -> NotificationType.RESERVATION_APPROVED;
-            case PARTIAL_APPROVED -> NotificationType.RESERVATION_PARTIALLY_APPROVED;
-            case CANCELLED -> {
-                if (role == CUSTOMER) {
-                    yield NotificationType.RESERVATION_CANCELED_BY_CUSTOMER;
-                } else {
-                    yield NotificationType.RESERVATION_CANCELED_BY_OWNER;
-                }
-            }
-        };
-    }
-
-    private NotificationData createNotificationData(ReservationStatusChangedEvent event) {
-        return NotificationData.builder()
-                .customerNickname(event.customerNickname())
-                .bakeryName(event.bakeryName())
-                .productNames(event.productNames())
-                .reservationNumber(event.reservationNumber())
-                .pickupDeadline(event.pickupDeadline())
-                .cancelReason(event.cancelReason())
-                .reservationTime(event.eventOccurredAt())
-                .build();
+            fcmNotifier.notify(notification.getRecipient(), message.title(), message.content());
+            log.info("FCM 알림 발송 완료: 수신자 [{}], 제목 [{}], 내용 [{}]", event.recipient(), message.title(), message.content());
+        } catch (Exception e) {
+            log.error("알림 처리 중 오류 발생. 예약 ID: [{}], 사유: {}", event.reservationId(), e.getMessage());
+        }
     }
 }

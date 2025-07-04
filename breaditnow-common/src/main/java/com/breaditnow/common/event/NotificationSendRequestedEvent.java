@@ -1,0 +1,22 @@
+package com.breaditnow.common.event;
+
+import com.breaditnow.common.domain.NotificationType;
+import com.breaditnow.common.domain.UserIdentifier;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public record NotificationSendRequestedEvent(
+        Long reservationId,
+        Long bakeryId,
+        UserIdentifier recipient,
+        UserIdentifier initiator,
+        NotificationType notificationType,
+        String customerNickName,
+        String bakeryName,
+        List<String> productNames,
+        Long reservationNumber,
+        LocalDateTime pickupDeadline,
+        String cancelReason
+) {
+}

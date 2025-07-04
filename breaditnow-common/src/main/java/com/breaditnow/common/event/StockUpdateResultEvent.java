@@ -1,10 +1,10 @@
 package com.breaditnow.common.event;
 
-import com.breaditnow.common.dto.UserIdentifier;
+import com.breaditnow.common.domain.UserIdentifier;
 
 public record StockUpdateResultEvent(
         Long reservationId,
-        UserIdentifier userIdentifier,
+        UserIdentifier initiator,
         Status status,
         String message
 ) {

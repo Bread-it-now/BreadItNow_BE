@@ -1,8 +1,7 @@
 package com.breaditnow.notification.application;
 
 import com.breaditnow.common.domain.Role;
-import com.breaditnow.notification.domain.model.NotificationActor;
-import com.breaditnow.notification.domain.model.NotificationMessage;
+import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.notification.domain.port.out.CustomerApiPort;
 import com.breaditnow.notification.domain.port.out.FcmPort;
 import com.breaditnow.notification.domain.port.out.OwnerApiPort;
@@ -28,11 +27,11 @@ public class FcmNotifier {
         );
     }
 
-    public void notify(NotificationActor recipient, NotificationMessage message) {
-        Function<Long, Optional<String>> finder = fcmTokenFinders.get(recipient.role());
+    public void notify(UserIdentifier recipient, String title, String content) {
+        Function<Long, Optional<String>> finder = fcmTokenFinders.get(recipient.type());
         if (finder == null) return;
 
-        finder.apply(recipient.userId())
-                .ifPresent(token -> fcmPort.sendNotification(token, message.title(), message.content()));
+        finder.apply(recipient.id())
+                .ifPresent(token -> fcmPort.sendNotification(token, title, content));
     }
 }

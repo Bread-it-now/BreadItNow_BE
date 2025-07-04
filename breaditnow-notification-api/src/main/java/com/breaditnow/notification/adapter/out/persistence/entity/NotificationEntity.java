@@ -1,9 +1,9 @@
 package com.breaditnow.notification.adapter.out.persistence.entity;
 
+import com.breaditnow.common.domain.NotificationType;
 import com.breaditnow.common.domain.Role;
+import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.notification.domain.model.Notification;
-import com.breaditnow.notification.domain.model.NotificationActor;
-import com.breaditnow.notification.domain.model.NotificationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,10 +46,10 @@ public class NotificationEntity extends BaseEntity {
                 .id(notification.getNotificationId())
                 .reservationId(notification.getReservationId())
                 .bakeryId(notification.getBakeryId())
-                .recipientType(notification.getRecipient().role())
-                .recipientId(notification.getRecipient().userId())
-                .initiatorType(notification.getInitiator().role())
-                .initiatorId(notification.getInitiator().userId())
+                .recipientType(notification.getRecipient().type())
+                .recipientId(notification.getRecipient().id())
+                .initiatorType(notification.getInitiator().type())
+                .initiatorId(notification.getInitiator().id())
                 .notificationType(notification.getNotificationType())
                 .content(notification.getContent())
                 .isRead(notification.isRead())
@@ -61,8 +61,8 @@ public class NotificationEntity extends BaseEntity {
         return Notification.builder()
                 .notificationId(this.id)
                 .reservationId(this.reservationId)
-                .recipient(new NotificationActor(this.recipientId, this.recipientType))
-                .initiator(new NotificationActor(this.initiatorId, this.initiatorType))
+                .recipient(new UserIdentifier(this.recipientId, this.recipientType))
+                .initiator(new UserIdentifier(this.initiatorId, this.initiatorType))
                 .bakeryId(this.bakeryId)
                 .content(this.content)
                 .notificationType(this.notificationType)
