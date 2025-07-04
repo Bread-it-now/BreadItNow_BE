@@ -2,35 +2,83 @@ package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.domain.NotificationType;
 import com.breaditnow.common.domain.UserIdentifier;
-import com.breaditnow.common.event.NotificationSendRequestedEvent;
+import com.breaditnow.common.event.NotificationRequiredEvent;
 import com.breaditnow.common.event.StockUpdateResultEvent;
+import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
+import com.breaditnow.reservation.application.provider.BakeryProvider;
 import com.breaditnow.reservation.application.provider.ReservationProvider;
 import com.breaditnow.reservation.domain.model.Reservation;
 import com.breaditnow.reservation.domain.model.ReservationProduct;
-import com.breaditnow.reservation.domain.port.out.NotificationEventPort;
 import com.breaditnow.reservation.domain.port.out.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.breaditnow.common.domain.NotificationType.*;
+import static com.breaditnow.common.domain.ReservationStatus.CANCELLED;
 import static com.breaditnow.common.domain.ReservationStatus.PARTIAL_APPROVED;
-import static com.breaditnow.common.domain.Role.CUSTOMER;
-import static com.breaditnow.common.domain.Role.SYSTEM;
+import static com.breaditnow.common.domain.Role.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ReservationNotificationService {
-    private final NotificationEventPort notificationEventPort;
+public class ReservationResultHandler {
     private final ReservationProvider reservationProvider;
     private final ReservationRepository reservationRepository;
+    private final BakeryProvider bakeryProvider;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public void requestSuccessNotification(StockUpdateResultEvent resultEvent){
+    public void finalizeCancellation(StockUpdateResultEvent resultEvent) {
+        Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
+        BakeryInfo bakeryInfo = bakeryProvider.provide(reservation.getReservedBakery().bakeryId());
+        if (reservation.getReservationState().getReservationStatus() == CANCELLED) {
+            log.warn("이미 취소된 예약입니다. 중복 처리를 방지합니다. 예약 ID: {}", resultEvent.reservationId());
+            return;
+        }
+
+        reservation.cancel(resultEvent.message());
+        reservationRepository.save(reservation);
+        log.info("예약 ID [{}]의 상태를 CANCELLED로 최종 변경했습니다.", resultEvent.reservationId());
+
+        UserIdentifier initiator = resultEvent.initiator();
+        UserIdentifier recipient;
+        NotificationType notificationType;
+
+        if (resultEvent.initiator().type() == CUSTOMER) {
+            recipient = new UserIdentifier(bakeryInfo.ownerId(), OWNER);
+            notificationType = RESERVATION_CANCELED_BY_CUSTOMER;
+        }
+        else { // OWNER
+            recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
+            notificationType = RESERVATION_CANCELED_BY_OWNER;
+        }
+
+        List<String> productNames = reservation.getReservationProducts().stream()
+                .map(ReservationProduct::getProductName)
+                .toList();
+
+        NotificationRequiredEvent notificationPayload = NotificationRequiredEvent.builder()
+                .reservationId(reservation.getReservationId())
+                .bakeryId(reservation.getReservedBakery().bakeryId())
+                .recipient(recipient)
+                .initiator(initiator)
+                .notificationType(notificationType)
+                .customerNickName(reservation.getOrderer().getNickname())
+                .cancelReason(resultEvent.message())
+                .bakeryName(bakeryInfo.name())
+                .productNames(productNames)
+                .build();
+
+        eventPublisher.publishEvent(notificationPayload);
+    }
+
+    @Transactional
+    public void finalizeApproval(StockUpdateResultEvent resultEvent) {
         Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
 
         Long newReservationNumber = reservationRepository.getNextReservationNumber(reservation.getReservedBakery().bakeryId());
@@ -51,7 +99,7 @@ public class ReservationNotificationService {
                 .map(ReservationProduct::getProductName)
                 .toList();
 
-        NotificationSendRequestedEvent notificationSendRequestedEvent = NotificationSendRequestedEvent.builder()
+        NotificationRequiredEvent notificationPayload = NotificationRequiredEvent.builder()
                 .reservationId(reservation.getReservationId())
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
@@ -63,16 +111,17 @@ public class ReservationNotificationService {
                 .reservationNumber(newReservationNumber)
                 .pickupDeadline(reservation.calculatePickupDeadline())
                 .build();
-        notificationEventPort.publish(notificationSendRequestedEvent);
+
+        eventPublisher.publishEvent(notificationPayload);
     }
 
     @Transactional
-    public void handleFailedReservation(StockUpdateResultEvent resultEvent) {
+    public void handleApprovalFailure(StockUpdateResultEvent resultEvent) {
         log.warn("재고 처리 실패로 '승인 실패' 처리를 시작합니다. 예약 {}", resultEvent);
 
         Reservation reservation = reservationProvider.provide(resultEvent.reservationId());
 
-        String cancelReason = "(시스템)재고 부족";
+        String cancelReason = "시스템 - 재고 부족";
 
         UserIdentifier initiator = new UserIdentifier(0L, SYSTEM);
         UserIdentifier recipient = resultEvent.initiator();
@@ -81,7 +130,7 @@ public class ReservationNotificationService {
                 .map(ReservationProduct::getProductName)
                 .toList();
 
-        var eventToSend = NotificationSendRequestedEvent.builder()
+        NotificationRequiredEvent notificationPayload = NotificationRequiredEvent.builder()
                 .reservationId(reservation.getReservationId())
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
@@ -92,6 +141,6 @@ public class ReservationNotificationService {
                 .cancelReason(cancelReason)
                 .build();
 
-        notificationEventPort.publish(eventToSend);
+        eventPublisher.publishEvent(notificationPayload);
     }
 }

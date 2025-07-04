@@ -20,12 +20,14 @@ public record NotificationPageResponse(
 
     public record NotificationResponse(
             Long notificationId,
+            Long reservationId,
             String content,
             boolean isRead
     ) {
         public static NotificationResponse from(Notification notification) {
             return new NotificationResponse(
                     notification.getNotificationId(),
+                    notification.getReservationId(),
                     notification.getContent(),
                     notification.isRead()
             );

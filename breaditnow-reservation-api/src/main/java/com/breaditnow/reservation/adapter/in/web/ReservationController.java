@@ -61,7 +61,7 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ApiSuccessResponse<ReservationPageResponse> getReservations (
+    public ApiSuccessResponse<ReservationPageResponse> getReservations(
             @AuthUser AuthenticatedUser user,
             @PathVariable("bakeryId") Long bakeryId,
             @RequestParam(name = "status", required = false) ReservationStatus status,

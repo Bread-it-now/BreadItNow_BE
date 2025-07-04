@@ -1,10 +1,7 @@
 package com.breaditnow.common.messaging;
 
 public final class RabbitMQConstants {
-
     private RabbitMQConstants() {}
-
-
     public static final String BREADITNOW_TOPIC_EXCHANGE = "breaditnow.topic";
     public static final String DLQ_EXCHANGE_NAME = RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE + ".dlx";
     public static final String DLQ_QUEUE_NAME = "dead-letter-queue";

@@ -1,6 +1,6 @@
 package com.breaditnow.notification.application;
 
-import com.breaditnow.common.event.NotificationSendRequestedEvent;
+import com.breaditnow.common.event.NotificationRequiredEvent;
 import com.breaditnow.notification.application.dto.NotificationTypeMessageUtil;
 import com.breaditnow.notification.domain.model.Notification;
 import com.breaditnow.notification.domain.model.NotificationMessage;
@@ -18,7 +18,7 @@ public class NotificationService {
     private final FcmNotifier fcmNotifier;
 
     @Transactional
-    public void sendNotification(NotificationSendRequestedEvent event) {
+    public void sendNotification(NotificationRequiredEvent event) {
         try {
             NotificationMessage message = NotificationTypeMessageUtil.createMessage(event);
 

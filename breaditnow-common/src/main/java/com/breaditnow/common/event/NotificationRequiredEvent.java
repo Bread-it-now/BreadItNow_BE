@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record NotificationSendRequestedEvent(
+public record NotificationRequiredEvent (
         Long reservationId,
         Long bakeryId,
         UserIdentifier recipient,
@@ -18,6 +18,7 @@ public record NotificationSendRequestedEvent(
         String bakeryName,
         List<String> productNames,
         Long reservationNumber,
+        LocalDateTime reservationTime,
         LocalDateTime pickupDeadline,
         String cancelReason
 ) {

@@ -22,10 +22,11 @@ public class Product {
     private SalesPolicy salesPolicy;
     private Classification classification;
     private List<DailyTime> releaseTimes;
+    private boolean hidden;
     private boolean deleted;
 
     @Builder
-    public Product(Long id, Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes, boolean deleted) {
+    public Product(Long id, Long bakeryId, ProductInfo productInfo, Integer displayOrder, SalesPolicy salesPolicy, Classification classification, List<DailyTime> releaseTimes, boolean hidden, boolean deleted) {
         this.id = id;
         this.bakeryId = bakeryId;
         this.productInfo = productInfo;
@@ -33,6 +34,7 @@ public class Product {
         this.salesPolicy = salesPolicy;
         this.classification = classification;
         this.releaseTimes = releaseTimes;
+        this.hidden = hidden;
         this.deleted = deleted;
     }
 
@@ -44,6 +46,7 @@ public class Product {
                 .salesPolicy(salesPolicy)
                 .classification(classification)
                 .releaseTimes(releaseTimes)
+                .hidden(false)
                 .deleted(false)
                 .build();
     }

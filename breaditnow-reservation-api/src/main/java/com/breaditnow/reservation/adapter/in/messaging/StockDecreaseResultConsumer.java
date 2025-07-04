@@ -2,7 +2,7 @@ package com.breaditnow.reservation.adapter.in.messaging;
 
 import com.breaditnow.common.event.StockUpdateResultEvent;
 import com.breaditnow.common.messaging.RabbitMQConstants;
-import com.breaditnow.reservation.application.ReservationNotificationService;
+import com.breaditnow.reservation.application.ReservationResultHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -15,16 +15,16 @@ import static com.breaditnow.common.event.StockUpdateResultEvent.Status.SUCCESS;
 @Component
 @RequiredArgsConstructor
 public class StockDecreaseResultConsumer {
-    private final ReservationNotificationService reservationNotificationService;
+    private final ReservationResultHandler handler;
 
     @RabbitListener(queues = RabbitMQConstants.QUEUE_STOCK_DECREASE_RESULT)
     public void handleStockDecreaseResult(StockUpdateResultEvent resultEvent) {
         log.info("재고 감소 결과 수신: {}", resultEvent);
         if (resultEvent.status() == SUCCESS) {
-            reservationNotificationService.requestSuccessNotification(resultEvent);
+            handler.finalizeApproval(resultEvent);
         }
         else if(resultEvent.status() == FAILURE) {
-            reservationNotificationService.handleFailedReservation(resultEvent);
+            handler.handleApprovalFailure(resultEvent);
         }
     }
 }

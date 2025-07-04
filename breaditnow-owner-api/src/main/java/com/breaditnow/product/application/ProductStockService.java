@@ -36,7 +36,6 @@ public class ProductStockService {
         } catch (Exception e) {
             StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), FAILURE, e.getMessage());
             eventPublisher.publishEvent(new ProductStockUpdatedEvent(result, DECREASE));
-            throw new RuntimeException("재고 감소 처리 중 오류 발생", e);
         }
     }
 
@@ -53,7 +52,6 @@ public class ProductStockService {
         } catch (Exception e) {
             StockUpdateResultEvent result = new StockUpdateResultEvent(event.reservationId(), event.initiator(), event.reservationStatus(), event.stockUpdateItems(), FAILURE, e.getMessage());
             eventPublisher.publishEvent(new ProductStockUpdatedEvent(result, INCREASE));
-            throw new RuntimeException("재고 증가 처리 중 오류 발생", e);
         }
     }
 }

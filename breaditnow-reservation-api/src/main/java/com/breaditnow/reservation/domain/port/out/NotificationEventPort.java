@@ -1,7 +1,7 @@
 package com.breaditnow.reservation.domain.port.out;
 
-import com.breaditnow.common.event.NotificationSendRequestedEvent;
+import com.breaditnow.common.event.NotificationRequiredEvent;
 
 public interface NotificationEventPort {
-    void publish(NotificationSendRequestedEvent event);
+    void publish(NotificationRequiredEvent event);
 }
