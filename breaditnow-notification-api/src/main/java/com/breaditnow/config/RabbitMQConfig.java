@@ -10,29 +10,29 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.breaditnow.common.messaging.RabbitMQConstants.*;
+
 @Configuration
 public class RabbitMQConfig {
-    public static final String BREADITNOW_EXCHANGE = "breaditnow.topic";
-    private static final String NOTIFICATION_QUEUE_NAME = "notification.send-request.queue";
-    private static final String NOTIFICATION_ROUTING_KEY = "v1.notification.send.requested";
-
-    @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(BREADITNOW_EXCHANGE, true, false);
-    }
-
-    @Bean
-    public Queue notificationQueue() {
-        return new Queue(NOTIFICATION_QUEUE_NAME, true);
-    }
-
-    @Bean
-    public Binding bindingNotification(Queue notificationQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(notificationQueue).to(exchange).with(NOTIFICATION_ROUTING_KEY);
-    }
-
     @Bean
     public MessageConverter messageConverter(ObjectMapper objectMapper) {
         return new Jackson2JsonMessageConverter(objectMapper);
+    }
+
+    @Bean
+    public TopicExchange breaditnowTopicExchange() {
+        return new TopicExchange(BREADITNOW_TOPIC_EXCHANGE, true, false);
+    }
+
+    @Bean
+    public Queue notificationSendRequestQueue() {
+        return new Queue(QUEUE_NOTIFICATION_SEND_REQUEST, true);
+    }
+
+    @Bean
+    public Binding bindingNotificationSendRequest(Queue notificationSendRequestQueue, TopicExchange breaditnowTopicExchange) {
+        return BindingBuilder.bind(notificationSendRequestQueue)
+                .to(breaditnowTopicExchange)
+                .with(ROUTING_KEY_NOTIFICATION_SEND_REQUEST);
     }
 }

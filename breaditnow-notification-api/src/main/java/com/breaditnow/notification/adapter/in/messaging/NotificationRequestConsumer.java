@@ -7,13 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import static com.breaditnow.common.messaging.RabbitMQConstants.QUEUE_NOTIFICATION_SEND_REQUEST;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class NotificationRequestConsumer {
     private final NotificationService notificationService;
 
-    @RabbitListener(queues = "notification.send-request.queue")
+    @RabbitListener(queues = QUEUE_NOTIFICATION_SEND_REQUEST)
     public void handleNotificationRequest(NotificationSendRequestedEvent event) {
         log.info("알림 발송 요청 수신: 예약 ID [{}]", event.reservationId());
         notificationService.sendNotification(event);

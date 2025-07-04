@@ -1,7 +1,8 @@
 package com.breaditnow.reservation.adapter.out.messaging;
 
 import com.breaditnow.common.event.StockDecreaseRequestedEvent;
-import com.breaditnow.config.RabbitMQConfig;
+import com.breaditnow.common.event.StockIncreaseRequestedEvent;
+import com.breaditnow.common.messaging.RabbitMQConstants;
 import com.breaditnow.reservation.application.event.ReservationStatusChangedEvent;
 import com.breaditnow.reservation.domain.port.out.ReservationEventPort;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,21 @@ public class ReservationEventRabbitMqAdapter implements ReservationEventPort {
     @Override
     public void publish(ReservationStatusChangedEvent event) {
         String routingKey = "reservation.status." + event.reservationStatus().name().toLowerCase();
-        log.info("Publishing event with key [{}]: {}", routingKey, event);
-        rabbitTemplate.convertAndSend(RabbitMQConfig.BREADITNOW_EXCHANGE, routingKey, event);
+        log.info("예약 상태 변경 이벤트 발행: RoutingKey [{}], Event [{}]", routingKey, event);
+        rabbitTemplate.convertAndSend(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
     }
 
     @Override
     public void publishStockDecreaseRequest(StockDecreaseRequestedEvent event) {
-        String routingKey = "v1.stock.decrease.requested";
-        log.info("Publishing stock decrease request event with key [{}]: {}", routingKey, event);
-        rabbitTemplate.convertAndSend(RabbitMQConfig.BREADITNOW_EXCHANGE, routingKey, event);
+        final String routingKey = RabbitMQConstants.ROUTING_KEY_STOCK_DECREASE_REQUEST;
+        log.info("재고 감소 요청 이벤트 발행: RoutingKey [{}], Event [{}]", routingKey, event);
+        rabbitTemplate.convertAndSend(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
+    }
+
+    @Override
+    public void publishStockIncreaseRequest(StockIncreaseRequestedEvent event) {
+        final String routingKey = RabbitMQConstants.ROUTING_KEY_STOCK_INCREASE_REQUEST;
+        log.info("재고 증가 요청 이벤트 발행: RoutingKey [{}], 예약 ID [{}]", routingKey, event.reservationId());
+        rabbitTemplate.convertAndSend(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
     }
 }

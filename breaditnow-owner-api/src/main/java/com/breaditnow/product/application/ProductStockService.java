@@ -1,5 +1,6 @@
 package com.breaditnow.product.application;
 
+import com.breaditnow.common.domain.OperationType;
 import com.breaditnow.common.dto.StockUpdateItem;
 import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.common.event.StockUpdateResultEvent;
@@ -30,10 +31,26 @@ public class ProductStockService {
                 productRepository.save(product);
             }
             StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator, SUCCESS, null);
-            productEventPort.publishStockUpdateResult(result);
+            productEventPort.publishStockUpdateResult(result, OperationType.DECREASE);
         } catch (Exception e) {
             StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator , FAILURE, e.getMessage());
-            productEventPort.publishStockUpdateResult(result);
+            productEventPort.publishStockUpdateResult(result, OperationType.DECREASE);
+        }
+    }
+
+    @Transactional
+    public void increaseStock(Long reservationId, UserIdentifier initiator, List<StockUpdateItem> stockUpdateItems, String reason) {
+        try {
+            for(StockUpdateItem item : stockUpdateItems) {
+                Product product = productRepository.getById(item.productId());
+                product.updateStock(product.getSalesPolicy().stock() + item.quantity());
+                productRepository.save(product);
+            }
+            StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator, SUCCESS, reason);
+            productEventPort.publishStockUpdateResult(result, OperationType.INCREASE);
+        } catch (Exception e) {
+            StockUpdateResultEvent result = new StockUpdateResultEvent(reservationId, initiator, FAILURE, e.getMessage());
+            productEventPort.publishStockUpdateResult(result, OperationType.INCREASE);
         }
     }
 }

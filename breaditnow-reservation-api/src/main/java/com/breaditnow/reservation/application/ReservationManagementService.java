@@ -1,9 +1,10 @@
 package com.breaditnow.reservation.application;
 
 import com.breaditnow.common.aop.Authorize;
-import com.breaditnow.common.dto.StockUpdateItem;
 import com.breaditnow.common.domain.UserIdentifier;
+import com.breaditnow.common.dto.StockUpdateItem;
 import com.breaditnow.common.event.StockDecreaseRequestedEvent;
+import com.breaditnow.common.event.StockIncreaseRequestedEvent;
 import com.breaditnow.reservation.adapter.in.resolver.AuthenticatedUser;
 import com.breaditnow.reservation.application.dto.internal.BakeryInfo;
 import com.breaditnow.reservation.application.dto.request.ReservationCancelRequest;
@@ -59,13 +60,22 @@ public class ReservationManagementService implements ReservationApproveUseCase, 
     public void cancelReservation(AuthenticatedUser user, Long reservationId, Long bakeryId, ReservationCancelRequest request) {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);
-
         Reservation reservation = reservationProvider.provide(reservationId, bakeryId);
 
-        reservation.cancel(request.reason());
-        reservationRepository.save(reservation);
+        if (reservation.getReservationState().isCompleted()) {
+            UserIdentifier initiator = new UserIdentifier(user.userId(), OWNER);
 
-//        reservationEventPort.publish(ReservationStatusChangedEvent.from(reservation, OWNER, request.reason(), user.userId()));
+            List<StockUpdateItem> stockUpdateItems = reservation.getReservationProducts().stream()
+                    .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
+                    .toList();
+
+            reservationEventPort.publishStockIncreaseRequest(new StockIncreaseRequestedEvent(reservationId, initiator, stockUpdateItems, request.reason()));
+        }
+        else{
+            reservation.cancel(request.reason());
+            reservationRepository.save(reservation);
+            // 고객에게 알림 이벤트 발행
+        }
     }
 
     @Override

@@ -35,10 +35,6 @@ public class ReservationState {
     }
 
     public void cancel(String cancelReason) {
-        if(isCompleted()) {
-            throw new ReservationException(ALREADY_PROCESSED);
-        }
-
         requireValid(cancelReason, Objects::isNull, () -> new ReservationException(CANCELLATION_REASON_REQUIRED));
         this.reservationStatus = CANCELLED;
         this.cancelReason = cancelReason;

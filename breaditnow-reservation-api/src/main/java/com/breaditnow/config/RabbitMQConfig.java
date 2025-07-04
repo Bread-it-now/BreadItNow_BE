@@ -1,5 +1,7 @@
 package com.breaditnow.config;
 
+import com.breaditnow.common.messaging.RabbitMQConstants;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -11,26 +13,37 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    public static final String BREADITNOW_EXCHANGE = "breaditnow.topic";
-    public static final String STOCK_RESULT_QUEUE_NAME = "reservation.stock-result.queue";
-
     @Bean
-    public MessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+    public MessageConverter messageConverter(ObjectMapper objectMapper) {
+        return new Jackson2JsonMessageConverter(objectMapper);
     }
 
     @Bean
-    public TopicExchange breaditnowExchange() {
-        return new TopicExchange(BREADITNOW_EXCHANGE);
+    public TopicExchange breaditnowTopicExchange() {
+        return new TopicExchange(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, true, false);
     }
 
     @Bean
-    public Queue stockResultQueue() {
-        return new Queue(STOCK_RESULT_QUEUE_NAME, true);
+    public Queue stockDecreaseResultQueue() {
+        return new Queue(RabbitMQConstants.QUEUE_STOCK_DECREASE_RESULT, true);
     }
 
     @Bean
-    public Binding bindingStockResult(Queue stockResultQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(stockResultQueue).to(exchange).with("v1.stock.update.#");
+    public Binding bindingStockDecreaseResult(Queue stockDecreaseResultQueue, TopicExchange breaditnowTopicExchange) {
+        return BindingBuilder.bind(stockDecreaseResultQueue)
+                .to(breaditnowTopicExchange)
+                .with(RabbitMQConstants.ROUTING_KEY_STOCK_DECREASE_RESULT_WILDCARD);
+    }
+
+    @Bean
+    public Queue stockIncreaseResultQueue() {
+        return new Queue(RabbitMQConstants.QUEUE_STOCK_INCREASE_RESULT, true);
+    }
+
+    @Bean
+    public Binding bindingStockIncreaseResult(Queue stockIncreaseResultQueue, TopicExchange breaditnowTopicExchange) {
+        return BindingBuilder.bind(stockIncreaseResultQueue)
+                .to(breaditnowTopicExchange)
+                .with(RabbitMQConstants.ROUTING_KEY_STOCK_INCREASE_RESULT_WILDCARD);
     }
 }
