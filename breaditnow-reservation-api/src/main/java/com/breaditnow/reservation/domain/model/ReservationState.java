@@ -13,11 +13,11 @@ import static com.breaditnow.common.domain.ReservationStatus.*;
 @Getter
 public class ReservationState {
     private ReservationStatus reservationStatus;
-    private String cancelReason;
+    private String reason;
 
-    public ReservationState(ReservationStatus reservationStatus, String cancelReason) {
+    public ReservationState(ReservationStatus reservationStatus, String reason) {
         this.reservationStatus = reservationStatus;
-        this.cancelReason = cancelReason;
+        this.reason = reason;
     }
 
     public static ReservationState waiting() {
@@ -29,19 +29,16 @@ public class ReservationState {
         this.reservationStatus = APPROVED;
     }
 
-    public void partiallyApprove() {
+    public void partiallyApprove(String reason) {
         validateNotWaiting();
         this.reservationStatus = PARTIAL_APPROVED;
+        this.reason = reason;
     }
 
     public void cancel(String cancelReason) {
-        if(isCompleted()) {
-            throw new ReservationException(ALREADY_PROCESSED);
-        }
-
         requireValid(cancelReason, Objects::isNull, () -> new ReservationException(CANCELLATION_REASON_REQUIRED));
         this.reservationStatus = CANCELLED;
-        this.cancelReason = cancelReason;
+        this.reason = cancelReason;
     }
 
     public boolean isCompleted() {

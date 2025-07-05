@@ -9,9 +9,9 @@ import com.breaditnow.reservation.application.dto.request.MyReservationCreateReq
 import com.breaditnow.reservation.application.dto.response.MyReservationDetailResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationPageResponse;
 import com.breaditnow.reservation.application.dto.response.MyReservationSimpleResponse;
-import com.breaditnow.reservation.domain.port.in.MyCancelReservationUseCase;
-import com.breaditnow.reservation.domain.port.in.MyCreateReservationUseCase;
 import com.breaditnow.reservation.domain.port.in.MyReservationQueryUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationCancelUseCase;
+import com.breaditnow.reservation.domain.port.in.ReservationCreateUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,13 +25,13 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @RequestMapping("/api/v1/my/reservation")
 @RequiredArgsConstructor
 public class MyReservationController {
-    private final MyCreateReservationUseCase myCreateReservationUseCase;
-    private final MyCancelReservationUseCase myCancelReservationUseCase;
+    private final ReservationCreateUseCase reservationCreateUseCase;
+    private final ReservationCancelUseCase reservationCancelUseCase;
     private final MyReservationQueryUseCase myReservationQueryUseCase;
 
     @PostMapping
     public ApiSuccessResponse<Map<String, Long>> createReservation(@AuthUser AuthenticatedUser user, @RequestBody MyReservationCreateRequest request) {
-        Long reservationId = myCreateReservationUseCase.createReservation(user, request);
+        Long reservationId = reservationCreateUseCase.createReservation(user, request);
         return ApiSuccessResponse.of(Map.of("reservationId", reservationId));
     }
 
@@ -41,7 +41,7 @@ public class MyReservationController {
             @PathVariable("reservationId") Long reservationId,
             @RequestBody MyReservationCancelRequest request
     ) {
-        myCancelReservationUseCase.cancelReservation(user, reservationId, request);
+        reservationCancelUseCase.cancelReservation(user, reservationId, request);
         return ApiSuccessResponse.of();
     }
 

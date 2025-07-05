@@ -1,13 +1,9 @@
 package com.breaditnow.reservation.application.event;
 
-import java.util.List;
+import com.breaditnow.reservation.domain.model.Reservation;
 
 public record ReservationCreatedEvent(
-        Long reservationId,
-        Long customerId,
-        Long ownerId,
-        String bakeryName,
-        List<String> productNames,
-        Integer totalPrice
+        Reservation reservation,
+        Long ownerId
 ) {
 }

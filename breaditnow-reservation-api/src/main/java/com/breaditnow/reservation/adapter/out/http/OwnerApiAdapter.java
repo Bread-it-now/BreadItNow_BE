@@ -46,17 +46,4 @@ public class OwnerApiAdapter implements OwnerApiPort {
                 .onErrorResume(e -> Mono.just(emptyList()))
                 .block();
     }
-
-    @Override
-    public Optional<String> findFcmTokenById(Long ownerId) {
-        var responseType = new ParameterizedTypeReference<ApiSuccessResponse<String>>() {};
-
-        return ownerServiceClient.get()
-                .uri("/internal/api/v1/owner/{ownerId}/fcm-token", ownerId)
-                .retrieve()
-                .bodyToMono(responseType)
-                .map(ApiSuccessResponse::data)
-                .onErrorResume(e -> Mono.empty())
-                .blockOptional();
-    }
 }

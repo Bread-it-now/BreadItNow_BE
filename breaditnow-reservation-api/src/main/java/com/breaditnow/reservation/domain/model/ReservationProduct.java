@@ -4,8 +4,8 @@ import com.breaditnow.common.domain.Money;
 import com.breaditnow.common.exception.ReservationException;
 import lombok.Getter;
 
-import static com.breaditnow.common.util.ValidationUtils.requireValid;
 import static com.breaditnow.common.exception.ReservationErrorCode.QUANTITY_POSITIVE;
+import static com.breaditnow.common.util.ValidationUtils.requireValid;
 
 @Getter
 public class ReservationProduct {

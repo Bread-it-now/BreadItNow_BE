@@ -57,16 +57,7 @@ class ReservationStateTest {
             ReservationState state = ReservationState.waiting();
             state.cancel("고객 요청");
             assertThat(state.getReservationStatus()).isEqualTo(CANCELLED);
-            assertThat(state.getCancelReason()).isEqualTo("고객 요청");
-        }
-
-        @Test
-        @DisplayName("이미 완료된 상태에서 취소 시 예외 발생")
-        void cancel_alreadyProcessed() {
-            ReservationState state = new ReservationState(APPROVED, null);
-            assertThatThrownBy(() -> state.cancel("사유"))
-                    .isInstanceOf(ReservationException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", ALREADY_PROCESSED);
+            assertThat(state.getReason()).isEqualTo("고객 요청");
         }
 
         @Test

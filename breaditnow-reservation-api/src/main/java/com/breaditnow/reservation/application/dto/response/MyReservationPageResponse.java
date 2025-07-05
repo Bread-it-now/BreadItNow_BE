@@ -50,7 +50,7 @@ public record MyReservationPageResponse(
                     reservation.getReservedBakery().profileImageUrl(),
                     reservation.getTotalPrice().getAmount(),
                     reservation.getPickupDeadline(),
-                    reservation.getReservationState().getCancelReason(),
+                    reservation.getReservationState().getReason(),
                     reservation.getReservationProducts().size(),
                     mainProductName
             );
