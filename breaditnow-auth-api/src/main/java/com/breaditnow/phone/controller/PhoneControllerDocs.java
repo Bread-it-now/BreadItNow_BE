@@ -1,0 +1,17 @@
+package com.breaditnow.phone.controller;
+
+import com.breaditnow.phone.controller.req.PhoneSendCodeRequest;
+import com.breaditnow.phone.controller.req.PhoneVerifyCodeRequest;
+import com.breaditnow.common.response.ApiSuccessResponse;
+import io.swagger.v3.oas.annotations.Operation;
+
+import java.util.Map;
+
+public interface PhoneControllerDocs {
+
+    @Operation(summary="휴대폰 인증 코드 발송")
+    ApiSuccessResponse<Void> sendCode(PhoneSendCodeRequest req);
+
+    @Operation(summary="휴대폰 인증 코드 검증")
+    ApiSuccessResponse<Map<String,Boolean>> verifyCode(PhoneVerifyCodeRequest req);
+}

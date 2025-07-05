@@ -1,14 +1,14 @@
 package com.breaditnow.auth.global.security;
 
-import static com.breaditnow.auth.global.exception.AuthErrorCode.*;
-import static com.breaditnow.auth.global.security.Role.*;
+import static com.breaditnow.auth_tmp.global.security.Role.*;
 import static org.assertj.core.api.Assertions.*;
 
+import com.breaditnow.auth_tmp.global.security.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import com.breaditnow.auth.global.exception.AuthException;
+import com.breaditnow.common.exception.AuthException;
 
 class RoleTest {
 	@Test
