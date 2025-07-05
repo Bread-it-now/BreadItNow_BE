@@ -1,6 +1,6 @@
 package com.breaditnow.reservation.application;
 
-import com.breaditnow.common.domain.NotificationType;
+import com.breaditnow.common.domain.NotificationTypeDto;
 import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.common.event.NotificationRequiredEvent;
 import com.breaditnow.common.event.StockUpdateResultEvent;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.breaditnow.common.domain.NotificationType.*;
+import static com.breaditnow.common.domain.NotificationTypeDto.*;
 import static com.breaditnow.common.domain.ReservationStatus.CANCELLED;
 import static com.breaditnow.common.domain.ReservationStatus.PARTIAL_APPROVED;
 import static com.breaditnow.common.domain.Role.*;
@@ -47,15 +47,15 @@ public class ReservationResultHandler {
 
         UserIdentifier initiator = resultEvent.initiator();
         UserIdentifier recipient;
-        NotificationType notificationType;
+        NotificationTypeDto notificationTypeDto;
 
         if (resultEvent.initiator().type() == CUSTOMER) {
             recipient = new UserIdentifier(bakeryInfo.ownerId(), OWNER);
-            notificationType = RESERVATION_CANCELED_BY_CUSTOMER;
+            notificationTypeDto = RESERVATION_CANCELED_BY_CUSTOMER;
         }
         else { // OWNER
             recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
-            notificationType = RESERVATION_CANCELED_BY_OWNER;
+            notificationTypeDto = RESERVATION_CANCELED_BY_OWNER;
         }
 
         List<String> productNames = reservation.getReservationProducts().stream()
@@ -67,7 +67,7 @@ public class ReservationResultHandler {
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
                 .initiator(initiator)
-                .notificationType(notificationType)
+                .notificationTypeDto(notificationTypeDto)
                 .customerNickName(reservation.getOrderer().getNickname())
                 .cancelReason(resultEvent.message())
                 .bakeryName(bakeryInfo.name())
@@ -85,10 +85,10 @@ public class ReservationResultHandler {
         UserIdentifier initiator = resultEvent.initiator();
         UserIdentifier recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
 
-        NotificationType notificationType = RESERVATION_APPROVED;
+        NotificationTypeDto notificationTypeDto = RESERVATION_APPROVED;
         if(resultEvent.reservationStatus() == PARTIAL_APPROVED){
             reservation.partialApprove(resultEvent.stockUpdateItems(), newReservationNumber, resultEvent.message());
-            notificationType = RESERVATION_PARTIALLY_APPROVED;
+            notificationTypeDto = RESERVATION_PARTIALLY_APPROVED;
         }
         else{
             reservation.approve(newReservationNumber);
@@ -104,7 +104,7 @@ public class ReservationResultHandler {
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
                 .initiator(initiator)
-                .notificationType(notificationType)
+                .notificationTypeDto(notificationTypeDto)
                 .customerNickName(reservation.getOrderer().getNickname())
                 .bakeryName(reservation.getReservedBakery().name())
                 .productNames(productNames)
@@ -135,7 +135,7 @@ public class ReservationResultHandler {
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
                 .initiator(initiator)
-                .notificationType(RESERVATION_APPROVAL_FAILED)
+                .notificationTypeDto(RESERVATION_APPROVAL_FAILED)
                 .customerNickName(reservation.getOrderer().getNickname())
                 .productNames(productNames)
                 .cancelReason(cancelReason)

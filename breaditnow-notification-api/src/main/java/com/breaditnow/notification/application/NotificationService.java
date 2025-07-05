@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.breaditnow.notification.domain.model.NotificationType.valueOf;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class NotificationService {
                     event.bakeryId(),
                     event.recipient(),
                     event.initiator(),
-                    event.notificationType(),
+                    valueOf(event.notificationTypeDto().name()),
                     message.content()
             );
             notificationRepository.save(notification);

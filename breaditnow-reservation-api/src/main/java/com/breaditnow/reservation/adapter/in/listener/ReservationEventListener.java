@@ -1,6 +1,6 @@
 package com.breaditnow.reservation.adapter.in.listener;
 
-import com.breaditnow.common.domain.NotificationType;
+import com.breaditnow.common.domain.NotificationTypeDto;
 import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.common.dto.StockUpdateItem;
 import com.breaditnow.common.event.NotificationRequiredEvent;
@@ -18,7 +18,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
-import static com.breaditnow.common.domain.NotificationType.*;
+import static com.breaditnow.common.domain.NotificationTypeDto.*;
 import static com.breaditnow.common.domain.ReservationStatus.*;
 import static com.breaditnow.common.domain.Role.CUSTOMER;
 import static com.breaditnow.common.domain.Role.OWNER;
@@ -46,7 +46,7 @@ public class ReservationEventListener {
                 .bakeryId(reservation.getReservedBakery().bakeryId())
                 .recipient(recipient)
                 .initiator(initiator)
-                .notificationType(RESERVATION_REQUESTED)
+                .notificationTypeDto(RESERVATION_REQUESTED)
                 .customerNickName(reservation.getOrderer().getNickname())
                 .productNames(productNames)
                 .reservationTime(reservation.getReservationTime())
@@ -97,16 +97,16 @@ public class ReservationEventListener {
         Reservation reservation = event.reservation();
         UserIdentifier initiator = event.initiator();
         UserIdentifier recipient;
-        NotificationType notificationType;
+        NotificationTypeDto notificationTypeDto;
 
         if (initiator.type() == CUSTOMER) {
             recipient = new UserIdentifier(event.ownerId(), OWNER);
-            notificationType = RESERVATION_CANCELED_BY_CUSTOMER;
+            notificationTypeDto = RESERVATION_CANCELED_BY_CUSTOMER;
             log.info("✅ [Event] 고객의 예약 취소 확인 -> 사장님에게 알림 발행 | 예약 ID: {}", reservation.getReservationId());
         }
         else { // OWNER
             recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
-            notificationType = RESERVATION_CANCELED_BY_OWNER;
+            notificationTypeDto = RESERVATION_CANCELED_BY_OWNER;
             log.info("✅ [Event] 사장님의 예약 취소 확인 -> 고객에게 알림 발행 | 예약 ID: {}", reservation.getReservationId());
         }
 
@@ -120,7 +120,7 @@ public class ReservationEventListener {
                 .bakeryName(reservation.getReservedBakery().name())
                 .recipient(recipient)
                 .initiator(initiator)
-                .notificationType(notificationType)
+                .notificationTypeDto(notificationTypeDto)
                 .productNames(productNames)
                 .customerNickName(reservation.getOrderer().getNickname())
                 .cancelReason(event.reason())

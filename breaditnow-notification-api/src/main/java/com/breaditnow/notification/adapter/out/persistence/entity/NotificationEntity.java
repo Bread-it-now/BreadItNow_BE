@@ -1,14 +1,16 @@
 package com.breaditnow.notification.adapter.out.persistence.entity;
 
-import com.breaditnow.common.domain.NotificationType;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.notification.domain.model.Notification;
+import com.breaditnow.notification.domain.model.NotificationCategory;
+import com.breaditnow.notification.domain.model.NotificationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import static jakarta.persistence.EnumType.STRING;
 
@@ -18,6 +20,7 @@ import static jakarta.persistence.EnumType.STRING;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "is_deleted = false")
 public class NotificationEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +38,9 @@ public class NotificationEntity extends BaseEntity {
     private Long initiatorId;
 
     @Enumerated(STRING)
+    private NotificationCategory notificationCategory;
+
+    @Enumerated(STRING)
     private NotificationType notificationType;
 
     private String content;
@@ -48,6 +54,7 @@ public class NotificationEntity extends BaseEntity {
                 .bakeryId(notification.getBakeryId())
                 .recipientType(notification.getRecipient().type())
                 .recipientId(notification.getRecipient().id())
+                .notificationCategory(notification.getNotificationCategory())
                 .initiatorType(notification.getInitiator().type())
                 .initiatorId(notification.getInitiator().id())
                 .notificationType(notification.getNotificationType())
@@ -65,9 +72,11 @@ public class NotificationEntity extends BaseEntity {
                 .initiator(new UserIdentifier(this.initiatorId, this.initiatorType))
                 .bakeryId(this.bakeryId)
                 .content(this.content)
+                .notificationCategory(this.notificationCategory)
                 .notificationType(this.notificationType)
                 .isRead(this.isRead)
                 .isDeleted(this.isDeleted)
+                .createdAt(this.getCreatedAt())
                 .build();
     }
 }

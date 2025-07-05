@@ -13,7 +13,8 @@ public enum NotificationErrorCode implements ErrorCode {
 	UNAUTHORIZED_ACCESS(UNAUTHORIZED, "EA003", "인증되지 않은 사용자입니다."),
 	ALREADY_READ_NOTIFICATION(CONFLICT, "EA004", "이미 읽은 알림입니다."),
 	NOTIFICATION_NOT_FOUND(NOT_FOUND, "EA005", "알림을 찾을 수 없습니다."),
-	ALREADY_DELETED_NOTIFICATION(CONFLICT, "EA006", "이미 삭제된 알림입니다."),;
+	ALREADY_DELETED_NOTIFICATION(CONFLICT, "EA006", "이미 삭제된 알림입니다."),
+	INVALID_NOTIFICATION_CATEGORY(BAD_REQUEST, "EA007", "유효하지 않은 알림 카테고리입니다."),;
 
 
 

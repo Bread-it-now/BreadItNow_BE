@@ -1,6 +1,6 @@
 package com.breaditnow.common.event;
 
-import com.breaditnow.common.domain.NotificationType;
+import com.breaditnow.common.domain.NotificationTypeDto;
 import com.breaditnow.common.domain.UserIdentifier;
 import lombok.Builder;
 
@@ -13,7 +13,7 @@ public record NotificationRequiredEvent (
         Long bakeryId,
         UserIdentifier recipient,
         UserIdentifier initiator,
-        NotificationType notificationType,
+        NotificationTypeDto notificationTypeDto,
         String customerNickName,
         String bakeryName,
         List<String> productNames,

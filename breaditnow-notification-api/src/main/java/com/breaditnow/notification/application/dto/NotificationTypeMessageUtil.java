@@ -1,6 +1,6 @@
 package com.breaditnow.notification.application.dto;
 
-import com.breaditnow.common.domain.NotificationType;
+import com.breaditnow.common.domain.NotificationTypeDto;
 import com.breaditnow.common.event.NotificationRequiredEvent;
 import com.breaditnow.notification.domain.model.NotificationMessage;
 
@@ -16,8 +16,8 @@ public class NotificationTypeMessageUtil {
     private NotificationTypeMessageUtil() {}
 
     public static NotificationMessage createMessage(NotificationRequiredEvent event) {
-        String title = getTitle(event.notificationType());
-        String content = switch (event.notificationType()) {
+        String title = getTitle(event.notificationTypeDto());
+        String content = switch (event.notificationTypeDto()) {
             case RESERVATION_REQUESTED -> getReservationRequestedContent(event.customerNickName(), event.productNames(), event.reservationTime());
             case RESERVATION_APPROVED -> getReservationApprovedContent(event.customerNickName(), event.productNames(), event.reservationNumber(), event.pickupDeadline());
             case RESERVATION_PARTIALLY_APPROVED -> getReservationPartiallyApprovedContent(event.bakeryName(), event.productNames());
@@ -28,7 +28,7 @@ public class NotificationTypeMessageUtil {
         return new NotificationMessage(title, content);
     }
 
-    private static String getTitle(NotificationType type) {
+    private static String getTitle(NotificationTypeDto type) {
         return switch (type) {
             case RESERVATION_REQUESTED -> "예약 요청";
             case RESERVATION_APPROVED -> "예약 완료";

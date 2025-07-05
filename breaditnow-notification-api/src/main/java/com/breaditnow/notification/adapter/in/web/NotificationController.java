@@ -4,6 +4,7 @@ import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.notification.adapter.in.web.resolver.AuthUser;
 import com.breaditnow.notification.adapter.in.web.resolver.AuthenticatedUser;
 import com.breaditnow.notification.application.dto.response.NotificationPageResponse;
+import com.breaditnow.notification.domain.model.NotificationCategory;
 import com.breaditnow.notification.domain.port.in.NotificationDeleteUseCase;
 import com.breaditnow.notification.domain.port.in.NotificationQueryUseCase;
 import com.breaditnow.notification.domain.port.in.NotificationReadUseCase;
@@ -23,9 +24,11 @@ public class NotificationController {
             @AuthUser AuthenticatedUser user,
             @PathVariable Long bakeryId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(name = "category", required = false) String categoryStr
     ) {
-        return ApiSuccessResponse.of(notificationQueryUseCase.getNotifications(user, bakeryId, page, size));
+        NotificationCategory category = NotificationCategory.from(categoryStr);
+        return ApiSuccessResponse.of(notificationQueryUseCase.getNotifications(user, bakeryId, category, page, size));
     }
 
     @PostMapping("/{notificationId}/read")
