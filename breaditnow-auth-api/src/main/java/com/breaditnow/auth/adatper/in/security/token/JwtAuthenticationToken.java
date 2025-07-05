@@ -1,33 +1,26 @@
-package com.breaditnow.auth_tmp.global.security.direct.token;
-
-import java.util.Collection;
+package com.breaditnow.auth.adatper.in.security.token;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-import lombok.Getter;
+import java.util.Collection;
 
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 	private final Object principal;
-	private final Object credentials;
-	@Getter
-	private final String role;
+	private Object credentials;
 
-	public JwtAuthenticationToken(Object principal, Object credentials, String role) {
+	public JwtAuthenticationToken(Object principal, Object credentials) {
 		super(null);
 		this.principal = principal;
 		this.credentials = credentials;
-		this.role = role;
 		setAuthenticated(false);
 	}
 
-	public JwtAuthenticationToken(Object principal, Object credentials,
-		Collection<? extends GrantedAuthority> authorities, String role) {
+	public JwtAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
 		this.credentials = credentials;
-		this.role = role;
-		setAuthenticated(true);
+		super.setAuthenticated(true);
 	}
 
 	@Override
@@ -40,4 +33,9 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 		return this.principal;
 	}
 
+	@Override
+	public void eraseCredentials() {
+		super.eraseCredentials();
+		credentials = null;
+	}
 }

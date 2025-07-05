@@ -1,5 +1,6 @@
 package com.breaditnow.auth.adatper.out.persistence.entity;
 
+import com.breaditnow.auth.domain.model.Account;
 import com.breaditnow.auth.domain.model.AccountStatus;
 import com.breaditnow.common.domain.Role;
 import jakarta.persistence.*;
@@ -29,4 +30,20 @@ public class AccountEntity {
     @Enumerated(STRING)
     @Column(nullable = false)
     private AccountStatus status;
+
+    public Account toDomain() {
+        return Account.builder()
+                .id(this.id)
+                .role(this.role)
+                .status(this.status)
+                .build();
+    }
+
+    public static AccountEntity from(Account account) {
+        return AccountEntity.builder()
+                .id(account.getId())
+                .role(account.getRole())
+                .status(account.getStatus())
+                .build();
+    }
 }

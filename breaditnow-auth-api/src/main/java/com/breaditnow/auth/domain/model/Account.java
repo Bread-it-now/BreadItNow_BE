@@ -1,16 +1,16 @@
 package com.breaditnow.auth.domain.model;
 
 import com.breaditnow.common.domain.Role;
-
-import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
 
 import static com.breaditnow.auth.domain.model.AccountStatus.ACTIVE;
 
+@Getter
+@Builder
 public class Account {
     private Long id;
     private Role role;
-    private LocalAuth account;
-    private List<SocialAuth> socialAuths;
     private AccountStatus status;
 
     public boolean isActive() {
