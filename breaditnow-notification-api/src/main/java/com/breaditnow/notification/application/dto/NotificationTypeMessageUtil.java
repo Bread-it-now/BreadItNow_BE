@@ -19,7 +19,7 @@ public class NotificationTypeMessageUtil {
         String title = getTitle(event.notificationTypeDto());
         String content = switch (event.notificationTypeDto()) {
             case RESERVATION_REQUESTED -> getReservationRequestedContent(event.customerNickName(), event.productNames(), event.reservationTime());
-            case RESERVATION_APPROVED -> getReservationApprovedContent(event.customerNickName(), event.productNames(), event.reservationNumber(), event.pickupDeadline());
+            case RESERVATION_APPROVED -> getReservationApprovedContent(event.bakeryName(), event.productNames(), event.reservationNumber(), event.pickupDeadline());
             case RESERVATION_PARTIALLY_APPROVED -> getReservationPartiallyApprovedContent(event.bakeryName(), event.productNames());
             case RESERVATION_CANCELED_BY_CUSTOMER -> getReservationCanceledByCustomerContent(event.customerNickName(), event.productNames(), event.cancelReason());
             case RESERVATION_CANCELED_BY_OWNER -> getReservationCanceledByOwnerContent(event.bakeryName(), event.cancelReason());
@@ -42,8 +42,8 @@ public class NotificationTypeMessageUtil {
         return String.format("(%s)님의 %s 예약이 [요청] 되었습니다.\n[예약시간: %s]", customerNickname, formatProductNames(productNames), formatDate(reservationTime));
     }
 
-    private static String getReservationApprovedContent(String customerNickname, List<String> productNames, Long reservationNumber, LocalDateTime pickupDeadline) {
-        return String.format("(%s)님의 %s 예약이 [완료] 되었습니다.\n[예약 번호: %d 픽업시간: %s]", customerNickname, formatProductNames(productNames), reservationNumber, formatDate(pickupDeadline));
+    private static String getReservationApprovedContent(String bakeryName, List<String> productNames, Long reservationNumber, LocalDateTime pickupDeadline) {
+        return String.format("(%s)빵집의 %s 예약이 [완료] 되었습니다.\n[예약 번호: %d 픽업시간: %s]", bakeryName, formatProductNames(productNames), reservationNumber, formatDate(pickupDeadline));
     }
 
     private static String getReservationPartiallyApprovedContent(String bakeryName, List<String> productNames) {

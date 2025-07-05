@@ -1,4 +1,4 @@
-package com.breaditnow.notification.application;
+package com.breaditnow.notification.adapter.out.http;
 
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.domain.UserIdentifier;

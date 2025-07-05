@@ -18,6 +18,14 @@ public class NotificationProvider {
         return notificationRepository.findById(notificationId)
                 .filter(notification -> notification.getBakeryId().equals(bakeryId))
                 .filter(notification -> notification.getRecipient().id().equals(user.userId()))
+                .filter(notification -> notification.getRecipient().type().equals(user.getRole()))
+                .orElseThrow(() -> new NotificationException(NOTIFICATION_NOT_FOUND));
+    }
+
+    public Notification provide(AuthenticatedUser user, Long notificationId) {
+        return notificationRepository.findById(notificationId)
+                .filter(notification -> notification.getRecipient().id().equals(user.userId()))
+                .filter(notification -> notification.getRecipient().type().equals(user.getRole()))
                 .orElseThrow(() -> new NotificationException(NOTIFICATION_NOT_FOUND));
     }
 }

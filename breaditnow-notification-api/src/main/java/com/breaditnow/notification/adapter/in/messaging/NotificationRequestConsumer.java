@@ -1,7 +1,7 @@
 package com.breaditnow.notification.adapter.in.messaging;
 
 import com.breaditnow.common.event.NotificationRequiredEvent;
-import com.breaditnow.notification.application.NotificationService;
+import com.breaditnow.notification.application.NotificationHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -13,11 +13,11 @@ import static com.breaditnow.common.messaging.RabbitMQConstants.QUEUE_NOTIFICATI
 @Component
 @RequiredArgsConstructor
 public class NotificationRequestConsumer {
-    private final NotificationService notificationService;
+    private final NotificationHandler notificationHandler;
 
     @RabbitListener(queues = QUEUE_NOTIFICATION_SEND_REQUEST)
     public void handleNotificationRequest(NotificationRequiredEvent event) {
         log.info("알림 발송 요청 수신: 예약 [{}]", event);
-        notificationService.sendNotification(event);
+        notificationHandler.sendNotification(event);
     }
 }

@@ -1,6 +1,7 @@
 package com.breaditnow.notification.application;
 
 import com.breaditnow.common.event.NotificationRequiredEvent;
+import com.breaditnow.notification.adapter.out.http.FcmNotifier;
 import com.breaditnow.notification.application.dto.NotificationTypeMessageUtil;
 import com.breaditnow.notification.domain.model.Notification;
 import com.breaditnow.notification.domain.model.NotificationMessage;
@@ -15,7 +16,7 @@ import static com.breaditnow.notification.domain.model.NotificationType.valueOf;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class NotificationService {
+public class NotificationHandler {
     private final NotificationRepository notificationRepository;
     private final FcmNotifier fcmNotifier;
 

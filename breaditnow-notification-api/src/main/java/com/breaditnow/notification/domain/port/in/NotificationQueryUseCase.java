@@ -6,4 +6,5 @@ import com.breaditnow.notification.domain.model.NotificationCategory;
 
 public interface NotificationQueryUseCase {
     NotificationPageResponse getNotifications(AuthenticatedUser user, Long bakeryId, NotificationCategory category, int page, int size);
+    NotificationPageResponse getNotifications(AuthenticatedUser user, NotificationCategory category, int page, int size);
 }

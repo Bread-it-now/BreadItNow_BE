@@ -1,5 +1,6 @@
 package com.breaditnow.notification.application;
 
+import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.notification.adapter.in.web.resolver.AuthenticatedUser;
 import com.breaditnow.notification.application.dto.response.NotificationPageResponse;
 import com.breaditnow.notification.application.internal.BakeryInfo;
@@ -28,6 +29,14 @@ public class NotificationQueryService implements NotificationQueryUseCase {
         BakeryInfo bakeryInfo = bakeryProvider.provide(bakeryId);
         bakeryValidator.validateOwner(bakeryInfo, user);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return NotificationPageResponse.from(notificationRepository.getNotifications(bakeryId, category, pageable));
+        UserIdentifier recipient = new UserIdentifier(user.userId(), user.getRole());
+        return NotificationPageResponse.from(notificationRepository.getNotifications(recipient, category, pageable));
+    }
+
+    @Override
+    public NotificationPageResponse getNotifications(AuthenticatedUser user, NotificationCategory category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        UserIdentifier recipient = new UserIdentifier(user.userId(), user.getRole());
+        return NotificationPageResponse.from(notificationRepository.getNotifications(recipient, category, pageable));
     }
 }

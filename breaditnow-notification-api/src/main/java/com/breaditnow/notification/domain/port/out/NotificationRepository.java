@@ -1,5 +1,6 @@
 package com.breaditnow.notification.domain.port.out;
 
+import com.breaditnow.common.domain.UserIdentifier;
 import com.breaditnow.notification.domain.model.Notification;
 import com.breaditnow.notification.domain.model.NotificationCategory;
 import org.springframework.data.domain.Page;
@@ -12,5 +13,5 @@ public interface NotificationRepository {
 
     Optional<Notification> findById(Long notificationId);
 
-    Page<Notification> getNotifications(Long bakeryId, NotificationCategory category, Pageable pageable);
+    Page<Notification> getNotifications(UserIdentifier recipient, NotificationCategory category, Pageable pageable);
 }

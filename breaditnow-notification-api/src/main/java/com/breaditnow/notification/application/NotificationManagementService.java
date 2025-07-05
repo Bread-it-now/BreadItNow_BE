@@ -25,8 +25,22 @@ public class NotificationManagementService implements NotificationReadUseCase, N
     }
 
     @Override
+    public void markNotificationAsRead(AuthenticatedUser user, Long notificationId) {
+        Notification notification = notificationProvider.provide(user, notificationId);
+        notification.read();
+        notificationRepository.save(notification);
+    }
+
+    @Override
     public void notificationDelete(AuthenticatedUser user, Long bakeryId, Long notificationId) {
         Notification notification = notificationProvider.provide(user, bakeryId, notificationId);
+        notification.delete();
+        notificationRepository.save(notification);
+    }
+
+    @Override
+    public void notificationDelete(AuthenticatedUser user, Long notificationId) {
+        Notification notification = notificationProvider.provide(user, notificationId);
         notification.delete();
         notificationRepository.save(notification);
     }

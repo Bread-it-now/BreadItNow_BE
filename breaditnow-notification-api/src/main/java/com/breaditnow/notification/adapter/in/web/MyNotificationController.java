@@ -12,42 +12,39 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/bakery/{bakeryId}/notification")
+@RequestMapping("/api/v1/my/notification")
 @RequiredArgsConstructor
-public class NotificationController {
-    private final NotificationQueryUseCase notificationQueryUseCase;
-    private final NotificationReadUseCase notificationReadUseCase;
+public class MyNotificationController {
+    private final NotificationReadUseCase readNotificationUseCase;
     private final NotificationDeleteUseCase notificationDeleteUseCase;
+    private final NotificationQueryUseCase notificationQueryUseCase;
 
     @GetMapping
-    public ApiSuccessResponse<NotificationPageResponse> getNotifications(
+    public ApiSuccessResponse<NotificationPageResponse> getMyNotifications(
             @AuthUser AuthenticatedUser user,
-            @PathVariable(name = "bakeryId") Long bakeryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(name = "category", required = false) String categoryStr
     ) {
         NotificationCategory category = NotificationCategory.from(categoryStr);
-        return ApiSuccessResponse.of(notificationQueryUseCase.getNotifications(user, bakeryId, category, page, size));
+        return ApiSuccessResponse.of(notificationQueryUseCase.getNotifications(user, category, page, size));
     }
 
     @PostMapping("/{notificationId}/read")
-    public ApiSuccessResponse<Void> markNotificationAsRead(
+    public ApiSuccessResponse<Void> readNotification(
             @AuthUser AuthenticatedUser user,
-            @PathVariable Long bakeryId,
             @PathVariable Long notificationId
     ) {
-        notificationReadUseCase.markNotificationAsRead(user, bakeryId, notificationId);
-        return ApiSuccessResponse.of();
+        readNotificationUseCase.markNotificationAsRead(user, notificationId);
+        return ApiSuccessResponse.of(null);
     }
 
     @DeleteMapping("/{notificationId}")
     public ApiSuccessResponse<Void> deleteNotification(
             @AuthUser AuthenticatedUser user,
-            @PathVariable Long bakeryId,
             @PathVariable Long notificationId
     ) {
-        notificationDeleteUseCase.notificationDelete(user, bakeryId, notificationId);
-        return ApiSuccessResponse.of();
+        notificationDeleteUseCase.notificationDelete(user, notificationId);
+        return ApiSuccessResponse.of(null);
     }
 }
