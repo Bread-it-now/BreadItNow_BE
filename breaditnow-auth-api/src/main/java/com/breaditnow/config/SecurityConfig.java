@@ -3,7 +3,11 @@ package com.breaditnow.config;
 import com.breaditnow.auth.adatper.in.security.filter.DirectLoginFilter;
 import com.breaditnow.auth.adatper.in.security.handler.DirectAuthenticationFailureHandler;
 import com.breaditnow.auth.adatper.in.security.handler.DirectAuthenticationSuccessHandler;
+import com.breaditnow.auth.adatper.in.security.handler.Oauth2AuthenticationFailureHandler;
+import com.breaditnow.auth.adatper.in.security.handler.Oauth2AuthenticationSuccessHandler;
+import com.breaditnow.auth.adatper.in.security.oauth2.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.adatper.in.security.provider.DirectAuthenticationProvider;
+import com.breaditnow.auth.adatper.in.security.service.CustomOAuth2UserService;
 import com.breaditnow.auth.adatper.in.security.service.PrincipalDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,11 +31,18 @@ import java.util.List;
 public class SecurityConfig {
     private static final String[] HEALTH_CHECK = {"/api/check"};
     private static final String[] AUTH_WHITELIST = {
-            "/api/check", "/api/v1/auth/**"
+            "/api/check", "/api/v1/auth/**", "/oauth2/authorization/**",  "/oauth/callback/**"
     };
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, DirectLoginFilter directLoginFilter) throws Exception {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            DirectLoginFilter directLoginFilter,
+            CustomOAuth2UserService customOAuth2UserService,
+            Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
+            Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler,
+            CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository) throws Exception {
+
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -46,6 +57,20 @@ public class SecurityConfig {
                 );
 
         http.addFilterAt(directLoginFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.
+                oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(authorization -> authorization
+                                .baseUri("/oauth2/authorization")
+                                .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository)
+                        )
+                        .redirectionEndpoint(redirection -> redirection
+                                .baseUri("/oauth/callback/*")
+                        )
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(oauth2AuthenticationSuccessHandler)
+                        .failureHandler(oauth2AuthenticationFailureHandler)
+                );
 
         return http.build();
     }
@@ -73,7 +98,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // 프론트엔드 주소
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
 

@@ -18,19 +18,19 @@ import static com.breaditnow.auth.domain.model.AccountStatus.DELETED;
 public class AccountContext implements UserDetails, OAuth2User {
     private final Account account;
     private final String password;
-    private String providerId;
     private Map<String, Object> attributes;
+    private String providerId;
 
     public AccountContext(Account account, String password) {
         this.account = account;
         this.password = password;
     }
 
-    public AccountContext(Account account, String providerId, Map<String, Object> attributes) {
+    public AccountContext(Account account, Map<String, Object> attributes, String providerId) {
         this.account = account;
         this.password = null;
-        this.providerId = providerId;
         this.attributes = attributes;
+        this.providerId = providerId;
     }
 
     @Override
@@ -71,6 +71,6 @@ public class AccountContext implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return this.providerId;
+        return (String) this.attributes.get(this.providerId);
     }
 }

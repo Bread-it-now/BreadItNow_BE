@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "social_auth", uniqueConstraints = {
@@ -25,9 +24,8 @@ public class SocialAuthEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
-    private AccountEntity account;
+    @Column(nullable = false)
+    private Long accountId;
 
     @Enumerated(STRING)
     @Column(nullable = false)
@@ -41,16 +39,16 @@ public class SocialAuthEntity {
                 .id(this.id)
                 .provider(this.provider)
                 .providerId(this.providerId)
-                .accountId(this.account.getId())
+                .accountId(this.accountId)
                 .build();
     }
 
-    public static SocialAuthEntity from(SocialAuth socialAuth, AccountEntity accountEntity) {
+    public static SocialAuthEntity from(SocialAuth socialAuth) {
         return SocialAuthEntity.builder()
                 .id(socialAuth.getId())
                 .provider(socialAuth.getProvider())
                 .providerId(socialAuth.getProviderId())
-                .account(accountEntity)
+                .accountId(socialAuth.getAccountId())
                 .build();
     }
 }

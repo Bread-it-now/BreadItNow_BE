@@ -5,6 +5,7 @@ import com.breaditnow.auth.adatper.out.persistence.repository.JpaSocialAuthRepos
 import com.breaditnow.auth.domain.model.Provider;
 import com.breaditnow.auth.domain.model.SocialAuth;
 import com.breaditnow.auth.domain.port.out.LoadSocialAuthPort;
+import com.breaditnow.auth.domain.port.out.SaveSocialAuthPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,12 +13,18 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SocialAuthPersistenceAdapter implements LoadSocialAuthPort {
+public class SocialAuthPersistenceAdapter implements LoadSocialAuthPort, SaveSocialAuthPort {
     private final JpaSocialAuthRepository jpaSocialAuthRepository;
 
     @Override
     public Optional<SocialAuth> findByProviderAndProviderId(Provider provider, String providerId) {
         return jpaSocialAuthRepository.findByProviderAndProviderId(provider, providerId)
                 .map(SocialAuthEntity::toDomain);
+    }
+
+    @Override
+    public SocialAuth save(SocialAuth socialAuth) {
+        SocialAuthEntity entity = SocialAuthEntity.from(socialAuth);
+        return jpaSocialAuthRepository.save(entity).toDomain();
     }
 }

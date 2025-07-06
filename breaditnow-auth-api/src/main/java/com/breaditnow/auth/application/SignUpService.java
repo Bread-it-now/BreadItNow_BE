@@ -27,6 +27,7 @@ public class SignUpService implements SignUpUseCase {
                 .role(Role.valueOf(request.role()))
                 .status(AccountStatus.ACTIVE)
                 .build();
+
         Account savedAccount = saveAccountPort.save(newAccount);
         String hashedPassword = passwordEncoder.encode(request.password());
 

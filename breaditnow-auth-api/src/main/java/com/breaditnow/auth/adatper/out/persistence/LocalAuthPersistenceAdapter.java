@@ -22,8 +22,8 @@ public class LocalAuthPersistenceAdapter implements LoadLocalAuthPort, SaveLocal
     }
 
     @Override
-    public void save(LocalAuth localAuth) {
+    public LocalAuth save(LocalAuth localAuth) {
         LocalAuthEntity entity = LocalAuthEntity.from(localAuth);
-        jpaLocalAuthRepository.save(entity);
+        return jpaLocalAuthRepository.save(entity).toDomain();
     }
 }
