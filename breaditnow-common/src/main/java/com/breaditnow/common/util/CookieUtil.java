@@ -1,17 +1,16 @@
 package com.breaditnow.common.util;
 
-import java.util.Base64;
-import java.util.Objects;
-import java.util.Optional;
-
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.Base64;
+import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class CookieUtil {
@@ -36,6 +35,17 @@ public class CookieUtil {
 			.secure(true)
 			.maxAge(maxAge)
 			.build();
+		response.addHeader("Set-Cookie", cookie.toString());
+	}
+
+	public void addHttpOnlyCookie(HttpServletResponse response, String name, String value, int maxAge) {
+		ResponseCookie cookie = ResponseCookie.from(name, value)
+				.path("/")
+				.sameSite("None")
+				.httpOnly(true)
+				.secure(true)
+				.maxAge(maxAge)
+				.build();
 		response.addHeader("Set-Cookie", cookie.toString());
 	}
 
