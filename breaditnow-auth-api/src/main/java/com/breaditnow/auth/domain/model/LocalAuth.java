@@ -10,4 +10,12 @@ public class LocalAuth {
     private final String email;
     private final String password;
     private final Long accountId;
+
+    public static LocalAuth create(String email, String password, Long accountId) {
+        return LocalAuth.builder()
+                .email(email)
+                .password(password)
+                .accountId(accountId)
+                .build();
+    }
 }

@@ -3,8 +3,7 @@ package com.breaditnow.auth.adatper.out.persistence;
 import com.breaditnow.auth.adatper.out.persistence.entity.AccountEntity;
 import com.breaditnow.auth.adatper.out.persistence.repository.JpaAccountRepository;
 import com.breaditnow.auth.domain.model.Account;
-import com.breaditnow.auth.domain.port.out.LoadAccountPort;
-import com.breaditnow.auth.domain.port.out.SaveAccountPort;
+import com.breaditnow.auth.domain.port.out.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
+public class AccountPersistenceAdapter implements AccountRepository {
     private final JpaAccountRepository jpaAccountRepository;
 
     @Override

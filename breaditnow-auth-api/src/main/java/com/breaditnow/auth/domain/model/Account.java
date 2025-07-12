@@ -16,4 +16,11 @@ public class Account {
     public boolean isActive() {
         return status == ACTIVE;
     }
+
+    public static Account create(Role role) {
+        return Account.builder()
+                .role(role)
+                .status(ACTIVE)
+                .build();
+    }
 }

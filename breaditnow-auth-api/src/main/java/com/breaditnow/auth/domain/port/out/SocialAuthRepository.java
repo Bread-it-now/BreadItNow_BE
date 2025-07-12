@@ -5,6 +5,8 @@ import com.breaditnow.auth.domain.model.SocialAuth;
 
 import java.util.Optional;
 
-public interface LoadSocialAuthPort {
+public interface SocialAuthRepository {
     Optional<SocialAuth> findByProviderAndProviderId(Provider provider, String providerId);
+
+    SocialAuth save(SocialAuth socialAuth);
 }

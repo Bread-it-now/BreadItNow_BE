@@ -3,7 +3,7 @@ package com.breaditnow.auth.adatper.in.security.handler;
 import com.breaditnow.auth.adatper.in.security.oauth2.CookieOAuth2AuthorizationRequestRepository;
 import com.breaditnow.auth.adatper.out.jwt.JwtTokenCreator;
 import com.breaditnow.auth.adatper.out.jwt.dto.AuthToken;
-import com.breaditnow.auth.domain.port.out.SaveAuthTokenPort;
+import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.common.util.CookieUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final JwtTokenCreator jwtTokenCreator;
     private final CookieUtil cookieUtil;
     private final CookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository;
-    private final SaveAuthTokenPort saveAuthTokenPort;
+    private final AuthTokenRepository authTokenRepository;
 
     @Value("${auth.token.refresh-cookie-key}")
     private String refreshCookieKey;
@@ -35,7 +35,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
-        saveAuthTokenPort.saveRefreshToken(refreshToken);
+        authTokenRepository.saveRefreshToken(refreshToken);
 
         int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
         cookieUtil.addHttpOnlyCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
