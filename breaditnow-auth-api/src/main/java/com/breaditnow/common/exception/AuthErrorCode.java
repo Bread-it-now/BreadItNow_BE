@@ -2,13 +2,16 @@ package com.breaditnow.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.breaditnow.common.exception.ErrorCode;
-
 public enum AuthErrorCode implements ErrorCode {
 	/**
-	 * 소셜 로그인(BA000)
+	 * 로그인(BA000)
 	 */
-	UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "BA001", "지원하지 않는 소셜입니다."),
+	USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "BA001", "존재하지 않는 사용자입니다."),
+	UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "BA002", "지원하지 않는 소셜입니다."),
+	EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST, "BA003", "이메일이 존재하지 않습니다."),
+	EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "BA004", "이미 가입된 이메일입니다."),
+	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "BA005", "비밀번호가 일치하지 않습니다."),
+	LOGIN_FAILED(HttpStatus.BAD_REQUEST, "BA006", "로그인에 실패하였습니다."),
 
 	/**
 	 * 토큰(BB000)
@@ -35,10 +38,7 @@ public enum AuthErrorCode implements ErrorCode {
 	/**
 	 * 직접 로그인 관련(BE000)
 	 */
-	EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST, "BE001", "이메일이 존재하지 않습니다."),
-	EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "BE002", "이미 가입된 이메일입니다."),
-	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "BE003", "비밀번호가 일치하지 않습니다."),
-	LOGIN_FAILED(HttpStatus.BAD_REQUEST, "BE004", "로그인에 실패하였습니다."),
+
 
 	/**
 	 * 이메일 인증 관련(BF000)

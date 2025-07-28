@@ -3,11 +3,15 @@ package com.breaditnow.auth.application;
 import com.breaditnow.auth.application.dto.request.DirectSignUpRequest;
 import com.breaditnow.auth.domain.model.Account;
 import com.breaditnow.auth.domain.model.LocalAuth;
+import com.breaditnow.auth.domain.port.in.LogoutUseCase;
 import com.breaditnow.auth.domain.port.in.SignUpUseCase;
 import com.breaditnow.auth.domain.port.out.AccountRepository;
+import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.auth.domain.port.out.LocalAuthRepository;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.AuthException;
+import com.breaditnow.common.util.CookieUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,9 +22,10 @@ import static com.breaditnow.common.exception.AuthErrorCode.EMAIL_ALREADY_EXISTS
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AuthCommandService implements SignUpUseCase {
+public class AuthCommandService implements SignUpUseCase, LogoutUseCase {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
+    private final AuthTokenRepository authTokenRepository;
     private final LocalAuthRepository localAuthRepository;
 
     @Override
@@ -36,5 +41,10 @@ public class AuthCommandService implements SignUpUseCase {
 
         LocalAuth newLocalAuth = LocalAuth.create(request.email(), hashedPassword, savedAccount.getId());
         return localAuthRepository.save(newLocalAuth).getAccountId();
+    }
+
+    @Override
+    public void logout(Long userId){
+        authTokenRepository.deleteRefreshToken(userId);
     }
 }

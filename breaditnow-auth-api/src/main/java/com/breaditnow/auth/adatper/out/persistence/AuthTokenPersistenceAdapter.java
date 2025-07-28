@@ -7,6 +7,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
+import java.util.Optional;
+
+import static com.breaditnow.auth.adatper.out.jwt.dto.AuthTokenType.REFRESH;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,5 +23,22 @@ public class AuthTokenPersistenceAdapter implements AuthTokenRepository {
         String value = refreshToken.token();
         Duration timeout = Duration.ofMillis(refreshToken.expiresIn());
         redisTemplate.opsForValue().set(key, value, timeout);
+    }
+
+    @Override
+    public Optional<AuthToken> findRefreshToken(Long userId) {
+        String key = REFRESH_TOKEN_PREFIX + userId;
+        String token = redisTemplate.opsForValue().get(key);
+
+        if (token == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new AuthToken(userId, token, null, null, REFRESH));
+    }
+
+    public void deleteRefreshToken(Long userId) {
+        String key = REFRESH_TOKEN_PREFIX + userId;
+        redisTemplate.delete(key);
     }
 }

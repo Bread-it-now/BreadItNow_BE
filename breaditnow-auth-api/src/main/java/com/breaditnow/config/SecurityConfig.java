@@ -1,6 +1,7 @@
 package com.breaditnow.config;
 
 import com.breaditnow.auth.adatper.in.security.filter.DirectLoginFilter;
+import com.breaditnow.auth.adatper.in.security.filter.JwtAuthenticationFilter;
 import com.breaditnow.auth.adatper.in.security.handler.DirectAuthenticationFailureHandler;
 import com.breaditnow.auth.adatper.in.security.handler.DirectAuthenticationSuccessHandler;
 import com.breaditnow.auth.adatper.in.security.handler.Oauth2AuthenticationFailureHandler;
@@ -9,6 +10,7 @@ import com.breaditnow.auth.adatper.in.security.oauth2.CookieOAuth2AuthorizationR
 import com.breaditnow.auth.adatper.in.security.provider.DirectAuthenticationProvider;
 import com.breaditnow.auth.adatper.in.security.service.CustomOAuth2UserService;
 import com.breaditnow.auth.adatper.in.security.service.PrincipalDetailsService;
+import com.breaditnow.auth.adatper.out.jwt.JwtTokenValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +18,6 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,6 +26,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(
             HttpSecurity http,
             DirectLoginFilter directLoginFilter,
+            JwtAuthenticationFilter jwtAuthenticationFilter,
             CustomOAuth2UserService customOAuth2UserService,
             Oauth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
             Oauth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler,
@@ -48,7 +52,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(401);
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter().write("{\"error\": \"Unauthorized\"}");
+                        })
+                );
 
         http
                 .authorizeHttpRequests(authorize -> authorize
@@ -56,7 +67,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 );
 
-        http.addFilterAt(directLoginFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(directLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.
                 oauth2Login(oauth2 -> oauth2
@@ -73,6 +86,11 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenValidator jwtTokenValidator) {
+        return new JwtAuthenticationFilter(jwtTokenValidator);
     }
 
     @Bean
