@@ -34,7 +34,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfig {
     private static final String[] HEALTH_CHECK = {"/api/check"};
     private static final String[] AUTH_WHITELIST = {
-            "/api/check", "/api/v1/auth/**", "/oauth2/authorization/**",  "/oauth/callback/**"
+            "/api/check", "/api/v1/auth/**", "/api/v1/token/refresh", "/oauth2/authorization/**",  "/oauth/callback/**"
     };
 
     @Bean

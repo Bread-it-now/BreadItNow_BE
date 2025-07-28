@@ -1,4 +1,4 @@
-package com.breaditnow.auth_tmp.global.swagger.annotation;
+package com.breaditnow.common.swagger;
 
 import com.breaditnow.common.exception.AuthErrorCode;
 
