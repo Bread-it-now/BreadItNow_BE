@@ -1,7 +1,7 @@
-package com.breaditnow.phone.controller;
+package com.breaditnow.common.swagger.docs;
 
-import com.breaditnow.phone.controller.req.PhoneSendCodeRequest;
-import com.breaditnow.phone.controller.req.PhoneVerifyCodeRequest;
+import com.breaditnow.auth.application.dto.request.PhoneSendCodeRequest;
+import com.breaditnow.auth.application.dto.request.PhoneVerifyCodeRequest;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 

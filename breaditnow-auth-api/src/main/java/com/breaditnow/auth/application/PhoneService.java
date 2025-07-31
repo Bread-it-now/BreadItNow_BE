@@ -1,4 +1,4 @@
-package com.breaditnow.phone.service;
+package com.breaditnow.auth.application;
 
 import com.breaditnow.common.exception.AuthException;
 import com.breaditnow.redis.repository.RedisRepository;

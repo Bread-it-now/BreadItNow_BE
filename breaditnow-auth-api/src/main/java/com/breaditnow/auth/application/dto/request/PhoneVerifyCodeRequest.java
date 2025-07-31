@@ -1,4 +1,4 @@
-package com.breaditnow.phone.controller.req;
+package com.breaditnow.auth.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
