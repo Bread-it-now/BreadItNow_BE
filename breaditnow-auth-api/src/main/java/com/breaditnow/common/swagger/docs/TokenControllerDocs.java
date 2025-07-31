@@ -1,4 +1,4 @@
-package com.breaditnow.token.controller;
+package com.breaditnow.common.swagger.docs;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 

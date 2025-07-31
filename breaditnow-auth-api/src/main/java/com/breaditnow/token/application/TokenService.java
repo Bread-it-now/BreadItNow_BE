@@ -1,4 +1,4 @@
-package com.breaditnow.token.service;
+package com.breaditnow.token.application;
 
 import com.breaditnow.auth.adatper.in.security.AccountContext;
 import com.breaditnow.auth.adatper.out.jwt.JwtTokenCreator;
