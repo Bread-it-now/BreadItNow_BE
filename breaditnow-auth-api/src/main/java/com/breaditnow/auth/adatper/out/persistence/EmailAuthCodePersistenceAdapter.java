@@ -1,5 +1,6 @@
-package com.breaditnow.email.repository;
+package com.breaditnow.auth.adatper.out.persistence;
 
+import com.breaditnow.auth.domain.port.out.EmailAuthCodeRepository;
 import com.breaditnow.redis.repository.RedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -9,10 +10,8 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class EmailAuthCodeRepository {
-
+public class EmailAuthCodePersistenceAdapter implements EmailAuthCodeRepository {
     private static final String KEY_PREFIX = "email:auth-code:";
-
     private final RedisRepository redis;
 
     public void save(String email, String code, Duration ttl) {

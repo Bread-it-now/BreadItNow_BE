@@ -24,6 +24,8 @@ dependencies {
 
     implementation "org.apache.commons:commons-lang3:3.12.0"
 
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
     implementation 'com.github.napstr:logback-discord-appender:1.0.0'
 
     testImplementation 'org.springframework.security:spring-security-test'

@@ -1,7 +1,7 @@
-package com.breaditnow.email.controller;
+package com.breaditnow.common.swagger.docs;
 
-import com.breaditnow.email.controller.req.SendCodeRequest;
-import com.breaditnow.email.controller.req.VerifyCodeRequest;
+import com.breaditnow.auth.application.dto.request.SendCodeRequest;
+import com.breaditnow.auth.application.dto.request.VerifyCodeRequest;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

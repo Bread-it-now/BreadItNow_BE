@@ -2,8 +2,8 @@ package com.breaditnow.config;
 
 import com.breaditnow.common.exception.ErrorCode;
 import com.breaditnow.common.response.ApiErrorResponse;
-import com.breaditnow.common.swagger.AuthApiErrorCodeExamples;
-import com.breaditnow.common.swagger.CommonErrorCodeExamples;
+import com.breaditnow.common.swagger.annotation.AuthApiErrorCodeExamples;
+import com.breaditnow.common.swagger.annotation.CommonErrorCodeExamples;
 import com.breaditnow.common.swagger.ExampleHolder;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
