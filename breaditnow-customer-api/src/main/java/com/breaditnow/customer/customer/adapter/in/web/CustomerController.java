@@ -3,10 +3,12 @@ package com.breaditnow.customer.customer.adapter.in.web;
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
 import com.breaditnow.customer.customer.application.*;
-import com.breaditnow.customer.customer.application.request.*;
+import com.breaditnow.customer.customer.application.request.CustomerInfoUpdateRequest;
+import com.breaditnow.customer.customer.application.request.CustomerInitRequest;
+import com.breaditnow.customer.customer.application.request.NicknameDuplicateCheckRequest;
+import com.breaditnow.customer.customer.application.request.RegionUpdateRequest;
 import com.breaditnow.customer.customer.application.response.CustomerInfoResponse;
 import com.breaditnow.customer.customer.application.response.NicknameDuplicateResponse;
-import com.breaditnow.customer.customer.application.response.PasswordVerifyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +21,6 @@ public class CustomerController  {
     private final CustomerProfileService profileService;
     private final CustomerRegionService regionService;
     private final NicknameDuplicateQueryService nicknameService;
-    private final PasswordVerifyQueryService securityService;
     private final CustomerInfoQueryService queryService;
 
     // 회원정보 초기 설정(첫 로그인)
@@ -43,13 +44,6 @@ public class CustomerController  {
             @RequestPart(value = "bakeryProfileImage", required = false) MultipartFile profileImage) {
         return ApiSuccessResponse.of(profileService.updateCustomerInfo(customerId, dto, profileImage));
     }
-
-    // 현재 비밀번호 확인
-    @PostMapping("/me/verify-password")
-    public ApiSuccessResponse<PasswordVerifyResponse> verifyPassword(@AuthCustomer Long customerId, @RequestBody PasswordVerifyRequest dto) {
-        return ApiSuccessResponse.of(securityService.verifyPassword(customerId, dto));
-    }
-
 
     // 닉네임 중복 확인
     @GetMapping("/duplicate-nickname")

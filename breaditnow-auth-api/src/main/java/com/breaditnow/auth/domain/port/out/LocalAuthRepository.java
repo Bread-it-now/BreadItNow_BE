@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface LocalAuthRepository {
     Optional<LocalAuth> findByEmail(String email);
+    Optional<LocalAuth> findByAccountId(Long accountId);
     LocalAuth save(LocalAuth localAuth);
 }

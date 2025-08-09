@@ -6,14 +6,17 @@ import com.breaditnow.customer.product.domain.ProductCategory;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(name = "customer_product_category")
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @Getter
 public class CustomerProductCategoryEntity extends BaseEntity {
     @EmbeddedId

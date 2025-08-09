@@ -2,8 +2,8 @@ package com.breaditnow.customer.common.security.resolver;
 
 import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.common.security.annotation.AuthCustomer;
-import com.breaditnow.customer.customer.application.CustomerService;
 import com.breaditnow.customer.customer.domain.model.Customer;
+import com.breaditnow.customer.customer.domain.port.out.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -12,12 +12,14 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.util.Optional;
+
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.AUTHENTICATION_REQUIRED;
 
 @Component
 @RequiredArgsConstructor
 public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
-	private final CustomerService customerService;
+	private final CustomerRepository customerRepository;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -30,26 +32,30 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		AuthCustomer authCustomer = parameter.getParameterAnnotation(AuthCustomer.class);
 
 		String userIdHeader = webRequest.getHeader("X-Authorization-Id");
 		if (userIdHeader == null) {
-			if (authCustomer.required()) { // 필수인 경우, 예외 발생
+			if (authCustomer.required()) {
 				throw new CustomerException(AUTHENTICATION_REQUIRED);
 			} else {
 				return null;
 			}
 		}
 
-		Customer customer = customerService.loadCustomer(Long.valueOf(userIdHeader));
+		Long accountId = Long.valueOf(userIdHeader);
+		Optional<Customer> optionalCustomer = customerRepository.findById(accountId);
 
-		if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
-			return customer;
-		} else if (Long.class.isAssignableFrom(parameter.getParameterType())
-			|| long.class.isAssignableFrom(parameter.getParameterType())) {
-			return customer.getId();
+		if (optionalCustomer.isPresent()) {
+			Customer customer = optionalCustomer.get();
+			if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
+				return customer;
+			} else {
+				return customer.getId();
+			}
 		}
-		return null;
+
+		return accountId;
 	}
 }

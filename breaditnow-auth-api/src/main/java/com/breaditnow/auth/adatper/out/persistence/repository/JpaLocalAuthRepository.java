@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface JpaLocalAuthRepository extends JpaRepository<LocalAuthEntity, Long> {
     Optional<LocalAuthEntity> findByEmail(String email);
+    Optional<LocalAuthEntity> findByAccountId(Long accountId);
 }

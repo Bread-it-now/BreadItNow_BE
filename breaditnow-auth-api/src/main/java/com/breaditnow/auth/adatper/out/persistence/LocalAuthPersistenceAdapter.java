@@ -25,4 +25,10 @@ public class LocalAuthPersistenceAdapter implements LocalAuthRepository {
         LocalAuthEntity entity = LocalAuthEntity.from(localAuth);
         return jpaLocalAuthRepository.save(entity).toDomain();
     }
+
+    @Override
+    public Optional<LocalAuth> findByAccountId(Long accountId) {
+        return jpaLocalAuthRepository.findByAccountId(accountId)
+                .map(LocalAuthEntity::toDomain);
+    }
 }

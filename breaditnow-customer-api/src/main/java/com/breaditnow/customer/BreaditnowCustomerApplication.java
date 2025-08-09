@@ -2,10 +2,10 @@ package com.breaditnow.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication(scanBasePackages = {
-	"com.breaditnow.customer",
-	"com.breaditnow.common"})
+@SpringBootApplication
+@EnableJpaAuditing
 public class BreaditnowCustomerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BreaditnowCustomerApplication.class, args);

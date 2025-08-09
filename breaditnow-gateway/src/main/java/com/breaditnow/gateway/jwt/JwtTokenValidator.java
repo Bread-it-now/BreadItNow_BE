@@ -1,26 +1,18 @@
 package com.breaditnow.gateway.jwt;
 
-import static com.breaditnow.gateway.exception.GatewayErrorCode.*;
-
-import java.util.Base64;
-import java.util.List;
-
+import com.breaditnow.gateway.exception.GatewayException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.breaditnow.gateway.exception.GatewayException;
+import java.util.Base64;
+import java.util.List;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import static com.breaditnow.gateway.exception.GatewayErrorCode.*;
 
 @Component
 public class JwtTokenValidator {
-
 	private final String SECRET_KEY;
 
 	@Autowired

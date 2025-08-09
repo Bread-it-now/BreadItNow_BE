@@ -30,7 +30,22 @@ spring:
     username: ${SMTP_USER}
     password: ${SMTP_PASS}
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          max-attempts: 3
+          multiplier: 2.0
+
 openapi:
   service:
     url: http://localhost:8080/auth-api
+
+
 

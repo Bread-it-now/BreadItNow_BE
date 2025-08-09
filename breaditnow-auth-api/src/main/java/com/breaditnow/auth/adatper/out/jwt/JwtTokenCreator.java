@@ -15,7 +15,7 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +27,7 @@ import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 public class JwtTokenCreator {
     private final Long ACCESS_TOKEN_VALID_MILLISECOND;
     private final Long REFRESH_TOKEN_VALID_MILLI_SECOND;
+    private final String SECRET_KEY;
     private final Key key;
 
     public JwtTokenCreator(
@@ -34,23 +35,23 @@ public class JwtTokenCreator {
             @Value("${auth.token.access-token-valid-millisecond}") Long accessTokenValidMillisecond,
             @Value("${auth.token.refresh-token-valid-millisecond}") Long refreshTokenValidMillisecond) {
 
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
         this.ACCESS_TOKEN_VALID_MILLISECOND = accessTokenValidMillisecond;
         this.REFRESH_TOKEN_VALID_MILLI_SECOND = refreshTokenValidMillisecond;
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
 
     public AuthToken createToken(Authentication authentication, AuthTokenType tokenType) {
-        AccountContext principal = (AccountContext) authentication.getPrincipal();
+        AccountContext accountContext = (AccountContext) authentication.getPrincipal();
 
         Date now = new Date();
-        long expiration = tokenType == AuthTokenType.ACCESS ? ACCESS_TOKEN_VALID_MILLISECOND : REFRESH_TOKEN_VALID_MILLI_SECOND;
+        Long expiration = tokenType == AuthTokenType.ACCESS ? ACCESS_TOKEN_VALID_MILLISECOND : REFRESH_TOKEN_VALID_MILLI_SECOND;
         Date expiryDate = new Date(now.getTime() + expiration);
 
-        String jwtToken = generateJwt(principal, now, expiryDate);
+        String jwtToken = generateJwt(accountContext, now, expiryDate);
 
         return AuthToken.builder()
-                .userId(principal.getAccount().getId())
+                .userId(accountContext.getAccount().getId())
                 .token(jwtToken)
                 .expiresIn(expiration)
                 .expiryDate(getLocalDateTime(expiryDate))
@@ -59,8 +60,7 @@ public class JwtTokenCreator {
     }
 
     private String generateJwt(AccountContext principal, Date now, Date expiryDate){
-        Collection<? extends GrantedAuthority> authorities = principal.getAuthorities();
-        List<String> authorityStrings = authorities.stream()
+        List<String> authorities = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
@@ -68,7 +68,7 @@ public class JwtTokenCreator {
                 .setHeaderParam(TYPE, JWT_TYPE)
                 .setSubject("AuthToken")
                 .claim("userId", principal.getAccount().getId())
-                .claim("authorities", authorityStrings)
+                .claim("authorities", authorities)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key, HS512)

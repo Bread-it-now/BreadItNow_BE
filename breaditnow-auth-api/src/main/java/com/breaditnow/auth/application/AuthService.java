@@ -10,19 +10,18 @@ import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.auth.domain.port.out.LocalAuthRepository;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.exception.AuthException;
-import com.breaditnow.common.util.CookieUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.breaditnow.common.exception.AuthErrorCode.EMAIL_ALREADY_EXISTS;
+import static com.breaditnow.common.exception.AuthErrorCode.USER_NOT_FOUND;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AuthCommandService implements SignUpUseCase, LogoutUseCase {
+public class AuthService implements SignUpUseCase, LogoutUseCase {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final AuthTokenRepository authTokenRepository;
@@ -47,4 +46,10 @@ public class AuthCommandService implements SignUpUseCase, LogoutUseCase {
     public void logout(Long userId){
         authTokenRepository.deleteRefreshToken(userId);
     }
+
+    public Account loadAccount(Long accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new AuthException(USER_NOT_FOUND));
+    }
 }
+

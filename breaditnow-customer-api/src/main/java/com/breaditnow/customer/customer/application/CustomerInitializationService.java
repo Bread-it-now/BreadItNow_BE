@@ -20,17 +20,20 @@ import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID
 @Service
 @RequiredArgsConstructor
 public class CustomerInitializationService {
-    private final CustomerService customerService;
     private final CustomerRepository customerRepository;
     private final LoadProductCategoryPort loadProductCategoryPort;
     private final SaveCustomerProductCategoryPort saveCustomerProductCategoryPort;
 
     @Transactional
     public void initCustomerInfo(Long customerId, CustomerInitRequest dto) {
-        Customer customer = customerService.loadCustomer(customerId);
         if (customerRepository.isExistNickName(dto.nickname())) {
             throw new CustomerException(DUPLICATE_NICKNAME);
         }
+
+        Customer customer = Customer.builder()
+                .id(customerId)
+                .nickname(dto.nickname())
+                .build();
 
         Set<ProductCategory> validCats = new HashSet<>(loadProductCategoryPort.findAllByIds(dto.breadCategoryIds()));
         if (validCats.size() != dto.breadCategoryIds().size()) {

@@ -5,8 +5,6 @@ import com.breaditnow.auth.adatper.in.security.AccountContext;
 import com.breaditnow.auth.domain.model.Account;
 import com.breaditnow.auth.domain.port.out.AccountRepository;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +23,12 @@ import static org.springframework.security.oauth2.core.OAuth2AccessToken.TokenTy
 
 @Component
 public class JwtTokenValidator {
-	private final Key key;
+	private final String SECRET_KEY;
 	private final AccountRepository accountRepository;
 
 	@Autowired
 	public JwtTokenValidator(@Value("${auth.token.secret-key}") String secretKey, AccountRepository accountRepository) {
-		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-		this.key = Keys.hmacShaKeyFor(keyBytes);
+		this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
         this.accountRepository = accountRepository;
     }
 
@@ -43,6 +40,21 @@ public class JwtTokenValidator {
 			return authHeader.substring(7);
 		}
 		return null;
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+			return true;
+		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+			throw new JwtException(TOKEN_INVALID.getMessage());
+		} catch (ExpiredJwtException e) {
+			throw new JwtException(TOKEN_EXPIRED.getMessage());
+		} catch (UnsupportedJwtException e) {
+			throw new JwtException(TOKEN_UNSUPPORTED.getMessage());
+		} catch (IllegalArgumentException e) {
+			throw new JwtException(TOKEN_WRONG.getMessage());
+		}
 	}
 
 	public Authentication getAuthentication(String token) throws JwtException {
@@ -64,7 +76,7 @@ public class JwtTokenValidator {
 	private Claims parseClaims(String token) throws JwtException {
 		return Jwts
 			.parserBuilder()
-			.setSigningKey(key)
+			.setSigningKey(SECRET_KEY)
 			.build()
 			.parseClaimsJws(token)
 			.getBody();
@@ -75,20 +87,5 @@ public class JwtTokenValidator {
 		return authoritiesClaim.stream()
 			.map(SimpleGrantedAuthority::new)
 			.collect(Collectors.toList());
-	}
-
-	public boolean validateToken(String token) {
-		try {
-			Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-			return true;
-		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-			throw new JwtException(TOKEN_INVALID.getMessage());
-		} catch (ExpiredJwtException e) {
-			throw new JwtException(TOKEN_EXPIRED.getMessage());
-		} catch (UnsupportedJwtException e) {
-			throw new JwtException(TOKEN_UNSUPPORTED.getMessage());
-		} catch (IllegalArgumentException e) {
-			throw new JwtException(TOKEN_WRONG.getMessage());
-		}
 	}
 }

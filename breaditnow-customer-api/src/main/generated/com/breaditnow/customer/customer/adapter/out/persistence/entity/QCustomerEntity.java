@@ -24,28 +24,18 @@ public class QCustomerEntity extends EntityPathBase<CustomerEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final StringPath email = createString("email");
-
     public final StringPath fcmToken = createString("fcmToken");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
-
-    public final BooleanPath initialSetup = createBoolean("initialSetup");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public final StringPath nickname = createString("nickname");
 
-    public final StringPath oauth2Id = createString("oauth2Id");
-
-    public final StringPath password = createString("password");
-
     public final StringPath phone = createString("phone");
 
     public final StringPath profileImage = createString("profileImage");
-
-    public final EnumPath<com.breaditnow.customer.customer.domain.model.Provider> provider = createEnum("provider", com.breaditnow.customer.customer.domain.model.Provider.class);
 
     public QCustomerEntity(String variable) {
         super(CustomerEntity.class, forVariable(variable));

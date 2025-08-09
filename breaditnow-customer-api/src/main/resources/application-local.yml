@@ -27,6 +27,19 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          max-attempts: 3
+          multiplier: 2.0
+
 geolocation:
   kakao:
     client-id: ${OAUTH2_KAKAO_CLIENT_ID}

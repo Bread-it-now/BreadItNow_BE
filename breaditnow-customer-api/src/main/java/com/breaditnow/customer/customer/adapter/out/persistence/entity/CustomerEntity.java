@@ -2,16 +2,15 @@ package com.breaditnow.customer.customer.adapter.out.persistence.entity;
 
 import com.breaditnow.customer.common.domain.BaseEntity;
 import com.breaditnow.customer.customer.domain.model.Customer;
-import com.breaditnow.customer.customer.domain.model.Provider;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static java.lang.Boolean.TRUE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -22,20 +21,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 public class CustomerEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Enumerated(STRING)
-    private Provider provider;
-
-    private String oauth2Id;
-
     private String fcmToken;
-
-    @Column(unique = true)
-    private String email;
-
-    private String password;
 
     @Column(unique = true)
     private String nickname;
@@ -44,19 +32,12 @@ public class CustomerEntity extends BaseEntity {
 
     private String profileImage;
 
-    private Boolean initialSetup;
-
     public CustomerEntity(Customer customer) {
         this.id = customer.getId();
-        this.provider = customer.getProvider();
-        this.oauth2Id = customer.getOauth2Id();
         this.fcmToken = customer.getFcmToken();
-        this.email = customer.getEmail();
-        this.password = customer.getPassword();
         this.nickname = customer.getNickname();
         this.phone = customer.getPhone();
         this.profileImage = customer.getProfileImageUrl();
-        this.initialSetup = customer.isInitialSetup();
     }
 
     public Customer toDomain() {
@@ -65,12 +46,7 @@ public class CustomerEntity extends BaseEntity {
                 .nickname(this.nickname)
                 .phone(this.phone)
                 .profileImageUrl(this.profileImage)
-                .provider(this.provider)
-                .oauth2Id(this.oauth2Id)
-                .email(this.email)
-                .password(this.password)
                 .fcmToken(this.fcmToken)
-                .initialSetup(TRUE.equals(this.initialSetup))
                 .build();
     }
 }
