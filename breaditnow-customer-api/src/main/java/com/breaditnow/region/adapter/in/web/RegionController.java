@@ -1,9 +1,9 @@
-package com.breaditnow.customer.adapter.in.web;
+package com.breaditnow.region.adapter.in.web;
 
 import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.application.request.GeoPointRequest;
-import com.breaditnow.customer.application.RegionService;
-import com.breaditnow.customer.adapter.out.persistence.RegionAdapter;
+import com.breaditnow.region.application.RegionService;
+import com.breaditnow.region.adapter.out.persistence.RegionAdapter;
 import com.breaditnow.customer.application.dto.response.GugunResponse;
 import com.breaditnow.customer.application.dto.response.LocationRegionResponse;
 import com.breaditnow.customer.application.dto.response.SidoResponse;

@@ -1,6 +1,6 @@
 package com.breaditnow.customer.adapter.out.persistence.entity;
 
-import com.breaditnow.customer.domain.model.Region;
+import com.breaditnow.region.domain.model.Region;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

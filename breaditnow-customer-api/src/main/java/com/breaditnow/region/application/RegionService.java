@@ -1,14 +1,17 @@
-package com.breaditnow.customer.application;
+package com.breaditnow.region.application;
 
 import com.breaditnow.common.application.request.GeoPointRequest;
-import com.breaditnow.customer.application.dto.AddressInfo;
+import com.breaditnow.common.exception.CustomerException;
 import com.breaditnow.customer.adapter.out.persistence.repository.AddressRepository;
-import com.breaditnow.customer.domain.model.Region;
-import com.breaditnow.customer.domain.port.out.RegionRepository;
+import com.breaditnow.customer.application.dto.AddressInfo;
 import com.breaditnow.customer.application.dto.response.LocationRegionResponse;
+import com.breaditnow.region.domain.model.Region;
+import com.breaditnow.region.domain.port.out.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import static com.breaditnow.common.exception.CustomerErrorCode.REGION_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +22,9 @@ public class RegionService {
 
     public LocationRegionResponse getGugunByCoordinates(GeoPointRequest request) {
         AddressInfo addressInfo = addressRepository.getAddressInfo(request.longitude(), request.latitude())
-                .orElseThrow(() -> new IllegalArgumentException("주소 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomerException(REGION_NOT_FOUND));
 
-        Region region = regionRepository.getRegionByName(
-                addressInfo.getSidoName(),
-                addressInfo.getGugunName(),
-                addressInfo.getDongName()
-        );
-        return LocationRegionResponse.of(region.getRegionCode(), region.getSidoName(), region.getGugunName());
+        Region region = regionRepository.getRegionByName(addressInfo);
+        return LocationRegionResponse.of(region);
     }
 }

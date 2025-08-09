@@ -1,4 +1,4 @@
-package com.breaditnow.customer.domain.model;
+package com.breaditnow.region.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

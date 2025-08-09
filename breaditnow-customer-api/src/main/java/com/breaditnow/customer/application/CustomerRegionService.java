@@ -4,7 +4,7 @@ import com.breaditnow.common.exception.CustomerErrorCode;
 import com.breaditnow.common.exception.CustomerException;
 import com.breaditnow.customer.domain.port.out.CustomerRegionRepository;
 import com.breaditnow.customer.application.dto.request.RegionUpdateRequest;
-import com.breaditnow.customer.domain.port.out.RegionRepository;
+import com.breaditnow.region.domain.port.out.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
