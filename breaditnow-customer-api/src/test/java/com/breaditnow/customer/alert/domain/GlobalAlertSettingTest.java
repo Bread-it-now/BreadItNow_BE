@@ -1,6 +1,7 @@
 package com.breaditnow.customer.alert.domain;
 
-import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.alert.domain.GlobalAlertSetting;
+import com.breaditnow.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.*;
+import static com.breaditnow.common.exception.CustomerErrorCode.INVALID_TIME_RANGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

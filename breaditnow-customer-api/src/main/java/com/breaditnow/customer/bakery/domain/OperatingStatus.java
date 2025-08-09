@@ -1,5 +1,0 @@
-package com.breaditnow.customer.bakery.domain;
-
-public enum OperatingStatus {
-    OPEN, CLOSED, TEMPORARY_CLOSED;
-}
