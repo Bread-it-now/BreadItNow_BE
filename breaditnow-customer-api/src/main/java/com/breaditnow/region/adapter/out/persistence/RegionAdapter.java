@@ -1,10 +1,10 @@
 package com.breaditnow.region.adapter.out.persistence;
 
 import com.breaditnow.common.exception.CustomerException;
-import com.breaditnow.customer.adapter.out.persistence.repository.JpaRegionRepository;
+import com.breaditnow.region.adapter.out.persistence.repository.JpaRegionRepository;
 import com.breaditnow.customer.application.dto.AddressInfo;
-import com.breaditnow.customer.application.dto.response.GugunResponse;
-import com.breaditnow.customer.application.dto.response.SidoResponse;
+import com.breaditnow.region.application.dto.response.GugunResponse;
+import com.breaditnow.region.application.dto.response.SidoResponse;
 import com.breaditnow.region.domain.model.Region;
 import com.breaditnow.region.domain.port.out.RegionRepository;
 import lombok.RequiredArgsConstructor;

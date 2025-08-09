@@ -3,12 +3,11 @@ package com.breaditnow.auth.application;
 import com.breaditnow.auth.application.dto.request.DirectSignUpRequest;
 import com.breaditnow.auth.domain.model.Account;
 import com.breaditnow.auth.domain.model.LocalAuth;
-import com.breaditnow.auth.domain.port.in.LogoutUseCase;
-import com.breaditnow.auth.domain.port.in.SignUpUseCase;
 import com.breaditnow.auth.domain.port.out.AccountRepository;
 import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.auth.domain.port.out.LocalAuthRepository;
 import com.breaditnow.common.domain.Role;
+import com.breaditnow.common.exception.AuthErrorCode;
 import com.breaditnow.common.exception.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,18 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.breaditnow.common.exception.AuthErrorCode.EMAIL_ALREADY_EXISTS;
-import static com.breaditnow.common.exception.AuthErrorCode.USER_NOT_FOUND;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AuthService implements SignUpUseCase, LogoutUseCase {
+public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final AuthTokenRepository authTokenRepository;
     private final LocalAuthRepository localAuthRepository;
 
-    @Override
     public Long signUp(DirectSignUpRequest request) {
         if (localAuthRepository.findByEmail(request.email()).isPresent()) {
             throw new AuthException(EMAIL_ALREADY_EXISTS);
@@ -42,14 +39,16 @@ public class AuthService implements SignUpUseCase, LogoutUseCase {
         return localAuthRepository.save(newLocalAuth).getAccountId();
     }
 
-    @Override
     public void logout(Long userId){
         authTokenRepository.deleteRefreshToken(userId);
     }
 
-    public Account loadAccount(Long accountId) {
-        return accountRepository.findById(accountId)
-                .orElseThrow(() -> new AuthException(USER_NOT_FOUND));
+
+    public Boolean verifyPassword(Long accountId, String password) {
+        LocalAuth localAuth = localAuthRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_FOUND));
+
+        return passwordEncoder.matches(password, localAuth.getPassword());
     }
 }
 

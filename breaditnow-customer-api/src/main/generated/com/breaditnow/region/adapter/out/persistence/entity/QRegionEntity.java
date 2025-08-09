@@ -1,4 +1,4 @@
-package com.breaditnow.customer.adapter.out.persistence.entity;
+package com.breaditnow.region.adapter.out.persistence.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QRegionEntity extends EntityPathBase<RegionEntity> {
 
-    private static final long serialVersionUID = 1439845746L;
+    private static final long serialVersionUID = -770078968L;
 
     public static final QRegionEntity regionEntity = new QRegionEntity("regionEntity");
 

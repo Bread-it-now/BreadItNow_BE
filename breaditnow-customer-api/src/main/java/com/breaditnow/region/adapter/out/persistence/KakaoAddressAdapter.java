@@ -1,7 +1,7 @@
-package com.breaditnow.customer.adapter.out.persistence;
+package com.breaditnow.region.adapter.out.persistence;
 
 import com.breaditnow.customer.application.dto.AddressInfo;
-import com.breaditnow.customer.adapter.out.persistence.repository.AddressRepository;
+import com.breaditnow.customer.adapter.out.persistence.repository.AddressPort;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-public class KakaoAddressAdapter implements AddressRepository {
+public class KakaoAddressAdapter implements AddressPort {
 
     private final WebClient webClient;
 
