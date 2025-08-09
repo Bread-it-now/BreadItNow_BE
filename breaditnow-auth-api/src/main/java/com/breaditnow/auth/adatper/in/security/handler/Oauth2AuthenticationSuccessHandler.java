@@ -5,7 +5,7 @@ import com.breaditnow.auth.adatper.out.jwt.JwtTokenCreator;
 import com.breaditnow.auth.adatper.out.jwt.dto.AuthToken;
 import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.common.util.CookieUtil;
-import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
+import static com.breaditnow.auth.adatper.in.security.oauth2.CookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 import static com.breaditnow.auth.adatper.out.jwt.dto.AuthTokenType.REFRESH;
 
 @Component
@@ -31,8 +32,12 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private String refreshCookieKey;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(request, response, authentication);
+
+        if (response.isCommitted()) {
+            return;
+        }
 
         AuthToken refreshToken = jwtTokenCreator.createToken(authentication, REFRESH);
         authTokenRepository.saveRefreshToken(refreshToken);
@@ -40,10 +45,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         int maxAge = Math.toIntExact(refreshToken.expiresIn() / 1000);
         cookieUtil.addHttpOnlyCookie(response, refreshCookieKey, refreshToken.token(), maxAge);
 
-        String finalUrl = UriComponentsBuilder.fromUriString(targetUrl)
-                .build().toUriString();
-
-        if (response.isCommitted()) return;
+        String finalUrl = UriComponentsBuilder.fromUriString(targetUrl).build().toUriString();
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, finalUrl);
@@ -53,4 +55,13 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		super.clearAuthenticationAttributes(request);
 		cookieAuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
 	}
+
+    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        String targetUrl = cookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+                .map(Cookie::getValue)
+                .orElse(getDefaultTargetUrl());
+
+        return UriComponentsBuilder.fromUriString(targetUrl)
+                .build().toUriString();
+    }
 }
