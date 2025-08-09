@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RequestMapping("/api/v1/customer")
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +24,13 @@ public class CustomerController  {
     private final CustomerRegionService regionService;
     private final NicknameDuplicateQueryService nicknameService;
     private final CustomerInfoQueryService queryService;
+
+    // 회원정보 초기 설정 여부 확인(첫 로그인)
+    @GetMapping("/me/init")
+    public ApiSuccessResponse<Map<String, Boolean>> initCustomer(@AuthCustomer Long customerId) {
+        Boolean firstLogin = initializationService.isFirstLogin(customerId);
+        return ApiSuccessResponse.of(Map.of("isFirstLogin", firstLogin));
+    }
 
     // 회원정보 초기 설정(첫 로그인)
     @PostMapping("/me/init")

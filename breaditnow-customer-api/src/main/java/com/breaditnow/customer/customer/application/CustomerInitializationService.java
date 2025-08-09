@@ -1,17 +1,18 @@
 package com.breaditnow.customer.customer.application;
 
-import com.breaditnow.customer.customer.domain.port.out.CustomerRepository;
-import com.breaditnow.customer.customer.domain.port.out.SaveCustomerProductCategoryPort;
+import com.breaditnow.customer.common.exception.CustomerException;
 import com.breaditnow.customer.customer.application.request.CustomerInitRequest;
 import com.breaditnow.customer.customer.domain.model.Customer;
-import com.breaditnow.customer.product.domain.port.LoadProductCategoryPort;
+import com.breaditnow.customer.customer.domain.port.out.CustomerRepository;
+import com.breaditnow.customer.customer.domain.port.out.SaveCustomerProductCategoryPort;
 import com.breaditnow.customer.product.domain.ProductCategory;
-import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.customer.product.domain.port.LoadProductCategoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.breaditnow.customer.common.exception.CustomerErrorCode.DUPLICATE_NICKNAME;
@@ -46,5 +47,10 @@ public class CustomerInitializationService {
 
         customer.changeNickname(dto.nickname());
         customerRepository.save(customer);
+    }
+
+    public Boolean isFirstLogin(Long customerId) {
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+        return customerOptional.isEmpty();
     }
 }
