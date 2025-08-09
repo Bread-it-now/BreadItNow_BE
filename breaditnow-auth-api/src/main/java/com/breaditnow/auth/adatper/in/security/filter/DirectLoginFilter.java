@@ -2,19 +2,21 @@ package com.breaditnow.auth.adatper.in.security.filter;
 
 import com.breaditnow.auth.adatper.in.security.token.JwtAuthenticationToken;
 import com.breaditnow.auth.application.dto.request.DirectLoginRequest;
+import com.breaditnow.common.exception.AuthException;
 import com.breaditnow.common.util.JsonUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+
+import static com.breaditnow.common.exception.AuthErrorCode.EMAIL_NOT_FOUND;
 
 @RequiredArgsConstructor
 public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -24,7 +26,7 @@ public class DirectLoginFilter extends UsernamePasswordAuthenticationFilter {
         DirectLoginRequest loginRequest = JsonUtil.readValue(request, DirectLoginRequest.class);
 
         if (!StringUtils.hasText(loginRequest.email()) || !StringUtils.hasText(loginRequest.password())) {
-            throw new AuthenticationServiceException("이메일 또는 비밀번호가 비어있습니다.");
+            throw new AuthException(EMAIL_NOT_FOUND);
         }
 
         JwtAuthenticationToken token = new JwtAuthenticationToken(

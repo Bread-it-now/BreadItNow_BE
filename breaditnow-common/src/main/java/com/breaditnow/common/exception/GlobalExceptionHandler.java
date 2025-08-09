@@ -1,11 +1,10 @@
 package com.breaditnow.common.exception;
 
-import static com.breaditnow.common.exception.CommonErrorCode.*;
-import static java.util.stream.Collectors.*;
-
-import java.util.List;
-
+import com.breaditnow.common.response.ApiErrorResponse;
+import com.breaditnow.common.response.ErrorDetail;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,14 +13,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.breaditnow.common.response.ApiErrorResponse;
-import com.breaditnow.common.response.ErrorDetail;
+import java.util.List;
 
-import io.swagger.v3.oas.annotations.Hidden;
-import lombok.extern.slf4j.Slf4j;
+import static com.breaditnow.common.exception.CommonErrorCode.*;
+import static java.util.stream.Collectors.toList;
 
-@Hidden
 @Slf4j
+@Order(-1)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
