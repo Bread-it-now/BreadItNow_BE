@@ -1,0 +1,37 @@
+package com.breaditnow.common.presentation.swagger.docs;
+
+import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.customer.application.dto.request.*;
+import com.breaditnow.customer.application.dto.response.CustomerInfoResponse;
+import com.breaditnow.customer.application.dto.response.NicknameDuplicateResponse;
+import com.breaditnow.customer.application.dto.response.PasswordVerifyResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.multipart.MultipartFile;
+
+import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
+
+@Tag(name = "Customer - 내 정보 API", description = "프로필 초기 설정, 정보 조회, 닉네임 중복 확인, 지역 정보 업데이트 등을 위한 API입니다.")
+public interface CustomerControllerDocs {
+
+    @Operation(summary = "프로필 초기 설정", description = "회원가입 이후, 추가 정보를 등록합니다.")
+    ApiSuccessResponse<Void> initCustomerInfo(Long customerId, CustomerInitRequest dto);
+
+    @Operation(summary = "내 정보 수정", description = "회원 정보를 수정합니다.")
+    ApiSuccessResponse<CustomerInfoResponse> updateCustomerInfo(Long customerId, CustomerInfoUpdateRequest dto,
+                                                                MultipartFile profileImage);
+
+    @Operation(summary = "내 정보 조회", description = "자신의 상세 정보를 조회합니다.")
+    ApiSuccessResponse<CustomerInfoResponse> getCustomerInfo(Long customerId);
+
+    @Operation(summary = "현재 비밀번호 확인", description = "입력한 비밀번호가 현재 비밀번호와 일치하는지 확인합니다.")
+    ApiSuccessResponse<PasswordVerifyResponse> verifyPassword(Long customerId, PasswordVerifyRequest dto);
+
+    @Operation(summary = "닉네임 중복 확인", description = "입력한 닉네임의 중복 여부를 확인합니다.")
+    @Parameter(name = "nickname", description = "중복 확인할 닉네임", example = "홍길동", in = QUERY, required = true)
+    ApiSuccessResponse<NicknameDuplicateResponse> checkNicknameDuplicate(NicknameDuplicateCheckRequest dto);
+
+    @Operation(summary = "관심 지역 업데이트", description = "관심 지역 정보를 갱신합니다.")
+    ApiSuccessResponse<Void> updateRegion(Long customerId, RegionUpdateRequest dto);
+}

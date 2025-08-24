@@ -1,12 +1,13 @@
 package com.breaditnow.customer.alert.domain;
 
-import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.alert.domain.ProductAlert;
+import com.breaditnow.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.ALREADY_FAVORITED;
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.NOT_FAVORITED;
+import static com.breaditnow.common.exception.CustomerErrorCode.ALREADY_FAVORITED;
+import static com.breaditnow.common.exception.CustomerErrorCode.NOT_FAVORITED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

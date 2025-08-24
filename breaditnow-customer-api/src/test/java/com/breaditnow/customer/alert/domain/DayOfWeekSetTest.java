@@ -1,6 +1,7 @@
 package com.breaditnow.customer.alert.domain;
 
-import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.alert.domain.DayOfWeekSet;
+import com.breaditnow.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.time.DayOfWeek;
 import java.util.Set;
 
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.EMPTY_DND_DAYS;
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_DND_DAY_VALUE;
+import static com.breaditnow.common.exception.CustomerErrorCode.EMPTY_DND_DAYS;
+import static com.breaditnow.common.exception.CustomerErrorCode.INVALID_DND_DAY_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

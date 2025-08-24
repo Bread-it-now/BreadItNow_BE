@@ -1,7 +1,7 @@
 package com.breaditnow.customer.alert.domain;
 
 import com.breaditnow.common.domain.DailyTime;
-import com.breaditnow.customer.common.exception.CustomerException;
+import com.breaditnow.common.exception.CustomerException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalTime;
 
-import static com.breaditnow.customer.common.exception.CustomerErrorCode.INVALID_TIME_FORMAT;
+import static com.breaditnow.common.exception.CustomerErrorCode.INVALID_TIME_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

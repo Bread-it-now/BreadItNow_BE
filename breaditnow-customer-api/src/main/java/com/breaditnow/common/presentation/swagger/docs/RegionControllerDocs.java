@@ -1,0 +1,26 @@
+package com.breaditnow.common.presentation.swagger.docs;
+
+import com.breaditnow.common.response.ApiSuccessResponse;
+import com.breaditnow.common.application.request.GeoPointRequest;
+import com.breaditnow.region.application.dto.response.GugunResponse;
+import com.breaditnow.region.application.dto.response.SidoResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
+
+@Tag(name = "Customer - 지역 API", description = "지역 정보(시도, 구군) 조회 API입니다.")
+public interface RegionControllerDocs {
+
+    @Operation(summary = "전체 시도 목록 조회", description = "전체 시도의 목록을 조회하여 반환합니다.")
+    ApiSuccessResponse<List<SidoResponse>> getSidoList();
+
+    @Operation(summary = "구군 목록 조회", description = "주어진 시도 코드를 기반으로 해당 시도의 구군 목록을 조회하여 반환합니다.")
+    @Parameter(name = "sidoCode", description = "조회할 시도 코드", example = "11", required = true)
+    ApiSuccessResponse<List<GugunResponse>> getGugunListBySido(String sidoCode);
+
+    @Operation(summary = "좌표 기반 구군 조회", description = "주어진 좌표를 기반으로 구군을 조회하여 반환합니다.")
+    @Parameter(name = "locationRequest", description = "위도와 경도를 포함한 좌표 요청", required = true)
+    ApiSuccessResponse<GugunResponse> getGugunByCoordinates(GeoPointRequest geoPointRequest);
+}
