@@ -16,7 +16,6 @@ public class StockIncreaseResultConsumer {
 
     @RabbitListener(queues = RabbitMQConstants.QUEUE_STOCK_INCREASE_RESULT)
     public void handleStockIncreaseResult(StockUpdateResultEvent resultEvent) {
-        log.info("재고 증가(복구) 결과 수신: {}", resultEvent);
         handler.finalizeCancellation(resultEvent);
     }
 }

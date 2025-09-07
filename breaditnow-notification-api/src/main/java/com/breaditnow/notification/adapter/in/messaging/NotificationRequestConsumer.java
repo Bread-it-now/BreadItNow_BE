@@ -17,7 +17,6 @@ public class NotificationRequestConsumer {
 
     @RabbitListener(queues = QUEUE_NOTIFICATION_SEND_REQUEST)
     public void handleNotificationRequest(NotificationRequiredEvent event) {
-        log.info("알림 발송 요청 수신: 예약 [{}]", event);
         notificationHandler.sendNotification(event);
     }
 }

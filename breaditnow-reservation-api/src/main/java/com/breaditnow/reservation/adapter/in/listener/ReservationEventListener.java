@@ -52,7 +52,6 @@ public class ReservationEventListener {
                 .reservationTime(reservation.getReservationTime())
                 .build();
 
-        log.info("✅ [Event] 예약 생성 확인 -> 사장님에게 알림 발행 | 예약 ID: {}", reservation.getReservationId());
         notificationEventPort.publish(notificationEvent);
     }
 
@@ -63,7 +62,6 @@ public class ReservationEventListener {
                 .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
                 .toList();
 
-        log.info("✅ [Event] 예약 승인 확인 -> 재고 감소 요청 발행 | 예약 ID : {}", reservation.getReservationId());
         reservationEventPort.publishStockDecreaseRequest(new StockDecreaseRequestedEvent(reservation.getReservationId(), event.initiator(), APPROVED, stockUpdateItems, null));
     }
 
@@ -73,7 +71,6 @@ public class ReservationEventListener {
                 .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
                 .toList();
 
-        log.info("✅ [Event] 예약 부분 승인 확인 -> 재고 감소 요청 발행 | 예약 ID: {}", event.reservationId());
         reservationEventPort.publishStockDecreaseRequest(
                 new StockDecreaseRequestedEvent(event.reservationId(), event.initiator(), PARTIAL_APPROVED, stockUpdateItems, event.reason())
         );
@@ -86,7 +83,6 @@ public class ReservationEventListener {
                 .map(p -> new StockUpdateItem(p.getProductId(), p.getQuantity()))
                 .toList();
 
-        log.info("✅ [Event] 재고 복구 필요 확인 -> 재고 증가 요청 발행 | 예약 ID: {}", reservation.getReservationId());
         reservationEventPort.publishStockIncreaseRequest(
                 new StockIncreaseRequestedEvent(reservation.getReservationId(), event.initiator(), stockUpdateItems, CANCELLED, event.reason())
         );
@@ -102,12 +98,10 @@ public class ReservationEventListener {
         if (initiator.type() == CUSTOMER) {
             recipient = new UserIdentifier(event.ownerId(), OWNER);
             notificationTypeDto = RESERVATION_CANCELED_BY_CUSTOMER;
-            log.info("✅ [Event] 고객의 예약 취소 확인 -> 사장님에게 알림 발행 | 예약 ID: {}", reservation.getReservationId());
         }
         else { // OWNER
             recipient = new UserIdentifier(reservation.getOrderer().getCustomerId(), CUSTOMER);
             notificationTypeDto = RESERVATION_CANCELED_BY_OWNER;
-            log.info("✅ [Event] 사장님의 예약 취소 확인 -> 고객에게 알림 발행 | 예약 ID: {}", reservation.getReservationId());
         }
 
         List<String> productNames = reservation.getReservationProducts().stream()
@@ -131,7 +125,6 @@ public class ReservationEventListener {
 
     @TransactionalEventListener(phase = AFTER_COMMIT)
     public void onNotificationRequired(NotificationRequiredEvent event) {
-        log.info("✅ [Event] 최종 알림 요청 확인 -> 알림 메시지 발행 | 예약 ID: {}", event.reservationId());
         notificationEventPort.publish(event);
     }
 }

@@ -34,10 +34,7 @@ public class NotificationHandler {
                     message.content()
             );
             notificationRepository.save(notification);
-            log.info("알림 이력 저장 완료: 알림 ID [{}]", notification.getNotificationId());
-
             fcmNotifier.notify(notification.getRecipient(), message.title(), message.content());
-            log.info("FCM 알림 발송 완료: 수신자 [{}], 제목 [{}], 내용 [{}]", event.recipient(), message.title(), message.content());
         } catch (Exception e) {
             log.error("알림 처리 중 오류 발생. 예약 ID: [{}], 사유: {}", event.reservationId(), e.getMessage());
         }

@@ -26,7 +26,6 @@ public class ProductEventListener {
 
         String routingKey = String.format(ROUTING_KEY_STOCK_RESULT_FORMAT, operationType.getValue(), event.status().name().toLowerCase());
 
-        log.info("✅ DB 커밋 완료! 재고 처리 결과 메시지 발행 -> RoutingKey [{}], 예약 ID [{}]", routingKey, event.reservationId());
         rabbitTemplate.convertAndSend(RabbitMQConstants.BREADITNOW_TOPIC_EXCHANGE, routingKey, event);
     }
 }
