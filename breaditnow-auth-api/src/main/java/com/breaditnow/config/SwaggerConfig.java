@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.ArrayList;
@@ -49,10 +50,10 @@ public class SwaggerConfig {
 		return (Operation operation, HandlerMethod handlerMethod) -> {
 			List<ErrorCode> errorCodes = new ArrayList<>();
 
-			CommonErrorCodeExamples commonErrorCodeExamples = handlerMethod.getMethodAnnotation(
-				CommonErrorCodeExamples.class);
-			AuthApiErrorCodeExamples authApiErrorCodeExamples = handlerMethod.getMethodAnnotation(
-				AuthApiErrorCodeExamples.class);
+			CommonErrorCodeExamples commonErrorCodeExamples =
+					AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getMethod(), CommonErrorCodeExamples.class);
+			AuthApiErrorCodeExamples authApiErrorCodeExamples =
+					AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getMethod(), AuthApiErrorCodeExamples.class);
 
 			if (authApiErrorCodeExamples != null) {
 				errorCodes.addAll(Arrays.asList(authApiErrorCodeExamples.value()));
@@ -60,7 +61,6 @@ public class SwaggerConfig {
 			if (commonErrorCodeExamples != null) {
 				errorCodes.addAll(Arrays.asList(commonErrorCodeExamples.value()));
 			}
-
 			generateErrorCodeResponseExample(operation, errorCodes);
 
 			return operation;

@@ -65,7 +65,7 @@ springdoc:
         name: Owner API
       - url: /auth-api/v3/api-docs
         name: Auth API
-    urls-primary-name: Customer API
+    urls-primary-name: Auth API
 
   token:
     secret-key: ${AUTH_TOKEN_SECRET_KEY}

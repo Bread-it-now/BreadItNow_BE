@@ -1,6 +1,7 @@
 package com.breaditnow.auth.adatper.in.web;
 
 import com.breaditnow.auth.adatper.in.security.AccountContext;
+import com.breaditnow.common.swagger.docs.AuthControllerDocs;
 import com.breaditnow.auth.application.AuthService;
 import com.breaditnow.auth.application.dto.request.DirectSignUpRequest;
 import com.breaditnow.auth.application.dto.request.PasswordVerifyRequest;
@@ -21,21 +22,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
     private final AuthService authService;
     private final CookieUtil cookieUtil;
 
     @PostMapping("/sign-up")
     public ApiSuccessResponse<Map<String, Long>> signUp(@RequestBody DirectSignUpRequest request) {
-        Long userId = authService.signUp(request);
-        return ApiSuccessResponse.of("userId", userId);
+        Long accountId = authService.signUp(request);
+        return ApiSuccessResponse.of("userId", accountId);
     }
 
     @PostMapping("/logout")
-    public ApiSuccessResponse<Void> logout(
-            @AuthenticationPrincipal AccountContext principal,
-            HttpServletRequest request, HttpServletResponse response
-    ) {
+    public ApiSuccessResponse<Void> logout(@AuthenticationPrincipal AccountContext principal, HttpServletRequest request, HttpServletResponse response) {
         if (principal == null) {
             return ApiSuccessResponse.of();
         }
@@ -48,10 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/verify-password")
-    public ApiSuccessResponse<Map<String, Boolean>> verifyPassword(
-            @AuthenticationPrincipal AccountContext principal,
-            @RequestBody @Valid PasswordVerifyRequest request
-    ) {
+    public ApiSuccessResponse<Map<String, Boolean>> verifyPassword(@AuthenticationPrincipal AccountContext principal, @RequestBody @Valid PasswordVerifyRequest request) {
         Long userId = principal.getAccount().getId();
         return ApiSuccessResponse.of(Map.of("verified", authService.verifyPassword(userId, request.password())));
     }

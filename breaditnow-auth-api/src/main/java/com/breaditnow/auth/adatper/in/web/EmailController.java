@@ -27,14 +27,14 @@ public class EmailController implements EmailControllerDocs {
     }
 
     @PostMapping("/send-code")
-    public ApiSuccessResponse<Map<String, Void>> sendCode(@RequestBody @Valid SendCodeRequest request) {
+    public ApiSuccessResponse<Void> sendCode(@RequestBody @Valid SendCodeRequest request) {
         emailAuthService.sendAuthCode(request.email(), request.role());
         return ApiSuccessResponse.of();
     }
 
     @PostMapping("/verify-code")
-    public ApiSuccessResponse<Map<String, Boolean>> verifyCode(@RequestBody @Valid VerifyCodeRequest req) {
-        emailAuthService.verifyCode(req.email(), req.code());
+    public ApiSuccessResponse<Map<String, Boolean>> verifyCode(@RequestBody @Valid VerifyCodeRequest request) {
+        emailAuthService.verifyCode(request.email(), request.code());
         return ApiSuccessResponse.of("verified", true);
     }
 }

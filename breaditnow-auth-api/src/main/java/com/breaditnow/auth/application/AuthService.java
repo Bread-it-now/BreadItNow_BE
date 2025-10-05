@@ -8,7 +8,6 @@ import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.auth.domain.port.out.LocalAuthRepository;
 import com.breaditnow.common.domain.Role;
 import com.breaditnow.common.event.AccountCreatedEvent;
-import com.breaditnow.common.exception.AuthErrorCode;
 import com.breaditnow.common.exception.AuthException;
 import com.breaditnow.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.breaditnow.common.exception.AuthErrorCode.EMAIL_ALREADY_EXISTS;
+import static com.breaditnow.common.exception.AuthErrorCode.USER_NOT_FOUND;
 
 @Service
 @Transactional
@@ -52,7 +52,7 @@ public class AuthService {
 
     public Boolean verifyPassword(Long accountId, String password) {
         LocalAuth localAuth = localAuthRepository.findByAccountId(accountId)
-                .orElseThrow(() -> new AuthException(AuthErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new AuthException(USER_NOT_FOUND));
 
         return passwordEncoder.matches(password, localAuth.getPassword());
     }

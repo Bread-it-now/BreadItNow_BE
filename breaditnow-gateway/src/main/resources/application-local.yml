@@ -37,9 +37,13 @@ spring:
         - id: reservation-api
           uri: http://localhost:9003
           predicates:
-            - Path=/api/v1/my/reservation/**, /api/v1/bakery/{bakeryId}/reservation/**
+            - Path=/reservation-api/**
+          filters:
+            - RewritePath=/reservation-api/(?<segment>.*), /$\{segment}
 
         - id: notification-api
           uri: http://localhost:9004
           predicates:
-            - Path=/api/v1/my/notification/**, /api/v1/bakery/{bakeryId}/notification/**
+            - Path=/notification-api/**
+          filters:
+            - RewritePath=/notification-api/(?<segment>.*), /$\{segment}
