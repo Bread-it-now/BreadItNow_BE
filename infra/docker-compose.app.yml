@@ -73,6 +73,42 @@ services:
           cpus: "0.2"
           memory: 300M
 
+  reservation-api:
+    image: ${DOCKER_USERNAME}/breaditnow-reservation-api:latest
+    container_name: breaditnow-reservation-api
+    ports:
+      - "9003:9003"
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ${LOG_VOLUME_PATH}/reservation-api:/app/logs/reservation-api
+    networks:
+      - bin-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 300M
+
+  notification-api:
+    image: ${DOCKER_USERNAME}/breaditnow-notification-api:latest
+    container_name: breaditnow-notification-api
+    ports:
+      - "9004:9004"
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ${LOG_VOLUME_PATH}/notification-api:/app/logs/notification-api
+    networks:
+      - bin-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 300M
+
 networks:
   bin-network:
     external: true

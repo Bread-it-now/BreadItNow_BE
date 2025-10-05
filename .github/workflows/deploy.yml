@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - "main"
+      - "develop"
 
 jobs:
   build-and-deploy:
@@ -25,15 +25,10 @@ jobs:
       - name: Give permissions to gradlew
         run: chmod +x gradlew
 
-      - name: Create firebase-service-key.json for customer-api
+      - name: Copy firebase-service-key.json for notification-api
         run: |
-          mkdir -p breaditnow-customer-api/src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY_BASE64 }}" | base64 -d > breaditnow-customer-api/src/main/resources/firebase/breaditnow-fcm.json
-
-      - name: Create firebase-service-key.json for owner-api
-        run: |
-          mkdir -p breaditnow-owner-api/src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_FCM_SERVICE_KEY_BASE64 }}" | base64 -d > breaditnow-owner-api/src/main/resources/firebase/breaditnow-fcm.json
+          mkdir -p breaditnow-notification-api/src/main/resources/config
+          cp config/breaditnow-fcm.json breaditnow-notification-api/src/main/resources/config/breaditnow-fcm.json
 
       - name: Build All Modules
         run: |
@@ -58,6 +53,12 @@ jobs:
 
           docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-owner-api ./breaditnow-owner-api
           docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-owner-api
+          
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-reservation-api ./breaditnow-reservation-api
+          docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-reservation-api
+
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/breaditnow-notification-api ./breaditnow-notification-api
+          docker push ${{ secrets.DOCKER_USERNAME }}/breaditnow-notification-api
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.8.0
