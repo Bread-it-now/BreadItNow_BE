@@ -33,3 +33,13 @@ spring:
           filters:
             - JwtAuthentication=ROLE_OWNER
             - RewritePath=/owner-api/(?<segment>.*), /$\{segment}
+
+        - id: reservation-api
+          uri: http://localhost:9003
+          predicates:
+            - Path=/api/v1/my/reservation/**, /api/v1/bakery/{bakeryId}/reservation/**
+
+        - id: notification-api
+          uri: http://localhost:9004
+          predicates:
+            - Path=/api/v1/my/notification/**, /api/v1/bakery/{bakeryId}/notification/**

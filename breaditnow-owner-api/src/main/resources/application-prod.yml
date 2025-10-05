@@ -7,3 +7,8 @@ spring:
 openapi:
   service:
     url: ${BREADITNOW_API_HTTPS_HOST}/owner-api
+
+api:
+  internal:
+    customer-service:
+      url: http://breaditnow-customer-api:9001

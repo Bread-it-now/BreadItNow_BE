@@ -2,14 +2,14 @@ spring:
   config:
     activate:
       on-profile: prod
-    import: application-mysql-prod.yml
-
-openapi:
-  service:
-    url: ${BREADITNOW_API_HTTPS_HOST}/customer-api
+    import:
+      - application-mysql-prod.yml
+      - application-redis-prod.yml
 
 api:
   internal:
+    customer-service:
+      url: http://breaditnow-customer-api:9001
     owner-service:
       url: http://breaditnow-owner-api:9002
     reservation-service:

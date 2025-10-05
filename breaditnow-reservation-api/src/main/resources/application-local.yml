@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DATASOURCE_URL:localhost:3306/breaditnow}?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:password}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+api:
+  internal:
+    customer-service:
+      url: http://localhost:9001
+    owner-service:
+      url: http://localhost:9002

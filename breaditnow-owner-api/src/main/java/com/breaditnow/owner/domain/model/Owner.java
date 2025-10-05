@@ -1,30 +1,37 @@
 package com.breaditnow.owner.domain.model;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 public class Owner {
     private Long id;
-    private String email;
-    private String password;
     private String fcmToken;
+    private String nickname;
+
+    public static Owner create(Long ownerId) {
+        return Owner.builder()
+                .id(ownerId)
+                .build();
+    }
 
     @Builder
-    private Owner(Long id, String email, String password, String fcmToken) {
+    private Owner(Long id, String fcmToken, String nickname) {
         this.id = id;
-        this.email = email;
-        this.password = password;
         this.fcmToken = fcmToken;
+        this.nickname = nickname;
     }
 
     public void changeFcmToken(String token) {
         this.fcmToken = token;
     }
 
-    public void changePassword(String newPassword, PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(newPassword);
+    public void initialize(String nickname) {
+        this.nickname = nickname;
     }
 
+    public boolean isInitialized() {
+        return StringUtils.isNotBlank(this.nickname);
+    }
 }

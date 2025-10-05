@@ -14,32 +14,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OwnerEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
     private String fcmToken;
+
+    @Column(unique = true)
+    private String nickname;
 
     public Owner toDomain() {
         return Owner.builder()
                 .id(getId())
-                .email(getEmail())
-                .password(getPassword())
                 .fcmToken(getFcmToken())
+                .nickname(getNickname())
                 .build();
     }
 
     public static OwnerEntity from(Owner domainEntity) {
         return new OwnerEntity(
                 domainEntity.getId(),
-                domainEntity.getEmail(),
-                domainEntity.getPassword(),
-                domainEntity.getFcmToken()
+                domainEntity.getFcmToken(),
+                domainEntity.getNickname()
         );
     }
 }
