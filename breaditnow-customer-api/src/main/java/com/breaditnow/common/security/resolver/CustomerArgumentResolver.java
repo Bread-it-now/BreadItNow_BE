@@ -12,8 +12,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.Optional;
-
 import static com.breaditnow.common.exception.CustomerErrorCode.AUTHENTICATION_REQUIRED;
 
 @Component
@@ -45,17 +43,14 @@ public class CustomerArgumentResolver implements HandlerMethodArgumentResolver {
 		}
 
 		Long accountId = Long.valueOf(userIdHeader);
-		Optional<Customer> optionalCustomer = customerRepository.findById(accountId);
+		Customer customer = customerRepository.getCustomer(accountId);
 
-		if (optionalCustomer.isPresent()) {
-			Customer customer = optionalCustomer.get();
-			if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
-				return customer;
-			} else {
-				return customer.getId();
-			}
+		if (Customer.class.isAssignableFrom(parameter.getParameterType())) {
+			return customer;
+		} else if (Long.class.isAssignableFrom(parameter.getParameterType())) {
+			return customer.getId();
 		}
 
-		return accountId;
+		return null;
 	}
 }

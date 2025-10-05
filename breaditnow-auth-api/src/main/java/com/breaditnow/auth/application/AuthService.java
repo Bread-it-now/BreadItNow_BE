@@ -7,9 +7,12 @@ import com.breaditnow.auth.domain.port.out.AccountRepository;
 import com.breaditnow.auth.domain.port.out.AuthTokenRepository;
 import com.breaditnow.auth.domain.port.out.LocalAuthRepository;
 import com.breaditnow.common.domain.Role;
+import com.breaditnow.common.event.AccountCreatedEvent;
 import com.breaditnow.common.exception.AuthErrorCode;
 import com.breaditnow.common.exception.AuthException;
+import com.breaditnow.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,7 @@ public class AuthService {
     private final AccountRepository accountRepository;
     private final AuthTokenRepository authTokenRepository;
     private final LocalAuthRepository localAuthRepository;
+    private final RabbitTemplate rabbitTemplate;
 
     public Long signUp(DirectSignUpRequest request) {
         if (localAuthRepository.findByEmail(request.email()).isPresent()) {
@@ -34,9 +38,11 @@ public class AuthService {
         Account savedAccount = accountRepository.save(newAccount);
 
         String hashedPassword = passwordEncoder.encode(request.password());
+        localAuthRepository.save(LocalAuth.create(request.email(), hashedPassword, savedAccount.getId()));
 
-        LocalAuth newLocalAuth = LocalAuth.create(request.email(), hashedPassword, savedAccount.getId());
-        return localAuthRepository.save(newLocalAuth).getAccountId();
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ACCOUNT_CREATED_ROUTING_KEY, new AccountCreatedEvent(savedAccount.getId(), Role.valueOf(request.role())));
+
+        return savedAccount.getId();
     }
 
     public void logout(Long userId){

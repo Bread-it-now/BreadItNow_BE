@@ -44,12 +44,9 @@ public class OwnerArgumentResolver implements HandlerMethodArgumentResolver {
 				return null;
 			}
 		}
-		Long ownerId = Long.valueOf(userIdHeader);
-		Owner owner = ownerRepository.findById(ownerId)
-				.orElseGet(() -> {
-					Owner newOwner = Owner.create(ownerId);
-					return ownerRepository.save(newOwner);
-				});
+
+		Owner owner = ownerRepository.findById(Long.valueOf(userIdHeader))
+				.orElseThrow(() -> new OwnerException(AUTHENTICATION_REQUIRED));
 
 		if (Owner.class.isAssignableFrom(parameter.getParameterType())) {
 			return owner;
