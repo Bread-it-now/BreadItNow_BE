@@ -67,8 +67,8 @@ mail:
 springdoc:
   api-docs:
     path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui/index.html
+#  swagger-ui:
+#    path: /swagger-ui/index.html
 
 logging:
   config: classpath:logging/logback-spring.xml

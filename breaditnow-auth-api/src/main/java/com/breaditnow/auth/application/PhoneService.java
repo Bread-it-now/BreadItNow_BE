@@ -47,8 +47,7 @@ public class PhoneService {
         msg.setTo(phone);
         msg.setText(body);
 
-        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(msg));
-        return response;
+        return messageService.sendOne(new SingleMessageSendingRequest(msg));
     }
 
     public boolean verifyCode(String phone, String code) {

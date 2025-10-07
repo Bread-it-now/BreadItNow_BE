@@ -1,18 +1,19 @@
 package com.breaditnow.alert.presentation;
 
-import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.alert.application.GlobalAlertService;
 import com.breaditnow.alert.application.request.GlobalAlertUpdateRequest;
 import com.breaditnow.alert.application.response.GlobalAlertResponse;
 import com.breaditnow.alert.application.response.GlobalAlertToggleResponse;
+import com.breaditnow.common.response.ApiSuccessResponse;
 import com.breaditnow.common.security.annotation.AuthCustomer;
+import com.breaditnow.common.swagger.docs.GlobalAlertControllerDocs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/alert")
 @RequiredArgsConstructor
-public class GlobalAlertController {
+public class GlobalAlertController implements GlobalAlertControllerDocs {
 	private final GlobalAlertService globalAlertService;
 
 	@GetMapping("/do-not-disturb")

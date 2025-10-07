@@ -2,8 +2,6 @@ package com.breaditnow.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.breaditnow.common.exception.ErrorCode;
-
 import static org.springframework.http.HttpStatus.*;
 
 public enum OwnerErrorCode implements ErrorCode {
@@ -11,6 +9,7 @@ public enum OwnerErrorCode implements ErrorCode {
 	 * DA000 Owner
 	 */
 	PASSWORD_SAME_AS_CURRENT(BAD_REQUEST, "DA001", "현재 비밀번호와 일치합니다. 다른 비밀번호를 입력해주세요."),
+	DUPLICATE_NICKNAME(CONFLICT, "DA002", "닉네임이 중복됩니다. 다른 닉네임을 입력해주세요"),
 
 	/**
 	 * DB000 Bakery

@@ -7,6 +7,7 @@ import com.breaditnow.owner.domain.port.out.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -30,18 +31,20 @@ public class OwnerArgumentResolver implements HandlerMethodArgumentResolver {
 	}
 
 	@Override
+	@Transactional
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		AuthOwner authOwner = parameter.getParameterAnnotation(AuthOwner.class);
 
 		String userIdHeader = webRequest.getHeader("X-Authorization-Id");
 		if (userIdHeader == null) {
-			if (authOwner.required()) { // 필수인 경우, 예외 발생
+			if (authOwner.required()) {
 				throw new OwnerException(AUTHENTICATION_REQUIRED);
 			} else {
 				return null;
 			}
 		}
+
 		Owner owner = ownerRepository.findById(Long.valueOf(userIdHeader))
 				.orElseThrow(() -> new OwnerException(AUTHENTICATION_REQUIRED));
 

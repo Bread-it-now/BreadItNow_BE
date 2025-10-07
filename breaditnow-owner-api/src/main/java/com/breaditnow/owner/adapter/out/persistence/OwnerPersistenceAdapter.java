@@ -27,8 +27,7 @@ public class OwnerPersistenceAdapter implements OwnerRepository {
     }
 
     @Override
-    public Optional<Owner> findByEmail(String email) {
-        return jpaOwnerRepository.findByEmail(email)
-                .map(OwnerEntity::toDomain);
+    public boolean existsByNickname(String nickname) {
+        return jpaOwnerRepository.existsByNickname(nickname);
     }
 }

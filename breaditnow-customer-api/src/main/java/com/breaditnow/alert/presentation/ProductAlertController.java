@@ -9,13 +9,14 @@ import com.breaditnow.alert.presentation.response.ProductAlertPageResponse;
 import com.breaditnow.alert.presentation.response.TodayProductAlertListResponse;
 import com.breaditnow.common.domain.Pagination;
 import com.breaditnow.common.security.annotation.AuthCustomer;
+import com.breaditnow.common.swagger.docs.ProductAlertControllerDocs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/alert")
-public class ProductAlertController {
+public class ProductAlertController implements ProductAlertControllerDocs {
 	private final ProductAlertService productAlertService;
 	private final ProductAlertAdapter productAlertAdapter;
 

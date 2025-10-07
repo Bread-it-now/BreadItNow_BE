@@ -11,13 +11,27 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    public static final String EXCHANGE_NAME = "customer.events.exchange";
+    public static final String EXCHANGE_NAME = "account.events.exchange";
+    public static final String ACCOUNT_CREATED_QUEUE_NAME = "customer.account-created.queue";
+    public static final String ACCOUNT_CREATED_ROUTING_KEY = "account.created";
     public static final String PASSWORD_CHANGE_QUEUE_NAME = "auth.password-change.queue";
     public static final String PASSWORD_CHANGE_ROUTING_KEY = "customer.password.changed";
 
     @Bean
     public TopicExchange exchange() {
         return new TopicExchange(EXCHANGE_NAME);
+    }
+
+    @Bean
+    public Queue accountCreatedQueue() {
+        return new Queue(ACCOUNT_CREATED_QUEUE_NAME);
+    }
+
+    @Bean
+    public Binding accountCreatedBinding(Queue accountCreatedQueue, TopicExchange exchange) {
+        return BindingBuilder.bind(accountCreatedQueue)
+                .to(exchange)
+                .with(ACCOUNT_CREATED_ROUTING_KEY);
     }
 
     @Bean

@@ -19,13 +19,11 @@ public class QOwnerEntity extends EntityPathBase<OwnerEntity> {
 
     public static final QOwnerEntity ownerEntity = new QOwnerEntity("ownerEntity");
 
-    public final StringPath email = createString("email");
-
     public final StringPath fcmToken = createString("fcmToken");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath password = createString("password");
+    public final StringPath nickname = createString("nickname");
 
     public QOwnerEntity(String variable) {
         super(OwnerEntity.class, forVariable(variable));
